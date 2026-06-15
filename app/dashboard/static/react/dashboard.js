@@ -11,25 +11,52 @@ const nav = [
     ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
 ];
 
+const buyerNav = [
+    ["Buyer", [["/dashboard/buyer", "Buyer Dashboard"]]],
+    ["Tenders", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"]]],
+    ["Workflow", [["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
+    ["Intelligence", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market Intelligence"], ["/dashboard/reports", "Executive Reports"], ["/dashboard/buyers", "Buyer Intelligence"], ["/dashboard/competitors", "Competitor Intelligence"]]],
+    ["Automation", [["/dashboard/admin", "Admin"], ["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/gem-alerts", "GeM Alerts"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Delete Data"]]],
+    ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
+];
+
+const sellerNav = [
+    ["Seller", [["/dashboard/seller", "Seller Dashboard"], ["/dashboard/seller/analytics", "Analytics"], ["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
+    ["Bid Work", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
+    ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
+];
+
 function navigate(path) {
     history.pushState(null, "", path);
     window.dispatchEvent(new Event("app:navigate"));
+}
+
+function roleDashboard(user) {
+    return user?.role === "seller" ? "/dashboard/seller" : "/dashboard/buyer";
 }
 
 async function api(path, options = {}) {
     const headers = { Accept: "application/json", ...(options.headers || {}) };
     if (options.body && !(options.body instanceof FormData)) headers["Content-Type"] = "application/json";
     const response = await fetch(path, { credentials: "same-origin", headers, ...options });
-    if (response.status === 401) {
-        if (!location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup")) navigate("/login");
+    if (response.status === 401 && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup")) {
+        navigate("/login");
         throw new Error("Login required");
     }
     if (!response.ok) {
         let message = `Request failed: ${response.status}`;
-        try { message = (await response.json()).detail || message; } catch { message = await response.text() || message; }
+        const text = await response.text();
+        if (text) {
+            try {
+                message = JSON.parse(text).detail || message;
+            } catch {
+                message = text;
+            }
+        }
         throw new Error(message);
     }
-    return response.json();
+    const text = await response.text();
+    return text ? JSON.parse(text) : null;
 }
 
 function money(value) {
@@ -53,6 +80,15 @@ function pageTitle(path) {
     if (path === "/contact") return "Contact";
     if (path === "/login") return "Login";
     if (path === "/signup") return "Create Account";
+    if (path === "/dashboard/tenders") return "All Tenders";
+    if (path === "/dashboard/buyer") return "Buyer Dashboard";
+    if (path === "/dashboard/seller") return "Seller Dashboard";
+    if (path === "/dashboard/seller/analytics") return "Seller Analytics";
+    if (path === "/dashboard/seller/readiness") return "Seller Readiness";
+    if (path === "/dashboard/seller/catalogue") return "Catalogue Tracker";
+    if (path === "/dashboard/seller/opportunities") return "Opportunity Matching";
+    if (path === "/dashboard/seller/bids") return "Bid/RA Workflow";
+    if (path === "/dashboard/seller/orders") return "Order Fulfillment";
     if (path === "/dashboard/company-profile") return "Company Profile";
     return "Tender AI";
 }
@@ -415,22 +451,23 @@ function AuthPage({ mode }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("buyer");
     const [error, setError] = useState("");
     const isSignup = mode === "signup";
     const { me, checked } = useSessionProbe();
     useEffect(() => {
-        if (checked && me) navigate("/dashboard");
+        if (checked && me) navigate(roleDashboard(me));
     }, [checked, me]);
 
     async function submit(event) {
         event.preventDefault();
         setError("");
         try {
-            await api(isSignup ? "/api/signup" : "/api/login", {
+            const result = await api(isSignup ? "/api/signup" : "/api/login", {
                 method: "POST",
-                body: JSON.stringify(isSignup ? { name, email, password } : { email, password }),
+                body: JSON.stringify(isSignup ? { name, email, password, role } : { email, password }),
             });
-            navigate("/dashboard");
+            navigate(result?.dashboard_path || roleDashboard(result));
         } catch (err) {
             setError(err.message || "Authentication failed.");
         }
@@ -450,6 +487,10 @@ function AuthPage({ mode }) {
             h("h2", null, isSignup ? "Create account" : "Sign in"),
             error ? h("div", { className: "notice err" }, error) : null,
             isSignup ? h("input", { value: name, onChange: e => setName(e.target.value), placeholder: "Name", required: true }) : null,
+            isSignup ? h("div", { className: "role-choice" },
+                h("button", { type: "button", className: role === "buyer" ? "active" : "", onClick: () => setRole("buyer") }, "Buyer"),
+                h("button", { type: "button", className: role === "seller" ? "active" : "", onClick: () => setRole("seller") }, "Seller")
+            ) : null,
             h("input", { value: email, onChange: e => setEmail(e.target.value), placeholder: "Email", type: "email", required: true }),
             h("input", { value: password, onChange: e => setPassword(e.target.value), placeholder: "Password", type: "password", required: true }),
             h("button", { className: "primary" }, isSignup ? "Create Account" : "Login"),
@@ -459,12 +500,13 @@ function AuthPage({ mode }) {
 }
 
 function Shell({ children, me, path }) {
+    const sections = me?.role === "seller" ? sellerNav : buyerNav;
     return h("div", { className: "app" },
         h("aside", { className: "sidebar" },
             h("div", { className: "brand" }, "Tender ", h("span", null, "AI")),
-            h("div", { className: "muted" }, "Intelligence Platform"),
+            h("div", { className: "muted" }, me?.role === "seller" ? "Seller Workspace" : "Buyer Workspace"),
             h("nav", { className: "nav" },
-                nav.map(([section, items]) => h("div", { key: section },
+                sections.map(([section, items]) => h("div", { key: section },
                     h("div", { className: "nav-section" }, section),
                     items.map(([href, label]) => h("button", {
                         key: href,
@@ -480,6 +522,7 @@ function Shell({ children, me, path }) {
                 h("div", { className: "user" },
                     h("div", { className: "avatar" }, (me?.name || me?.email || "U").slice(0, 1).toUpperCase()),
                     h("strong", null, me?.name || "User"),
+                    h("span", { className: "profile-pill role-pill" }, me?.role === "seller" ? "Seller" : "Buyer"),
                     h("button", { className: "profile-pill", onClick: () => navigate("/dashboard/profile") }, "Profile"),
                     h("button", { className: "logout", onClick: async () => { await fetch("/api/logout", { method: "POST" }); navigate("/login"); } }, "Logout")
                 )
@@ -499,6 +542,204 @@ function Summary({ summary }) {
     return h("div", { className: "summary" }, tiles.map(([label, value]) =>
         h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
     ));
+}
+
+function BuyerDashboardPage() {
+    const [summary, setSummary] = useState(null);
+    const [buyerData, setBuyerData] = useState(null);
+    const [marketData, setMarketData] = useState(null);
+    const [upcoming, setUpcoming] = useState([]);
+    const [message, setMessage] = useState("");
+    useEffect(() => {
+        Promise.all([
+            api("/api/dashboard/summary"),
+            api("/api/buyers"),
+            api("/api/market"),
+            api("/api/tenders?view=upcoming&limit=6&sort=deadline"),
+        ]).then(([s, b, m, t]) => {
+            setSummary(s);
+            setBuyerData(b);
+            setMarketData(m);
+            setUpcoming(t.items || []);
+        }).catch(err => setMessage(err.message));
+    }, []);
+    const topBuyers = buyerData?.buyers || [];
+    const opportunities = marketData?.opportunities || [];
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel buyer-landing" },
+            h("div", null,
+                h("h2", null, "Buyer Dashboard"),
+                h("p", null, "Review procurement demand, buyer behavior, market movement, and upcoming tender deadlines from one workspace.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyers") }, "Buyer Intelligence"),
+                h("button", { onClick: () => navigate("/dashboard/market") }, "Market View")
+            )
+        ),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h(Summary, { summary }),
+        h("div", { className: "admin-grid" },
+            h("div", { className: "card" }, h("h3", null, "Top Buyers"), topBuyers.length ? topBuyers.slice(0, 5).map(buyer =>
+                h("div", { className: "rule-list", key: buyer.name },
+                    h("span", null, buyer.name),
+                    h("strong", null, `${buyer.tender_count || 0} tenders`)
+                )
+            ) : h("div", { className: "empty" }, "No buyer data yet."), h("button", { onClick: () => navigate("/dashboard/buyers") }, "Open Buyers")),
+            h("div", { className: "card" }, h("h3", null, "Market Opportunities"), opportunities.length ? opportunities.slice(0, 5).map(item =>
+                h("div", { className: "rule-list", key: item.id || item.title },
+                    h("span", null, item.title || item.department || "Opportunity"),
+                    h("strong", null, item.market_score ? `${item.market_score} score` : money(item.value || 0))
+                )
+            ) : h("div", { className: "empty" }, "No market signals yet."), h("button", { onClick: () => navigate("/dashboard/reports") }, "Open Reports")),
+            h("div", { className: "card" }, h("h3", null, "Upcoming Deadlines"), upcoming.length ? upcoming.map(tender =>
+                h("div", { className: "rule-list", key: tender.id },
+                    h("span", null, tender.title),
+                    h("strong", null, tender.deadline || "No deadline")
+                )
+            ) : h("div", { className: "empty" }, "No upcoming tenders."), h("button", { onClick: () => navigate("/dashboard/upcoming-deadlines") }, "Review Upcoming"))
+        )
+    );
+}
+
+function SellerDashboardPage() {
+    const [summary, setSummary] = useState(null);
+    const [readiness, setReadiness] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => {
+        Promise.all([
+            api("/api/dashboard/summary"),
+            api("/api/seller/readiness"),
+        ]).then(([s, r]) => {
+            setSummary(s);
+            setReadiness(r.summary || null);
+        }).catch(err => setMessage(err.message));
+    }, []);
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel seller-landing" },
+            h("div", null,
+                h("h2", null, "Seller Dashboard"),
+                h("p", null, "Manage seller readiness, bid workflow, document health, and tender follow-up.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/analytics") }, "Analytics"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/readiness") }, "Readiness"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/orders") }, "Orders"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/high-priority") }, "High Priority"),
+                h("button", { onClick: () => navigate("/dashboard/pipeline") }, "Pipeline")
+            )
+        ),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h("div", { className: "summary six seller-summary" },
+            [["Tenders", summary?.total || 0], ["High Priority", summary?.high_priority || 0], ["Applied", summary?.applied_count || 0], ["Upcoming", summary?.upcoming_count || 0], ["Readiness", readiness?.health_score ?? 0], ["Missing Docs", readiness?.missing_documents?.length || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "admin-grid seller-ops-grid" },
+            h("section", { className: "card" },
+                h("h3", null, "Seller Readiness"),
+                h("div", { className: `readiness-score compact ${readiness?.level || "incomplete"}` }, h("span", null, "Health Score"), h("strong", null, readiness?.health_score ?? 0)),
+                (readiness?.profile_gaps || []).length ? h("ul", { className: "log-list" }, readiness.profile_gaps.slice(0, 5).map(gap => h("li", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Seller profile checks are complete."),
+                h("button", { onClick: () => navigate("/dashboard/seller/readiness") }, "Open Readiness")
+            ),
+            h("section", { className: "card" },
+                h("h3", null, "Seller Workbench"),
+                h("div", { className: "seller-action-grid" },
+                    h("button", { onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
+                    h("button", { onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA Workflow"),
+                    h("button", { onClick: () => navigate("/dashboard/seller/orders") }, "Orders"),
+                    h("button", { onClick: () => navigate("/dashboard/pipeline") }, "Pipeline"),
+                    h("button", { onClick: () => navigate("/dashboard/high-priority") }, "High Priority"),
+                    h("button", { onClick: () => navigate("/dashboard/upcoming-deadlines") }, "Upcoming"),
+                    h("button", { onClick: () => navigate("/dashboard/company-profile") }, "Company Profile")
+                )
+            ),
+            h("section", { className: "card" },
+                h("h3", null, "Bid Follow-Up"),
+                h("div", { className: "seller-action-grid" },
+                    h("button", { onClick: () => navigate("/dashboard/applied") }, "Applied"),
+                    h("button", { onClick: () => navigate("/dashboard/tracking") }, "Tracking"),
+                    h("button", { onClick: () => navigate("/dashboard/tenders") }, "All Tenders"),
+                    h("button", { onClick: () => navigate("/dashboard/seller/readiness") }, "Documents")
+                )
+            )
+        )
+    );
+}
+
+function SellerAnalyticsPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => {
+        api("/api/seller/analytics").then(setData).catch(err => setMessage(err.message));
+    }, []);
+    if (!data && !message) return h("div", { className: "empty" }, "Loading seller analytics...");
+    const summary = data?.summary || {};
+    const charts = data?.charts || {};
+    const recLabel = value => value === "no_bid" ? "No bid" : value === "bid" ? "Bid" : "Review";
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel seller-analytics-hero" },
+            h("div", null,
+                h("h2", null, "Seller-Side Analytics Dashboard"),
+                h("p", null, "See seller readiness, catalogue quality, opportunity conversion, Bid/RA progress, and order fulfillment health in one view.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/opportunities") }, "Opportunity Match"),
+                h("button", { onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA"),
+                h("button", { onClick: () => navigate("/dashboard/seller/orders") }, "Orders")
+            )
+        ),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h("div", { className: "summary six seller-analytics-summary" },
+            [["Seller Health", summary.seller_health || 0], ["Catalogue Ready", `${summary.catalogue_ready || 0}/${summary.catalogue_total || 0}`], ["Opportunities", summary.opportunities || 0], ["Bid Recommended", summary.bid_recommended || 0], ["Bid Workflows", summary.bid_workflows || 0], ["Order Alerts", summary.order_alerts || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "chart-grid seller-analytics-charts" },
+            h(ChartCard, { title: "Catalogue Status", data: charts.catalogueStatus }),
+            h(ChartCard, { title: "Catalogue Readiness", data: charts.catalogueReadiness, type: "doughnut" }),
+            h(ChartCard, { title: "Opportunity Recommendations", data: charts.opportunityRecommendations, type: "doughnut" }),
+            h(ChartCard, { title: "Bid/RA Status", data: charts.bidStatus }),
+            h(ChartCard, { title: "Bid Readiness", data: charts.bidReadiness, type: "doughnut" }),
+            h(ChartCard, { title: "Order Status", data: charts.orderStatus }),
+            h(ChartCard, { title: "Payment Status", data: charts.orderPayments }),
+            h(ChartCard, { title: "Order Health", data: charts.orderHealth, type: "doughnut" })
+        ),
+        h("div", { className: "reports-layout seller-analytics-lower" },
+            h("section", { className: "card" },
+                h("h3", null, "Recommended Actions"),
+                h("div", { className: "recommendation-list" },
+                    (data?.recommendations || []).map(item => h("article", { className: "recommendation-card", key: item.title }, h("h4", null, item.title), h("p", null, item.text)))
+                ),
+                h("h3", null, "Module Health"),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Missing docs"), h("strong", null, data?.readiness?.missing_documents?.length || 0)),
+                    h("div", null, h("span", null, "Catalogue repair"), h("strong", null, data?.catalogue?.repair || 0)),
+                    h("div", null, h("span", null, "Bids due soon"), h("strong", null, data?.bids?.due_soon || 0)),
+                    h("div", null, h("span", null, "Order incidents"), h("strong", null, data?.orders?.incidents || 0))
+                )
+            ),
+            h("section", { className: "card" },
+                h("h3", null, "Top Seller Opportunities"),
+                (data?.top_opportunities || []).length ? h("div", { className: "opportunity-list" },
+                    data.top_opportunities.map(item => h("article", { className: `opportunity-card ${item.recommendation}`, key: item.tender.id },
+                        h("div", { className: "opportunity-head" },
+                            h("div", null, h("h4", null, item.tender.title || "Untitled tender"), h("p", null, item.tender.department || "Unknown Buyer")),
+                            h("strong", null, item.opportunity_score || 0)
+                        ),
+                        h("div", { className: "pipeline-meta" },
+                            h("span", null, recLabel(item.recommendation)),
+                            h("span", null, `Match ${item.match_score || 0}`),
+                            h("span", null, item.matched_catalogue?.name || "No catalogue match"),
+                            h("span", null, item.tender.deadline || "No deadline")
+                        )
+                    ))
+                ) : h("div", { className: "empty" }, "No matched opportunities yet."),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/opportunities") }, "Open Opportunity Match")
+            )
+        )
+    );
 }
 
 function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply, onReset, resultCount }) {
@@ -940,7 +1181,7 @@ function BuyerIntelligencePage() {
                 ),
                 h("div", { className: "recent-list" },
                     h("h4", null, "Recent tenders"),
-                    (buyer.recent_tenders || []).map(item => h("button", { key: item.id, type: "button", onClick: () => navigate("/dashboard") },
+                    (buyer.recent_tenders || []).map(item => h("button", { key: item.id, type: "button", onClick: () => navigate("/dashboard/tenders") },
                         h("span", null, item.title || "Untitled tender"),
                         h("small", null, `${item.deadline || "No deadline"} | Rs. ${money(item.value)} | ${item.status}`)
                     ))
@@ -1188,6 +1429,533 @@ function ExecutiveReportsPage() {
                     ))
                 ) : h("div", { className: "empty" }, data ? "No opportunities in this report window." : "Loading executive report...")
             )
+        )
+    );
+}
+
+function SellerReadinessPage() {
+    const blank = {
+        business_name: "", gem_seller_id: "", pan: "", aadhaar_linked: false, gstin: "", udyam_number: "",
+        startup_india_number: "", odop_state: "", odop_product: "", bank_verified: false, address_verified: false,
+        secondary_user_created: false, vendor_assessment_status: "not_started", caution_money_status: "pending",
+        tds_certificate_status: "missing", notes: "",
+    };
+    const [profile, setProfile] = useState(blank);
+    const [documents, setDocuments] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [options, setOptions] = useState({ document: [], vendor_assessment: [], caution_money: [], tds_certificate: [] });
+    const [message, setMessage] = useState("");
+    async function load() {
+        const data = await api("/api/seller/readiness");
+        setProfile({ ...blank, ...(data.profile || {}) });
+        setDocuments(data.documents || []);
+        setSummary(data.summary || null);
+        setOptions(data.status_options || options);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function saveProfile(e) {
+        e.preventDefault();
+        setMessage("Saving readiness profile...");
+        const result = await api("/api/seller/readiness", { method: "POST", body: JSON.stringify(profile) });
+        setProfile({ ...blank, ...(result.profile || {}) });
+        setSummary(result.summary || summary);
+        setMessage("Seller readiness profile saved.");
+    }
+    async function saveDocument(doc, patch) {
+        const next = { ...doc, ...patch };
+        setDocuments(documents.map(item => item.doc_key === doc.doc_key ? next : item));
+        const result = await api(`/api/seller/readiness/documents/${doc.doc_key}`, {
+            method: "POST",
+            body: JSON.stringify({ status: next.status, expiry_date: next.expiry_date, notes: next.notes }),
+        });
+        setDocuments(documents.map(item => item.doc_key === doc.doc_key ? result.document : item));
+        setSummary(result.summary || summary);
+    }
+    const field = (key, label, placeholder = "") => h("label", { className: "field-block" }, h("span", null, label), h("input", { value: profile[key] || "", placeholder, onChange: e => setProfile({ ...profile, [key]: e.target.value }) }));
+    const select = (key, label, values) => h("label", { className: "field-block" }, h("span", null, label), h("select", { value: profile[key] || "", onChange: e => setProfile({ ...profile, [key]: e.target.value }) }, (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")))));
+    const toggle = (key, label) => h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profile[key], onChange: e => setProfile({ ...profile, [key]: e.target.checked }) }), label);
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel readiness-hero" },
+            h("div", null,
+                h("h2", null, "Seller Profile & Document Readiness"),
+                h("p", null, "Track GeM seller profile completion, compliance status, document readiness, vendor assessment, TDS, and caution money items.")
+            ),
+            h("div", { className: `readiness-score ${summary?.level || "incomplete"}` },
+                h("span", null, "Health Score"),
+                h("strong", null, summary?.health_score ?? 0)
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary readiness-summary" },
+            [["Checks", `${summary?.completed_checks || 0}/${summary?.total_checks || 0}`], ["Documents", `${summary?.ready_documents || 0}/${summary?.total_documents || 0}`], ["Missing", summary?.missing_documents?.length || 0], ["Expired", summary?.expired_documents?.length || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "admin-grid readiness-grid" },
+            h("section", { className: "card profile-card" },
+                h("h3", null, "Seller Profile"),
+                h("form", { className: "stack", onSubmit: saveProfile },
+                    field("business_name", "Business name", "Registered seller business name"),
+                    field("gem_seller_id", "GeM seller ID", "GeM seller registration ID"),
+                    field("pan", "PAN", "ABCDE1234F"),
+                    field("gstin", "GSTIN", "GST number or leave blank if exempt"),
+                    field("udyam_number", "Udyam / MSME number"),
+                    field("startup_india_number", "Startup India certificate number"),
+                    h("div", { className: "value-row" }, field("odop_state", "ODOP state"), field("odop_product", "ODOP product")),
+                    toggle("aadhaar_linked", " Aadhaar linked with registered mobile"),
+                    toggle("bank_verified", " Bank account verified"),
+                    toggle("address_verified", " Business address verified"),
+                    toggle("secondary_user_created", " Secondary user created"),
+                    select("vendor_assessment_status", "Vendor assessment", options.vendor_assessment),
+                    select("caution_money_status", "Caution money", options.caution_money),
+                    select("tds_certificate_status", "TDS certificate", options.tds_certificate),
+                    h("label", { className: "field-block" }, h("span", null, "Notes"), h("textarea", { value: profile.notes || "", onChange: e => setProfile({ ...profile, notes: e.target.value }), placeholder: "Add internal readiness notes" })),
+                    h("button", { className: "primary" }, "Save Readiness Profile")
+                )
+            ),
+            h("section", { className: "card readiness-gaps" },
+                h("h3", null, "Readiness Gaps"),
+                (summary?.profile_gaps || []).length ? h("ul", { className: "log-list" }, summary.profile_gaps.map(gap => h("li", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Profile readiness checks are complete."),
+                h("h3", null, "Missing Documents"),
+                (summary?.missing_documents || []).length ? h("ul", { className: "log-list" }, summary.missing_documents.map(doc => h("li", { key: doc.doc_key }, doc.label))) : h("div", { className: "notice ok" }, "No missing documents.")
+            )
+        ),
+        h("section", { className: "card readiness-documents" },
+            h("h3", null, "Document Tracker"),
+            h("div", { className: "document-grid" }, documents.map(doc => h("article", { className: `document-card ${doc.status}`, key: doc.doc_key },
+                h("div", { className: "document-card-head" }, h("strong", null, doc.label), h("span", null, (doc.status || "missing").replaceAll("_", " "))),
+                h("select", { value: doc.status || "missing", onChange: e => saveDocument(doc, { status: e.target.value }) },
+                    (options.document || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")))
+                ),
+                h("input", { type: "date", value: doc.expiry_date || "", onChange: e => saveDocument(doc, { expiry_date: e.target.value }) }),
+                h("textarea", { value: doc.notes || "", placeholder: "Notes", onBlur: e => saveDocument(doc, { notes: e.target.value }), onChange: e => setDocuments(documents.map(item => item.doc_key === doc.doc_key ? { ...item, notes: e.target.value } : item)) })
+            )))
+        )
+    );
+}
+
+function SellerCataloguePage() {
+    const blank = {
+        item_type: "product", name: "", category: "", gem_category: "", brand: "", model: "", sku: "",
+        oem_status: "not_required", reseller_status: "not_required", brand_approval_status: "not_started",
+        image_status: "missing", mrp_document_status: "missing", specs_status: "missing", catalogue_status: "draft",
+        stock_status: "unknown", stock_qty: 0, offering_expiry: "", repair_status: "none", clone_pair_source: "", notes: "",
+    };
+    const [items, setItems] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [options, setOptions] = useState({ item_type: [], catalogue: [], document: [], stock: [], repair: [] });
+    const [form, setForm] = useState(blank);
+    const [message, setMessage] = useState("");
+    async function load() {
+        const data = await api("/api/seller/catalogue");
+        setItems(data.items || []);
+        setSummary(data.summary || null);
+        setOptions(data.status_options || options);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function createItem(e) {
+        e.preventDefault();
+        setMessage("Saving catalogue item...");
+        const result = await api("/api/seller/catalogue", { method: "POST", body: JSON.stringify(form) });
+        setItems([result.item, ...items]);
+        setSummary(result.summary || summary);
+        setForm(blank);
+        setMessage("Catalogue item added.");
+    }
+    async function updateItem(item, patch) {
+        const next = { ...item, ...patch };
+        setItems(items.map(row => row.id === item.id ? next : row));
+        const result = await api(`/api/seller/catalogue/${item.id}`, { method: "POST", body: JSON.stringify(next) });
+        setItems(items.map(row => row.id === item.id ? result.item : row));
+        setSummary(result.summary || summary);
+    }
+    async function deleteItem(item) {
+        const result = await api(`/api/seller/catalogue/${item.id}`, { method: "DELETE" });
+        setItems(items.filter(row => row.id !== item.id));
+        setSummary(result.summary || summary);
+    }
+    const selectOptions = (values) => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    const field = (key, label, placeholder = "") => h("label", { className: "field-block" }, h("span", null, label), h("input", { value: form[key] || "", placeholder, onChange: e => setForm({ ...form, [key]: e.target.value }) }));
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel catalogue-hero" },
+            h("div", null,
+                h("h2", null, "Catalogue Management Tracker"),
+                h("p", null, "Track product and service catalogue readiness, brand/OEM approvals, images, MRP documents, stock, expiry, and repair workflows.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/readiness") }, "Readiness"),
+                h("button", { onClick: () => navigate("/dashboard/high-priority") }, "Matching Tenders")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary six catalogue-summary" },
+            [["Total", summary?.total || 0], ["Active", summary?.active || 0], ["Ready", summary?.ready || 0], ["Draft", summary?.draft || 0], ["Repair", summary?.repair || 0], ["Stock Alerts", summary?.stock_alerts || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card catalogue-form-card" },
+            h("h3", null, "Add Catalogue Item"),
+            h("form", { className: "catalogue-form", onSubmit: createItem },
+                h("label", { className: "field-block" }, h("span", null, "Type"), h("select", { value: form.item_type, onChange: e => setForm({ ...form, item_type: e.target.value }) }, selectOptions(options.item_type || ["product","service"]))),
+                field("name", "Name", "Product or service name"),
+                field("gem_category", "GeM category", "Category used on GeM"),
+                field("brand", "Brand"),
+                field("model", "Model"),
+                field("sku", "SKU"),
+                h("button", { className: "primary" }, "Add Item")
+            )
+        ),
+        h("section", { className: "catalogue-list" },
+            items.length ? items.map(item => h("article", { className: `catalogue-card ${item.readiness?.level || "incomplete"}`, key: item.id },
+                h("div", { className: "catalogue-card-head" },
+                    h("div", null,
+                        h("h3", null, item.name),
+                        h("p", null, [item.item_type, item.gem_category || item.category, item.brand, item.model].filter(Boolean).join(" | "))
+                    ),
+                    h("div", { className: `readiness-score compact ${item.readiness?.level || "incomplete"}` }, h("span", null, "Ready"), h("strong", null, item.readiness?.score || 0))
+                ),
+                h("div", { className: "catalogue-fields" },
+                    h("label", { className: "field-block" }, h("span", null, "Catalogue status"), h("select", { value: item.catalogue_status, onChange: e => updateItem(item, { catalogue_status: e.target.value }) }, selectOptions(options.catalogue))),
+                    h("label", { className: "field-block" }, h("span", null, "Brand approval"), h("select", { value: item.brand_approval_status, onChange: e => updateItem(item, { brand_approval_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "OEM"), h("select", { value: item.oem_status, onChange: e => updateItem(item, { oem_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "Reseller"), h("select", { value: item.reseller_status, onChange: e => updateItem(item, { reseller_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "Images"), h("select", { value: item.image_status, onChange: e => updateItem(item, { image_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "MRP docs"), h("select", { value: item.mrp_document_status, onChange: e => updateItem(item, { mrp_document_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "Specs"), h("select", { value: item.specs_status, onChange: e => updateItem(item, { specs_status: e.target.value }) }, selectOptions(options.document))),
+                    h("label", { className: "field-block" }, h("span", null, "Stock"), h("select", { value: item.stock_status, onChange: e => updateItem(item, { stock_status: e.target.value }) }, selectOptions(options.stock))),
+                    h("label", { className: "field-block" }, h("span", null, "Qty"), h("input", { type: "number", min: 0, value: item.stock_qty || 0, onChange: e => updateItem(item, { stock_qty: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Expiry"), h("input", { type: "date", value: item.offering_expiry || "", onChange: e => updateItem(item, { offering_expiry: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Repair"), h("select", { value: item.repair_status, onChange: e => updateItem(item, { repair_status: e.target.value }) }, selectOptions(options.repair))),
+                    h("label", { className: "field-block" }, h("span", null, "Clone / pair source"), h("input", { value: item.clone_pair_source || "", onBlur: e => updateItem(item, { clone_pair_source: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, clone_pair_source: e.target.value } : row)) }))
+                ),
+                (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Catalogue item is ready."),
+                h("textarea", { value: item.notes || "", placeholder: "Notes for rejected/notified repair workflow, brand approval, reseller panel, or catalogue pairing", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
+                h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
+            )) : h("div", { className: "empty" }, "No catalogue items yet.")
+        )
+    );
+}
+
+function SellerBidsPage() {
+    const blank = { tender_id: "", catalogue_item_id: "", workflow_type: "product_bid", participation_status: "planning", bid_mode: "standard", due_date: "", next_action: "" };
+    const [items, setItems] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [tenders, setTenders] = useState([]);
+    const [catalogue, setCatalogue] = useState([]);
+    const [options, setOptions] = useState({ workflow: [], participation: [], step: [], simple: [], ra: [], l1: [] });
+    const [form, setForm] = useState(blank);
+    const [message, setMessage] = useState("");
+    async function load() {
+        const data = await api("/api/seller/bids");
+        setItems(data.items || []);
+        setSummary(data.summary || null);
+        setTenders(data.tenders || []);
+        setCatalogue(data.catalogue || []);
+        setOptions(data.status_options || options);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function createItem(e) {
+        e.preventDefault();
+        setMessage("Creating bid workflow...");
+        const result = await api("/api/seller/bids", { method: "POST", body: JSON.stringify(form) });
+        setItems([result.item, ...items]);
+        setSummary(result.summary || summary);
+        setForm(blank);
+        setMessage("Bid/RA workflow created.");
+    }
+    async function updateItem(item, patch) {
+        const next = { ...item, ...patch };
+        setItems(items.map(row => row.id === item.id ? next : row));
+        const result = await api(`/api/seller/bids/${item.id}`, { method: "POST", body: JSON.stringify(next) });
+        setItems(items.map(row => row.id === item.id ? result.item : row));
+        setSummary(result.summary || summary);
+    }
+    async function deleteItem(item) {
+        const result = await api(`/api/seller/bids/${item.id}`, { method: "DELETE" });
+        setItems(items.filter(row => row.id !== item.id));
+        setSummary(result.summary || summary);
+    }
+    const opts = values => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    const tenderOptions = h("select", { value: form.tender_id, onChange: e => setForm({ ...form, tender_id: e.target.value }) },
+        h("option", { value: "" }, "No tender selected"),
+        tenders.map(t => h("option", { key: t.id, value: t.id }, `${t.title} | ${t.deadline || "No deadline"}`))
+    );
+    const catalogueOptions = value => h("select", { value: value || "", onChange: e => setForm({ ...form, catalogue_item_id: e.target.value }) },
+        h("option", { value: "" }, "No catalogue item"),
+        catalogue.map(item => h("option", { key: item.id, value: item.id }, `${item.name} (${item.item_type})`))
+    );
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel bids-hero" },
+            h("div", null,
+                h("h2", null, "Bid/RA Participation Workflow"),
+                h("p", null, "Track product bids, service bids, RA, BOQ, EMD/PBG, clarifications, rate contracts, push-button procurement, and global tender readiness.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
+                h("button", { onClick: () => navigate("/dashboard/high-priority") }, "Tender Matches")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary six bids-summary" },
+            [["Total", summary?.total || 0], ["Planning", summary?.planning || 0], ["Ready", summary?.ready || 0], ["Submitted", summary?.submitted || 0], ["Due Soon", summary?.due_soon || 0], ["Overdue", summary?.overdue || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card bids-form-card" },
+            h("h3", null, "Create Workflow"),
+            h("form", { className: "catalogue-form", onSubmit: createItem },
+                h("label", { className: "field-block" }, h("span", null, "Tender"), tenderOptions),
+                h("label", { className: "field-block" }, h("span", null, "Catalogue"), catalogueOptions(form.catalogue_item_id)),
+                h("label", { className: "field-block" }, h("span", null, "Workflow"), h("select", { value: form.workflow_type, onChange: e => setForm({ ...form, workflow_type: e.target.value }) }, opts(options.workflow || ["product_bid","service_bid"]))),
+                h("label", { className: "field-block" }, h("span", null, "Due date"), h("input", { type: "date", value: form.due_date, onChange: e => setForm({ ...form, due_date: e.target.value }) })),
+                h("label", { className: "field-block" }, h("span", null, "Next action"), h("input", { value: form.next_action, onChange: e => setForm({ ...form, next_action: e.target.value }), placeholder: "Prepare BOQ, submit EMD..." })),
+                h("button", { className: "primary" }, "Create")
+            )
+        ),
+        h("section", { className: "bids-list" },
+            items.length ? items.map(item => h("article", { className: `catalogue-card bid-card ${item.readiness?.level || "incomplete"}`, key: item.id },
+                h("div", { className: "catalogue-card-head" },
+                    h("div", null,
+                        h("h3", null, item.tender?.title || "Untitled workflow"),
+                        h("p", null, [item.workflow_type?.replaceAll("_", " "), item.catalogue_item_name, item.tender?.deadline ? `Due ${item.tender.deadline}` : ""].filter(Boolean).join(" | "))
+                    ),
+                    h("div", { className: `readiness-score compact ${item.readiness?.level || "incomplete"}` }, h("span", null, "Ready"), h("strong", null, item.readiness?.score || 0))
+                ),
+                h("div", { className: "catalogue-fields" },
+                    h("label", { className: "field-block" }, h("span", null, "Status"), h("select", { value: item.participation_status, onChange: e => updateItem(item, { participation_status: e.target.value }) }, opts(options.participation))),
+                    h("label", { className: "field-block" }, h("span", null, "Workflow"), h("select", { value: item.workflow_type, onChange: e => updateItem(item, { workflow_type: e.target.value }) }, opts(options.workflow))),
+                    h("label", { className: "field-block" }, h("span", null, "Eligibility"), h("select", { value: item.eligibility_status, onChange: e => updateItem(item, { eligibility_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Documents"), h("select", { value: item.document_status, onChange: e => updateItem(item, { document_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Price"), h("select", { value: item.price_status, onChange: e => updateItem(item, { price_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "BOQ"), h("select", { value: item.boq_status, onChange: e => updateItem(item, { boq_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!item.emd_required, onChange: e => updateItem(item, { emd_required: e.target.checked }) }), " EMD required"),
+                    h("label", { className: "field-block" }, h("span", null, "EMD status"), h("select", { value: item.emd_status, onChange: e => updateItem(item, { emd_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "EMD amount"), h("input", { type: "number", min: 0, value: item.emd_amount || "", onChange: e => updateItem(item, { emd_amount: e.target.value }) })),
+                    h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!item.pbg_required, onChange: e => updateItem(item, { pbg_required: e.target.checked }) }), " PBG required"),
+                    h("label", { className: "field-block" }, h("span", null, "PBG status"), h("select", { value: item.pbg_status, onChange: e => updateItem(item, { pbg_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "RA"), h("select", { value: item.ra_status, onChange: e => updateItem(item, { ra_status: e.target.value }) }, opts(options.ra))),
+                    h("label", { className: "field-block" }, h("span", null, "Clarification"), h("select", { value: item.clarification_status, onChange: e => updateItem(item, { clarification_status: e.target.value }) }, opts(options.simple))),
+                    h("label", { className: "field-block" }, h("span", null, "Representation"), h("select", { value: item.representation_status, onChange: e => updateItem(item, { representation_status: e.target.value }) }, opts(options.simple))),
+                    h("label", { className: "field-block" }, h("span", null, "Custom catalogue"), h("select", { value: item.custom_catalogue_status, onChange: e => updateItem(item, { custom_catalogue_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Rate contract"), h("select", { value: item.rate_contract_status, onChange: e => updateItem(item, { rate_contract_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Global tender"), h("select", { value: item.global_tender_status, onChange: e => updateItem(item, { global_tender_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Push button"), h("select", { value: item.push_button_status, onChange: e => updateItem(item, { push_button_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "L1 negotiation"), h("select", { value: item.l1_negotiation_status, onChange: e => updateItem(item, { l1_negotiation_status: e.target.value }) }, opts(options.l1))),
+                    h("label", { className: "field-block" }, h("span", null, "Due date"), h("input", { type: "date", value: item.due_date || "", onChange: e => updateItem(item, { due_date: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Next action"), h("input", { value: item.next_action || "", onBlur: e => updateItem(item, { next_action: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, next_action: e.target.value } : row)) }))
+                ),
+                (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Bid workflow is ready."),
+                h("textarea", { value: item.notes || "", placeholder: "Notes for bid/RA participation, BOQ, EMD/PBG, clarification, representation, L1 negotiation, or global tender requirements", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
+                h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
+            )) : h("div", { className: "empty" }, "No bid/RA workflows yet.")
+        )
+    );
+}
+
+function SellerOpportunitiesPage() {
+    const [items, setItems] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [readiness, setReadiness] = useState(null);
+    const [catalogueSummary, setCatalogueSummary] = useState(null);
+    const [message, setMessage] = useState("");
+    const [creatingId, setCreatingId] = useState(null);
+    async function load() {
+        const data = await api("/api/seller/opportunities");
+        setItems(data.items || []);
+        setSummary(data.summary || null);
+        setReadiness(data.seller_readiness || null);
+        setCatalogueSummary(data.catalogue_summary || null);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function createBid(item) {
+        setCreatingId(item.tender.id);
+        setMessage("Creating bid workflow...");
+        try {
+            const result = await api(`/api/seller/opportunities/${item.tender.id}/create-bid`, {
+                method: "POST",
+                body: JSON.stringify({ catalogue_item_id: item.matched_catalogue?.id || "" }),
+            });
+            setMessage(result.created ? "Bid/RA workflow created." : "Bid/RA workflow already exists.");
+            await load();
+        } catch (err) {
+            setMessage(err.message || "Could not create bid workflow.");
+        } finally {
+            setCreatingId(null);
+        }
+    }
+    const recLabel = value => value === "no_bid" ? "No bid" : value === "bid" ? "Bid" : "Review";
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel opportunity-hero" },
+            h("div", null,
+                h("h2", null, "Seller Opportunity Matching"),
+                h("p", null, "Match saved tenders with seller catalogue readiness, seller documents, deadline pressure, and existing bid decisions.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
+                h("button", { onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary six opportunity-summary" },
+            [["Total", summary?.total || 0], ["Bid", summary?.bid || 0], ["Review", summary?.review || 0], ["No Bid", summary?.no_bid || 0], ["High Match", summary?.high_match || 0], ["In Workflow", summary?.already_in_workflow || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "admin-grid opportunity-grid" },
+            h("section", { className: "card" },
+                h("h3", null, "Readiness Inputs"),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Seller health"), h("strong", null, readiness?.health_score ?? 0)),
+                    h("div", null, h("span", null, "Catalogue ready"), h("strong", null, catalogueSummary?.ready ?? 0)),
+                    h("div", null, h("span", null, "Catalogue total"), h("strong", null, catalogueSummary?.total ?? 0)),
+                    h("div", null, h("span", null, "Missing docs"), h("strong", null, readiness?.missing_documents?.length ?? 0))
+                ),
+                h("div", { className: "notice" }, "Improve catalogue readiness and seller documents to lift opportunity scores.")
+            ),
+            h("section", { className: "card" },
+                h("h3", null, "Next Actions"),
+                h("ul", { className: "rule-list" },
+                    h("li", null, h("strong", null, "No match"), h("span", null, "Add catalogue")),
+                    h("li", null, h("strong", null, "Low readiness"), h("span", null, "Fix gaps")),
+                    h("li", null, h("strong", null, "Bid match"), h("span", null, "Create workflow"))
+                )
+            )
+        ),
+        h("section", { className: "opportunity-list seller-opportunity-list" },
+            items.length ? items.map(item => h("article", { className: `opportunity-card seller-opportunity-card ${item.recommendation}`, key: item.tender.id },
+                h("div", { className: "opportunity-head" },
+                    h("div", null,
+                        h("h4", null, item.tender.title || "Untitled tender"),
+                        h("p", null, [item.tender.department || "Unknown buyer", item.tender.state, item.tender.deadline ? `Deadline ${item.tender.deadline}` : "No deadline"].filter(Boolean).join(" | "))
+                    ),
+                    h("div", { className: `readiness-score compact ${scoreClass(item.opportunity_score)}` }, h("span", null, recLabel(item.recommendation)), h("strong", null, item.opportunity_score || 0))
+                ),
+                h("div", { className: "pipeline-meta" },
+                    h("span", null, `Tender ${Math.round(item.tender.relevance_score || 0)}`),
+                    h("span", null, `Match ${item.match_score || 0}`),
+                    h("span", null, `Catalogue ${item.catalogue_readiness_score || 0}`),
+                    h("span", null, `Seller ${item.seller_readiness_score || 0}`),
+                    h("span", null, `Rs. ${money(item.tender.estimated_value || 0)}`)
+                ),
+                item.matched_catalogue ? h("div", { className: "notice ok" }, `Matched catalogue: ${item.matched_catalogue.name}`) : h("div", { className: "notice" }, "No strong catalogue match yet."),
+                (item.reasons || []).length ? h("div", { className: "tag-list opportunity-tags" }, item.reasons.map(reason => h("span", { key: reason }, reason))) : null,
+                (item.blockers || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.blockers.map(blocker => h("span", { key: blocker }, blocker))) : null,
+                h("div", { className: "hero-actions opportunity-actions" },
+                    h("button", { className: "primary", disabled: !!item.bid_workflow || creatingId === item.tender.id, onClick: () => createBid(item) }, item.bid_workflow ? "Workflow Exists" : creatingId === item.tender.id ? "Creating..." : "Create Bid Workflow"),
+                    h("button", { onClick: () => navigate("/dashboard/tenders") }, "Open Tenders")
+                )
+            )) : h("div", { className: "empty" }, "No tenders available for opportunity matching yet.")
+        )
+    );
+}
+
+function SellerOrdersPage() {
+    const blank = { tender_id: "", bid_participation_id: "", order_number: "", order_type: "product", buyer_name: "", order_value: "", delivery_due_date: "", payment_due_date: "", next_action: "" };
+    const [items, setItems] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [bids, setBids] = useState([]);
+    const [tenders, setTenders] = useState([]);
+    const [options, setOptions] = useState({ order_type: [], order: [], step: [], payment: [], incident: [], treds: [], l1: [] });
+    const [form, setForm] = useState(blank);
+    const [message, setMessage] = useState("");
+    async function load() {
+        const data = await api("/api/seller/orders");
+        setItems(data.items || []);
+        setSummary(data.summary || null);
+        setBids(data.bids || []);
+        setTenders(data.tenders || []);
+        setOptions(data.status_options || options);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function createItem(e) {
+        e.preventDefault();
+        setMessage("Creating order tracker...");
+        const result = await api("/api/seller/orders", { method: "POST", body: JSON.stringify(form) });
+        setItems([result.item, ...items]);
+        setSummary(result.summary || summary);
+        setForm(blank);
+        setMessage("Order fulfillment tracker created.");
+    }
+    async function updateItem(item, patch) {
+        const next = { ...item, ...patch };
+        setItems(items.map(row => row.id === item.id ? next : row));
+        const result = await api(`/api/seller/orders/${item.id}`, { method: "POST", body: JSON.stringify(next) });
+        setItems(items.map(row => row.id === item.id ? result.item : row));
+        setSummary(result.summary || summary);
+    }
+    async function deleteItem(item) {
+        const result = await api(`/api/seller/orders/${item.id}`, { method: "DELETE" });
+        setItems(items.filter(row => row.id !== item.id));
+        setSummary(result.summary || summary);
+    }
+    const opts = values => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel orders-hero" },
+            h("div", null,
+                h("h2", null, "Order Fulfillment Tracker"),
+                h("p", null, "Track delivery, invoice generation, supplementary invoices, service billing, DP extension, incidents, TReDS, L1 negotiation, and payments.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA"),
+                h("button", { onClick: () => navigate("/dashboard/tracking") }, "Tracking")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary six orders-summary" },
+            [["Total", summary?.total || 0], ["Fulfillment", summary?.in_fulfillment || 0], ["Delivered", summary?.delivered || 0], ["Completed", summary?.completed || 0], ["Delivery Due", summary?.due_delivery || 0], ["Incidents", summary?.incidents || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card orders-form-card" },
+            h("h3", null, "Create Order Tracker"),
+            h("form", { className: "catalogue-form", onSubmit: createItem },
+                h("label", { className: "field-block" }, h("span", null, "Bid workflow"), h("select", { value: form.bid_participation_id, onChange: e => setForm({ ...form, bid_participation_id: e.target.value }) },
+                    h("option", { value: "" }, "No bid workflow"),
+                    bids.map(item => h("option", { key: item.id, value: item.id }, `${item.label || "Bid workflow"} | ${item.status}`))
+                )),
+                h("label", { className: "field-block" }, h("span", null, "Tender"), h("select", { value: form.tender_id, onChange: e => setForm({ ...form, tender_id: e.target.value }) },
+                    h("option", { value: "" }, "No tender selected"),
+                    tenders.map(t => h("option", { key: t.id, value: t.id }, t.title))
+                )),
+                h("label", { className: "field-block" }, h("span", null, "Order no."), h("input", { value: form.order_number, onChange: e => setForm({ ...form, order_number: e.target.value }), placeholder: "GeM order number" })),
+                h("label", { className: "field-block" }, h("span", null, "Type"), h("select", { value: form.order_type, onChange: e => setForm({ ...form, order_type: e.target.value }) }, opts(options.order_type || ["product","service"]))),
+                h("label", { className: "field-block" }, h("span", null, "Buyer"), h("input", { value: form.buyer_name, onChange: e => setForm({ ...form, buyer_name: e.target.value }), placeholder: "Buyer/department" })),
+                h("label", { className: "field-block" }, h("span", null, "Value"), h("input", { type: "number", min: 0, value: form.order_value, onChange: e => setForm({ ...form, order_value: e.target.value }) })),
+                h("label", { className: "field-block" }, h("span", null, "Delivery due"), h("input", { type: "date", value: form.delivery_due_date, onChange: e => setForm({ ...form, delivery_due_date: e.target.value }) })),
+                h("label", { className: "field-block" }, h("span", null, "Payment due"), h("input", { type: "date", value: form.payment_due_date, onChange: e => setForm({ ...form, payment_due_date: e.target.value }) })),
+                h("button", { className: "primary" }, "Create")
+            )
+        ),
+        h("section", { className: "orders-list" },
+            items.length ? items.map(item => h("article", { className: `catalogue-card order-card ${item.readiness?.level || "blocked"}`, key: item.id },
+                h("div", { className: "catalogue-card-head" },
+                    h("div", null,
+                        h("h3", null, item.order_number || item.tender?.title || "Order tracker"),
+                        h("p", null, [item.order_type, item.buyer_name || item.tender?.department, item.order_value ? `Rs. ${money(item.order_value)}` : ""].filter(Boolean).join(" | "))
+                    ),
+                    h("div", { className: `readiness-score compact ${item.readiness?.level || "blocked"}` }, h("span", null, "Health"), h("strong", null, item.readiness?.score || 0))
+                ),
+                h("div", { className: "catalogue-fields" },
+                    h("label", { className: "field-block" }, h("span", null, "Order status"), h("select", { value: item.order_status, onChange: e => updateItem(item, { order_status: e.target.value }) }, opts(options.order))),
+                    h("label", { className: "field-block" }, h("span", null, "Delivery"), h("select", { value: item.delivery_status, onChange: e => updateItem(item, { delivery_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Invoice"), h("select", { value: item.invoice_status, onChange: e => updateItem(item, { invoice_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Invoice no."), h("input", { value: item.invoice_number || "", onBlur: e => updateItem(item, { invoice_number: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, invoice_number: e.target.value } : row)) })),
+                    h("label", { className: "field-block" }, h("span", null, "Invoice amount"), h("input", { type: "number", min: 0, value: item.invoice_amount || "", onChange: e => updateItem(item, { invoice_amount: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Supplementary invoice"), h("select", { value: item.supplementary_invoice_status, onChange: e => updateItem(item, { supplementary_invoice_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Service billing"), h("select", { value: item.service_billing_status, onChange: e => updateItem(item, { service_billing_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "DP extension"), h("select", { value: item.dp_extension_status, onChange: e => updateItem(item, { dp_extension_status: e.target.value }) }, opts(options.step))),
+                    h("label", { className: "field-block" }, h("span", null, "Payment"), h("select", { value: item.payment_status, onChange: e => updateItem(item, { payment_status: e.target.value }) }, opts(options.payment))),
+                    h("label", { className: "field-block" }, h("span", null, "L1 negotiation"), h("select", { value: item.l1_negotiation_status, onChange: e => updateItem(item, { l1_negotiation_status: e.target.value }) }, opts(options.l1))),
+                    h("label", { className: "field-block" }, h("span", null, "Incident"), h("select", { value: item.incident_status, onChange: e => updateItem(item, { incident_status: e.target.value }) }, opts(options.incident))),
+                    h("label", { className: "field-block" }, h("span", null, "TReDS"), h("select", { value: item.treds_status, onChange: e => updateItem(item, { treds_status: e.target.value }) }, opts(options.treds))),
+                    h("label", { className: "field-block" }, h("span", null, "Delivery due"), h("input", { type: "date", value: item.delivery_due_date || "", onChange: e => updateItem(item, { delivery_due_date: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Payment due"), h("input", { type: "date", value: item.payment_due_date || "", onChange: e => updateItem(item, { payment_due_date: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Next action"), h("input", { value: item.next_action || "", onBlur: e => updateItem(item, { next_action: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, next_action: e.target.value } : row)) }))
+                ),
+                (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Order fulfillment is on track."),
+                h("textarea", { value: item.notes || "", placeholder: "Notes for invoice generation, supplementary invoice, service billing, DP extension, incident, TReDS, or payment follow-up", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
+                h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
+            )) : h("div", { className: "empty" }, "No order trackers yet.")
         )
     );
 }
@@ -1496,9 +2264,22 @@ function App() {
     if (path === "/login") return h(AuthPage, { mode: "login" });
     if (path === "/signup") return h(AuthPage, { mode: "signup" });
     if (loading) return h("div", { className: "empty" }, "Loading...");
-    const route = path === "/" ? "/dashboard" : path;
+    const sellerOnlyRoutes = ["/dashboard/seller"];
+    const buyerOnlyRoutes = ["/dashboard/buyer", "/dashboard/buyers", "/dashboard/market", "/dashboard/reports", "/dashboard/analysis", "/dashboard/competitors", "/dashboard/admin"];
+    let route = path === "/dashboard" ? roleDashboard(me) : path;
+    if (me?.role === "seller" && buyerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/seller";
+    if (me?.role !== "seller" && sellerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
-    if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
+    if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
+    else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
+    else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
+    else if (route === "/dashboard/seller/readiness") page = h(SellerReadinessPage);
+    else if (route === "/dashboard/seller/catalogue") page = h(SellerCataloguePage);
+    else if (route === "/dashboard/seller/opportunities") page = h(SellerOpportunitiesPage);
+    else if (route === "/dashboard/seller/bids") page = h(SellerBidsPage);
+    else if (route === "/dashboard/seller/orders") page = h(SellerOrdersPage);
+    else if (route === "/dashboard/tenders") page = h(DashboardPage, { view: "all" });
+    else if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
     else if (route === "/dashboard/upcoming-deadlines") page = h(DashboardPage, { view: "upcoming" });
     else if (route === "/dashboard/applied") page = h(DashboardPage, { view: "applied" });
     else if (route === "/dashboard/pipeline") page = h(PipelinePage);

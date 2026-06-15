@@ -19,7 +19,7 @@ from pypdf import PdfReader
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.database.db_connection import Base,engine,get_db
-from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision
+from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment
 from app.auth import hash_password,verify_password,create_access_token,get_current_user
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
@@ -45,7 +45,10 @@ INDIAN_STATES=[
 ]
 
 def react_shell():
-    return FileResponse(STATIC_DIR/'react'/'index.html')
+    return FileResponse(
+        STATIC_DIR/'react'/'index.html',
+        headers={'Cache-Control':'no-store'},
+    )
 
 def ensure_schema_updates():
     Base.metadata.create_all(bind=engine)
@@ -63,7 +66,7 @@ def ensure_schema_updates():
             "ALTER TABLE tender_tracking ADD COLUMN IF NOT EXISTS source_status VARCHAR(100)",
             "ALTER TABLE tender_tracking ADD COLUMN IF NOT EXISTS last_checked_at TIMESTAMP WITH TIME ZONE",
             "ALTER TABLE tender_tracking ADD COLUMN IF NOT EXISTS source_available BOOLEAN DEFAULT FALSE",
-            "UPDATE users SET role='user' WHERE role IS DISTINCT FROM 'user'",
+            "UPDATE users SET role='buyer' WHERE role IS NULL OR role='' OR role='user'",
             "UPDATE tenders SET user_id=(SELECT id FROM users ORDER BY id LIMIT 1) WHERE user_id IS NULL AND EXISTS (SELECT 1 FROM users)",
             "UPDATE scraping_logs SET user_id=(SELECT id FROM users ORDER BY id LIMIT 1) WHERE user_id IS NULL AND EXISTS (SELECT 1 FROM users)",
             "UPDATE scrape_keywords SET user_id=(SELECT id FROM users ORDER BY id LIMIT 1) WHERE user_id IS NULL AND EXISTS (SELECT 1 FROM users)",
@@ -87,6 +90,13 @@ def ensure_schema_updates():
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_company_profiles_user_id ON company_profiles(user_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_tender_eligibility_tender_id ON tender_eligibility(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_decisions_tender_id ON bid_decisions(tender_id)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_seller_profiles_user_id ON seller_profiles(user_id)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_user_seller_document ON seller_documents(user_id,doc_key)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_catalogue_items_user_id ON seller_catalogue_items(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_user_id ON seller_bid_participations(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_tender_id ON seller_bid_participations(tender_id)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_user_id ON seller_order_fulfillments(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_tender_id ON seller_order_fulfillments(tender_id)",
         ]:
             conn.exec_driver_sql(ddl)
 
@@ -125,18 +135,20 @@ def contact_page(request:Request): return react_shell()
 @app.get('/signup')
 def signup_page(request:Request): return react_shell()
 @app.post('/signup')
-def signup(request:Request,name:str=Form(...),email:str=Form(...),password:str=Form(...),db:Session=Depends(get_db)):
+def signup(request:Request,name:str=Form(...),email:str=Form(...),password:str=Form(...),role:str=Form('buyer'),db:Session=Depends(get_db)):
     if db.query(User).filter(User.email==email).first(): return RedirectResponse('/signup?error=email_exists',303)
-    user=User(name=name,email=email,password_hash=hash_password(password),role='user')
+    role=(role or 'buyer').strip().lower()
+    role=role if role in {'buyer','seller'} else 'buyer'
+    user=User(name=name,email=email,password_hash=hash_password(password),role=role)
     db.add(user); db.commit(); token=create_access_token({'sub':email})
-    res=RedirectResponse('/dashboard',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
+    res=RedirectResponse('/dashboard/seller' if role=='seller' else '/dashboard/buyer',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
 @app.get('/login')
 def login_page(request:Request): return react_shell()
 @app.post('/login')
 def login(request:Request,email:str=Form(...),password:str=Form(...),db:Session=Depends(get_db)):
     user=db.query(User).filter(User.email==email).first()
     if not user or not verify_password(password,user.password_hash): return RedirectResponse('/login?error=invalid',303)
-    token=create_access_token({'sub':user.email}); res=RedirectResponse('/dashboard',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
+    token=create_access_token({'sub':user.email}); res=RedirectResponse('/dashboard/seller' if user.role=='seller' else '/dashboard/buyer',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
 @app.get('/logout')
 def logout(): res=RedirectResponse('/login'); res.delete_cookie('access_token'); return res
 
@@ -146,15 +158,17 @@ async def api_signup(request:Request,db:Session=Depends(get_db)):
     name=(payload.get('name') or '').strip()
     email=(payload.get('email') or '').strip().lower()
     password=payload.get('password') or ''
+    role=(payload.get('role') or 'buyer').strip().lower()
+    role=role if role in {'buyer','seller'} else 'buyer'
     if not name or not email or not password:
         raise HTTPException(400,'Name, email, and password are required')
     if db.query(User).filter(User.email==email).first():
         raise HTTPException(400,'Email already registered')
-    user=User(name=name,email=email,password_hash=hash_password(password),role='user')
+    user=User(name=name,email=email,password_hash=hash_password(password),role=role)
     db.add(user)
     db.commit()
     token=create_access_token({'sub':email})
-    res=Response(json.dumps({'ok':True}),media_type='application/json')
+    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer'}),media_type='application/json')
     res.set_cookie('access_token',token,httponly=True,samesite='lax')
     return res
 
@@ -167,7 +181,8 @@ async def api_login(request:Request,db:Session=Depends(get_db)):
     if not user or not verify_password(password,user.password_hash):
         raise HTTPException(401,'Invalid email or password')
     token=create_access_token({'sub':user.email})
-    res=Response(json.dumps({'ok':True}),media_type='application/json')
+    role=user.role if user.role in {'buyer','seller'} else 'buyer'
+    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer'}),media_type='application/json')
     res.set_cookie('access_token',token,httponly=True,samesite='lax')
     return res
 
@@ -398,6 +413,575 @@ def company_profile_to_dict(item):
         'updated_at':iso(item.updated_at),
     }
 
+SELLER_DOCUMENT_DEFAULTS=[
+    ('pan','PAN card','identity'),
+    ('aadhaar','Aadhaar linked with mobile','identity'),
+    ('gstin','GST certificate or exemption proof','tax'),
+    ('udyam','Udyam/MSME certificate','eligibility'),
+    ('bank','Cancelled cheque / bank proof','finance'),
+    ('address','Business address proof','profile'),
+    ('tds','TDS certificate / declaration','tax'),
+    ('caution_money','Caution money payment proof','compliance'),
+    ('vendor_assessment','Vendor assessment report','compliance'),
+    ('startup_india','Startup India certificate','eligibility'),
+    ('odop','ODOP eligibility document','eligibility'),
+]
+SELLER_DOCUMENT_LABELS={key:label for key,label,category in SELLER_DOCUMENT_DEFAULTS}
+
+def seller_profile_to_dict(item):
+    if not item:
+        return {
+            'business_name':'',
+            'gem_seller_id':'',
+            'pan':'',
+            'aadhaar_linked':False,
+            'gstin':'',
+            'udyam_number':'',
+            'startup_india_number':'',
+            'odop_state':'',
+            'odop_product':'',
+            'bank_verified':False,
+            'address_verified':False,
+            'secondary_user_created':False,
+            'vendor_assessment_status':'not_started',
+            'caution_money_status':'pending',
+            'tds_certificate_status':'missing',
+            'notes':'',
+        }
+    return {
+        'id':item.id,
+        'business_name':item.business_name or '',
+        'gem_seller_id':item.gem_seller_id or '',
+        'pan':item.pan or '',
+        'aadhaar_linked':bool(item.aadhaar_linked),
+        'gstin':item.gstin or '',
+        'udyam_number':item.udyam_number or '',
+        'startup_india_number':item.startup_india_number or '',
+        'odop_state':item.odop_state or '',
+        'odop_product':item.odop_product or '',
+        'bank_verified':bool(item.bank_verified),
+        'address_verified':bool(item.address_verified),
+        'secondary_user_created':bool(item.secondary_user_created),
+        'vendor_assessment_status':item.vendor_assessment_status or 'not_started',
+        'caution_money_status':item.caution_money_status or 'pending',
+        'tds_certificate_status':item.tds_certificate_status or 'missing',
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+    }
+
+def seller_document_to_dict(item):
+    return {
+        'id':item.id,
+        'doc_key':item.doc_key,
+        'label':item.label or SELLER_DOCUMENT_LABELS.get(item.doc_key,item.doc_key),
+        'status':item.status or 'missing',
+        'expiry_date':iso(item.expiry_date),
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+    }
+
+def ensure_seller_documents(db,user_id):
+    existing={item.doc_key:item for item in db.query(SellerDocument).filter(SellerDocument.user_id==user_id).all()}
+    changed=False
+    for key,label,category in SELLER_DOCUMENT_DEFAULTS:
+        if key not in existing:
+            item=SellerDocument(user_id=user_id,doc_key=key,label=label,status='missing')
+            db.add(item)
+            existing[key]=item
+            changed=True
+        elif existing[key].label!=label:
+            existing[key].label=label
+            changed=True
+    if changed:
+        db.commit()
+    return [existing[key] for key,label,category in SELLER_DOCUMENT_DEFAULTS]
+
+def seller_readiness_summary(profile,documents):
+    profile_data=seller_profile_to_dict(profile)
+    checks=[
+        ('Business name',bool(profile_data['business_name'])),
+        ('GeM seller ID',bool(profile_data['gem_seller_id'])),
+        ('PAN',bool(profile_data['pan'])),
+        ('Aadhaar linked',bool(profile_data['aadhaar_linked'])),
+        ('GST or Udyam',bool(profile_data['gstin'] or profile_data['udyam_number'])),
+        ('Bank verified',bool(profile_data['bank_verified'])),
+        ('Address verified',bool(profile_data['address_verified'])),
+        ('Secondary user',bool(profile_data['secondary_user_created'])),
+        ('Vendor assessment',profile_data['vendor_assessment_status'] in {'ready','submitted','approved'}),
+        ('Caution money',profile_data['caution_money_status'] in {'paid','not_applicable'}),
+        ('TDS certificate',profile_data['tds_certificate_status'] in {'available','not_applicable'}),
+    ]
+    ready_docs=[doc for doc in documents if (doc.status or '') in {'ready','submitted','approved','not_applicable'}]
+    expired_docs=[doc for doc in documents if (doc.status or '')=='expired']
+    missing_docs=[doc for doc in documents if (doc.status or 'missing') in {'missing','rejected'}]
+    doc_score=(len(ready_docs)/len(documents))*35 if documents else 0
+    profile_score=(sum(1 for label,ok in checks if ok)/len(checks))*65 if checks else 0
+    health_score=round(min(100,profile_score+doc_score))
+    if health_score>=80:
+        level='ready'
+    elif health_score>=55:
+        level='needs_review'
+    else:
+        level='incomplete'
+    return {
+        'health_score':health_score,
+        'level':level,
+        'completed_checks':sum(1 for label,ok in checks if ok),
+        'total_checks':len(checks),
+        'ready_documents':len(ready_docs),
+        'total_documents':len(documents),
+        'missing_documents':[seller_document_to_dict(doc) for doc in missing_docs],
+        'expired_documents':[seller_document_to_dict(doc) for doc in expired_docs],
+        'profile_gaps':[label for label,ok in checks if not ok],
+    }
+
+CATALOGUE_STATUS_OPTIONS=['draft','submitted','active','rejected','notified','expired','paused']
+CATALOGUE_DOC_STATUS_OPTIONS=['not_started','missing','ready','submitted','approved','rejected','not_required']
+CATALOGUE_STOCK_OPTIONS=['unknown','in_stock','low_stock','out_of_stock']
+CATALOGUE_REPAIR_OPTIONS=['none','needs_repair','in_progress','resubmitted','resolved']
+
+def catalogue_item_to_dict(item):
+    return {
+        'id':item.id,
+        'item_type':item.item_type or 'product',
+        'name':item.name or '',
+        'category':item.category or '',
+        'gem_category':item.gem_category or '',
+        'brand':item.brand or '',
+        'model':item.model or '',
+        'sku':item.sku or '',
+        'oem_status':item.oem_status or 'not_required',
+        'reseller_status':item.reseller_status or 'not_required',
+        'brand_approval_status':item.brand_approval_status or 'not_started',
+        'image_status':item.image_status or 'missing',
+        'mrp_document_status':item.mrp_document_status or 'missing',
+        'specs_status':item.specs_status or 'missing',
+        'catalogue_status':item.catalogue_status or 'draft',
+        'stock_status':item.stock_status or 'unknown',
+        'stock_qty':item.stock_qty or 0,
+        'offering_expiry':iso(item.offering_expiry),
+        'repair_status':item.repair_status or 'none',
+        'clone_pair_source':item.clone_pair_source or '',
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+        'readiness':catalogue_item_readiness(item),
+    }
+
+def catalogue_item_readiness(item):
+    gaps=[]
+    checks=[
+        ('Name',bool(item.name)),
+        ('GeM category',bool(item.gem_category or item.category)),
+        ('Brand/model',bool(item.brand or item.model or item.item_type=='service')),
+        ('Brand approval',item.brand_approval_status in {'approved','not_required'}),
+        ('Image checklist',item.image_status in {'ready','approved','not_required'}),
+        ('MRP support',item.mrp_document_status in {'ready','approved','not_required'}),
+        ('Specs/service details',item.specs_status in {'ready','approved','not_required'}),
+        ('OEM/reseller clearance',item.oem_status in {'approved','not_required'} and item.reseller_status in {'approved','not_required'}),
+        ('Stock',item.item_type=='service' or item.stock_status in {'in_stock','low_stock'}),
+    ]
+    for label,ok in checks:
+        if not ok:
+            gaps.append(label)
+    if item.catalogue_status in {'rejected','notified'} and item.repair_status not in {'in_progress','resubmitted','resolved'}:
+        gaps.append('Repair workflow')
+    if item.offering_expiry and item.offering_expiry<date.today():
+        gaps.append('Offering expired')
+    score=round((sum(1 for label,ok in checks if ok)/len(checks))*100)
+    if item.catalogue_status=='active' and score>=80:
+        level='ready'
+    elif score>=60:
+        level='needs_review'
+    else:
+        level='incomplete'
+    return {'score':score,'level':level,'gaps':gaps}
+
+def catalogue_summary(items):
+    counts=Counter(item.catalogue_status or 'draft' for item in items)
+    ready=sum(1 for item in items if catalogue_item_readiness(item)['level']=='ready')
+    expiring=sum(1 for item in items if item.offering_expiry and date.today()<=item.offering_expiry<=date.today()+timedelta(days=30))
+    expired=sum(1 for item in items if item.offering_expiry and item.offering_expiry<date.today())
+    stock_alerts=sum(1 for item in items if item.stock_status in {'low_stock','out_of_stock'} or (item.stock_qty is not None and item.stock_qty<=0 and item.item_type!='service'))
+    repair=sum(1 for item in items if item.catalogue_status in {'rejected','notified'} or item.repair_status in {'needs_repair','in_progress'})
+    return {
+        'total':len(items),
+        'active':counts.get('active',0),
+        'draft':counts.get('draft',0),
+        'submitted':counts.get('submitted',0),
+        'rejected':counts.get('rejected',0),
+        'notified':counts.get('notified',0),
+        'ready':ready,
+        'expiring':expiring,
+        'expired':expired,
+        'stock_alerts':stock_alerts,
+        'repair':repair,
+    }
+
+BID_WORKFLOW_OPTIONS=['product_bid','service_bid','ra','boq','push_button','custom_catalogue','rate_contract','global_tender']
+BID_STATUS_OPTIONS=['planning','in_review','ready','submitted','ra_scheduled','negotiation','awarded','lost','cancelled','no_bid']
+BID_STEP_OPTIONS=['not_required','not_checked','not_started','in_progress','ready','submitted','approved','rejected','waived']
+BID_SIMPLE_OPTIONS=['none','needed','submitted','answered','closed']
+
+def bid_participation_readiness(item):
+    checks=[
+        ('Eligibility',item.eligibility_status in {'ready','approved','waived'}),
+        ('Documents',item.document_status in {'ready','submitted','approved','waived'}),
+        ('Price',item.price_status in {'ready','submitted','approved'}),
+        ('BOQ',item.boq_status in {'not_required','ready','submitted','approved'}),
+        ('EMD',not item.emd_required or item.emd_status in {'ready','submitted','approved','waived'}),
+        ('PBG',not item.pbg_required or item.pbg_status in {'ready','submitted','approved','waived'}),
+        ('Custom catalogue',item.custom_catalogue_status in {'not_required','ready','submitted','approved'}),
+        ('Rate contract',item.rate_contract_status in {'not_required','ready','submitted','approved'}),
+        ('Global tender',item.global_tender_status in {'not_required','ready','submitted','approved'}),
+        ('Push button',item.push_button_status in {'not_required','ready','submitted','approved'}),
+    ]
+    gaps=[label for label,ok in checks if not ok]
+    score=round((sum(1 for label,ok in checks if ok)/len(checks))*100)
+    if item.participation_status in {'submitted','awarded'} and score>=75:
+        level='submitted'
+    elif score>=75:
+        level='ready'
+    elif score>=45:
+        level='needs_work'
+    else:
+        level='incomplete'
+    if item.due_date and item.due_date<date.today() and item.participation_status not in {'submitted','awarded','lost','cancelled','no_bid'}:
+        gaps.append('Deadline passed')
+        level='incomplete'
+    return {'score':score,'level':level,'gaps':gaps}
+
+def bid_participation_to_dict(item):
+    tender=item.tender if hasattr(item,'tender') else None
+    catalogue=item.catalogue_item if hasattr(item,'catalogue_item') else None
+    return {
+        'id':item.id,
+        'tender_id':item.tender_id,
+        'workflow_type':item.workflow_type or 'product_bid',
+        'participation_status':item.participation_status or 'planning',
+        'bid_mode':item.bid_mode or 'standard',
+        'catalogue_item_id':item.catalogue_item_id,
+        'catalogue_item_name':catalogue.name if catalogue else '',
+        'boq_status':item.boq_status or 'not_required',
+        'emd_required':bool(item.emd_required),
+        'emd_amount':item.emd_amount or '',
+        'emd_status':item.emd_status or 'not_required',
+        'pbg_required':bool(item.pbg_required),
+        'pbg_status':item.pbg_status or 'not_required',
+        'clarification_status':item.clarification_status or 'none',
+        'representation_status':item.representation_status or 'none',
+        'eligibility_status':item.eligibility_status or 'not_checked',
+        'document_status':item.document_status or 'not_started',
+        'price_status':item.price_status or 'not_started',
+        'ra_status':item.ra_status or 'not_applicable',
+        'l1_negotiation_status':item.l1_negotiation_status or 'not_applicable',
+        'custom_catalogue_status':item.custom_catalogue_status or 'not_required',
+        'rate_contract_status':item.rate_contract_status or 'not_required',
+        'global_tender_status':item.global_tender_status or 'not_required',
+        'push_button_status':item.push_button_status or 'not_required',
+        'next_action':item.next_action or '',
+        'due_date':iso(item.due_date),
+        'submitted_at':iso(item.submitted_at),
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+        'tender':tender_to_dict(tender) if tender else None,
+        'readiness':bid_participation_readiness(item),
+    }
+
+def bid_participation_summary(items):
+    counts=Counter(item.participation_status or 'planning' for item in items)
+    due_soon=sum(1 for item in items if item.due_date and date.today()<=item.due_date<=date.today()+timedelta(days=7))
+    overdue=sum(1 for item in items if item.due_date and item.due_date<date.today() and item.participation_status not in {'submitted','awarded','lost','cancelled','no_bid'})
+    ready=sum(1 for item in items if bid_participation_readiness(item)['level'] in {'ready','submitted'})
+    return {
+        'total':len(items),
+        'planning':counts.get('planning',0),
+        'ready':ready,
+        'submitted':counts.get('submitted',0),
+        'ra_scheduled':counts.get('ra_scheduled',0),
+        'awarded':counts.get('awarded',0),
+        'due_soon':due_soon,
+        'overdue':overdue,
+    }
+
+ORDER_TYPE_OPTIONS=['product','service','mixed']
+ORDER_STATUS_OPTIONS=['received','accepted','in_fulfillment','delivered','completed','cancelled','disputed']
+ORDER_STEP_OPTIONS=['not_required','not_started','in_progress','ready','submitted','approved','rejected','completed']
+ORDER_PAYMENT_OPTIONS=['pending','in_process','paid','delayed','disputed']
+ORDER_INCIDENT_OPTIONS=['none','raised','in_progress','resolved','escalated']
+ORDER_TREDS_OPTIONS=['not_required','eligible','submitted','approved','financed','rejected']
+
+def order_fulfillment_readiness(item):
+    checks=[
+        ('Delivery',item.delivery_status in {'ready','submitted','approved','completed'}),
+        ('Invoice',item.invoice_status in {'ready','submitted','approved','completed'}),
+        ('Supplementary invoice',item.supplementary_invoice_status in {'not_required','ready','submitted','approved','completed'}),
+        ('Service billing',item.service_billing_status in {'not_required','ready','submitted','approved','completed'}),
+        ('DP extension',item.dp_extension_status in {'not_required','ready','submitted','approved','completed'}),
+        ('L1 negotiation',item.l1_negotiation_status in {'not_applicable','accepted','closed'}),
+        ('Incident',item.incident_status in {'none','resolved'}),
+        ('TReDS',item.treds_status in {'not_required','approved','financed'}),
+    ]
+    gaps=[label for label,ok in checks if not ok]
+    score=round((sum(1 for label,ok in checks if ok)/len(checks))*100)
+    overdue_delivery=item.delivery_due_date and item.delivery_due_date<date.today() and item.delivery_status not in {'approved','completed'}
+    overdue_payment=item.payment_due_date and item.payment_due_date<date.today() and item.payment_status!='paid'
+    if overdue_delivery:
+        gaps.append('Delivery overdue')
+    if overdue_payment:
+        gaps.append('Payment overdue')
+    if item.order_status in {'completed'} and item.payment_status=='paid':
+        level='complete'
+    elif score>=75 and not overdue_delivery:
+        level='on_track'
+    elif score>=45:
+        level='needs_attention'
+    else:
+        level='blocked'
+    if overdue_delivery or overdue_payment or item.incident_status in {'raised','escalated'}:
+        level='needs_attention'
+    return {'score':score,'level':level,'gaps':gaps}
+
+def order_fulfillment_to_dict(item):
+    tender=item.tender if hasattr(item,'tender') else None
+    bid=item.bid_participation if hasattr(item,'bid_participation') else None
+    return {
+        'id':item.id,
+        'tender_id':item.tender_id,
+        'bid_participation_id':item.bid_participation_id,
+        'order_number':item.order_number or '',
+        'order_type':item.order_type or 'product',
+        'order_status':item.order_status or 'received',
+        'buyer_name':item.buyer_name or '',
+        'order_value':item.order_value or '',
+        'delivery_status':item.delivery_status or 'not_started',
+        'delivery_due_date':iso(item.delivery_due_date),
+        'dp_extension_status':item.dp_extension_status or 'not_required',
+        'invoice_status':item.invoice_status or 'not_started',
+        'invoice_number':item.invoice_number or '',
+        'invoice_amount':item.invoice_amount or '',
+        'supplementary_invoice_status':item.supplementary_invoice_status or 'not_required',
+        'service_billing_status':item.service_billing_status or 'not_required',
+        'payment_status':item.payment_status or 'pending',
+        'payment_due_date':iso(item.payment_due_date),
+        'l1_negotiation_status':item.l1_negotiation_status or 'not_applicable',
+        'incident_status':item.incident_status or 'none',
+        'treds_status':item.treds_status or 'not_required',
+        'next_action':item.next_action or '',
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+        'tender':tender_to_dict(tender) if tender else None,
+        'bid_workflow':bid_participation_to_dict(bid) if bid else None,
+        'readiness':order_fulfillment_readiness(item),
+    }
+
+def order_fulfillment_summary(items):
+    counts=Counter(item.order_status or 'received' for item in items)
+    due_delivery=sum(1 for item in items if item.delivery_due_date and date.today()<=item.delivery_due_date<=date.today()+timedelta(days=7) and item.delivery_status not in {'approved','completed'})
+    overdue_delivery=sum(1 for item in items if item.delivery_due_date and item.delivery_due_date<date.today() and item.delivery_status not in {'approved','completed'})
+    overdue_payment=sum(1 for item in items if item.payment_due_date and item.payment_due_date<date.today() and item.payment_status!='paid')
+    incidents=sum(1 for item in items if item.incident_status in {'raised','in_progress','escalated'})
+    return {
+        'total':len(items),
+        'received':counts.get('received',0),
+        'in_fulfillment':counts.get('in_fulfillment',0),
+        'delivered':counts.get('delivered',0),
+        'completed':counts.get('completed',0),
+        'due_delivery':due_delivery,
+        'overdue_delivery':overdue_delivery,
+        'overdue_payment':overdue_payment,
+        'incidents':incidents,
+    }
+
+def opportunity_terms(*values):
+    text=' '.join(str(value or '') for value in values).lower()
+    words=re.findall(r'[a-z0-9][a-z0-9+-]{2,}',text)
+    stop={'and','the','for','with','from','gem','bid','tender','supply','procurement','service','services','product','products'}
+    return [word for word in words if word not in stop]
+
+def catalogue_match_for_tender(tender,catalogue_items):
+    tender_text=' '.join([
+        tender.title or '',
+        tender.category or '',
+        tender.department or '',
+        tender.description or '',
+    ]).lower()
+    best=None
+    matches=[]
+    for item in catalogue_items:
+        terms=opportunity_terms(item.name,item.category,item.gem_category,item.brand,item.model,item.sku)
+        unique_terms=sorted(set(terms))
+        matched=[term for term in unique_terms if term in tender_text]
+        phrase_bonus=0
+        for phrase in [item.name,item.gem_category,item.category]:
+            phrase=(phrase or '').strip().lower()
+            if phrase and len(phrase)>3 and phrase in tender_text:
+                phrase_bonus+=18
+        raw=(len(matched)*12)+phrase_bonus
+        score=min(100,raw)
+        readiness=catalogue_item_readiness(item)
+        row={
+            'item':catalogue_item_to_dict(item),
+            'match_score':score,
+            'matched_terms':matched[:8],
+            'readiness':readiness,
+        }
+        matches.append(row)
+        if not best or (score,readiness.get('score',0))>(best['match_score'],best['readiness'].get('score',0)):
+            best=row
+    matches=sorted(matches,key=lambda row:(row['match_score'],row['readiness'].get('score',0)),reverse=True)
+    return best,matches[:3]
+
+def seller_opportunity_summary(items):
+    return {
+        'total':len(items),
+        'bid':sum(1 for item in items if item['recommendation']=='bid'),
+        'review':sum(1 for item in items if item['recommendation']=='review'),
+        'no_bid':sum(1 for item in items if item['recommendation']=='no_bid'),
+        'high_match':sum(1 for item in items if item['match_score']>=70),
+        'catalogue_ready':sum(1 for item in items if item['catalogue_readiness_score']>=75),
+        'missing_catalogue':sum(1 for item in items if not item.get('matched_catalogue')),
+        'already_in_workflow':sum(1 for item in items if item.get('bid_workflow')),
+    }
+
+def seller_opportunity_for_tender(tender,catalogue_items,readiness_summary,bid_by_tender):
+    best,top_matches=catalogue_match_for_tender(tender,catalogue_items)
+    tender_score=float(tender.relevance_score or 0)
+    match_score=best['match_score'] if best else 0
+    catalogue_score=best['readiness']['score'] if best else 0
+    seller_score=readiness_summary.get('health_score',0)
+    score=round((tender_score*.38)+(match_score*.30)+(catalogue_score*.17)+(seller_score*.15))
+    reasons=[]
+    blockers=[]
+    if tender_score>=70:
+        reasons.append('Tender score is already high priority')
+    elif tender_score>=40:
+        reasons.append('Tender has a moderate business fit')
+    if best and match_score:
+        reasons.append(f"Catalogue match: {best['item']['name']}")
+    if catalogue_score>=75:
+        reasons.append('Matched catalogue item is mostly ready')
+    if seller_score>=75:
+        reasons.append('Seller profile and documents are mostly ready')
+    if not best or match_score<20:
+        blockers.append('No strong catalogue match')
+        score-=12
+    if best and best['readiness'].get('gaps'):
+        blockers.extend(best['readiness']['gaps'][:4])
+    if readiness_summary.get('profile_gaps'):
+        blockers.extend(readiness_summary['profile_gaps'][:3])
+    missing_docs=readiness_summary.get('missing_documents') or []
+    if missing_docs:
+        blockers.extend([doc.get('label','Missing document') for doc in missing_docs[:3]])
+    if tender.deadline and tender.deadline<date.today():
+        blockers.append('Tender deadline passed')
+        score-=25
+    elif tender.deadline and tender.deadline<=date.today()+timedelta(days=7):
+        reasons.append('Deadline is within 7 days')
+        score-=5
+    decision=getattr(tender,'bid_decision',None)
+    if decision and decision.recommendation=='no_bid':
+        blockers.append('Existing bid decision says no bid')
+        score-=15
+    elif decision and decision.recommendation=='bid':
+        reasons.append('Existing bid decision recommends bid')
+        score+=8
+    bid_workflow=bid_by_tender.get(tender.id)
+    if bid_workflow:
+        reasons.append(f"Bid workflow exists: {(bid_workflow.participation_status or 'planning').replace('_',' ')}")
+    score=max(0,min(100,score))
+    severe={'Tender deadline passed','Existing bid decision says no bid'}
+    if score>=75 and not severe.intersection(blockers):
+        recommendation='bid'
+    elif score>=45:
+        recommendation='review'
+    else:
+        recommendation='no_bid'
+    return {
+        'tender':tender_to_dict(tender),
+        'opportunity_score':score,
+        'recommendation':recommendation,
+        'match_score':match_score,
+        'catalogue_readiness_score':catalogue_score,
+        'seller_readiness_score':seller_score,
+        'matched_catalogue':best['item'] if best else None,
+        'top_matches':top_matches,
+        'reasons':reasons[:6] or ['Needs more catalogue or tender scoring data'],
+        'blockers':list(dict.fromkeys(blockers))[:8],
+        'bid_workflow':bid_participation_to_dict(bid_workflow) if bid_workflow else None,
+    }
+
+def chart_from_counter(counter,limit=10):
+    pairs=counter.most_common(limit)
+    return {'labels':[label for label,count in pairs],'values':[count for label,count in pairs]}
+
+def build_seller_analytics(db,user):
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    documents=ensure_seller_documents(db,user.id)
+    readiness=seller_readiness_summary(profile,documents)
+    catalogue=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).all()
+    bids=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).all()
+    orders=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id).all()
+    bid_by_tender={item.tender_id:item for item in bids if item.tender_id}
+    tenders=user_tenders(db,user).order_by(Tender.created_at.desc()).limit(250).all()
+    opportunities=[
+        seller_opportunity_for_tender(tender,catalogue,readiness,bid_by_tender)
+        for tender in tenders
+    ]
+    opportunities=sorted(opportunities,key=lambda item:(item['opportunity_score'],item['match_score']),reverse=True)
+    catalogue_ready=[catalogue_item_readiness(item) for item in catalogue]
+    bid_ready=[bid_participation_readiness(item) for item in bids]
+    order_ready=[order_fulfillment_readiness(item) for item in orders]
+    recommendations=[]
+    if readiness.get('health_score',0)<70:
+        recommendations.append({'title':'Complete seller readiness','text':f"{len(readiness.get('profile_gaps',[]))} profile gaps and {len(readiness.get('missing_documents',[]))} missing documents are reducing opportunity scores."})
+    if catalogue and catalogue_summary(catalogue).get('ready',0)<len(catalogue):
+        recommendations.append({'title':'Improve catalogue readiness','text':'Active catalogue items with complete images, MRP/specs, stock, and approvals will rank higher in opportunity matching.'})
+    if opportunities and seller_opportunity_summary(opportunities).get('bid',0):
+        recommendations.append({'title':'Convert bid-ready opportunities','text':'Create Bid/RA workflows for top bid recommendations before deadline pressure increases.'})
+    due_bids=bid_participation_summary(bids).get('due_soon',0)
+    if due_bids:
+        recommendations.append({'title':'Act on bid due dates','text':f'{due_bids} Bid/RA workflows are due within 7 days.'})
+    order_alerts=order_fulfillment_summary(orders).get('incidents',0)+order_fulfillment_summary(orders).get('overdue_delivery',0)+order_fulfillment_summary(orders).get('overdue_payment',0)
+    if order_alerts:
+        recommendations.append({'title':'Resolve fulfillment alerts','text':f'{order_alerts} order fulfillment alerts need attention across delivery, incidents, or payments.'})
+    if not recommendations:
+        recommendations.append({'title':'Keep seller data fresh','text':'Add catalogue items and keep Bid/RA and order status updated to unlock richer analytics.'})
+    return {
+        'summary':{
+            'seller_health':readiness.get('health_score',0),
+            'catalogue_total':len(catalogue),
+            'catalogue_ready':sum(1 for item in catalogue_ready if item.get('level')=='ready'),
+            'opportunities':len(opportunities),
+            'bid_recommended':sum(1 for item in opportunities if item.get('recommendation')=='bid'),
+            'bid_workflows':len(bids),
+            'submitted_bids':sum(1 for item in bids if item.participation_status in {'submitted','awarded'}),
+            'orders':len(orders),
+            'order_alerts':order_alerts,
+        },
+        'charts':{
+            'catalogueStatus':chart_from_counter(Counter(item.catalogue_status or 'draft' for item in catalogue)),
+            'catalogueReadiness':chart_from_counter(Counter(item.get('level','incomplete') for item in catalogue_ready)),
+            'opportunityRecommendations':chart_from_counter(Counter(item.get('recommendation','review') for item in opportunities)),
+            'bidStatus':chart_from_counter(Counter(item.participation_status or 'planning' for item in bids)),
+            'bidReadiness':chart_from_counter(Counter(item.get('level','incomplete') for item in bid_ready)),
+            'orderStatus':chart_from_counter(Counter(item.order_status or 'received' for item in orders)),
+            'orderPayments':chart_from_counter(Counter(item.payment_status or 'pending' for item in orders)),
+            'orderHealth':chart_from_counter(Counter(item.get('level','blocked') for item in order_ready)),
+        },
+        'readiness':readiness,
+        'catalogue':catalogue_summary(catalogue),
+        'opportunities':seller_opportunity_summary(opportunities),
+        'bids':bid_participation_summary(bids),
+        'orders':order_fulfillment_summary(orders),
+        'top_opportunities':opportunities[:8],
+        'recommendations':recommendations,
+    }
+
 def parse_optional_int(value):
     if value in (None,''):
         return None
@@ -453,6 +1037,42 @@ def dashboard_summary(db,user):
 
 @app.get('/dashboard')
 def dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer')
+def buyer_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller')
+def seller_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/readiness')
+def seller_readiness_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/catalogue')
+def seller_catalogue_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/bids')
+def seller_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/orders')
+def seller_orders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/opportunities')
+def seller_opportunities_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/analytics')
+def seller_analytics_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/tenders')
+def tenders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/react/dashboard')
@@ -1443,6 +2063,8 @@ def api_me(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
         'id':user.id,
         'name':user.name,
         'email':user.email,
+        'role':user.role if user.role in {'buyer','seller'} else 'buyer',
+        'dashboard_path':'/dashboard/seller' if user.role=='seller' else '/dashboard/buyer',
         'is_active':user.is_active,
         'created_at':iso(user.created_at),
         'notifications':{
@@ -1674,6 +2296,416 @@ async def api_save_company_profile(request:Request,db:Session=Depends(get_db),us
     db.commit()
     db.refresh(profile)
     return {'ok':True,'profile':company_profile_to_dict(profile)}
+
+@app.get('/api/seller/readiness')
+def api_seller_readiness(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    documents=ensure_seller_documents(db,user.id)
+    return {
+        'profile':seller_profile_to_dict(profile),
+        'documents':[seller_document_to_dict(item) for item in documents],
+        'summary':seller_readiness_summary(profile,documents),
+        'status_options':{
+            'document':['missing','ready','submitted','approved','rejected','expired','not_applicable'],
+            'vendor_assessment':['not_started','ready','submitted','approved','rejected','not_required'],
+            'caution_money':['pending','paid','refundable','not_applicable'],
+            'tds_certificate':['missing','available','expired','not_applicable'],
+        },
+    }
+
+@app.post('/api/seller/readiness')
+async def api_save_seller_readiness(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    if not profile:
+        profile=SellerProfile(user_id=user.id)
+        db.add(profile)
+    profile.business_name=(payload.get('business_name') or '').strip()[:255] or None
+    profile.gem_seller_id=(payload.get('gem_seller_id') or '').strip()[:100] or None
+    profile.pan=(payload.get('pan') or '').strip().upper()[:20] or None
+    profile.aadhaar_linked=bool(payload.get('aadhaar_linked'))
+    profile.gstin=(payload.get('gstin') or '').strip().upper()[:30] or None
+    profile.udyam_number=(payload.get('udyam_number') or '').strip()[:100] or None
+    profile.startup_india_number=(payload.get('startup_india_number') or '').strip()[:100] or None
+    profile.odop_state=(payload.get('odop_state') or '').strip()[:100] or None
+    profile.odop_product=(payload.get('odop_product') or '').strip()[:255] or None
+    profile.bank_verified=bool(payload.get('bank_verified'))
+    profile.address_verified=bool(payload.get('address_verified'))
+    profile.secondary_user_created=bool(payload.get('secondary_user_created'))
+    vendor_status=(payload.get('vendor_assessment_status') or 'not_started').strip()
+    profile.vendor_assessment_status=vendor_status if vendor_status in {'not_started','ready','submitted','approved','rejected','not_required'} else 'not_started'
+    caution_status=(payload.get('caution_money_status') or 'pending').strip()
+    profile.caution_money_status=caution_status if caution_status in {'pending','paid','refundable','not_applicable'} else 'pending'
+    tds_status=(payload.get('tds_certificate_status') or 'missing').strip()
+    profile.tds_certificate_status=tds_status if tds_status in {'missing','available','expired','not_applicable'} else 'missing'
+    profile.notes=(payload.get('notes') or '').strip()[:5000] or None
+    db.commit()
+    db.refresh(profile)
+    documents=ensure_seller_documents(db,user.id)
+    return {'ok':True,'profile':seller_profile_to_dict(profile),'summary':seller_readiness_summary(profile,documents)}
+
+@app.post('/api/seller/readiness/documents/{doc_key}')
+async def api_save_seller_document(doc_key:str,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    allowed={key for key,label,category in SELLER_DOCUMENT_DEFAULTS}
+    if doc_key not in allowed:
+        raise HTTPException(404,'Seller document not found')
+    documents=ensure_seller_documents(db,user.id)
+    item=next((doc for doc in documents if doc.doc_key==doc_key),None)
+    if not item:
+        raise HTTPException(404,'Seller document not found')
+    status=(payload.get('status') or 'missing').strip()
+    item.status=status if status in {'missing','ready','submitted','approved','rejected','expired','not_applicable'} else 'missing'
+    item.expiry_date=parse_date(payload.get('expiry_date'))
+    item.notes=(payload.get('notes') or '').strip()[:2000] or None
+    db.commit()
+    db.refresh(item)
+    documents=ensure_seller_documents(db,user.id)
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    return {'ok':True,'document':seller_document_to_dict(item),'summary':seller_readiness_summary(profile,documents)}
+
+@app.get('/api/seller/catalogue')
+def api_seller_catalogue(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    items=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).order_by(SellerCatalogueItem.updated_at.desc()).all()
+    return {
+        'items':[catalogue_item_to_dict(item) for item in items],
+        'summary':catalogue_summary(items),
+        'status_options':{
+            'item_type':['product','service'],
+            'catalogue':CATALOGUE_STATUS_OPTIONS,
+            'document':CATALOGUE_DOC_STATUS_OPTIONS,
+            'stock':CATALOGUE_STOCK_OPTIONS,
+            'repair':CATALOGUE_REPAIR_OPTIONS,
+        },
+    }
+
+@app.post('/api/seller/catalogue')
+async def api_create_catalogue_item(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    name=(payload.get('name') or '').strip()
+    if not name:
+        raise HTTPException(400,'Catalogue item name is required')
+    item=SellerCatalogueItem(user_id=user.id,name=name[:255])
+    db.add(item)
+    apply_catalogue_payload(item,payload)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).all()
+    return {'ok':True,'item':catalogue_item_to_dict(item),'summary':catalogue_summary(items)}
+
+@app.post('/api/seller/catalogue/{item_id}')
+async def api_update_catalogue_item(item_id:int,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id,SellerCatalogueItem.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Catalogue item not found')
+    payload=await request.json()
+    apply_catalogue_payload(item,payload)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).all()
+    return {'ok':True,'item':catalogue_item_to_dict(item),'summary':catalogue_summary(items)}
+
+@app.delete('/api/seller/catalogue/{item_id}')
+def api_delete_catalogue_item(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id,SellerCatalogueItem.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Catalogue item not found')
+    db.delete(item)
+    db.commit()
+    items=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).all()
+    return {'ok':True,'deleted':item_id,'summary':catalogue_summary(items)}
+
+@app.get('/api/seller/opportunities')
+def api_seller_opportunities(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    documents=ensure_seller_documents(db,user.id)
+    readiness=seller_readiness_summary(profile,documents)
+    catalogue=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).order_by(SellerCatalogueItem.updated_at.desc()).all()
+    bids=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).all()
+    bid_by_tender={item.tender_id:item for item in bids if item.tender_id}
+    tenders=user_tenders(db,user).order_by(Tender.created_at.desc()).limit(250).all()
+    items=[
+        seller_opportunity_for_tender(tender,catalogue,readiness,bid_by_tender)
+        for tender in tenders
+    ]
+    items=sorted(items,key=lambda item:(item['opportunity_score'],item['match_score'],item['tender'].get('estimated_value') or 0),reverse=True)
+    return {
+        'items':items,
+        'summary':seller_opportunity_summary(items),
+        'seller_readiness':readiness,
+        'catalogue_summary':catalogue_summary(catalogue),
+        'catalogue_count':len(catalogue),
+    }
+
+@app.post('/api/seller/opportunities/{tender_id}/create-bid')
+async def api_create_bid_from_opportunity(tender_id:int,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    tender=user_tenders(db,user).filter(Tender.id==tender_id).first()
+    if not tender:
+        raise HTTPException(404,'Tender not found')
+    existing=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.tender_id==tender.id).first()
+    if existing:
+        return {'ok':True,'item':bid_participation_to_dict(existing),'created':False}
+    payload=await request.json()
+    catalogue_id=parse_optional_int(payload.get('catalogue_item_id'))
+    catalogue_item=None
+    if catalogue_id:
+        catalogue_item=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id,SellerCatalogueItem.id==catalogue_id).first()
+        if not catalogue_item:
+            raise HTTPException(404,'Catalogue item not found')
+    item=SellerBidParticipation(
+        user_id=user.id,
+        tender_id=tender.id,
+        catalogue_item_id=catalogue_id,
+        workflow_type='service_bid' if catalogue_item and catalogue_item.item_type=='service' else 'product_bid',
+        participation_status='planning',
+        due_date=tender.deadline,
+        next_action='Review eligibility and prepare bid documents',
+    )
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return {'ok':True,'item':bid_participation_to_dict(item),'created':True}
+
+@app.get('/api/seller/analytics')
+def api_seller_analytics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return build_seller_analytics(db,user)
+
+def apply_catalogue_payload(item,payload):
+    item.item_type=(payload.get('item_type') or item.item_type or 'product').strip() if (payload.get('item_type') or item.item_type or 'product') in {'product','service'} else 'product'
+    for field,limit in [
+        ('name',255),('category',255),('gem_category',255),('brand',255),('model',255),('sku',100),('clone_pair_source',255)
+    ]:
+        if field in payload:
+            setattr(item,field,(payload.get(field) or '').strip()[:limit] or None)
+    for field,allowed,default in [
+        ('oem_status',CATALOGUE_DOC_STATUS_OPTIONS,'not_required'),
+        ('reseller_status',CATALOGUE_DOC_STATUS_OPTIONS,'not_required'),
+        ('brand_approval_status',CATALOGUE_DOC_STATUS_OPTIONS,'not_started'),
+        ('image_status',CATALOGUE_DOC_STATUS_OPTIONS,'missing'),
+        ('mrp_document_status',CATALOGUE_DOC_STATUS_OPTIONS,'missing'),
+        ('specs_status',CATALOGUE_DOC_STATUS_OPTIONS,'missing'),
+        ('catalogue_status',CATALOGUE_STATUS_OPTIONS,'draft'),
+        ('stock_status',CATALOGUE_STOCK_OPTIONS,'unknown'),
+        ('repair_status',CATALOGUE_REPAIR_OPTIONS,'none'),
+    ]:
+        if field in payload:
+            value=(payload.get(field) or default).strip()
+            setattr(item,field,value if value in allowed else default)
+    if 'stock_qty' in payload:
+        item.stock_qty=parse_optional_int(payload.get('stock_qty')) or 0
+    if 'offering_expiry' in payload:
+        item.offering_expiry=parse_date(payload.get('offering_expiry'))
+    if 'notes' in payload:
+        item.notes=(payload.get('notes') or '').strip()[:5000] or None
+
+@app.get('/api/seller/bids')
+def api_seller_bids(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    items=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).order_by(SellerBidParticipation.updated_at.desc()).all()
+    tenders=user_tenders(db,user).order_by(Tender.created_at.desc()).limit(200).all()
+    catalogue=db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id).order_by(SellerCatalogueItem.name.asc()).all()
+    return {
+        'items':[bid_participation_to_dict(item) for item in items],
+        'summary':bid_participation_summary(items),
+        'tenders':[{'id':t.id,'title':t.title,'tender_id':t.tender_id,'deadline':iso(t.deadline),'score':t.relevance_score or 0} for t in tenders],
+        'catalogue':[{'id':item.id,'name':item.name,'item_type':item.item_type,'status':item.catalogue_status} for item in catalogue],
+        'status_options':{
+            'workflow':BID_WORKFLOW_OPTIONS,
+            'participation':BID_STATUS_OPTIONS,
+            'step':BID_STEP_OPTIONS,
+            'simple':BID_SIMPLE_OPTIONS,
+            'ra':['not_applicable','pending','scheduled','participated','completed','lost','won'],
+            'l1':['not_applicable','pending','in_progress','accepted','rejected','closed'],
+        },
+    }
+
+@app.post('/api/seller/bids')
+async def api_create_seller_bid(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    tender_id=parse_optional_int(payload.get('tender_id'))
+    if tender_id and not user_tenders(db,user).filter(Tender.id==tender_id).first():
+        raise HTTPException(404,'Tender not found')
+    item=SellerBidParticipation(user_id=user.id,tender_id=tender_id)
+    db.add(item)
+    apply_bid_payload(item,payload,user,db)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).all()
+    return {'ok':True,'item':bid_participation_to_dict(item),'summary':bid_participation_summary(items)}
+
+@app.post('/api/seller/bids/{item_id}')
+async def api_update_seller_bid(item_id:int,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Bid participation not found')
+    payload=await request.json()
+    apply_bid_payload(item,payload,user,db)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).all()
+    return {'ok':True,'item':bid_participation_to_dict(item),'summary':bid_participation_summary(items)}
+
+@app.delete('/api/seller/bids/{item_id}')
+def api_delete_seller_bid(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Bid participation not found')
+    db.delete(item)
+    db.commit()
+    items=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).all()
+    return {'ok':True,'deleted':item_id,'summary':bid_participation_summary(items)}
+
+def apply_bid_payload(item,payload,user,db):
+    if 'tender_id' in payload:
+        tender_id=parse_optional_int(payload.get('tender_id'))
+        if tender_id and not user_tenders(db,user).filter(Tender.id==tender_id).first():
+            raise HTTPException(404,'Tender not found')
+        item.tender_id=tender_id
+    if 'catalogue_item_id' in payload:
+        catalogue_id=parse_optional_int(payload.get('catalogue_item_id'))
+        if catalogue_id and not db.query(SellerCatalogueItem).filter(SellerCatalogueItem.user_id==user.id,SellerCatalogueItem.id==catalogue_id).first():
+            raise HTTPException(404,'Catalogue item not found')
+        item.catalogue_item_id=catalogue_id
+    for field,allowed,default in [
+        ('workflow_type',BID_WORKFLOW_OPTIONS,'product_bid'),
+        ('participation_status',BID_STATUS_OPTIONS,'planning'),
+        ('eligibility_status',BID_STEP_OPTIONS,'not_checked'),
+        ('document_status',BID_STEP_OPTIONS,'not_started'),
+        ('price_status',BID_STEP_OPTIONS,'not_started'),
+        ('boq_status',BID_STEP_OPTIONS,'not_required'),
+        ('emd_status',BID_STEP_OPTIONS,'not_required'),
+        ('pbg_status',BID_STEP_OPTIONS,'not_required'),
+        ('custom_catalogue_status',BID_STEP_OPTIONS,'not_required'),
+        ('rate_contract_status',BID_STEP_OPTIONS,'not_required'),
+        ('global_tender_status',BID_STEP_OPTIONS,'not_required'),
+        ('push_button_status',BID_STEP_OPTIONS,'not_required'),
+        ('clarification_status',BID_SIMPLE_OPTIONS,'none'),
+        ('representation_status',BID_SIMPLE_OPTIONS,'none'),
+    ]:
+        if field in payload:
+            value=(payload.get(field) or default).strip()
+            setattr(item,field,value if value in allowed else default)
+    if 'ra_status' in payload:
+        value=(payload.get('ra_status') or 'not_applicable').strip()
+        item.ra_status=value if value in {'not_applicable','pending','scheduled','participated','completed','lost','won'} else 'not_applicable'
+    if 'l1_negotiation_status' in payload:
+        value=(payload.get('l1_negotiation_status') or 'not_applicable').strip()
+        item.l1_negotiation_status=value if value in {'not_applicable','pending','in_progress','accepted','rejected','closed'} else 'not_applicable'
+    if 'bid_mode' in payload:
+        item.bid_mode=(payload.get('bid_mode') or 'standard').strip()[:50] or 'standard'
+    item.emd_required=bool(payload.get('emd_required')) if 'emd_required' in payload else item.emd_required
+    item.pbg_required=bool(payload.get('pbg_required')) if 'pbg_required' in payload else item.pbg_required
+    if 'emd_amount' in payload:
+        item.emd_amount=parse_optional_int(payload.get('emd_amount'))
+    if 'next_action' in payload:
+        item.next_action=(payload.get('next_action') or '').strip()[:255] or None
+    if 'due_date' in payload:
+        item.due_date=parse_date(payload.get('due_date'))
+    if 'submitted_at' in payload:
+        raw=(payload.get('submitted_at') or '').strip()
+        try:
+            item.submitted_at=datetime.fromisoformat(raw) if raw else None
+        except ValueError:
+            item.submitted_at=None
+    if 'notes' in payload:
+        item.notes=(payload.get('notes') or '').strip()[:5000] or None
+
+@app.get('/api/seller/orders')
+def api_seller_orders(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    items=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id).order_by(SellerOrderFulfillment.updated_at.desc()).all()
+    bids=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id).order_by(SellerBidParticipation.updated_at.desc()).all()
+    tenders=user_tenders(db,user).order_by(Tender.created_at.desc()).limit(200).all()
+    return {
+        'items':[order_fulfillment_to_dict(item) for item in items],
+        'summary':order_fulfillment_summary(items),
+        'bids':[{'id':item.id,'label':(item.tender.title if item.tender else item.workflow_type),'status':item.participation_status,'tender_id':item.tender_id} for item in bids],
+        'tenders':[{'id':t.id,'title':t.title,'tender_id':t.tender_id,'deadline':iso(t.deadline),'score':t.relevance_score or 0} for t in tenders],
+        'status_options':{
+            'order_type':ORDER_TYPE_OPTIONS,
+            'order':ORDER_STATUS_OPTIONS,
+            'step':ORDER_STEP_OPTIONS,
+            'payment':ORDER_PAYMENT_OPTIONS,
+            'incident':ORDER_INCIDENT_OPTIONS,
+            'treds':ORDER_TREDS_OPTIONS,
+            'l1':['not_applicable','pending','in_progress','accepted','rejected','closed'],
+        },
+    }
+
+@app.post('/api/seller/orders')
+async def api_create_seller_order(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    item=SellerOrderFulfillment(user_id=user.id)
+    db.add(item)
+    apply_order_payload(item,payload,user,db)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id).all()
+    return {'ok':True,'item':order_fulfillment_to_dict(item),'summary':order_fulfillment_summary(items)}
+
+@app.post('/api/seller/orders/{item_id}')
+async def api_update_seller_order(item_id:int,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id,SellerOrderFulfillment.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Order fulfillment item not found')
+    payload=await request.json()
+    apply_order_payload(item,payload,user,db)
+    db.commit()
+    db.refresh(item)
+    items=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id).all()
+    return {'ok':True,'item':order_fulfillment_to_dict(item),'summary':order_fulfillment_summary(items)}
+
+@app.delete('/api/seller/orders/{item_id}')
+def api_delete_seller_order(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id,SellerOrderFulfillment.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'Order fulfillment item not found')
+    db.delete(item)
+    db.commit()
+    items=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id).all()
+    return {'ok':True,'deleted':item_id,'summary':order_fulfillment_summary(items)}
+
+def apply_order_payload(item,payload,user,db):
+    if 'tender_id' in payload:
+        tender_id=parse_optional_int(payload.get('tender_id'))
+        if tender_id and not user_tenders(db,user).filter(Tender.id==tender_id).first():
+            raise HTTPException(404,'Tender not found')
+        item.tender_id=tender_id
+    if 'bid_participation_id' in payload:
+        bid_id=parse_optional_int(payload.get('bid_participation_id'))
+        bid=None
+        if bid_id:
+            bid=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.id==bid_id).first()
+            if not bid:
+                raise HTTPException(404,'Bid workflow not found')
+        item.bid_participation_id=bid_id
+        if bid and not item.tender_id:
+            item.tender_id=bid.tender_id
+    for field,allowed,default in [
+        ('order_type',ORDER_TYPE_OPTIONS,'product'),
+        ('order_status',ORDER_STATUS_OPTIONS,'received'),
+        ('delivery_status',ORDER_STEP_OPTIONS,'not_started'),
+        ('dp_extension_status',ORDER_STEP_OPTIONS,'not_required'),
+        ('invoice_status',ORDER_STEP_OPTIONS,'not_started'),
+        ('supplementary_invoice_status',ORDER_STEP_OPTIONS,'not_required'),
+        ('service_billing_status',ORDER_STEP_OPTIONS,'not_required'),
+        ('payment_status',ORDER_PAYMENT_OPTIONS,'pending'),
+        ('l1_negotiation_status',['not_applicable','pending','in_progress','accepted','rejected','closed'],'not_applicable'),
+        ('incident_status',ORDER_INCIDENT_OPTIONS,'none'),
+        ('treds_status',ORDER_TREDS_OPTIONS,'not_required'),
+    ]:
+        if field in payload:
+            value=(payload.get(field) or default).strip()
+            setattr(item,field,value if value in allowed else default)
+    for field,limit in [('order_number',100),('buyer_name',255),('invoice_number',100),('next_action',255)]:
+        if field in payload:
+            setattr(item,field,(payload.get(field) or '').strip()[:limit] or None)
+    for field in ['order_value','invoice_amount']:
+        if field in payload:
+            setattr(item,field,parse_optional_int(payload.get(field)))
+    for field in ['delivery_due_date','payment_due_date']:
+        if field in payload:
+            setattr(item,field,parse_date(payload.get(field)))
+    if 'notes' in payload:
+        item.notes=(payload.get('notes') or '').strip()[:5000] or None
 
 @app.get('/api/admin/settings')
 def api_admin_settings(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
