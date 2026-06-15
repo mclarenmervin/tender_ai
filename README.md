@@ -1,29 +1,27 @@
 # Tender AI
 
-Tender AI is a FastAPI application that helps you discover and track tenders with:
-- user signup/login
-- automated scraping jobs
-- keyword and optional OpenAI-based scoring
-- tender tracking workflow
-- email/Telegram notifications
-- scheduled auto-scrape and daily digest jobs
+Tender AI is a FastAPI + React dashboard for tender discovery, scoring, tracking, and seller-side execution workflows.
+
+The app supports two account roles:
+- **Buyer**: tender review, market/buyer intelligence, reports, scoring, scraping, alerts, and workflow tracking.
+- **Seller**: seller readiness, catalogue tracking, opportunity matching, Bid/RA workflow, order fulfillment, and seller analytics.
+
+This README is intentionally a project overview and setup guide, not a full product manual.
 
 ## Tech Stack
-- Python 3.12
+
+- Python 3.12+
 - FastAPI + Uvicorn
 - PostgreSQL
 - SQLAlchemy
+- React served from static files
 - APScheduler
-- Playwright (Chromium) for scraping
+- Playwright for GeM scraping
 
-## 1) Local Setup (Windows)
+## Setup
 
-### Prerequisites
-- Python 3.12+
-- PostgreSQL running locally or remotely
-- Git (for pushing to GitHub)
+### 1. Create a virtual environment
 
-### Install Dependencies
 ```powershell
 python -m venv venv
 .\venv\Scripts\activate
@@ -32,97 +30,76 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-### Configure Environment
-1. Copy `.env.example` to `.env`
-2. Update values in `.env`
+### 2. Configure environment
 
-Minimum required values:
+Copy `.env.example` to `.env` and update the values.
+
+Minimum required:
+
 ```env
 DATABASE_URL=postgresql+psycopg2://postgres:postgres@localhost:5432/tender_ai
 SECRET_KEY=replace_with_a_long_random_secret
 ```
 
-### Create Database and Initialize Schema
-```sql
-CREATE DATABASE tender_ai;
-```
+Optional settings for OpenAI scoring, Telegram, email, alert thresholds, and scraper behavior are documented in `.env.example`.
+
+### 3. Create the database
+
+Create a PostgreSQL database named `tender_ai`, then initialize/update tables:
 
 ```powershell
 .\venv\Scripts\activate
 python -m app.main init-db
 ```
 
-### Run App
+### 4. Run the app
+
 ```powershell
 .\run_api.bat
 ```
 
-Open: `http://127.0.0.1:8000/signup`  
-Create your first account, then use the dashboard.
+Open:
 
-## 2) Useful Commands
-
-```powershell
-.\venv\Scripts\activate
-python -m app.main init-db      # create/update tables
-python -m app.main scrape       # one scrape run
-python -m app.main scheduler    # background scheduler
+```text
+http://127.0.0.1:8000/signup
 ```
 
-Or use batch helpers:
+Create either a buyer or seller account during signup.
+
+## Useful Commands
+
+```powershell
+python -m app.main init-db
+python -m app.main scrape
+python -m app.main scheduler
+```
+
+Batch helpers:
+
 - `run_api.bat`
 - `run_scheduler.bat`
 - `setup_windows.bat`
 
-## 3) Environment Variables
+## Main Areas
 
-### Required
-- `DATABASE_URL`
-- `SECRET_KEY`
+Buyer workspace:
 
-### Optional (Scoring)
-- `USE_OPENAI_SCORING` (`true`/`false`)
-- `OPENAI_API_KEY`
-- `OPENAI_MODEL` (default `gpt-4o-mini`)
+- Tender list, filters, scoring, status tracking
+- Pipeline and applied/upcoming views
+- Buyer, market, competitor, and report dashboards
+- Admin tools for keywords, scoring, GeM alerts, settings, and data deletion
 
-### Optional (Alerts)
-- `HIGH_PRIORITY_SCORE` (default `70`)
-- `DEADLINE_ALERT_DAYS` (default `10`)
-- `TELEGRAM_BOT_TOKEN`
-- `ADMIN_EMAIL`
-- `SMTP_HOST`
-- `SMTP_PORT` (default `587`)
-- `SMTP_USERNAME`
-- `SMTP_PASSWORD`
-- `SMTP_FROM_EMAIL`
-- `SMTP_USE_TLS` (`true`/`false`)
+Seller workspace:
 
-### Optional (Scraper behavior)
-- `SCRAPE_PDF_VALUES` (`true`/`false`)
-- `MANUAL_SCRAPE_USER_ID`
-- `MANUAL_SCRAPE_TRIGGER`
+- Seller profile and document readiness
+- Catalogue management tracker
+- Seller opportunity matching
+- Bid/RA participation workflow
+- Order fulfillment tracker
+- Seller-side analytics dashboard
 
-## 4) Connect to GitHub and Push Code
+## Notes
 
-Repository: `https://github.com/mclarenmervin/tender-ai`
-
-If `git` is not installed, install it first from:
-- https://git-scm.com/download/win
-
-Then run in project root:
-
-```powershell
-git init
-git add .
-git commit -m "Initial commit: Tender AI app"
-git branch -M main
-git remote add origin https://github.com/mclarenmervin/tender-ai.git
-git push -u origin main
-```
-
-If this folder is already a git repo, use:
-```powershell
-git remote remove origin
-git remote add origin https://github.com/mclarenmervin/tender-ai.git
-git push -u origin main
-```
+- Existing users without a role are migrated to `buyer` by the schema sync.
+- The app updates schema columns/indexes during startup via `ensure_schema_updates()`.
+- Generated reports and uploads are stored locally in `generated_reports/` and `uploads/`.
