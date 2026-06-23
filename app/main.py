@@ -130,6 +130,11 @@ def http_exception_handler(request:Request,exc:HTTPException):
         status_code=exc.status_code,
         media_type='application/json',
     )
+
+@app.get('/health')
+def health():
+    return {'ok':True,'service':'Tender AI'}
+
 @app.get('/')
 def root(): return react_shell()
 

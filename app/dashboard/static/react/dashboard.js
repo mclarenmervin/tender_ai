@@ -71,6 +71,14 @@ function scoreClass(score) {
     return "low";
 }
 
+function scrapeMessage(result) {
+    const logs = result?.source_logs || [];
+    const failures = logs.filter(log => log.status === "failed" || log.message);
+    const detail = failures.map(log => `${log.source || "Source"}: ${log.message || log.status}`).join(" | ");
+    const base = `Scrape finished. Inserted ${result?.inserted || 0}, scored ${result?.scored || 0}.`;
+    return detail ? `${base} ${detail}` : base;
+}
+
 function pageTitle(path) {
     const match = nav.flatMap(([, items]) => items).find(([href]) => href === path);
     if (match) return match[1];
@@ -1293,7 +1301,7 @@ function DashboardPage({ view }) {
     async function scrape() {
         setMessage("Manual scrape running...");
         const result = await api("/api/scrape-now", { method: "POST" });
-        setMessage(`Scrape finished. Inserted ${result.inserted || 0}, scored ${result.scored || 0}.`);
+        setMessage(scrapeMessage(result));
         await load();
     }
     async function extractAllEligibility() {
@@ -2313,7 +2321,7 @@ function AdminPage() {
     const [message, setMessage] = useState("");
     async function load() { setSummary(await api("/api/dashboard/summary")); setLogs((await api("/api/admin/logs")).items || []); }
     useEffect(() => { load(); }, []);
-    async function scrape() { setMessage("Manual scrape running..."); const r = await api("/api/scrape-now", { method: "POST" }); setMessage(`Inserted ${r.inserted || 0}, scored ${r.scored || 0}.`); await load(); }
+    async function scrape() { setMessage("Manual scrape running..."); const r = await api("/api/scrape-now", { method: "POST" }); setMessage(scrapeMessage(r)); await load(); }
     async function rescore() { setMessage("Rescoring..."); const r = await api("/api/rescore", { method: "POST" }); setMessage(`Rescored ${r.rescored || 0} tenders.`); await load(); }
     return h(React.Fragment, null,
         h(Summary, { summary }),

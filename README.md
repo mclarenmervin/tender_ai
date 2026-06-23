@@ -98,6 +98,12 @@ SECRET_KEY=<long-random-secret>
 For Supabase passwords, URL-encode special characters before putting the value in `DATABASE_URL`.
 For example, `@` becomes `%40` and `%` becomes `%25`.
 
+If Railway logs show `Network is unreachable` for `db.<project-ref>.supabase.co`, use the Supabase
+**Transaction pooler** connection string instead of the direct connection string. In Supabase, open
+`Project Settings -> Database -> Connection string -> Transaction pooler`, copy the URI, URL-encode
+the password, and set that value as Railway `DATABASE_URL`. The direct Supabase host may resolve to
+IPv6, while the pooler works better from IPv4-only deployment environments.
+
 ## Main Areas
 
 Buyer workspace:
