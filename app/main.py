@@ -1470,6 +1470,24 @@ def log_to_dict(item):
         'created_at':iso(item.created_at),
     }
 
+def scrape_run_to_dict(item):
+    if not item:
+        return None
+    return {
+        'id':item.id,
+        'trigger':item.trigger,
+        'source':item.source,
+        'status':item.status,
+        'inserted_count':item.inserted_count or 0,
+        'scored_count':item.scored_count or 0,
+        'telegram_count':item.telegram_count or 0,
+        'email_count':item.email_count or 0,
+        'removed_low_priority_count':item.removed_low_priority_count or 0,
+        'message':item.message or '',
+        'started_at':iso(item.started_at),
+        'finished_at':iso(item.finished_at),
+    }
+
 def performance_to_dict(item):
     return {
         'id':item.id,
@@ -4151,6 +4169,30 @@ def scrape_now(request: Request, db: Session = Depends(get_db), user: User = Dep
 @app.post('/api/scrape-now')
 def api_scrape_now(user:User=Depends(get_current_user)):
     return run_scrape_subprocess(user.id)
+
+@app.get('/api/scrape-diagnostics')
+def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    latest_run=db.query(ScrapeRun).filter(ScrapeRun.user_id==user.id).order_by(ScrapeRun.started_at.desc()).first()
+    logs=db.query(ScrapingLog).filter(ScrapingLog.user_id==user.id).order_by(ScrapingLog.created_at.desc()).limit(10).all()
+    performance=db.query(KeywordPerformance).filter(KeywordPerformance.user_id==user.id).order_by(KeywordPerformance.created_at.desc()).limit(10).all()
+    keywords=db.query(ScrapeKeyword).filter(ScrapeKeyword.user_id==user.id,ScrapeKeyword.is_active.is_(True)).order_by(ScrapeKeyword.keyword.asc()).all()
+    profile=db.query(CompanyProfile).filter(CompanyProfile.user_id==user.id,CompanyProfile.is_active.is_(True)).first()
+    total=user_tenders(db,user).count()
+    return {
+        'total_tenders':total,
+        'latest_run':scrape_run_to_dict(latest_run),
+        'logs':[log_to_dict(item) for item in logs],
+        'performance':[performance_to_dict(item) for item in performance],
+        'active_keywords':[keyword_to_dict(item) for item in keywords],
+        'has_company_profile':bool(profile and any([
+            profile.products,profile.services,profile.industries,profile.experience_keywords
+        ])),
+        'settings':{
+            'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
+            'scrape_states':get_json_setting(db,user.id,'scrape_states',[]),
+            'scrape_city':get_setting(db,user.id,'scrape_city',''),
+        },
+    }
 
 @app.post('/admin/settings/only-high-priority')
 def set_only_high_priority(request:Request,enabled:str=Form('false'),db:Session=Depends(get_db),user:User=Depends(get_current_user)):

@@ -83,6 +83,27 @@ function scrapeMessage(result) {
     return [base, detail, extra.join("; ")].filter(Boolean).join(" ");
 }
 
+function scrapeDiagnosticsMessage(data) {
+    if (!data) return "";
+    const latest = data.latest_run;
+    const parts = [];
+    if (latest) {
+        parts.push(`Last run ${latest.status || "unknown"}: inserted ${latest.inserted_count || 0}, scored ${latest.scored_count || 0}, removed ${latest.removed_low_priority_count || 0}.`);
+        if (latest.message) parts.push(latest.message);
+    }
+    if (!data.active_keywords?.length && !data.has_company_profile) {
+        parts.push("No active keywords or company profile terms are configured for this user.");
+    }
+    if (data.settings?.only_high_priority) {
+        parts.push("High-priority-only mode is enabled, so low-score tenders may be removed after scraping.");
+    }
+    const recentLog = (data.logs || [])[0];
+    if (recentLog?.message) parts.push(`Recent log: ${recentLog.message}`);
+    const perf = (data.performance || [])[0];
+    if (perf) parts.push(`Keyword ${perf.keyword}: fetched ${perf.fetched_count || 0}, inserted ${perf.inserted_count || 0}, duplicates ${perf.duplicate_count || 0}.`);
+    return parts.join(" ");
+}
+
 function pageTitle(path) {
     const match = nav.flatMap(([, items]) => items).find(([href]) => href === path);
     if (match) return match[1];
@@ -1305,8 +1326,20 @@ function DashboardPage({ view }) {
     async function scrape() {
         setMessage("Manual scrape running...");
         const result = await api("/api/scrape-now", { method: "POST" });
-        setMessage(scrapeMessage(result));
+        let nextMessage = scrapeMessage(result);
+        if (!(result.inserted || 0)) {
+            try {
+                const diagnostics = await api("/api/scrape-diagnostics");
+                nextMessage = `${nextMessage} ${scrapeDiagnosticsMessage(diagnostics)}`;
+            } catch {}
+        }
+        setMessage(nextMessage);
         await load();
+    }
+    async function showScrapeDiagnostics() {
+        setMessage("Checking scrape diagnostics...");
+        const diagnostics = await api("/api/scrape-diagnostics");
+        setMessage(scrapeDiagnosticsMessage(diagnostics) || "No scrape diagnostics available yet.");
     }
     async function extractAllEligibility() {
         setMessage("Extracting eligibility from current tender list...");
@@ -1325,6 +1358,7 @@ function DashboardPage({ view }) {
         h(Summary, { summary }),
         h("div", { className: "top-actions" },
             h("button", { className: "primary", onClick: scrape }, "Manual Scrape"),
+            h("button", { onClick: showScrapeDiagnostics }, "Scrape Diagnostics"),
             h("button", { onClick: extractAllEligibility }, "Extract Eligibility"),
             h("button", { onClick: generateAllBidDecisions }, "Generate Bid/No-Bid")
         ),
@@ -2325,7 +2359,19 @@ function AdminPage() {
     const [message, setMessage] = useState("");
     async function load() { setSummary(await api("/api/dashboard/summary")); setLogs((await api("/api/admin/logs")).items || []); }
     useEffect(() => { load(); }, []);
-    async function scrape() { setMessage("Manual scrape running..."); const r = await api("/api/scrape-now", { method: "POST" }); setMessage(scrapeMessage(r)); await load(); }
+    async function scrape() {
+        setMessage("Manual scrape running...");
+        const r = await api("/api/scrape-now", { method: "POST" });
+        let nextMessage = scrapeMessage(r);
+        if (!(r.inserted || 0)) {
+            try {
+                const diagnostics = await api("/api/scrape-diagnostics");
+                nextMessage = `${nextMessage} ${scrapeDiagnosticsMessage(diagnostics)}`;
+            } catch {}
+        }
+        setMessage(nextMessage);
+        await load();
+    }
     async function rescore() { setMessage("Rescoring..."); const r = await api("/api/rescore", { method: "POST" }); setMessage(`Rescored ${r.rescored || 0} tenders.`); await load(); }
     return h(React.Fragment, null,
         h(Summary, { summary }),
