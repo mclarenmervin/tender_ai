@@ -80,6 +80,24 @@ Batch helpers:
 - `run_scheduler.bat`
 - `setup_windows.bat`
 
+## Railway Deployment
+
+Railway uses `railpack.json` for the start command:
+
+```text
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Required Railway variables:
+
+```env
+DATABASE_URL=postgresql://postgres:<URL_ENCODED_PASSWORD>@db.<SUPABASE_PROJECT_REF>.supabase.co:5432/postgres
+SECRET_KEY=<long-random-secret>
+```
+
+For Supabase passwords, URL-encode special characters before putting the value in `DATABASE_URL`.
+For example, `@` becomes `%40` and `%` becomes `%25`.
+
 ## Main Areas
 
 Buyer workspace:
