@@ -75,8 +75,12 @@ function scrapeMessage(result) {
     const logs = result?.source_logs || [];
     const failures = logs.filter(log => log.status === "failed" || log.message);
     const detail = failures.map(log => `${log.source || "Source"}: ${log.message || log.status}`).join(" | ");
+    const extra = [];
+    if (result?.used_default_keywords) extra.push(`used starter keywords: ${(result.keywords || []).join(", ")}`);
+    else if (result?.keyword_count !== undefined) extra.push(`${result.keyword_count} keyword(s) searched`);
+    if (result?.removed_low_priority) extra.push(`${result.removed_low_priority} low-priority tender(s) removed`);
     const base = `Scrape finished. Inserted ${result?.inserted || 0}, scored ${result?.scored || 0}.`;
-    return detail ? `${base} ${detail}` : base;
+    return [base, detail, extra.join("; ")].filter(Boolean).join(" ");
 }
 
 function pageTitle(path) {

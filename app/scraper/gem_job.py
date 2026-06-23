@@ -12,6 +12,8 @@ from app.database.db_connection import get_db
 from app.database.models import AppSetting, CompanyProfile, KeywordPerformance, ScrapeKeyword, ScrapeRun, Tender, TenderTracking, User
 from app.scraper.runner import run_gem_keyword_scraper
 
+DEFAULT_BOOTSTRAP_TERMS = ["iot", "automation", "software", "hardware", "security"]
+
 
 def run_gem_job(user_id=None, trigger="manual"):
     db = next(get_db())
@@ -32,6 +34,10 @@ def run_gem_job(user_id=None, trigger="manual"):
         else:
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
+        used_default_keywords = False
+        if not expanded_keywords and trigger == "manual" and not is_gem_alert:
+            expanded_keywords.extend(DEFAULT_BOOTSTRAP_TERMS)
+            used_default_keywords = True
         rotation_offset = int(setting_value(db, user_id, "keyword_rotation_offset", "0") or "0")
         keywords = rotate_terms(expanded_keywords, rotation_offset, limit=10)
         if expanded_keywords:
@@ -83,6 +89,16 @@ def run_gem_job(user_id=None, trigger="manual"):
         failed_sources = [log["source"] for log in source_logs if log["status"] == "failed"]
         status = "failed" if failed_sources else "success"
         message = "; ".join(log.get("message", "") for log in source_logs if log.get("message"))
+        if used_default_keywords:
+            default_message = "No active keywords/profile terms were configured, so default starter keywords were used: " + ", ".join(keywords)
+            message = (message + "; " if message else "") + default_message
+            if source_logs:
+                source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + default_message
+            else:
+                source_logs.append({"source": "GeM", "status": "success", "message": default_message, "inserted_ids": []})
+        if inserted == 0 and not failed_sources and not source_logs:
+            message = "Scrape completed but returned no source logs. Add active keywords or complete the company profile, then retry."
+            source_logs.append({"source": "GeM", "status": "success", "message": message, "inserted_ids": []})
         run.status = status
         run.inserted_count = inserted
         run.scored_count = scored
@@ -100,6 +116,9 @@ def run_gem_job(user_id=None, trigger="manual"):
             "removed_low_priority": removed_low_priority,
             "failed_sources": failed_sources,
             "source_logs": source_logs,
+            "keyword_count": len(keywords),
+            "keywords": keywords,
+            "used_default_keywords": used_default_keywords,
         }
     except Exception as e:
         if run:
