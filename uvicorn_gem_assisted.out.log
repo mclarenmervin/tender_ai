@@ -1,0 +1,22 @@
+INFO:     127.0.0.1:62482 - "GET /dashboard/seller/gem-alerts HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62487 - "GET /dashboard/seller/gem-alerts HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54979 - "GET /dashboard/seller HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54979 - "GET /static/react/dashboard.css?v=20260622-seller-gem-alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56463 - "GET /static/react/dashboard.js?v=20260622-seller-gem-alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56463 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56463 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54979 - "GET /api/seller/readiness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61485 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59936 - "GET /api/seller/gem-alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59936 - "GET /api/seller/gem-alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61063 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53156 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53156 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63205 - "GET /api/seller/gem-bids HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62960 - "POST /api/seller/gem-bids/sync-now HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:61284 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63205 - "GET /api/seller/gem-bids HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61284 - "POST /api/seller/gem-bids/sync-now HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:60089 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50992 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50992 - "GET /api/seller/gem-login HTTP/1.1" 200 OK

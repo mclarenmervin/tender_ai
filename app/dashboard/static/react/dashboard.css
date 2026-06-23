@@ -868,6 +868,10 @@ textarea {
     display: grid;
     gap: 10px;
 }
+.nav-group {
+    display: grid;
+    gap: 4px;
+}
 .nav-section {
     color: #94a3b8;
     font-size: 11px;
@@ -887,6 +891,9 @@ textarea {
     font: inherit;
     text-decoration: none;
     cursor: pointer;
+    display: block;
+    width: 100%;
+    line-height: 1.25;
 }
 .nav button.active,
 .nav button:hover,
@@ -1030,6 +1037,15 @@ button.primary {
 button:disabled {
     opacity: .55;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    filter: grayscale(.12);
+}
+button.primary:disabled,
+button.danger:disabled {
+    background: #eef2f7;
+    border: 1px solid #dbe3ef;
+    color: #94a3b8;
 }
 .small {
     padding: 8px 10px;
@@ -1919,6 +1935,31 @@ td {
 .log-list li:first-child { border-top: 0; }
 .green { color: #16a34a; }
 .red { color: #dc2626; }
+.gem-bid-filter-card {
+    margin-bottom: 16px;
+}
+.inline-filters {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(220px, 320px) auto;
+    gap: 12px;
+    align-items: end;
+}
+.inline-filters .field-block {
+    margin: 0;
+}
+.filter-count {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 900;
+    padding: 0 14px;
+    white-space: nowrap;
+}
 .keyword-form {
     display: grid;
     grid-template-columns: 1fr 160px 1fr auto;
@@ -2128,6 +2169,118 @@ select[multiple] {
 .seller-analytics-summary .tile strong {
     overflow-wrap: anywhere;
 }
+.gem-login-grid {
+    grid-template-columns: minmax(360px, 1fr) minmax(280px, .8fr);
+}
+.gem-login-card input[type="password"] {
+    letter-spacing: 1px;
+}
+.gem-login-card .hero-actions,
+.gem-assisted-actions {
+    align-items: center;
+}
+.gem-login-card .hero-actions button,
+.gem-assisted-actions button {
+    min-height: 42px;
+}
+.gem-assisted-panel {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    border: 1px solid #dbeafe;
+    background:
+        linear-gradient(135deg, rgba(239,246,255,.88), rgba(236,253,245,.76));
+    border-radius: 8px;
+    padding: 14px;
+    margin: 14px 0;
+}
+.gem-assisted-copy h4 {
+    margin: 0 0 8px;
+    font-size: 15px;
+}
+.gem-assisted-copy ol {
+    margin: 0;
+    padding-left: 20px;
+    color: #475569;
+    line-height: 1.55;
+    font-size: 14px;
+}
+.gem-assisted-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+.gem-window-status {
+    display: grid;
+    gap: 4px;
+    border: 1px solid #bbf7d0;
+    background: #f0fdf4;
+    color: #14532d;
+    border-radius: 8px;
+    padding: 11px 12px;
+    margin-bottom: 10px;
+}
+.gem-window-status span,
+.gem-status-line {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #64748b;
+}
+.gem-window-status strong {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+.gem-status-line {
+    margin: 6px 0 10px;
+}
+.gem-bid-form,
+.gem-bid-fields {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 10px;
+    align-items: end;
+}
+.gem-bid-fields.read-only {
+    align-items: stretch;
+}
+.readonly-field {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+.readonly-field span {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+.readonly-field strong {
+    color: #0f172a;
+    overflow-wrap: anywhere;
+}
+.gem-bid-list {
+    display: grid;
+    gap: 14px;
+}
+.gem-bid-card {
+    border-left: 4px solid #94a3b8;
+}
+.gem-bid-card.won {
+    border-left-color: #16a34a;
+}
+.gem-bid-card.lost,
+.gem-bid-card.cancelled {
+    border-left-color: #dc2626;
+}
+.gem-bid-log {
+    margin-top: 10px;
+}
 @media (max-width: 900px) {
     .site-nav {
         grid-template-columns: 1fr;
@@ -2206,7 +2359,15 @@ select[multiple] {
     .market-layout,
     .reports-layout,
     .market-leaders,
-    .opportunity-grid { grid-template-columns: 1fr; }
+    .opportunity-grid,
+    .gem-login-grid,
+    .gem-assisted-panel,
+    .gem-bid-form,
+    .inline-filters,
+    .gem-bid-fields { grid-template-columns: 1fr; }
+    .gem-assisted-actions {
+        justify-content: flex-start;
+    }
     .buyer-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .market-leaders { min-width: 0; width: 100%; }
     .buyer-hero input,

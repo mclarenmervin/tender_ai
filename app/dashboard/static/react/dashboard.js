@@ -16,12 +16,14 @@ const buyerNav = [
     ["Tenders", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"]]],
     ["Workflow", [["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
     ["Intelligence", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market Intelligence"], ["/dashboard/reports", "Executive Reports"], ["/dashboard/buyers", "Buyer Intelligence"], ["/dashboard/competitors", "Competitor Intelligence"]]],
-    ["Automation", [["/dashboard/admin", "Admin"], ["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/gem-alerts", "GeM Alerts"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Delete Data"]]],
+    ["Automation", [["/dashboard/admin", "Admin"], ["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Delete Data"]]],
     ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
 ];
 
 const sellerNav = [
-    ["Seller", [["/dashboard/seller", "Seller Dashboard"], ["/dashboard/seller/analytics", "Analytics"], ["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
+    ["Seller", [["/dashboard/seller", "Seller Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
+    ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Participated Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
+    ["Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
     ["Bid Work", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
     ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
 ];
@@ -84,6 +86,9 @@ function pageTitle(path) {
     if (path === "/dashboard/buyer") return "Buyer Dashboard";
     if (path === "/dashboard/seller") return "Seller Dashboard";
     if (path === "/dashboard/seller/analytics") return "Seller Analytics";
+    if (path === "/dashboard/seller/gem-login") return "GeM Login";
+    if (path === "/dashboard/seller/gem-bids") return "GeM Bid Tracking";
+    if (path === "/dashboard/seller/gem-alerts") return "GeM Alerts";
     if (path === "/dashboard/seller/readiness") return "Seller Readiness";
     if (path === "/dashboard/seller/catalogue") return "Catalogue Tracker";
     if (path === "/dashboard/seller/opportunities") return "Opportunity Matching";
@@ -506,7 +511,7 @@ function Shell({ children, me, path }) {
             h("div", { className: "brand" }, "Tender ", h("span", null, "AI")),
             h("div", { className: "muted" }, me?.role === "seller" ? "Seller Workspace" : "Buyer Workspace"),
             h("nav", { className: "nav" },
-                sections.map(([section, items]) => h("div", { key: section },
+                sections.map(([section, items]) => h("div", { className: "nav-group", key: section },
                     h("div", { className: "nav-section" }, section),
                     items.map(([href, label]) => h("button", {
                         key: href,
@@ -624,6 +629,7 @@ function SellerDashboardPage() {
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/analytics") }, "Analytics"),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/readiness") }, "Readiness"),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/gem-bids") }, "GeM Bids"),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA"),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/orders") }, "Orders"),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/high-priority") }, "High Priority"),
@@ -738,6 +744,347 @@ function SellerAnalyticsPage() {
                 ) : h("div", { className: "empty" }, "No matched opportunities yet."),
                 h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/opportunities") }, "Open Opportunity Match")
             )
+        )
+    );
+}
+
+function SellerGemLoginPage() {
+    const blank = { gem_user_id: "", password: "", login_url: "https://sso.gem.gov.in/ARXSSO/oauth/login", login_mode: "manual_otp" };
+    const [form, setForm] = useState(blank);
+    const [credential, setCredential] = useState(null);
+    const [assisted, setAssisted] = useState({ active: false });
+    const [message, setMessage] = useState("");
+    const [saving, setSaving] = useState(false);
+    async function load() {
+        const data = await api("/api/seller/gem-login");
+        setCredential(data);
+        setForm({
+            gem_user_id: data.gem_user_id || "",
+            password: "",
+            login_url: data.login_url || blank.login_url,
+            login_mode: data.login_mode || "manual_otp",
+        });
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    async function startAssistedLogin() {
+        setSaving(true);
+        setMessage("Opening GeM login window...");
+        try {
+            const result = await api("/api/seller/gem-login/start", { method: "POST" });
+            setCredential(result.credential);
+            setAssisted({ active: true, url: result.url, started_at: result.started_at });
+            setMessage(result.message || "GeM login window opened. Complete OTP/CAPTCHA there, then capture session here.");
+        } catch (err) {
+            setMessage(err.message || "Could not start GeM assisted login.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function checkAssistedLogin() {
+        setSaving(true);
+        setMessage("Checking GeM login window...");
+        try {
+            const result = await api("/api/seller/gem-login/assisted-status");
+            setAssisted(result);
+            setMessage(result.message || (result.active ? "GeM login window is active." : "No GeM login window is active."));
+        } catch (err) {
+            setMessage(err.message || "Could not check GeM login window.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function captureAssistedLogin() {
+        setSaving(true);
+        setMessage("Capturing authorized GeM session...");
+        try {
+            const result = await api("/api/seller/gem-login/capture", { method: "POST" });
+            setCredential(result.credential);
+            setAssisted({ active: false });
+            setMessage(result.message || "GeM session captured securely.");
+        } catch (err) {
+            setMessage(err.message || "Could not capture GeM session. Complete OTP/CAPTCHA in the opened GeM browser first.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function cancelAssistedLogin() {
+        setSaving(true);
+        setMessage("Closing GeM login window...");
+        try {
+            const result = await api("/api/seller/gem-login/cancel", { method: "POST" });
+            setCredential(result.credential);
+            setAssisted({ active: false });
+            setMessage(result.message || "Assisted GeM login cancelled.");
+        } catch (err) {
+            setMessage(err.message || "Could not cancel GeM assisted login.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function save(event) {
+        event.preventDefault();
+        setSaving(true);
+        setMessage("Saving GeM login...");
+        try {
+            const result = await api("/api/seller/gem-login", { method: "POST", body: JSON.stringify(form) });
+            setCredential(result.credential);
+            setForm({ ...form, password: "" });
+            setMessage("GeM login saved securely.");
+        } catch (err) {
+            setMessage(err.message || "Could not save GeM login.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function checkLogin() {
+        setSaving(true);
+        setMessage("Checking saved GeM session...");
+        try {
+            const result = await api("/api/seller/gem-login/check", { method: "POST" });
+            setCredential(result.credential);
+            setMessage(result.message || "GeM session checked.");
+        } catch (err) {
+            setMessage(err.message || "Could not check GeM login.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function clearSession() {
+        setSaving(true);
+        setMessage("Clearing saved GeM session...");
+        try {
+            const result = await api("/api/seller/gem-login/session", { method: "DELETE" });
+            setCredential(result.credential);
+            setMessage(result.message || "Saved GeM session cleared.");
+        } catch (err) {
+            setMessage(err.message || "Could not clear GeM session.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    async function removeLogin() {
+        setSaving(true);
+        setMessage("Removing GeM login...");
+        try {
+            const result = await api("/api/seller/gem-login", { method: "DELETE" });
+            setCredential(result.credential);
+            setForm(blank);
+            setMessage("GeM login removed.");
+        } catch (err) {
+            setMessage(err.message || "Could not remove GeM login.");
+        } finally {
+            setSaving(false);
+        }
+    }
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel gem-login-hero" },
+            h("div", null,
+                h("h2", null, "GeM Portal Secure Login"),
+                h("p", null, "Store GeM seller credentials and reuse an authorized encrypted session for participated-bid tracking. OTP/CAPTCHA is only needed again when GeM expires the saved session.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/opportunities") }, "Opportunity Match"),
+                h("button", { onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "admin-grid gem-login-grid" },
+            h("section", { className: "card gem-login-card" },
+                h("h3", null, "Credential Vault"),
+                h("form", { className: "stack", onSubmit: save },
+                    h("label", { className: "field-block" }, h("span", null, "GeM user ID"), h("input", { value: form.gem_user_id, onChange: e => setForm({ ...form, gem_user_id: e.target.value }), placeholder: "Authorized GeM seller login ID", required: true })),
+                    h("label", { className: "field-block" }, h("span", null, "Password"), h("input", { type: "password", value: form.password, onChange: e => setForm({ ...form, password: e.target.value }), placeholder: credential?.password_saved ? "Saved password encrypted" : "GeM password", autoComplete: "new-password" })),
+                    h("label", { className: "field-block" }, h("span", null, "Login URL"), h("input", { value: form.login_url, onChange: e => setForm({ ...form, login_url: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Login mode"), h("select", { value: form.login_mode, onChange: e => setForm({ ...form, login_mode: e.target.value }) },
+                        h("option", { value: "manual_otp" }, "One-time OTP authorization"),
+                        h("option", { value: "assisted_browser" }, "Assisted browser session")
+                    )),
+                    h("div", { className: "hero-actions" },
+                        h("button", { className: "primary", disabled: saving }, saving ? "Saving..." : "Save Login"),
+                        h("button", { type: "button", disabled: saving || !credential?.configured, onClick: checkLogin }, "Check Session"),
+                        h("button", { type: "button", disabled: saving || !credential?.session_saved, onClick: clearSession }, "Clear Session"),
+                        h("button", { type: "button", className: "danger", disabled: saving || !credential?.configured, onClick: removeLogin }, "Remove")
+                    )
+                )
+            ),
+            h("section", { className: "card" },
+                h("h3", null, "Authorization Status"),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Configured"), h("strong", null, credential?.configured ? "Yes" : "No")),
+                    h("div", null, h("span", null, "Password"), h("strong", null, credential?.password_saved ? "Encrypted" : "Not saved")),
+                    h("div", null, h("span", null, "Session"), h("strong", null, credential?.session_valid ? "Ready" : credential?.session_saved ? "Expired" : "Not captured")),
+                    h("div", null, h("span", null, "Expires"), h("strong", null, credential?.session_expires_at || "Not set")),
+                    h("div", null, h("span", null, "Captured"), h("strong", null, credential?.session_captured_at || "Not captured")),
+                    h("div", null, h("span", null, "Last check"), h("strong", null, credential?.last_login_checked_at || "Not checked"))
+                ),
+                h("div", { className: credential?.session_valid ? "notice ok" : "notice" },
+                    credential?.session_valid
+                        ? "Saved GeM session is ready. Bid sync can reuse it without asking for OTP."
+                        : "After one authorized GeM login, the encrypted session can be reused until GeM expires it."
+                ),
+                h("div", { className: "gem-assisted-panel" },
+                    h("div", { className: "gem-assisted-copy" },
+                        h("h4", null, "Assisted GeM Login"),
+                        h("ol", null,
+                            h("li", null, "Open the real GeM portal."),
+                            h("li", null, "Complete OTP/CAPTCHA in that browser window."),
+                            h("li", null, "Return here and capture the session.")
+                        )
+                    ),
+                    h("div", { className: "gem-assisted-actions" },
+                        h("button", { className: "primary", disabled: saving || !credential?.configured, onClick: startAssistedLogin }, "Start GeM Login"),
+                        h("button", { disabled: saving, onClick: checkAssistedLogin }, "Check Window"),
+                        h("button", { disabled: saving || !assisted.active, onClick: captureAssistedLogin }, "Capture Session"),
+                        h("button", { className: "danger", disabled: saving || !assisted.active, onClick: cancelAssistedLogin }, "Cancel")
+                    )
+                ),
+                assisted?.active ? h("div", { className: "gem-window-status" },
+                    h("span", null, "Window Active"),
+                    h("strong", null, assisted.url || "GeM login browser opened")
+                ) : null,
+                credential?.last_login_status ? h("div", { className: "gem-status-line" }, credential.last_login_status.replaceAll("_", " ")) : null,
+                credential?.last_login_error ? h("div", { className: credential.last_login_status === "decrypt_failed" ? "notice err" : "notice" }, credential.last_login_error) : null
+            )
+        )
+    );
+}
+
+function SellerGemBidsPage() {
+    const [items, setItems] = useState([]);
+    const [summary, setSummary] = useState(null);
+    const [credential, setCredential] = useState(null);
+    const [options, setOptions] = useState({ technical: [], qualification: [], representation: [], financial: [], final: [] });
+    const [filters, setFilters] = useState({ status: "all", search: "" });
+    const [message, setMessage] = useState("");
+    const [syncing, setSyncing] = useState(false);
+    const [autoSynced, setAutoSynced] = useState(false);
+    async function load() {
+        const data = await api("/api/seller/gem-bids");
+        setItems(data.items || []);
+        setSummary(data.summary || null);
+        setCredential(data.credential || null);
+        setOptions(data.status_options || options);
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    useEffect(() => {
+        if (autoSynced) return;
+        setAutoSynced(true);
+        syncNow(true);
+    }, [autoSynced]);
+    async function updateItem(item, patch) {
+        const next = { ...item, ...patch };
+        setItems(items.map(row => row.id === item.id ? next : row));
+        const result = await api(`/api/seller/gem-bids/${item.id}`, { method: "POST", body: JSON.stringify(next) });
+        setItems(items.map(row => row.id === item.id ? result.item : row));
+        setSummary(result.summary || summary);
+    }
+    async function deleteItem(item) {
+        const result = await api(`/api/seller/gem-bids/${item.id}`, { method: "DELETE" });
+        setItems(items.filter(row => row.id !== item.id));
+        setSummary(result.summary || summary);
+        setMessage("Participated bid removed.");
+    }
+    async function syncNow(automatic = false) {
+        setSyncing(true);
+        setMessage(automatic ? "Fetching participated bids from GeM..." : "Checking GeM participated-bid sync...");
+        try {
+            const result = await api("/api/seller/gem-bids/sync-now", { method: "POST" });
+            setMessage(result.message || "Sync check finished.");
+            await load();
+        } catch (err) {
+            setMessage(err.message || (automatic ? "Could not auto-fetch participated bids." : "Could not start GeM sync."));
+        } finally {
+            setSyncing(false);
+        }
+    }
+    const opts = values => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    const filteredItems = useMemo(() => {
+        const query = filters.search.trim().toLowerCase();
+        return items.filter(item => {
+            const haystack = [item.bid_number, item.department, item.district, item.item_name, item.l1_bidder_name, item.disqualification_reason].join(" ").toLowerCase();
+            if (query && !haystack.includes(query)) return false;
+            if (filters.status === "alerts") return (item.alerts || []).length > 0;
+            if (filters.status === "technical_open") return item.technical_status === "opened";
+            if (filters.status === "disqualified") return item.our_qualification_status === "disqualified";
+            if (filters.status === "representation_due") return (item.alerts || []).some(alert => alert.toLowerCase().includes("representation deadline"));
+            if (filters.status === "financial_open") return item.financial_status === "opened";
+            if (filters.status === "won_lost") return ["won", "lost", "cancelled"].includes(item.final_status);
+            return true;
+        });
+    }, [items, filters]);
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel gem-bids-hero" },
+            h("div", null,
+                h("h2", null, "GeM Participated Bids"),
+                h("p", null, "This page fetches participated bids from the logged-in GeM seller account and tracks technical, representation, financial, L1, and final status updates.")
+            ),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", disabled: syncing, onClick: () => syncNow(false) }, syncing ? "Syncing..." : "Sync GeM Status"),
+                h("a", { className: "download-btn", href: "/exports/seller/gem-bids/csv" }, "Export CSV"),
+                h("a", { className: "download-btn", href: "/exports/seller/gem-bids/xlsx" }, "Export Excel"),
+                h("a", { className: "download-btn", href: "/exports/seller/gem-bids/daily/xlsx" }, "Daily Excel"),
+                h("button", { onClick: () => navigate("/dashboard/seller/gem-login") }, "GeM Login")
+            )
+        ),
+        credential ? h("div", { className: credential.session_valid ? "notice ok" : "notice err" },
+            credential.session_valid
+                ? `GeM session ready. Expires ${credential.session_expires_at || "when GeM expires it"}.`
+                : "GeM session is not ready. Open Secure Login and complete one authorized GeM login before automatic sync."
+        ) : null,
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "summary six gem-bids-summary" },
+            [["Total", summary?.total || 0], ["Technical Open", summary?.technical_opened || 0], ["Disqualified", summary?.disqualified || 0], ["Rep. Due", summary?.representation_due || 0], ["Financial Open", summary?.financial_opened || 0], ["Alerts", summary?.alerts || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card gem-bid-filter-card" },
+            h("div", { className: "inline-filters" },
+                h("label", { className: "field-block" }, h("span", null, "Search"), h("input", { value: filters.search, onChange: e => setFilters({ ...filters, search: e.target.value }), placeholder: "Bid no., buyer, district, item, L1, reason" })),
+                h("label", { className: "field-block" }, h("span", null, "View"), h("select", { value: filters.status, onChange: e => setFilters({ ...filters, status: e.target.value }) },
+                    h("option", { value: "all" }, "All participated bids"),
+                    h("option", { value: "alerts" }, "Needs attention"),
+                    h("option", { value: "technical_open" }, "Technical opened"),
+                    h("option", { value: "disqualified" }, "Disqualified"),
+                    h("option", { value: "representation_due" }, "Representation due"),
+                    h("option", { value: "financial_open" }, "Financial opened"),
+                    h("option", { value: "won_lost" }, "Final result")
+                )),
+                h("div", { className: "filter-count" }, `${filteredItems.length} shown`)
+            )
+        ),
+        h("section", { className: "gem-bid-list" },
+            filteredItems.length ? filteredItems.map(item => h("article", { className: `catalogue-card gem-bid-card ${item.final_status}`, key: item.id },
+                h("div", { className: "catalogue-card-head" },
+                    h("div", null,
+                        h("h3", null, item.bid_number),
+                        h("p", null, [item.department, item.district, item.item_name].filter(Boolean).join(" | "))
+                    ),
+                    h("div", { className: `readiness-score compact ${item.our_qualification_status === "disqualified" ? "incomplete" : item.final_status === "won" ? "ready" : "needs_review"}` },
+                        h("span", null, item.final_status?.replaceAll("_", " ") || "status"),
+                        h("strong", null, item.our_financial_rank || "-")
+                    )
+                ),
+                h("div", { className: "pipeline-meta" },
+                    h("span", null, `Value Rs. ${money(item.bid_value || 0)}`),
+                    h("span", null, `EMD Rs. ${money(item.emd_amount || 0)}`),
+                    h("span", null, `Start ${item.bid_start_date || "NA"}`),
+                    h("span", null, `End ${item.bid_end_date || "NA"}`),
+                    h("span", null, `Updated ${item.last_updated_at || "NA"}`)
+                ),
+                (item.alerts || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.alerts.map(alert => h("span", { key: alert }, alert))) : h("div", { className: "notice ok" }, "No active alerts."),
+                h("div", { className: "gem-bid-fields read-only" },
+                    [["Technical", item.technical_status], ["Our status", item.our_qualification_status], ["Qualified", item.qualified_bidders_count || 0], ["Disqualified", item.disqualified_bidders_count || 0], ["Representation", item.representation_status], ["Rep. deadline", item.representation_end_date || "NA"], ["Financial", item.financial_status], ["L1", item.l1_bidder_name || "NA"], ["L1 price", item.l1_price ? `Rs. ${money(item.l1_price)}` : "NA"], ["Our rank", item.our_financial_rank || "NA"], ["Our price", item.our_quoted_price ? `Rs. ${money(item.our_quoted_price)}` : "NA"], ["Difference", item.price_difference ? `Rs. ${money(item.price_difference)}` : "NA"], ["Final", item.final_status], ["Corrigendum", item.corrigendum_issued ? "Yes" : "No"], ["Cancelled", item.cancelled ? "Yes" : "No"]].map(([label, value]) =>
+                        h("div", { className: "readonly-field", key: label }, h("span", null, label), h("strong", null, String(value || "NA").replaceAll("_", " ")))
+                    )
+                ),
+                item.disqualification_reason ? h("div", { className: "notice err" }, `Disqualification reason: ${item.disqualification_reason}`) : null,
+                item.qualified_bidders?.length ? h("div", { className: "notice ok" }, `Qualified bidders: ${item.qualified_bidders.join(", ")}`) : null,
+                item.disqualified_bidders?.length ? h("div", { className: "notice err" }, `Disqualified bidders: ${item.disqualified_bidders.join(", ")}`) : null,
+                item.representation_remarks ? h("div", { className: "notice" }, `Representation remarks: ${item.representation_remarks}`) : null,
+                item.remarks ? h("div", { className: "notice" }, item.remarks) : null,
+                item.logs?.length ? h("details", { className: "gem-bid-log" }, h("summary", null, "Status change logs"), h("ul", { className: "log-list" }, item.logs.slice(0, 8).map(log => h("li", { key: log.id }, `${log.created_at || ""} | ${log.field_name}: ${log.old_value || "-"} -> ${log.new_value || "-"}`)))) : null,
+                h("div", { className: "notice" }, "Fetched from GeM. Manual editing is disabled on this page.")
+            )) : h("div", { className: "empty" }, syncing ? "Fetching participated bids from GeM..." : items.length ? "No bids match this filter." : "No participated bids fetched yet. Save GeM login, then sync this page.")
         )
     );
 }
@@ -2016,7 +2363,7 @@ function GemAlertsPage() {
     const [settings, setSettings] = useState(null);
     const [message, setMessage] = useState("");
     const [running, setRunning] = useState(false);
-    async function load() { setSettings(await api("/api/admin/gem-alerts")); }
+    async function load() { setSettings(await api("/api/seller/gem-alerts")); }
     useEffect(() => { load().catch(e => setMessage(e.message)); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading GeM alerts...");
     const selectedValues = field => settings[field] || [];
@@ -2043,7 +2390,7 @@ function GemAlertsPage() {
     async function save(e) {
         e.preventDefault();
         setMessage("Saving GeM alert settings...");
-        const result = await api("/api/admin/gem-alerts", { method: "POST", body: JSON.stringify(settings) });
+        const result = await api("/api/seller/gem-alerts", { method: "POST", body: JSON.stringify(settings) });
         setSettings({ ...settings, ...result });
         setMessage("GeM alerts saved.");
     }
@@ -2051,7 +2398,7 @@ function GemAlertsPage() {
         setRunning(true);
         setMessage("Running GeM alert check...");
         try {
-            const result = await api("/api/admin/gem-alerts/run-now", { method: "POST" });
+            const result = await api("/api/seller/gem-alerts/run-now", { method: "POST" });
             setMessage(`GeM alert check finished. Inserted ${result.inserted || 0}, scored ${result.scored || 0}, Telegram ${result.alerts_sent || 0}, Email ${result.emails_sent || 0}.`);
             await load();
         } catch (err) {
@@ -2273,6 +2620,8 @@ function App() {
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
     else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
+    else if (route === "/dashboard/seller/gem-login") page = h(SellerGemLoginPage);
+    else if (route === "/dashboard/seller/gem-bids") page = h(SellerGemBidsPage);
     else if (route === "/dashboard/seller/readiness") page = h(SellerReadinessPage);
     else if (route === "/dashboard/seller/catalogue") page = h(SellerCataloguePage);
     else if (route === "/dashboard/seller/opportunities") page = h(SellerOpportunitiesPage);
@@ -2292,7 +2641,7 @@ function App() {
     else if (route === "/dashboard/admin") page = h(AdminPage);
     else if (route === "/dashboard/admin/keywords") page = h(KeywordsPage);
     else if (route === "/dashboard/admin/scoring") page = h(ScoringPage);
-    else if (route === "/dashboard/admin/gem-alerts") page = h(GemAlertsPage);
+    else if (route === "/dashboard/seller/gem-alerts" || route === "/dashboard/admin/gem-alerts") page = h(GemAlertsPage);
     else if (route === "/dashboard/admin/settings") page = h(SettingsPage);
     else if (route === "/dashboard/admin/delete") page = h(DeletePage);
     else if (route === "/dashboard/company-profile") page = h(CompanyProfilePage);

@@ -4,10 +4,13 @@ import re
 import subprocess
 import sys
 import zipfile
+import asyncio
 from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape
 import csv
+import base64
+import hashlib
 import io
 import requests
 from pathlib import Path
@@ -16,11 +19,12 @@ from fastapi import FastAPI,Depends,HTTPException,Request,Form
 from fastapi.responses import FileResponse,RedirectResponse,Response
 from fastapi.staticfiles import StaticFiles
 from pypdf import PdfReader
+from cryptography.fernet import Fernet, InvalidToken
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.database.db_connection import Base,engine,get_db
-from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment
-from app.auth import hash_password,verify_password,create_access_token,get_current_user
+from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
+from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
 from app.alerts.daily_digest import send_daily_digest
@@ -29,6 +33,8 @@ from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, exp
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import start_scheduler
 from app.tracking.status_tracker import update_tender_statuses
+if sys.platform.startswith('win'):
+    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 load_dotenv(); app=FastAPI(title='Tender AI Agent MVP',version='1.0.0')
 BASE_DIR=Path(__file__).resolve().parent.parent
 STATIC_DIR=Path(__file__).parent/'dashboard'/'static'
@@ -97,6 +103,15 @@ def ensure_schema_updates():
             "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_tender_id ON seller_bid_participations(tender_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_user_id ON seller_order_fulfillments(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_tender_id ON seller_order_fulfillments(tender_id)",
+            "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS encrypted_storage_state TEXT",
+            "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS session_status VARCHAR(50) DEFAULT 'not_started'",
+            "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS session_captured_at TIMESTAMP WITH TIME ZONE",
+            "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS session_expires_at TIMESTAMP WITH TIME ZONE",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_gem_portal_credentials_user_id ON gem_portal_credentials(user_id)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_user_gem_participated_bid ON gem_participated_bids(user_id,bid_number)",
+            "CREATE INDEX IF NOT EXISTS ix_gem_participated_bids_user_id ON gem_participated_bids(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_gem_bid_status_logs_user_id ON gem_bid_status_logs(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_gem_bid_status_logs_bid_id ON gem_bid_status_logs(bid_id)",
         ]:
             conn.exec_driver_sql(ddl)
 
@@ -259,6 +274,14 @@ def parse_date(value):
         return None
     try:
         return date.fromisoformat(value)
+    except (TypeError,ValueError):
+        return None
+
+def parse_datetime(value):
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value).replace('Z','+00:00')).replace(tzinfo=None)
     except (TypeError,ValueError):
         return None
 
@@ -848,6 +871,438 @@ def seller_opportunity_summary(items):
         'already_in_workflow':sum(1 for item in items if item.get('bid_workflow')),
     }
 
+GEM_LOGIN_URL='https://sso.gem.gov.in/ARXSSO/oauth/login'
+GEM_LOGIN_MODES={'manual_otp','assisted_browser'}
+GEM_ASSISTED_SESSIONS={}
+
+def gem_fernet():
+    material=(SECRET_KEY or 'change_me').encode('utf-8')
+    key=base64.urlsafe_b64encode(hashlib.sha256(material).digest())
+    return Fernet(key)
+
+def encrypt_secret(value):
+    if not value:
+        return None
+    return gem_fernet().encrypt(value.encode('utf-8')).decode('utf-8')
+
+def decrypt_secret(value):
+    if not value:
+        return ''
+    try:
+        return gem_fernet().decrypt(value.encode('utf-8')).decode('utf-8')
+    except InvalidToken:
+        return ''
+
+def gem_session_is_valid(item):
+    if not item or not item.encrypted_storage_state or not item.session_expires_at:
+        return False
+    expires_at=item.session_expires_at
+    if getattr(expires_at,'tzinfo',None):
+        expires_at=expires_at.replace(tzinfo=None)
+    return expires_at>datetime.utcnow()
+
+async def close_gem_assisted_session(user_id):
+    session=GEM_ASSISTED_SESSIONS.pop(user_id,None)
+    if not session:
+        return
+    for key in ['context','browser']:
+        try:
+            await session[key].close()
+        except Exception:
+            pass
+    try:
+        await session['playwright'].stop()
+    except Exception:
+        pass
+
+async def fill_gem_login_if_possible(page,gem_user_id,password):
+    username_selectors=[
+        'input[name="username"]','input[name="userName"]','input[name="loginId"]','input[name="email"]',
+        'input[id*="user" i]','input[id*="login" i]','input[placeholder*="user" i]','input[placeholder*="login" i]',
+    ]
+    password_selectors=['input[type="password"]','input[name="password"]','input[id*="password" i]']
+    filled=[]
+    for selector,value,label in [(username_selectors,gem_user_id,'user ID'),(password_selectors,password,'password')]:
+        if not value:
+            continue
+        for candidate in selector:
+            try:
+                locator=page.locator(candidate).first
+                if await locator.count():
+                    await locator.fill(value,timeout=2500)
+                    filled.append(label)
+                    break
+            except Exception:
+                continue
+    return filled
+
+def gem_credential_to_dict(item):
+    if not item:
+        return {
+            'configured':False,
+            'gem_user_id':'',
+            'password_saved':False,
+            'session_saved':False,
+            'session_valid':False,
+            'login_url':GEM_LOGIN_URL,
+            'login_mode':'manual_otp',
+            'status':'not_configured',
+            'session_status':'not_started',
+            'session_captured_at':None,
+            'session_expires_at':None,
+            'last_login_checked_at':None,
+            'last_login_status':'not_checked',
+            'last_login_error':'',
+        }
+    session_valid=gem_session_is_valid(item)
+    return {
+        'configured':bool(item.gem_user_id and item.encrypted_password),
+        'gem_user_id':item.gem_user_id or '',
+        'password_saved':bool(item.encrypted_password),
+        'session_saved':bool(item.encrypted_storage_state),
+        'session_valid':session_valid,
+        'login_url':item.login_url or GEM_LOGIN_URL,
+        'login_mode':item.login_mode or 'manual_otp',
+        'status':item.status or 'not_configured',
+        'session_status':item.session_status or 'not_started',
+        'session_captured_at':iso(item.session_captured_at),
+        'session_expires_at':iso(item.session_expires_at),
+        'last_login_checked_at':iso(item.last_login_checked_at),
+        'last_login_status':item.last_login_status or 'not_checked',
+        'last_login_error':item.last_login_error or '',
+        'updated_at':iso(item.updated_at),
+    }
+
+GEM_TECHNICAL_STATUS_OPTIONS=['pending','opened']
+GEM_QUALIFICATION_STATUS_OPTIONS=['pending','qualified','disqualified']
+GEM_REPRESENTATION_STATUS_OPTIONS=['not_applicable','pending','submitted','accepted','rejected']
+GEM_FINANCIAL_STATUS_OPTIONS=['pending','opened']
+GEM_FINAL_STATUS_OPTIONS=['under_evaluation','won','lost','cancelled']
+GEM_BID_EXPORT_COLUMNS=[
+    'Sr. No.','Bid No.','Department','District','Item','Bid Value','EMD','Bid End Date','Technical Status',
+    'Our Qualification Status','Disqualification Reason','Representation Status','Financial Bid Status',
+    'L1 Name','L1 Price','Our Rank','Our Price','Final Status','Last Updated','Remarks'
+]
+GEM_BID_CHANGE_FIELDS=[
+    'technical_status','our_qualification_status','disqualification_reason','qualified_bidders_count',
+    'disqualified_bidders_count','qualified_bidders','disqualified_bidders','representation_allowed',
+    'representation_start_date','representation_end_date','representation_submitted','representation_status',
+    'representation_remarks','financial_status','l1_bidder_name','l1_price','our_financial_rank',
+    'our_quoted_price','price_difference','final_status','corrigendum_issued','cancelled','remarks'
+]
+
+def csv_text_list(value):
+    if not value:
+        return []
+    if isinstance(value,list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    return [item.strip() for item in re.split(r'[\n,;]+',str(value)) if item.strip()]
+
+def gem_bid_alerts(item):
+    alerts=[]
+    if item.technical_status=='opened':
+        alerts.append('Technical bid opened')
+    if item.our_qualification_status=='disqualified':
+        alerts.append('Disqualified: '+(item.disqualification_reason or 'reason not captured'))
+    if item.representation_allowed and item.representation_end_date:
+        days=(item.representation_end_date-date.today()).days
+        if 0<=days<=2 and not item.representation_submitted:
+            alerts.append(f'Representation deadline in {days} day(s)')
+    if item.financial_status=='opened':
+        alerts.append('Financial bid opened')
+    if item.l1_bidder_name or item.l1_price:
+        alerts.append('L1 result declared')
+    if item.cancelled or item.final_status=='cancelled':
+        alerts.append('Bid cancelled')
+    if item.corrigendum_issued:
+        alerts.append('Corrigendum issued')
+    return alerts
+
+def gem_bid_to_dict(item,include_logs=False):
+    data={
+        'id':item.id,
+        'bid_number':item.bid_number or '',
+        'department':item.department or '',
+        'district':item.district or '',
+        'item_name':item.item_name or '',
+        'bid_start_date':iso(item.bid_start_date),
+        'bid_end_date':iso(item.bid_end_date),
+        'bid_value':item.bid_value or '',
+        'emd_amount':item.emd_amount or '',
+        'technical_status':item.technical_status or 'pending',
+        'our_qualification_status':item.our_qualification_status or 'pending',
+        'disqualification_reason':item.disqualification_reason or '',
+        'qualified_bidders_count':item.qualified_bidders_count or 0,
+        'disqualified_bidders_count':item.disqualified_bidders_count or 0,
+        'qualified_bidders':csv_text_list(item.qualified_bidders),
+        'disqualified_bidders':csv_text_list(item.disqualified_bidders),
+        'representation_allowed':bool(item.representation_allowed),
+        'representation_start_date':iso(item.representation_start_date),
+        'representation_end_date':iso(item.representation_end_date),
+        'representation_submitted':bool(item.representation_submitted),
+        'representation_status':item.representation_status or 'pending',
+        'representation_remarks':item.representation_remarks or '',
+        'financial_status':item.financial_status or 'pending',
+        'l1_bidder_name':item.l1_bidder_name or '',
+        'l1_price':item.l1_price or '',
+        'our_financial_rank':item.our_financial_rank or '',
+        'our_quoted_price':item.our_quoted_price or '',
+        'price_difference':item.price_difference or '',
+        'final_status':item.final_status or 'under_evaluation',
+        'corrigendum_issued':bool(item.corrigendum_issued),
+        'cancelled':bool(item.cancelled),
+        'remarks':item.remarks or '',
+        'source_url':item.source_url or '',
+        'alerts':gem_bid_alerts(item),
+        'last_synced_at':iso(item.last_synced_at),
+        'last_updated_at':iso(item.last_updated_at or item.updated_at),
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+    }
+    if include_logs:
+        data['logs']=[
+            {
+                'id':log.id,
+                'field_name':log.field_name,
+                'old_value':log.old_value or '',
+                'new_value':log.new_value or '',
+                'source':log.source or 'manual',
+                'message':log.message or '',
+                'created_at':iso(log.created_at),
+            }
+            for log in sorted(item.logs,key=lambda row:row.created_at or datetime.min,reverse=True)[:50]
+        ]
+    return data
+
+def gem_bid_summary(items):
+    return {
+        'total':len(items),
+        'technical_opened':sum(1 for item in items if item.technical_status=='opened'),
+        'disqualified':sum(1 for item in items if item.our_qualification_status=='disqualified'),
+        'representation_due':sum(1 for item in items if item.representation_allowed and item.representation_end_date and 0<=(item.representation_end_date-date.today()).days<=2 and not item.representation_submitted),
+        'financial_opened':sum(1 for item in items if item.financial_status=='opened'),
+        'won':sum(1 for item in items if item.final_status=='won'),
+        'lost':sum(1 for item in items if item.final_status=='lost'),
+        'cancelled':sum(1 for item in items if item.cancelled or item.final_status=='cancelled'),
+        'alerts':sum(len(gem_bid_alerts(item)) for item in items),
+    }
+
+def gem_bid_export_row(index,item):
+    return {
+        'Sr. No.':index,
+        'Bid No.':item.bid_number or '',
+        'Department':item.department or '',
+        'District':item.district or '',
+        'Item':item.item_name or '',
+        'Bid Value':item.bid_value or '',
+        'EMD':item.emd_amount or '',
+        'Bid End Date':iso(item.bid_end_date) or '',
+        'Technical Status':item.technical_status or 'pending',
+        'Our Qualification Status':item.our_qualification_status or 'pending',
+        'Disqualification Reason':item.disqualification_reason or '',
+        'Representation Status':item.representation_status or 'pending',
+        'Financial Bid Status':item.financial_status or 'pending',
+        'L1 Name':item.l1_bidder_name or '',
+        'L1 Price':item.l1_price or '',
+        'Our Rank':item.our_financial_rank or '',
+        'Our Price':item.our_quoted_price or '',
+        'Final Status':item.final_status or 'under_evaluation',
+        'Last Updated':iso(item.last_updated_at or item.updated_at) or '',
+        'Remarks':item.remarks or '',
+    }
+
+def build_xlsx(headers,rows,sheet_name='Report'):
+    def cell_ref(col,row):
+        name=''
+        while col:
+            col,rem=divmod(col-1,26)
+            name=chr(65+rem)+name
+        return f'{name}{row}'
+    def xml(value):
+        return escape(str(value if value is not None else ''),quote=True)
+    sheet_rows=[]
+    all_rows=[headers]+[[row.get(header,'') for header in headers] for row in rows]
+    for row_index,row in enumerate(all_rows,1):
+        cells=[]
+        for col_index,value in enumerate(row,1):
+            ref=cell_ref(col_index,row_index)
+            cells.append(f'<c r="{ref}" t="inlineStr"><is><t>{xml(value)}</t></is></c>')
+        sheet_rows.append(f'<row r="{row_index}">{"".join(cells)}</row>')
+    widths=''.join(f'<col min="{idx}" max="{idx}" width="{min(max(len(header)+4,12),32)}" customWidth="1"/>' for idx,header in enumerate(headers,1))
+    worksheet=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<cols>{widths}</cols><sheetData>{"".join(sheet_rows)}</sheetData>
+</worksheet>'''
+    workbook=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets><sheet name="{xml(sheet_name)[:31]}" sheetId="1" r:id="rId1"/></sheets>
+</workbook>'''
+    rels='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>'''
+    workbook_rels='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+</Relationships>'''
+    content_types='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>'''
+    buffer=io.BytesIO()
+    with zipfile.ZipFile(buffer,'w',zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr('[Content_Types].xml',content_types)
+        archive.writestr('_rels/.rels',rels)
+        archive.writestr('xl/workbook.xml',workbook)
+        archive.writestr('xl/_rels/workbook.xml.rels',workbook_rels)
+        archive.writestr('xl/worksheets/sheet1.xml',worksheet)
+    return buffer.getvalue()
+
+def gem_bid_change_alert(field,new,bid):
+    value=str(new or '').lower()
+    if field=='technical_status' and value=='opened':
+        return 'Technical bid opened'
+    if field=='our_qualification_status' and value=='disqualified':
+        return 'Disqualified: '+(bid.disqualification_reason or 'reason not captured')
+    if field=='financial_status' and value=='opened':
+        return 'Financial bid opened'
+    if field=='l1_bidder_name' and new:
+        return 'L1 result declared'
+    if field=='l1_price' and new:
+        return 'L1 price declared'
+    if field=='final_status' and value in {'won','lost','cancelled'}:
+        return f'Final bid status: {value}'
+    if field=='cancelled' and bool(new):
+        return 'Bid cancelled'
+    if field=='corrigendum_issued' and bool(new):
+        return 'Corrigendum issued'
+    return ''
+
+def create_gem_bid_log(db,user_id,bid,field,old,new,source='manual',message=''):
+    if str(old or '')==str(new or ''):
+        return
+    alert_message=gem_bid_change_alert(field,new,bid)
+    db.add(GemBidStatusLog(
+        user_id=user_id,
+        bid_id=bid.id,
+        field_name=field,
+        old_value=str(old or ''),
+        new_value=str(new or ''),
+        source=source,
+        message=message or alert_message or f'{field.replace("_"," ")} changed',
+    ))
+    if alert_message:
+        db.add(NotificationLog(
+            user_id=user_id,
+            tender_id=None,
+            channel='gem_bid_alert',
+            recipient='dashboard',
+            status='pending',
+            message=f'{bid.bid_number}: {alert_message}',
+        ))
+
+def apply_gem_bid_payload(item,payload,user_id,db,source='manual'):
+    old_values={field:getattr(item,field,None) for field in GEM_BID_CHANGE_FIELDS if hasattr(item,field)}
+    text_fields=[
+        ('department',5000),('district',255),('item_name',5000),('disqualification_reason',5000),
+        ('representation_remarks',5000),('l1_bidder_name',255),('remarks',5000),('source_url',1000)
+    ]
+    if 'bid_number' in payload:
+        bid_number=(payload.get('bid_number') or '').strip().upper()
+        if not bid_number:
+            raise HTTPException(400,'Bid number is required')
+        item.bid_number=bid_number[:100]
+    for field,limit in text_fields:
+        if field in payload:
+            setattr(item,field,(payload.get(field) or '').strip()[:limit] or None)
+    for field in ['bid_start_date','bid_end_date','representation_start_date','representation_end_date']:
+        if field in payload:
+            setattr(item,field,parse_date(payload.get(field)))
+    for field in ['bid_value','emd_amount','l1_price','our_quoted_price']:
+        if field in payload:
+            setattr(item,field,parse_optional_int(payload.get(field)))
+    if 'our_financial_rank' in payload:
+        item.our_financial_rank=parse_optional_int(payload.get('our_financial_rank'))
+    for field in ['qualified_bidders_count','disqualified_bidders_count']:
+        if field in payload:
+            setattr(item,field,parse_optional_int(payload.get(field)) or 0)
+    if 'qualified_bidders' in payload:
+        item.qualified_bidders=', '.join(csv_text_list(payload.get('qualified_bidders'))) or None
+    if 'disqualified_bidders' in payload:
+        item.disqualified_bidders=', '.join(csv_text_list(payload.get('disqualified_bidders'))) or None
+    for field in ['representation_allowed','representation_submitted','corrigendum_issued','cancelled']:
+        if field in payload:
+            setattr(item,field,bool(payload.get(field)))
+    for field,allowed,default in [
+        ('technical_status',GEM_TECHNICAL_STATUS_OPTIONS,'pending'),
+        ('our_qualification_status',GEM_QUALIFICATION_STATUS_OPTIONS,'pending'),
+        ('representation_status',GEM_REPRESENTATION_STATUS_OPTIONS,'pending'),
+        ('financial_status',GEM_FINANCIAL_STATUS_OPTIONS,'pending'),
+        ('final_status',GEM_FINAL_STATUS_OPTIONS,'under_evaluation'),
+    ]:
+        if field in payload:
+            value=(payload.get(field) or default).strip()
+            setattr(item,field,value if value in allowed else default)
+    if item.l1_price is not None and item.our_quoted_price is not None:
+        item.price_difference=(item.our_quoted_price or 0)-(item.l1_price or 0)
+    elif 'price_difference' in payload:
+        item.price_difference=parse_optional_int(payload.get('price_difference'))
+    if item.cancelled:
+        item.final_status='cancelled'
+    item.last_updated_at=datetime.utcnow()
+    if source!='manual':
+        item.last_synced_at=datetime.utcnow()
+    db.flush()
+    for field,old in old_values.items():
+        create_gem_bid_log(db,user_id,item,field,old,getattr(item,field,None),source=source)
+
+def upsert_gem_bid_records(db,user,records,source='gem_sync'):
+    created=0
+    updated=0
+    touched=[]
+    for payload in records:
+        bid_number=(payload.get('bid_number') or payload.get('bid_no') or payload.get('Bid No.') or '').strip().upper()
+        if not bid_number:
+            continue
+        payload=dict(payload)
+        payload['bid_number']=bid_number
+        item=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id,GemParticipatedBid.bid_number==bid_number).first()
+        if not item:
+            item=GemParticipatedBid(user_id=user.id,bid_number=bid_number)
+            db.add(item)
+            db.flush()
+            created+=1
+            db.add(GemBidStatusLog(user_id=user.id,bid_id=item.id,field_name='bid_number',old_value='',new_value=bid_number,source=source,message='Participated bid fetched from GeM'))
+        else:
+            updated+=1
+        apply_gem_bid_payload(item,payload,user.id,db,source=source)
+        touched.append(item)
+    return created,updated,touched
+
+def create_gem_deadline_reminders(db,user_id,items):
+    created=0
+    today=date.today()
+    for item in items:
+        if not item.representation_allowed or item.representation_submitted or not item.representation_end_date:
+            continue
+        days=(item.representation_end_date-today).days
+        if not 0<=days<=2:
+            continue
+        message=f'{item.bid_number}: Representation deadline in {days} day(s)'
+        existing=db.query(NotificationLog).filter(
+            NotificationLog.user_id==user_id,
+            NotificationLog.channel=='gem_bid_alert',
+            NotificationLog.message==message,
+        ).first()
+        if existing:
+            continue
+        db.add(NotificationLog(user_id=user_id,tender_id=None,channel='gem_bid_alert',recipient='dashboard',status='pending',message=message))
+        created+=1
+    return created
+
 def seller_opportunity_for_tender(tender,catalogue_items,readiness_summary,bid_by_tender):
     best,top_matches=catalogue_match_for_tender(tender,catalogue_items)
     tender_score=float(tender.relevance_score or 0)
@@ -1069,6 +1524,14 @@ def seller_opportunities_dashboard(request:Request,db:Session=Depends(get_db),us
 
 @app.get('/dashboard/seller/analytics')
 def seller_analytics_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/gem-login')
+def seller_gem_login_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/gem-bids')
+def seller_gem_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/tenders')
@@ -2051,6 +2514,10 @@ def admin_settings(request:Request,db:Session=Depends(get_db),user:User=Depends(
 def admin_gem_alerts(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/seller/gem-alerts')
+def seller_gem_alerts(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/admin/delete')
 def admin_delete(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
@@ -2469,6 +2936,426 @@ async def api_create_bid_from_opportunity(tender_id:int,request:Request,db:Sessi
 @app.get('/api/seller/analytics')
 def api_seller_analytics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return build_seller_analytics(db,user)
+
+@app.get('/api/seller/gem-login')
+def api_get_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    return gem_credential_to_dict(item)
+
+@app.post('/api/seller/gem-login')
+async def api_save_gem_login(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    gem_user_id=(payload.get('gem_user_id') or '').strip()
+    password=payload.get('password') or ''
+    login_url=(payload.get('login_url') or GEM_LOGIN_URL).strip()
+    login_mode=(payload.get('login_mode') or 'manual_otp').strip()
+    if not gem_user_id:
+        raise HTTPException(400,'GeM user ID is required')
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item:
+        item=GemPortalCredential(user_id=user.id)
+        db.add(item)
+    item.gem_user_id=gem_user_id[:255]
+    if password:
+        if len(password)<4:
+            raise HTTPException(400,'GeM password looks too short')
+        item.encrypted_password=encrypt_secret(password)
+    elif not item.encrypted_password:
+        raise HTTPException(400,'GeM password is required the first time')
+    item.login_url=login_url[:1000] or GEM_LOGIN_URL
+    item.login_mode=login_mode if login_mode in GEM_LOGIN_MODES else 'manual_otp'
+    item.status='configured'
+    item.last_login_error=None
+    db.commit()
+    db.refresh(item)
+    return {'ok':True,'credential':gem_credential_to_dict(item)}
+
+@app.delete('/api/seller/gem-login')
+def api_delete_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if item:
+        db.delete(item)
+        db.commit()
+    return {'ok':True,'credential':gem_credential_to_dict(None)}
+
+@app.post('/api/seller/gem-login/check')
+def api_check_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item or not item.gem_user_id or not item.encrypted_password:
+        raise HTTPException(400,'Save GeM login credentials first')
+    password=decrypt_secret(item.encrypted_password)
+    item.last_login_checked_at=datetime.utcnow()
+    if not password:
+        item.status='error'
+        item.last_login_status='decrypt_failed'
+        item.last_login_error='Could not decrypt saved GeM password. Check SECRET_KEY.'
+    elif gem_session_is_valid(item):
+        item.status='session_ready'
+        item.session_status='valid'
+        item.last_login_status='session_ready'
+        item.last_login_error='Saved GeM session is valid. Participated-bid sync can reuse it without asking for OTP again.'
+    else:
+        item.status='configured'
+        item.session_status='expired' if item.encrypted_storage_state else 'not_started'
+        item.last_login_status='session_required'
+        item.last_login_error='Credentials are saved securely. Complete one authorized GeM login to capture a reusable encrypted session; after that sync can reuse it until GeM expires it.'
+    db.commit()
+    db.refresh(item)
+    return {
+        'ok':True,
+        'credential':gem_credential_to_dict(item),
+        'message':item.last_login_error,
+    }
+
+@app.post('/api/seller/gem-login/start')
+async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item or not item.gem_user_id or not item.encrypted_password:
+        raise HTTPException(400,'Save GeM login credentials before starting assisted login')
+    password=decrypt_secret(item.encrypted_password)
+    if not password:
+        raise HTTPException(400,'Saved GeM password cannot be decrypted. Check SECRET_KEY.')
+    try:
+        from playwright.async_api import async_playwright
+    except Exception:
+        raise HTTPException(500,'Playwright is not installed. Install project dependencies before starting GeM assisted login.')
+    await close_gem_assisted_session(user.id)
+    playwright=None
+    try:
+        playwright=await async_playwright().start()
+        browser=await playwright.chromium.launch(headless=False,args=['--start-maximized'])
+        context=await browser.new_context(viewport=None)
+        page=await context.new_page()
+        await page.goto(item.login_url or GEM_LOGIN_URL,wait_until='domcontentloaded',timeout=60000)
+        filled=await fill_gem_login_if_possible(page,item.gem_user_id,password)
+    except Exception as exc:
+        if playwright:
+            try:
+                await playwright.stop()
+            except Exception:
+                pass
+        message=str(exc)
+        if 'Executable doesn' in message or 'playwright install' in message.lower():
+            raise HTTPException(500,'Playwright Chromium is not installed. Run: .\\venv\\Scripts\\python.exe -m playwright install chromium')
+        if 'Connection closed while reading from the driver' in message or 'EPERM' in message:
+            raise HTTPException(500,'Playwright browser driver is blocked by the current server process permissions. Restart the app from a normal PowerShell/Command Prompt, then click Start GeM Login again.')
+        if isinstance(exc,NotImplementedError) or 'NotImplementedError' in message:
+            raise HTTPException(500,'Windows event loop cannot start the Playwright browser driver. The app has been updated to use the Proactor event loop; restart the server and try Start GeM Login again.')
+        raise HTTPException(500,f'Could not start GeM assisted login: {message[:300]}')
+    GEM_ASSISTED_SESSIONS[user.id]={
+        'playwright':playwright,
+        'browser':browser,
+        'context':context,
+        'page':page,
+        'started_at':datetime.utcnow(),
+    }
+    item.login_mode='assisted_browser'
+    item.status='authorization_in_progress'
+    item.last_login_status='authorization_in_progress'
+    item.last_login_error='GeM browser window opened. Complete OTP/CAPTCHA there, then return here and click Capture Session.'
+    item.last_login_checked_at=datetime.utcnow()
+    db.commit()
+    db.refresh(item)
+    return {
+        'ok':True,
+        'active':True,
+        'url':page.url,
+        'started_at':iso(GEM_ASSISTED_SESSIONS[user.id]['started_at']),
+        'filled':filled,
+        'credential':gem_credential_to_dict(item),
+        'message':item.last_login_error,
+    }
+
+@app.get('/api/seller/gem-login/assisted-status')
+async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
+    session=GEM_ASSISTED_SESSIONS.get(user.id)
+    if not session:
+        return {'ok':True,'active':False,'message':'No assisted GeM login window is active.'}
+    page=session.get('page')
+    try:
+        return {
+            'ok':True,
+            'active':True,
+            'url':page.url,
+            'title':await page.title(),
+            'started_at':iso(session.get('started_at')),
+            'message':'Complete GeM OTP/CAPTCHA in the opened browser, then click Capture Session.',
+        }
+    except Exception:
+        await close_gem_assisted_session(user.id)
+        return {'ok':True,'active':False,'message':'The assisted GeM login browser was closed.'}
+
+@app.post('/api/seller/gem-login/capture')
+async def api_capture_gem_assisted_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    session=GEM_ASSISTED_SESSIONS.get(user.id)
+    if not session:
+        raise HTTPException(400,'Start GeM assisted login first')
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item:
+        await close_gem_assisted_session(user.id)
+        raise HTTPException(400,'Save GeM login credentials first')
+    try:
+        storage_state=await session['context'].storage_state()
+        cookie_count=len(storage_state.get('cookies') or [])
+    except Exception:
+        await close_gem_assisted_session(user.id)
+        raise HTTPException(400,'Could not read GeM browser session. Start assisted login again.')
+    if cookie_count==0:
+        raise HTTPException(400,'No GeM session cookies were found yet. Finish GeM login in the opened browser, then capture again.')
+    item.encrypted_storage_state=encrypt_secret(json.dumps(storage_state))
+    item.session_status='valid'
+    item.session_captured_at=datetime.utcnow()
+    item.session_expires_at=datetime.utcnow()+timedelta(days=7)
+    item.status='session_ready'
+    item.last_login_checked_at=datetime.utcnow()
+    item.last_login_status='session_ready'
+    item.last_login_error='Authorized GeM session captured securely. Sync can reuse it until GeM expires it.'
+    db.commit()
+    db.refresh(item)
+    await close_gem_assisted_session(user.id)
+    return {'ok':True,'credential':gem_credential_to_dict(item),'message':item.last_login_error}
+
+@app.post('/api/seller/gem-login/cancel')
+async def api_cancel_gem_assisted_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    await close_gem_assisted_session(user.id)
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if item:
+        item.status='configured' if not gem_session_is_valid(item) else 'session_ready'
+        item.last_login_status='authorization_cancelled'
+        item.last_login_error='Assisted GeM login cancelled.'
+        item.last_login_checked_at=datetime.utcnow()
+        db.commit()
+        db.refresh(item)
+    return {'ok':True,'credential':gem_credential_to_dict(item),'message':'Assisted GeM login cancelled.'}
+
+@app.post('/api/seller/gem-login/session')
+async def api_save_gem_login_session(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    storage_state=payload.get('storage_state')
+    if not storage_state:
+        raise HTTPException(400,'GeM browser session state is required')
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item or not item.gem_user_id or not item.encrypted_password:
+        raise HTTPException(400,'Save GeM login credentials before saving a session')
+    try:
+        storage_text=json.dumps(storage_state)
+    except TypeError:
+        raise HTTPException(400,'GeM browser session state must be valid JSON')
+    expires_at=parse_datetime(payload.get('expires_at')) if payload.get('expires_at') else None
+    if not expires_at:
+        try:
+            valid_days=int(payload.get('valid_days') or 7)
+        except (TypeError,ValueError):
+            valid_days=7
+        valid_days=max(1,min(valid_days,30))
+        expires_at=datetime.utcnow()+timedelta(days=valid_days)
+    item.encrypted_storage_state=encrypt_secret(storage_text)
+    item.session_status='valid'
+    item.session_captured_at=datetime.utcnow()
+    item.session_expires_at=expires_at
+    item.status='session_ready'
+    item.last_login_checked_at=datetime.utcnow()
+    item.last_login_status='session_ready'
+    item.last_login_error='Authorized GeM session saved securely. Sync can reuse it until it expires.'
+    db.commit()
+    db.refresh(item)
+    return {'ok':True,'credential':gem_credential_to_dict(item),'message':item.last_login_error}
+
+@app.delete('/api/seller/gem-login/session')
+def api_delete_gem_login_session(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not item:
+        raise HTTPException(404,'GeM login is not configured')
+    item.encrypted_storage_state=None
+    item.session_status='not_started'
+    item.session_captured_at=None
+    item.session_expires_at=None
+    item.status='configured' if item.encrypted_password else 'not_configured'
+    item.last_login_status='session_cleared'
+    item.last_login_error='Saved GeM session cleared.'
+    db.commit()
+    db.refresh(item)
+    return {'ok':True,'credential':gem_credential_to_dict(item),'message':item.last_login_error}
+
+@app.get('/api/seller/gem-bids')
+def api_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
+    credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    return {
+        'items':[gem_bid_to_dict(item,include_logs=True) for item in items],
+        'summary':gem_bid_summary(items),
+        'credential':gem_credential_to_dict(credential),
+        'status_options':{
+            'technical':GEM_TECHNICAL_STATUS_OPTIONS,
+            'qualification':GEM_QUALIFICATION_STATUS_OPTIONS,
+            'representation':GEM_REPRESENTATION_STATUS_OPTIONS,
+            'financial':GEM_FINANCIAL_STATUS_OPTIONS,
+            'final':GEM_FINAL_STATUS_OPTIONS,
+        },
+    }
+
+@app.post('/api/seller/gem-bids')
+async def api_create_seller_gem_bid(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    bid_number=(payload.get('bid_number') or '').strip().upper()
+    if not bid_number:
+        raise HTTPException(400,'Bid number is required')
+    item=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id,GemParticipatedBid.bid_number==bid_number).first()
+    created=False
+    if not item:
+        item=GemParticipatedBid(user_id=user.id,bid_number=bid_number)
+        db.add(item)
+        db.flush()
+        created=True
+        db.add(GemBidStatusLog(user_id=user.id,bid_id=item.id,field_name='bid_number',old_value='',new_value=bid_number,source='manual',message='Bid tracking record created'))
+    apply_gem_bid_payload(item,payload,user.id,db,source='manual')
+    db.commit()
+    db.refresh(item)
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
+    return {'ok':True,'created':created,'item':gem_bid_to_dict(item,include_logs=True),'summary':gem_bid_summary(items)}
+
+@app.post('/api/seller/gem-bids/sync-now')
+def api_sync_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not credential or not credential.gem_user_id or not credential.encrypted_password:
+        raise HTTPException(400,'Save GeM login credentials before syncing participated bids')
+    password=decrypt_secret(credential.encrypted_password)
+    if not password:
+        raise HTTPException(400,'Saved GeM password cannot be decrypted. Check SECRET_KEY.')
+    if not gem_session_is_valid(credential):
+        credential.session_status='expired' if credential.encrypted_storage_state else 'not_started'
+        credential.last_login_status='session_required'
+        credential.last_login_error='GeM session is not ready. Open Secure Login and complete one authorized GeM login so the encrypted session can be reused.'
+        credential.last_login_checked_at=datetime.utcnow()
+        db.commit()
+        raise HTTPException(400,credential.last_login_error)
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
+    now=datetime.utcnow()
+    for item in items:
+        item.last_synced_at=now
+        item.last_updated_at=now
+    reminders=create_gem_deadline_reminders(db,user.id,items)
+    if items:
+        db.add(GemBidStatusLog(
+            user_id=user.id,
+            bid_id=items[0].id,
+            field_name='sync',
+            old_value='',
+            new_value='session_reused',
+            source='gem_sync',
+            message='Saved GeM session is available and was reused for this sync attempt.',
+        ))
+    credential.status='session_ready'
+    credential.session_status='valid'
+    credential.last_login_checked_at=now
+    credential.last_login_status='session_reused'
+    credential.last_login_error='Saved GeM session reused. Live portal extraction worker can run without asking for OTP again until GeM expires the session.'
+    db.commit()
+    return {
+        'ok':True,
+        'synced':0,
+        'tracked_bids':len(items),
+        'alerts_created':reminders,
+        'message':'Saved GeM session is ready and was reused. The live GeM extraction worker can fetch participated bids without asking for OTP again until GeM expires the session.',
+        'summary':gem_bid_summary(items),
+    }
+
+@app.post('/api/seller/gem-bids/import')
+async def api_import_seller_gem_bids(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    records=payload.get('items') or payload.get('bids') or []
+    if not isinstance(records,list):
+        raise HTTPException(400,'items must be a list of participated bid records')
+    created,updated,touched=upsert_gem_bid_records(db,user,records,source='gem_sync')
+    reminders=create_gem_deadline_reminders(db,user.id,touched)
+    db.commit()
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
+    return {
+        'ok':True,
+        'created':created,
+        'updated':updated,
+        'processed':len(touched),
+        'alerts_created':reminders,
+        'items':[gem_bid_to_dict(item,include_logs=True) for item in items],
+        'summary':gem_bid_summary(items),
+    }
+
+@app.post('/api/seller/gem-bids/{item_id}')
+async def api_update_seller_gem_bid(item_id:int,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id,GemParticipatedBid.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'GeM participated bid not found')
+    payload=await request.json()
+    if 'bid_number' in payload:
+        next_bid=(payload.get('bid_number') or '').strip().upper()
+        duplicate=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id,GemParticipatedBid.bid_number==next_bid,GemParticipatedBid.id!=item.id).first()
+        if duplicate:
+            raise HTTPException(400,'Another tracked bid already uses this bid number')
+    apply_gem_bid_payload(item,payload,user.id,db,source='manual')
+    db.commit()
+    db.refresh(item)
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
+    return {'ok':True,'item':gem_bid_to_dict(item,include_logs=True),'summary':gem_bid_summary(items)}
+
+@app.delete('/api/seller/gem-bids/{item_id}')
+def api_delete_seller_gem_bid(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    item=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id,GemParticipatedBid.id==item_id).first()
+    if not item:
+        raise HTTPException(404,'GeM participated bid not found')
+    db.query(GemBidStatusLog).filter(GemBidStatusLog.user_id==user.id,GemBidStatusLog.bid_id==item.id).delete(synchronize_session=False)
+    db.delete(item)
+    db.commit()
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
+    return {'ok':True,'deleted':item_id,'summary':gem_bid_summary(items)}
+
+@app.get('/exports/seller/gem-bids/{fmt}')
+def export_seller_gem_bids(fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    if fmt not in {'csv','xlsx'}:
+        raise HTTPException(404,'Export format not supported')
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.bid_end_date.desc().nullslast()).all()
+    rows=[gem_bid_export_row(index,item) for index,item in enumerate(items,1)]
+    filename='gem_participated_bid_tracking.csv' if fmt=='csv' else 'gem_participated_bid_tracking.xlsx'
+    if fmt=='xlsx':
+        return Response(
+            build_xlsx(GEM_BID_EXPORT_COLUMNS,rows,'GeM Bid Tracking'),
+            media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            headers={'Content-Disposition':f'attachment; filename="{filename}"'},
+        )
+    output=io.StringIO()
+    writer=csv.DictWriter(output,fieldnames=GEM_BID_EXPORT_COLUMNS)
+    writer.writeheader()
+    for row in rows:
+        writer.writerow(row)
+    return Response(
+        output.getvalue(),
+        media_type='text/csv; charset=utf-8',
+        headers={'Content-Disposition':f'attachment; filename="{filename}"'},
+    )
+
+@app.get('/exports/seller/gem-bids/daily/{fmt}')
+def export_daily_seller_gem_bids(fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    if fmt not in {'csv','xlsx'}:
+        raise HTTPException(404,'Export format not supported')
+    today=date.today()
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
+    rows=[gem_bid_export_row(index,item) for index,item in enumerate(items,1)]
+    base=f'gem_participated_bid_daily_report_{today.isoformat()}'
+    if fmt=='xlsx':
+        return Response(
+            build_xlsx(GEM_BID_EXPORT_COLUMNS,rows,'Daily GeM Bids'),
+            media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            headers={'Content-Disposition':f'attachment; filename="{base}.xlsx"'},
+        )
+    output=io.StringIO()
+    writer=csv.DictWriter(output,fieldnames=GEM_BID_EXPORT_COLUMNS)
+    writer.writeheader()
+    for row in rows:
+        writer.writerow(row)
+    return Response(
+        output.getvalue(),
+        media_type='text/csv; charset=utf-8',
+        headers={'Content-Disposition':f'attachment; filename="{base}.csv"'},
+    )
 
 def apply_catalogue_payload(item,payload):
     item.item_type=(payload.get('item_type') or item.item_type or 'product').strip() if (payload.get('item_type') or item.item_type or 'product') in {'product','service'} else 'product'
@@ -3402,6 +4289,10 @@ def api_get_gem_alerts(db:Session=Depends(get_db),user:User=Depends(get_current_
         'email_enabled':get_notification_preference(db,user.id,'email').enabled,
     }
 
+@app.get('/api/seller/gem-alerts')
+def api_get_seller_gem_alerts(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return api_get_gem_alerts(db,user)
+
 @app.get('/api/admin/gem-alert-options')
 def api_gem_alert_options(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return gem_alert_select_options(db,user)
@@ -3423,9 +4314,17 @@ async def api_save_gem_alerts(request:Request,db:Session=Depends(get_db),user:Us
         'schedules':['06:00','18:00'],
     }
 
+@app.post('/api/seller/gem-alerts')
+async def api_save_seller_gem_alerts(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return await api_save_gem_alerts(request,db,user)
+
 @app.post('/api/admin/gem-alerts/run-now')
 def api_run_gem_alert_now(user:User=Depends(get_current_user)):
     return run_scrape_subprocess(user.id,trigger='gem_alert_manual')
+
+@app.post('/api/seller/gem-alerts/run-now')
+def api_run_seller_gem_alert_now(user:User=Depends(get_current_user)):
+    return api_run_gem_alert_now(user)
 
 
 @app.post('/admin/keywords')
