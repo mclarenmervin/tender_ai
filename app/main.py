@@ -907,7 +907,7 @@ def terminate_process(proc):
             pass
 
 def gem_assisted_runtime_available():
-    return all(shutil.which(name) for name in ['Xvfb','x11vnc','websockify'])
+    return all(shutil.which(name) for name in ['Xvfb','x11vnc'])
 
 def gem_fernet():
     material=(SECRET_KEY or 'change_me').encode('utf-8')
@@ -971,26 +971,33 @@ def gem_assisted_session_by_id(session_id):
             return owner_id,session
     return None,None
 
-async def pipe_websocket_messages(source,send_target):
+async def pipe_websocket_to_tcp(websocket,writer):
     try:
         while True:
-            message=await source.receive()
+            message=await websocket.receive()
             if message.get('type')=='websocket.disconnect':
                 break
             if message.get('bytes') is not None:
-                await send_target(message['bytes'])
+                writer.write(message['bytes'])
+                await writer.drain()
             elif message.get('text') is not None:
-                await send_target(message['text'])
+                writer.write(message['text'].encode('latin-1'))
+                await writer.drain()
+    except Exception:
+        pass
+    try:
+        writer.close()
+        await writer.wait_closed()
     except Exception:
         pass
 
-async def pipe_remote_messages(remote,websocket):
+async def pipe_tcp_to_websocket(reader,websocket):
     try:
-        async for message in remote:
-            if isinstance(message,bytes):
-                await websocket.send_bytes(message)
-            else:
-                await websocket.send_text(message)
+        while True:
+            chunk=await reader.read(65536)
+            if not chunk:
+                break
+            await websocket.send_bytes(chunk)
     except Exception:
         pass
 
@@ -3123,21 +3130,20 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
     page=None
     xvfb_proc=None
     x11vnc_proc=None
-    websockify_proc=None
     session_id=str(uuid.uuid4())
     vnc_url=None
     websocket_port=None
+    vnc_port=None
     embedded_viewer=False
     try:
         playwright=await async_playwright().start()
         launch_options={'headless':False,'args':['--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']}
         if not sys.platform.startswith('win') and os.getenv('GEM_ASSISTED_BROWSER_MODE','embedded').lower()!='headed':
             if not gem_assisted_runtime_available() or not NOVNC_DIR.exists():
-                raise RuntimeError('Embedded GeM login runtime is not installed. Rebuild the Docker image after updating Dockerfile with Xvfb, x11vnc, noVNC, and websockify.')
+                raise RuntimeError('Embedded GeM login runtime is not installed. Rebuild the Docker image after updating Dockerfile with Xvfb, x11vnc, and noVNC.')
             display_num=GEM_ASSISTED_DISPLAY_BASE+(user.id%100)
             display=f':{display_num}'
             vnc_port=free_tcp_port()
-            websocket_port=free_tcp_port()
             xvfb_proc=subprocess.Popen(
                 ['Xvfb',display,'-screen','0','1366x900x24','-ac'],
                 stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
@@ -3152,23 +3158,15 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
             await asyncio.sleep(0.4)
             if x11vnc_proc.poll() is not None:
                 raise RuntimeError('x11vnc could not start for embedded GeM login.')
-            websockify_proc=subprocess.Popen(
-                ['websockify',f'127.0.0.1:{websocket_port}',f'127.0.0.1:{vnc_port}'],
-                stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
-            )
-            await asyncio.sleep(0.4)
-            if websockify_proc.poll() is not None:
-                raise RuntimeError('websockify could not start for embedded GeM login.')
             launch_options['env']={**os.environ,'DISPLAY':display}
             embedded_viewer=True
-            vnc_url=f'/novnc/vnc.html?autoconnect=true&resize=scale&path=/api/seller/gem-login/vnc/{session_id}'
+            vnc_url=f'/novnc/vnc.html?autoconnect=true&resize=scale&path=api/seller/gem-login/vnc/{session_id}'
         browser=await playwright.chromium.launch(**launch_options)
         context=await browser.new_context(viewport={'width':1366,'height':900} if embedded_viewer else None)
         page=await context.new_page()
         await page.goto(item.login_url or GEM_LOGIN_URL,wait_until='domcontentloaded',timeout=60000)
         filled=await fill_gem_login_if_possible(page,item.gem_user_id,password)
     except Exception as exc:
-        terminate_process(websockify_proc)
         terminate_process(x11vnc_proc)
         terminate_process(xvfb_proc)
         if playwright:
@@ -3192,10 +3190,9 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'started_at':datetime.utcnow(),
         'session_id':session_id,
         'vnc_url':vnc_url,
-        'websocket_port':websocket_port if embedded_viewer else None,
+        'vnc_port':vnc_port if embedded_viewer else None,
         'xvfb_proc':xvfb_proc,
         'x11vnc_proc':x11vnc_proc,
-        'websockify_proc':websockify_proc,
         'embedded_viewer':embedded_viewer,
     }
     item.login_mode='assisted_browser'
@@ -3251,20 +3248,19 @@ async def api_gem_login_vnc_proxy(websocket:WebSocket,session_id:str):
             _,session=gem_assisted_session_by_id(session_id)
     else:
         _,session=gem_assisted_session_by_id(session_id)
-    if not session or not session.get('websocket_port'):
+    if not session or not session.get('vnc_port'):
         await websocket.close(code=1008)
         return
     await websocket.accept()
     try:
-        import websockets
-        async with websockets.connect(f"ws://127.0.0.1:{session['websocket_port']}",max_size=None) as remote:
-            tasks=[
-                asyncio.create_task(pipe_websocket_messages(websocket,remote.send)),
-                asyncio.create_task(pipe_remote_messages(remote,websocket)),
-            ]
-            done,pending=await asyncio.wait(tasks,return_when=asyncio.FIRST_COMPLETED)
-            for task in pending:
-                task.cancel()
+        reader,writer=await asyncio.open_connection('127.0.0.1',int(session['vnc_port']))
+        tasks=[
+            asyncio.create_task(pipe_websocket_to_tcp(websocket,writer)),
+            asyncio.create_task(pipe_tcp_to_websocket(reader,websocket)),
+        ]
+        done,pending=await asyncio.wait(tasks,return_when=asyncio.FIRST_COMPLETED)
+        for task in pending:
+            task.cancel()
     except WebSocketDisconnect:
         pass
     except Exception:
