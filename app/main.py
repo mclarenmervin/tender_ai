@@ -3209,6 +3209,7 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'started_at':iso(GEM_ASSISTED_SESSIONS[user.id]['started_at']),
         'filled':filled,
         'credential':gem_credential_to_dict(item),
+        'viewer_mode':'embedded_novnc' if embedded_viewer else 'local_window',
         'message':item.last_login_error,
     }
 
@@ -3228,6 +3229,7 @@ async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
             'vnc_url':session.get('vnc_url'),
             'embedded_viewer':bool(session.get('embedded_viewer')),
             'session_id':session.get('session_id'),
+            'viewer_mode':'embedded_novnc' if session.get('embedded_viewer') else 'local_window',
             'message':'Complete GeM OTP/CAPTCHA in the embedded browser, then click Capture Session.' if session.get('embedded_viewer') else 'Complete GeM OTP/CAPTCHA in the opened browser, then click Capture Session.',
         }
     except Exception:
