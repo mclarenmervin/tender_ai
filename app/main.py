@@ -1001,6 +1001,9 @@ async def pipe_tcp_to_websocket(reader,websocket):
     except Exception:
         pass
 
+def log_gem_vnc(message):
+    print(f'[gem-vnc] {message}',flush=True)
+
 async def fill_gem_login_if_possible(page,gem_user_id,password):
     username_selectors=[
         'input[name="username"]','input[name="userName"]','input[name="loginId"]','input[name="email"]',
@@ -3249,11 +3252,16 @@ async def api_gem_login_vnc_proxy(websocket:WebSocket,session_id:str):
     else:
         _,session=gem_assisted_session_by_id(session_id)
     if not session or not session.get('vnc_port'):
+        log_gem_vnc(f'rejected session={session_id}')
         await websocket.close(code=1008)
         return
-    await websocket.accept()
+    offered=websocket.headers.get('sec-websocket-protocol','')
+    subprotocol='binary' if 'binary' in offered else None
+    await websocket.accept(subprotocol=subprotocol)
+    log_gem_vnc(f'accepted session={session_id} vnc_port={session.get("vnc_port")} subprotocol={subprotocol or "none"}')
     try:
         reader,writer=await asyncio.open_connection('127.0.0.1',int(session['vnc_port']))
+        log_gem_vnc(f'connected tcp session={session_id}')
         tasks=[
             asyncio.create_task(pipe_websocket_to_tcp(websocket,writer)),
             asyncio.create_task(pipe_tcp_to_websocket(reader,websocket)),
@@ -3261,9 +3269,11 @@ async def api_gem_login_vnc_proxy(websocket:WebSocket,session_id:str):
         done,pending=await asyncio.wait(tasks,return_when=asyncio.FIRST_COMPLETED)
         for task in pending:
             task.cancel()
+        log_gem_vnc(f'closed session={session_id}')
     except WebSocketDisconnect:
-        pass
-    except Exception:
+        log_gem_vnc(f'websocket disconnected session={session_id}')
+    except Exception as exc:
+        log_gem_vnc(f'error session={session_id}: {exc}')
         try:
             await websocket.close()
         except Exception:
