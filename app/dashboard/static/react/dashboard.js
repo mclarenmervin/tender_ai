@@ -964,6 +964,13 @@ function SellerGemLoginPage() {
                             h("li", null, "Capture the session after GeM login succeeds.")
                         )
                     ),
+                    assisted?.active ? h("div", { className: "gem-window-status" },
+                        h("span", null, assisted?.embedded_viewer ? "Embedded Browser Active" : "Window Active"),
+                        h("strong", null, assisted.url || "GeM login browser is ready")
+                    ) : null,
+                    assisted?.active && assisted?.vnc_url ? h("div", { className: "gem-embedded-browser" },
+                        h("iframe", { title: "Embedded GeM login browser", src: assisted.vnc_url, allow: "clipboard-read; clipboard-write" })
+                    ) : null,
                     h("div", { className: "gem-assisted-actions" },
                         h("button", { className: "primary", disabled: saving || !credential?.configured, onClick: startAssistedLogin }, "Start GeM Login"),
                         h("button", { disabled: saving, onClick: checkAssistedLogin }, "Check Window"),
@@ -971,13 +978,6 @@ function SellerGemLoginPage() {
                         h("button", { className: "danger", disabled: saving || !assisted.active, onClick: cancelAssistedLogin }, "Cancel")
                     )
                 ),
-                assisted?.active ? h("div", { className: "gem-window-status" },
-                    h("span", null, assisted?.embedded_viewer ? "Embedded Browser Active" : "Window Active"),
-                    h("strong", null, assisted.url || "GeM login browser is ready")
-                ) : null,
-                assisted?.active && assisted?.vnc_url ? h("div", { className: "gem-embedded-browser" },
-                    h("iframe", { title: "Embedded GeM login browser", src: assisted.vnc_url, allow: "clipboard-read; clipboard-write" })
-                ) : null,
                 credential?.last_login_status ? h("div", { className: "gem-status-line" }, credential.last_login_status.replaceAll("_", " ")) : null,
                 credential?.last_login_error ? h("div", { className: credential.last_login_status === "decrypt_failed" ? "notice err" : "notice" }, credential.last_login_error) : null
             )

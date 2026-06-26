@@ -2212,6 +2212,11 @@ select[multiple] {
     gap: 8px;
     justify-content: flex-end;
 }
+.gem-assisted-panel .gem-window-status,
+.gem-assisted-panel .gem-embedded-browser,
+.gem-assisted-panel .gem-assisted-actions {
+    grid-column: 1 / -1;
+}
 .gem-window-status {
     display: grid;
     gap: 4px;

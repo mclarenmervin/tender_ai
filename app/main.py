@@ -965,6 +965,12 @@ def websocket_current_user(websocket):
     finally:
         db.close()
 
+def gem_assisted_session_by_id(session_id):
+    for owner_id,session in GEM_ASSISTED_SESSIONS.items():
+        if session.get('session_id')==session_id:
+            return owner_id,session
+    return None,None
+
 async def pipe_websocket_messages(source,send_target):
     try:
         while True:
@@ -3155,7 +3161,7 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
                 raise RuntimeError('websockify could not start for embedded GeM login.')
             launch_options['env']={**os.environ,'DISPLAY':display}
             embedded_viewer=True
-            vnc_url=f'/novnc/vnc.html?autoconnect=true&resize=scale&path=api/seller/gem-login/vnc/{session_id}'
+            vnc_url=f'/novnc/vnc.html?autoconnect=true&resize=scale&path=/api/seller/gem-login/vnc/{session_id}'
         browser=await playwright.chromium.launch(**launch_options)
         context=await browser.new_context(viewport={'width':1366,'height':900} if embedded_viewer else None)
         page=await context.new_page()
@@ -3239,11 +3245,13 @@ async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
 @app.websocket('/api/seller/gem-login/vnc/{session_id}')
 async def api_gem_login_vnc_proxy(websocket:WebSocket,session_id:str):
     user=websocket_current_user(websocket)
-    if not user:
-        await websocket.close(code=1008)
-        return
-    session=GEM_ASSISTED_SESSIONS.get(user.id)
-    if not session or session.get('session_id')!=session_id or not session.get('websocket_port'):
+    if user:
+        session=GEM_ASSISTED_SESSIONS.get(user.id)
+        if not session or session.get('session_id')!=session_id:
+            _,session=gem_assisted_session_by_id(session_id)
+    else:
+        _,session=gem_assisted_session_by_id(session_id)
+    if not session or not session.get('websocket_port'):
         await websocket.close(code=1008)
         return
     await websocket.accept()
