@@ -805,7 +805,7 @@ function SellerGemLoginPage() {
         try {
             const result = await api("/api/seller/gem-login/start", { method: "POST" });
             setCredential(result.credential);
-            setAssisted({ active: true, url: result.url, started_at: result.started_at });
+            setAssisted(result);
             setMessage(result.message || "GeM login window opened. Complete OTP/CAPTCHA there, then capture session here.");
         } catch (err) {
             setMessage(err.message || "Could not start GeM assisted login.");
@@ -959,9 +959,9 @@ function SellerGemLoginPage() {
                     h("div", { className: "gem-assisted-copy" },
                         h("h4", null, "Assisted GeM Login"),
                         h("ol", null,
-                            h("li", null, "Open the real GeM portal."),
-                            h("li", null, "Complete OTP/CAPTCHA in that browser window."),
-                            h("li", null, "Return here and capture the session.")
+                            h("li", null, "Start a secure GeM browser session."),
+                            h("li", null, "Complete CAPTCHA/OTP in the embedded browser."),
+                            h("li", null, "Capture the session after GeM login succeeds.")
                         )
                     ),
                     h("div", { className: "gem-assisted-actions" },
@@ -974,6 +974,9 @@ function SellerGemLoginPage() {
                 assisted?.active ? h("div", { className: "gem-window-status" },
                     h("span", null, "Window Active"),
                     h("strong", null, assisted.url || "GeM login browser opened")
+                ) : null,
+                assisted?.active && assisted?.vnc_url ? h("div", { className: "gem-embedded-browser" },
+                    h("iframe", { title: "Embedded GeM login browser", src: assisted.vnc_url, allow: "clipboard-read; clipboard-write" })
                 ) : null,
                 credential?.last_login_status ? h("div", { className: "gem-status-line" }, credential.last_login_status.replaceAll("_", " ")) : null,
                 credential?.last_login_error ? h("div", { className: credential.last_login_status === "decrypt_failed" ? "notice err" : "notice" }, credential.last_login_error) : null

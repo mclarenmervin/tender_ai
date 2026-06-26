@@ -5,6 +5,9 @@ import subprocess
 import sys
 import zipfile
 import asyncio
+import shutil
+import socket
+import uuid
 from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape
@@ -15,16 +18,17 @@ import io
 import requests
 from pathlib import Path
 from dotenv import load_dotenv
-from fastapi import FastAPI,Depends,HTTPException,Request,Form
+from fastapi import FastAPI,Depends,HTTPException,Request,Form,WebSocket,WebSocketDisconnect
 from fastapi.responses import FileResponse,RedirectResponse,Response
 from fastapi.staticfiles import StaticFiles
 from pypdf import PdfReader
 from cryptography.fernet import Fernet, InvalidToken
+from jose import jwt,JWTError
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
-from app.database.db_connection import Base,engine,get_db
+from app.database.db_connection import Base,engine,get_db,SessionLocal
 from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
-from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY
+from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
 from app.alerts.daily_digest import send_daily_digest
@@ -40,6 +44,9 @@ BASE_DIR=Path(__file__).resolve().parent.parent
 STATIC_DIR=Path(__file__).parent/'dashboard'/'static'
 STATIC_DIR.mkdir(exist_ok=True)
 app.mount('/static',StaticFiles(directory=str(STATIC_DIR)),name='static')
+NOVNC_DIR=Path(os.getenv('NOVNC_STATIC_DIR','/usr/share/novnc'))
+if NOVNC_DIR.exists():
+    app.mount('/novnc',StaticFiles(directory=str(NOVNC_DIR)),name='novnc')
 REPORT_DIR=BASE_DIR/'generated_reports'
 REPORT_DIR.mkdir(exist_ok=True)
 INDIAN_STATES=[
@@ -879,6 +886,28 @@ def seller_opportunity_summary(items):
 GEM_LOGIN_URL='https://sso.gem.gov.in/ARXSSO/oauth/login'
 GEM_LOGIN_MODES={'manual_otp','assisted_browser'}
 GEM_ASSISTED_SESSIONS={}
+GEM_ASSISTED_DISPLAY_BASE=int(os.getenv('GEM_ASSISTED_DISPLAY_BASE','90'))
+
+def free_tcp_port():
+    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as sock:
+        sock.bind(('127.0.0.1',0))
+        return sock.getsockname()[1]
+
+def terminate_process(proc):
+    if not proc:
+        return
+    try:
+        if proc.poll() is None:
+            proc.terminate()
+            proc.wait(timeout=3)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
+def gem_assisted_runtime_available():
+    return all(shutil.which(name) for name in ['Xvfb','x11vnc','websockify'])
 
 def gem_fernet():
     material=(SECRET_KEY or 'change_me').encode('utf-8')
@@ -917,6 +946,45 @@ async def close_gem_assisted_session(user_id):
             pass
     try:
         await session['playwright'].stop()
+    except Exception:
+        pass
+    for key in ['websockify_proc','x11vnc_proc','xvfb_proc']:
+        terminate_process(session.get(key))
+
+def websocket_current_user(websocket):
+    token=websocket.cookies.get('access_token')
+    if not token:
+        return None
+    try:
+        email=jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM]).get('sub')
+    except JWTError:
+        return None
+    db=SessionLocal()
+    try:
+        return db.query(User).filter(User.email==email).first()
+    finally:
+        db.close()
+
+async def pipe_websocket_messages(source,send_target):
+    try:
+        while True:
+            message=await source.receive()
+            if message.get('type')=='websocket.disconnect':
+                break
+            if message.get('bytes') is not None:
+                await send_target(message['bytes'])
+            elif message.get('text') is not None:
+                await send_target(message['text'])
+    except Exception:
+        pass
+
+async def pipe_remote_messages(remote,websocket):
+    try:
+        async for message in remote:
+            if isinstance(message,bytes):
+                await websocket.send_bytes(message)
+            else:
+                await websocket.send_text(message)
     except Exception:
         pass
 
@@ -3044,14 +3112,59 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         raise HTTPException(500,'Playwright is not installed. Install project dependencies before starting GeM assisted login.')
     await close_gem_assisted_session(user.id)
     playwright=None
+    browser=None
+    context=None
+    page=None
+    xvfb_proc=None
+    x11vnc_proc=None
+    websockify_proc=None
+    session_id=str(uuid.uuid4())
+    vnc_url=None
+    websocket_port=None
+    embedded_viewer=False
     try:
         playwright=await async_playwright().start()
-        browser=await playwright.chromium.launch(headless=False,args=['--start-maximized'])
-        context=await browser.new_context(viewport=None)
+        launch_options={'headless':False,'args':['--no-sandbox','--disable-dev-shm-usage','--window-size=1366,900']}
+        if not sys.platform.startswith('win') and os.getenv('GEM_ASSISTED_BROWSER_MODE','embedded').lower()!='headed':
+            if not gem_assisted_runtime_available() or not NOVNC_DIR.exists():
+                raise RuntimeError('Embedded GeM login runtime is not installed. Rebuild the Docker image after updating Dockerfile with Xvfb, x11vnc, noVNC, and websockify.')
+            display_num=GEM_ASSISTED_DISPLAY_BASE+(user.id%100)
+            display=f':{display_num}'
+            vnc_port=free_tcp_port()
+            websocket_port=free_tcp_port()
+            xvfb_proc=subprocess.Popen(
+                ['Xvfb',display,'-screen','0','1366x900x24','-ac'],
+                stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+            )
+            await asyncio.sleep(0.6)
+            if xvfb_proc.poll() is not None:
+                raise RuntimeError('Xvfb could not start for embedded GeM login.')
+            x11vnc_proc=subprocess.Popen(
+                ['x11vnc','-display',display,'-rfbport',str(vnc_port),'-localhost','-forever','-shared','-nopw','-quiet'],
+                stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+            )
+            await asyncio.sleep(0.4)
+            if x11vnc_proc.poll() is not None:
+                raise RuntimeError('x11vnc could not start for embedded GeM login.')
+            websockify_proc=subprocess.Popen(
+                ['websockify',f'127.0.0.1:{websocket_port}',f'127.0.0.1:{vnc_port}'],
+                stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+            )
+            await asyncio.sleep(0.4)
+            if websockify_proc.poll() is not None:
+                raise RuntimeError('websockify could not start for embedded GeM login.')
+            launch_options['env']={**os.environ,'DISPLAY':display}
+            embedded_viewer=True
+            vnc_url=f'/novnc/vnc.html?autoconnect=true&resize=scale&path=api/seller/gem-login/vnc/{session_id}'
+        browser=await playwright.chromium.launch(**launch_options)
+        context=await browser.new_context(viewport={'width':1366,'height':900} if embedded_viewer else None)
         page=await context.new_page()
         await page.goto(item.login_url or GEM_LOGIN_URL,wait_until='domcontentloaded',timeout=60000)
         filled=await fill_gem_login_if_possible(page,item.gem_user_id,password)
     except Exception as exc:
+        terminate_process(websockify_proc)
+        terminate_process(x11vnc_proc)
+        terminate_process(xvfb_proc)
         if playwright:
             try:
                 await playwright.stop()
@@ -3071,11 +3184,18 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'context':context,
         'page':page,
         'started_at':datetime.utcnow(),
+        'session_id':session_id,
+        'vnc_url':vnc_url,
+        'websocket_port':websocket_port if embedded_viewer else None,
+        'xvfb_proc':xvfb_proc,
+        'x11vnc_proc':x11vnc_proc,
+        'websockify_proc':websockify_proc,
+        'embedded_viewer':embedded_viewer,
     }
     item.login_mode='assisted_browser'
     item.status='authorization_in_progress'
     item.last_login_status='authorization_in_progress'
-    item.last_login_error='GeM browser window opened. Complete OTP/CAPTCHA there, then return here and click Capture Session.'
+    item.last_login_error='GeM login browser is ready. Complete OTP/CAPTCHA in the embedded browser, then click Capture Session.' if embedded_viewer else 'GeM browser window opened. Complete OTP/CAPTCHA there, then return here and click Capture Session.'
     item.last_login_checked_at=datetime.utcnow()
     db.commit()
     db.refresh(item)
@@ -3083,6 +3203,9 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'ok':True,
         'active':True,
         'url':page.url,
+        'vnc_url':vnc_url,
+        'embedded_viewer':embedded_viewer,
+        'session_id':session_id,
         'started_at':iso(GEM_ASSISTED_SESSIONS[user.id]['started_at']),
         'filled':filled,
         'credential':gem_credential_to_dict(item),
@@ -3102,11 +3225,43 @@ async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
             'url':page.url,
             'title':await page.title(),
             'started_at':iso(session.get('started_at')),
-            'message':'Complete GeM OTP/CAPTCHA in the opened browser, then click Capture Session.',
+            'vnc_url':session.get('vnc_url'),
+            'embedded_viewer':bool(session.get('embedded_viewer')),
+            'session_id':session.get('session_id'),
+            'message':'Complete GeM OTP/CAPTCHA in the embedded browser, then click Capture Session.' if session.get('embedded_viewer') else 'Complete GeM OTP/CAPTCHA in the opened browser, then click Capture Session.',
         }
     except Exception:
         await close_gem_assisted_session(user.id)
         return {'ok':True,'active':False,'message':'The assisted GeM login browser was closed.'}
+
+@app.websocket('/api/seller/gem-login/vnc/{session_id}')
+async def api_gem_login_vnc_proxy(websocket:WebSocket,session_id:str):
+    user=websocket_current_user(websocket)
+    if not user:
+        await websocket.close(code=1008)
+        return
+    session=GEM_ASSISTED_SESSIONS.get(user.id)
+    if not session or session.get('session_id')!=session_id or not session.get('websocket_port'):
+        await websocket.close(code=1008)
+        return
+    await websocket.accept()
+    try:
+        import websockets
+        async with websockets.connect(f"ws://127.0.0.1:{session['websocket_port']}",max_size=None) as remote:
+            tasks=[
+                asyncio.create_task(pipe_websocket_messages(websocket,remote.send)),
+                asyncio.create_task(pipe_remote_messages(remote,websocket)),
+            ]
+            done,pending=await asyncio.wait(tasks,return_when=asyncio.FIRST_COMPLETED)
+            for task in pending:
+                task.cancel()
+    except WebSocketDisconnect:
+        pass
+    except Exception:
+        try:
+            await websocket.close()
+        except Exception:
+            pass
 
 @app.post('/api/seller/gem-login/capture')
 async def api_capture_gem_assisted_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):

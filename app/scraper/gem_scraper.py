@@ -1,4 +1,5 @@
 import io
+import os
 import re
 from datetime import date, datetime
 from urllib.parse import urljoin
@@ -143,6 +144,19 @@ class GemScraper(BaseScraper):
             "--no-sandbox",
             "--disable-setuid-sandbox",
         ]
+
+    def browser_proxy(self):
+        server = os.getenv("GEM_PROXY_SERVER", "").strip()
+        if not server:
+            return None
+        proxy = {"server": server}
+        username = os.getenv("GEM_PROXY_USERNAME", "").strip()
+        password = os.getenv("GEM_PROXY_PASSWORD", "").strip()
+        if username:
+            proxy["username"] = username
+        if password:
+            proxy["password"] = password
+        return proxy
 
     def apply_keyword_search(self, page, keyword):
         if not keyword:
@@ -400,7 +414,11 @@ class GemScraper(BaseScraper):
     def scrape(self):
         try:
             with sync_playwright() as playwright:
-                browser = playwright.chromium.launch(headless=True, args=self.browser_args())
+                launch_options = {"headless": True, "args": self.browser_args()}
+                proxy = self.browser_proxy()
+                if proxy:
+                    launch_options["proxy"] = proxy
+                browser = playwright.chromium.launch(**launch_options)
                 page = browser.new_page(
                     user_agent=(
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -425,8 +443,23 @@ class GemScraper(BaseScraper):
         except Exception as e:
             if not isinstance(e, PlaywrightError) and "PlaywrightContextManager" not in str(e):
                 raise
+            message = str(e) or repr(e)
+            if "ERR_CONNECTION_REFUSED" in message or "ERR_CONNECTION_CLOSED" in message or "ERR_CONNECTION_RESET" in message:
+                raise RuntimeError(
+                    "Chromium started, but the deployed server could not connect to GeM "
+                    "at https://bidplus.gem.gov.in/all-bids. This usually means GeM is refusing "
+                    "the Railway/cloud server IP or outbound network path. Run scraping from a network "
+                    "that can access GeM, or use an approved proxy/static egress and retry. "
+                    f"Original error: {message}"
+                )
+            if "Host system is missing dependencies" in message or "Executable doesn't exist" in message:
+                raise RuntimeError(
+                    "Playwright could not start Chromium for GeM scraping. On Linux/Railway, use the "
+                    "Playwright Docker image or install Chromium system dependencies. "
+                    f"Original error: {message}"
+                )
             raise RuntimeError(
                 "Playwright could not start Chromium for GeM scraping. "
                 "Run 'venv\\Scripts\\playwright.exe install chromium' and retry. "
-                f"Original error: {e}"
+                f"Original error: {message}"
             )

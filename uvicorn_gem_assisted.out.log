@@ -20,3 +20,85 @@ INFO:     127.0.0.1:61284 - "POST /api/seller/gem-bids/sync-now HTTP/1.1" 400 Ba
 INFO:     127.0.0.1:60089 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50992 - "GET /api/me HTTP/1.1" 200 OK
 INFO:     127.0.0.1:50992 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50119 - "GET /dashboard/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55488 - "GET /static/react/dashboard.js?v=20260622-seller-gem-alerts HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50119 - "GET /static/react/dashboard.css?v=20260622-seller-gem-alerts HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50119 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50119 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64626 - "POST /api/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64626 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52785 - "POST /api/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52785 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59430 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53959 - "GET /api/seller/readiness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52785 - "GET /api/buyers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53763 - "GET /api/market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50648 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/tenders?view=upcoming&limit=6&sort=deadline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50648 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/admin/delete-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/admin/delete-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56210 - "POST /api/admin/delete-tenders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56210 - "GET /api/admin/delete-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56210 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61973 - "GET /api/tenders?view=all&limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63746 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65206 - "GET /api/tender-filter-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65206 - "GET /api/tenders?view=all&limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61973 - "GET /api/tender-filter-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63746 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63746 - "POST /api/scrape-now HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64320 - "GET /api/tender-filter-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64389 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57899 - "GET /api/tenders?view=all&limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55755 - "GET /dashboard/tenders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55755 - "GET /static/react/dashboard.css?v=20260623-scrape-diagnostics-panel HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62283 - "GET /static/react/dashboard.js?v=20260623-scrape-diagnostics-panel HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55755 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62283 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54678 - "GET /api/tender-filter-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62283 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55755 - "GET /api/tenders?view=all&limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52557 - "GET /api/scrape-diagnostics HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60228 - "GET /dashboard/tenders HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60228 - "GET /static/react/dashboard.js?v=20260623-scrape-diagnostics-panel HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59527 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60228 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60228 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58426 - "GET /api/tender-filter-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59527 - "GET /api/tenders?view=all&limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53313 - "GET /dashboard/tenders HTTP/1.1" 303 See Other
+INFO:     127.0.0.1:53313 - "GET /login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53313 - "GET /static/react/dashboard.css?v=20260623-scrape-diagnostics-panel HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55134 - "GET /static/react/dashboard.js?v=20260623-scrape-diagnostics-panel HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59805 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52410 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54265 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52410 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52410 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52410 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52410 - "POST /api/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52410 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54265 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64168 - "GET /api/market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51992 - "GET /api/buyers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54265 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52410 - "GET /api/market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51992 - "GET /api/buyers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62066 - "GET /api/tenders?view=upcoming&limit=6&sort=deadline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62066 - "GET /api/tenders?view=upcoming&limit=6&sort=deadline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61704 - "GET /index.php HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55159 - "POST /api/logout HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "GET /api/me HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55159 - "POST /api/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65489 - "GET /api/tenders?view=upcoming&limit=6&sort=deadline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54304 - "GET /api/market HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57694 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50369 - "GET /api/buyers HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "GET /api/seller/readiness HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65489 - "GET /api/dashboard/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65489 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "GET /api/seller/gem-login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55159 - "POST /api/seller/gem-login/start HTTP/1.1" 200 OK

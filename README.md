@@ -104,6 +104,23 @@ If Railway logs show `Network is unreachable` for `db.<project-ref>.supabase.co`
 the password, and set that value as Railway `DATABASE_URL`. The direct Supabase host may resolve to
 IPv6, while the pooler works better from IPv4-only deployment environments.
 
+GeM scraping uses Playwright/Chromium. The included Dockerfile uses the official Playwright Python
+image so Chromium dependencies are available on Railway. If scraping reports `ERR_CONNECTION_REFUSED`
+for `https://bidplus.gem.gov.in/all-bids`, Chromium is working but GeM is refusing the Railway/cloud
+network path. In that case, run the scraper from a machine/network that can access GeM, or use an
+approved proxy/static egress solution.
+
+Optional Railway variables for an approved proxy/static egress path:
+
+```env
+GEM_PROXY_SERVER=http://host:port
+GEM_PROXY_USERNAME=
+GEM_PROXY_PASSWORD=
+```
+
+Do not use a proxy to bypass GeM access controls, CAPTCHA, OTP, rate limits, or terms. Use an
+authorized network path for your company account.
+
 ## Main Areas
 
 Buyer workspace:
