@@ -1023,6 +1023,7 @@ function SellerGemBidsPage() {
         setSummary(data.summary || null);
         setCredential(data.credential || null);
         setOptions(data.status_options || options);
+        if (data.session_required) setMessage(data.message || "Capture a valid GeM session to fetch participated bids.");
     }
     useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
     useEffect(() => {

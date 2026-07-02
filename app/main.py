@@ -1402,6 +1402,12 @@ def upsert_gem_bid_records(db,user,records,source='gem_sync'):
         touched.append(item)
     return created,updated,touched
 
+def clear_gem_bid_cache(db,user_id):
+    bid_ids=[row.id for row in db.query(GemParticipatedBid.id).filter(GemParticipatedBid.user_id==user_id).all()]
+    if bid_ids:
+        db.query(GemBidStatusLog).filter(GemBidStatusLog.user_id==user_id,GemBidStatusLog.bid_id.in_(bid_ids)).delete(synchronize_session=False)
+    return db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user_id).delete(synchronize_session=False)
+
 GEM_FULFILMENT_ORDERS_URL='https://fulfilment.gem.gov.in/fulfilment/home#WORKSPACE_ID=ORDERS_WS'
 
 def gem_regex(pattern,text,flags=re.I):
@@ -3304,10 +3310,11 @@ async def api_save_gem_login(request:Request,db:Session=Depends(get_db),user:Use
 @app.delete('/api/seller/gem-login')
 def api_delete_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     item=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    cleared=clear_gem_bid_cache(db,user.id)
     if item:
         db.delete(item)
-        db.commit()
-    return {'ok':True,'credential':gem_credential_to_dict(None)}
+    db.commit()
+    return {'ok':True,'credential':gem_credential_to_dict(None),'cleared_bids':cleared}
 
 @app.post('/api/seller/gem-login/check')
 def api_check_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -3597,12 +3604,28 @@ def api_delete_gem_login_session(db:Session=Depends(get_db),user:User=Depends(ge
 
 @app.get('/api/seller/gem-bids')
 def api_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
-    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
     credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not gem_session_is_valid(credential):
+        return {
+            'items':[],
+            'summary':gem_bid_summary([]),
+            'credential':gem_credential_to_dict(credential),
+            'session_required':True,
+            'message':'Capture a valid GeM session to fetch participated bids.',
+            'status_options':{
+                'technical':GEM_TECHNICAL_STATUS_OPTIONS,
+                'qualification':GEM_QUALIFICATION_STATUS_OPTIONS,
+                'representation':GEM_REPRESENTATION_STATUS_OPTIONS,
+                'financial':GEM_FINANCIAL_STATUS_OPTIONS,
+                'final':GEM_FINAL_STATUS_OPTIONS,
+            },
+        }
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
     return {
         'items':[gem_bid_to_dict(item,include_logs=True) for item in items],
         'summary':gem_bid_summary(items),
         'credential':gem_credential_to_dict(credential),
+        'session_required':False,
         'status_options':{
             'technical':GEM_TECHNICAL_STATUS_OPTIONS,
             'qualification':GEM_QUALIFICATION_STATUS_OPTIONS,
@@ -3749,6 +3772,9 @@ def api_delete_seller_gem_bid(item_id:int,db:Session=Depends(get_db),user:User=D
 def export_seller_gem_bids(fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     if fmt not in {'csv','xlsx'}:
         raise HTTPException(404,'Export format not supported')
+    credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not gem_session_is_valid(credential):
+        raise HTTPException(400,'Capture a valid GeM session before exporting participated bids')
     items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.bid_end_date.desc().nullslast()).all()
     rows=[gem_bid_export_row(index,item) for index,item in enumerate(items,1)]
     filename='gem_participated_bid_tracking.csv' if fmt=='csv' else 'gem_participated_bid_tracking.xlsx'
@@ -3773,6 +3799,9 @@ def export_seller_gem_bids(fmt:str,db:Session=Depends(get_db),user:User=Depends(
 def export_daily_seller_gem_bids(fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     if fmt not in {'csv','xlsx'}:
         raise HTTPException(404,'Export format not supported')
+    credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user.id).first()
+    if not gem_session_is_valid(credential):
+        raise HTTPException(400,'Capture a valid GeM session before exporting participated bids')
     today=date.today()
     items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
     rows=[gem_bid_export_row(index,item) for index,item in enumerate(items,1)]
