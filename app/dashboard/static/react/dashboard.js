@@ -788,6 +788,7 @@ function SellerGemLoginPage() {
     const [assisted, setAssisted] = useState({ active: false });
     const [message, setMessage] = useState("");
     const [saving, setSaving] = useState(false);
+    const loginWindowRef = useRef(null);
     async function load() {
         const data = await api("/api/seller/gem-login");
         setCredential(data);
@@ -801,13 +802,23 @@ function SellerGemLoginPage() {
     useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
     async function startAssistedLogin() {
         setSaving(true);
-        setMessage("Starting secure embedded GeM browser...");
+        setMessage("Opening secure GeM login window...");
+        const loginWindow = window.open("about:blank", "gemLoginWindow", "width=1320,height=860,noopener=false");
+        loginWindowRef.current = loginWindow;
+        if (loginWindow) {
+            loginWindow.document.title = "GeM Login";
+            loginWindow.document.body.innerHTML = "<p style='font:16px Arial;padding:24px'>Starting GeM login...</p>";
+        }
         try {
             const result = await api("/api/seller/gem-login/start", { method: "POST" });
             setCredential(result.credential);
             setAssisted(result);
-            setMessage(result.message || "Embedded GeM browser is ready. Complete OTP/CAPTCHA there, then capture session here.");
+            if (result.vnc_url && loginWindow && !loginWindow.closed) {
+                loginWindow.location.href = result.vnc_url;
+            }
+            setMessage(result.message || "GeM login window is ready. Complete OTP/CAPTCHA there, then capture session here.");
         } catch (err) {
+            if (loginWindow && !loginWindow.closed) loginWindow.close();
             setMessage(err.message || "Could not start GeM assisted login.");
         } finally {
             setSaving(false);
@@ -815,7 +826,7 @@ function SellerGemLoginPage() {
     }
     async function checkAssistedLogin() {
         setSaving(true);
-        setMessage("Checking embedded GeM browser...");
+        setMessage("Checking GeM login window...");
         try {
             const result = await api("/api/seller/gem-login/assisted-status");
             setAssisted(result);
@@ -833,20 +844,22 @@ function SellerGemLoginPage() {
             const result = await api("/api/seller/gem-login/capture", { method: "POST" });
             setCredential(result.credential);
             setAssisted({ active: false });
+            if (loginWindowRef.current && !loginWindowRef.current.closed) loginWindowRef.current.close();
             setMessage(result.message || "GeM session captured securely.");
         } catch (err) {
-            setMessage(err.message || "Could not capture GeM session. Complete OTP/CAPTCHA in the embedded GeM browser first.");
+            setMessage(err.message || "Could not capture GeM session. Complete OTP/CAPTCHA in the GeM login window first.");
         } finally {
             setSaving(false);
         }
     }
     async function cancelAssistedLogin() {
         setSaving(true);
-        setMessage("Closing embedded GeM browser...");
+        setMessage("Closing GeM login window...");
         try {
             const result = await api("/api/seller/gem-login/cancel", { method: "POST" });
             setCredential(result.credential);
             setAssisted({ active: false });
+            if (loginWindowRef.current && !loginWindowRef.current.closed) loginWindowRef.current.close();
             setMessage(result.message || "Assisted GeM login cancelled.");
         } catch (err) {
             setMessage(err.message || "Could not cancel GeM assisted login.");
@@ -959,17 +972,14 @@ function SellerGemLoginPage() {
                     h("div", { className: "gem-assisted-copy" },
                         h("h4", null, "Assisted GeM Login"),
                         h("ol", null,
-                            h("li", null, "Start a secure embedded GeM browser session."),
-                            h("li", null, "Complete CAPTCHA/OTP in the embedded browser."),
-                            h("li", null, "Capture the session after GeM login succeeds.")
+                            h("li", null, "Start a secure GeM login window."),
+                            h("li", null, "Complete CAPTCHA/OTP in that window."),
+                            h("li", null, "Return here and capture the session after login succeeds.")
                         )
                     ),
                     assisted?.active ? h("div", { className: "gem-window-status" },
-                        h("span", null, assisted?.embedded_viewer ? "Embedded Browser Active" : "Window Active"),
+                        h("span", null, "Login Window Active"),
                         h("strong", null, assisted.url || "GeM login browser is ready")
-                    ) : null,
-                    assisted?.active && assisted?.vnc_url ? h("div", { className: "gem-embedded-browser" },
-                        h("iframe", { title: "Embedded GeM login browser", src: assisted.vnc_url, allow: "clipboard-read; clipboard-write" })
                     ) : null,
                     h("div", { className: "gem-assisted-actions" },
                         h("button", { className: "primary", disabled: saving || !credential?.configured, onClick: startAssistedLogin }, "Start GeM Login"),

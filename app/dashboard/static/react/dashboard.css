@@ -2213,7 +2213,6 @@ select[multiple] {
     justify-content: flex-end;
 }
 .gem-assisted-panel .gem-window-status,
-.gem-assisted-panel .gem-embedded-browser,
 .gem-assisted-panel .gem-assisted-actions {
     grid-column: 1 / -1;
 }
@@ -2237,22 +2236,6 @@ select[multiple] {
 .gem-window-status strong {
     font-size: 13px;
     overflow-wrap: anywhere;
-}
-.gem-embedded-browser {
-    border: 1px solid #cbd5e1;
-    background: #0f172a;
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 12px 0;
-    aspect-ratio: 16 / 10;
-    min-height: 460px;
-}
-.gem-embedded-browser iframe {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    background: #0f172a;
 }
 .gem-status-line {
     margin: 6px 0 10px;

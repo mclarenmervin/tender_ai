@@ -3201,7 +3201,7 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
     item.login_mode='assisted_browser'
     item.status='authorization_in_progress'
     item.last_login_status='authorization_in_progress'
-    item.last_login_error='GeM login browser is ready. Complete OTP/CAPTCHA in the embedded browser, then click Capture Session.' if embedded_viewer else 'GeM browser window opened. Complete OTP/CAPTCHA there, then return here and click Capture Session.'
+    item.last_login_error='GeM login window is ready. Complete OTP/CAPTCHA there, then return here and click Capture Session.'
     item.last_login_checked_at=datetime.utcnow()
     db.commit()
     db.refresh(item)
@@ -3236,7 +3236,7 @@ async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
             'embedded_viewer':bool(session.get('embedded_viewer')),
             'session_id':session.get('session_id'),
             'viewer_mode':'embedded_novnc' if session.get('embedded_viewer') else 'local_window',
-            'message':'Complete GeM OTP/CAPTCHA in the embedded browser, then click Capture Session.' if session.get('embedded_viewer') else 'Complete GeM OTP/CAPTCHA in the opened browser, then click Capture Session.',
+            'message':'Complete GeM OTP/CAPTCHA in the GeM login window, then return here and click Capture Session.',
         }
     except Exception:
         await close_gem_assisted_session(user.id)
