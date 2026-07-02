@@ -1038,7 +1038,8 @@ function SellerGemBidsPage() {
             setMessage(result.message || "Sync check finished.");
             await load();
         } catch (err) {
-            setMessage(err.message || (automatic ? "Could not auto-fetch participated bids." : "Could not start GeM sync."));
+            const failedFetch = (err.message || "").toLowerCase().includes("failed to fetch");
+            setMessage(failedFetch ? "GeM sync connection was interrupted. Check server logs; the sync may have taken too long or the server restarted." : (err.message || (automatic ? "Could not auto-fetch participated bids." : "Could not start GeM sync.")));
         } finally {
             setSyncing(false);
         }

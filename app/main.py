@@ -1457,9 +1457,12 @@ def gem_orders_range(page_text):
         return None
     return tuple(int(part) for part in match.groups())
 
+def log_gem_sync(message):
+    print(f'[gem-sync] {message}',flush=True)
+
 def click_gem_orders_next_page(page):
     page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-    page.wait_for_timeout(800)
+    page.wait_for_timeout(400)
     return bool(page.evaluate("""
         () => {
             const visible = el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
@@ -1491,7 +1494,7 @@ def click_gem_orders_next_page(page):
         }
     """))
 
-def fetch_gem_fulfilment_orders(storage_state,limit_pages=25):
+def fetch_gem_fulfilment_orders(storage_state,limit_pages=12):
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
     except Exception as exc:
@@ -1502,18 +1505,21 @@ def fetch_gem_fulfilment_orders(storage_state,limit_pages=25):
         context=browser.new_context(storage_state=storage_state,viewport={'width':1366,'height':900})
         page=context.new_page()
         try:
-            page.goto(GEM_FULFILMENT_ORDERS_URL,wait_until='domcontentloaded',timeout=90000)
-            page.wait_for_timeout(5000)
+            log_gem_sync('opening fulfilment orders workspace')
+            page.goto(GEM_FULFILMENT_ORDERS_URL,wait_until='domcontentloaded',timeout=60000)
+            page.wait_for_timeout(3000)
             try:
-                page.wait_for_selector('text=Contract No',timeout=30000)
+                page.wait_for_selector('text=Contract No',timeout=15000)
             except PlaywrightTimeoutError:
                 pass
             seen_ranges=set()
             for _ in range(max(1,limit_pages)):
                 page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                page.wait_for_timeout(1200)
-                text=page.locator('body').inner_text(timeout=30000)
+                page.wait_for_timeout(600)
+                text=page.locator('body').inner_text(timeout=12000)
                 current_range=gem_orders_range(text)
+                if current_range:
+                    log_gem_sync(f'orders page {current_range[0]}-{current_range[1]} of {current_range[2]}')
                 if current_range:
                     seen_ranges.add(current_range)
                 for block in extract_gem_order_blocks(text):
@@ -1523,15 +1529,20 @@ def fetch_gem_fulfilment_orders(storage_state,limit_pages=25):
                 try:
                     if current_range and current_range[1]>=current_range[2]:
                         break
+                    if current_range and len(records_by_contract)>=current_range[2]:
+                        break
                     clicked=click_gem_orders_next_page(page)
                     if not clicked:
+                        log_gem_sync('next page button not found')
                         break
-                    page.wait_for_timeout(3000)
-                    next_text=page.locator('body').inner_text(timeout=30000)
+                    page.wait_for_timeout(1600)
+                    next_text=page.locator('body').inner_text(timeout=12000)
                     next_range=gem_orders_range(next_text)
                     if next_range and next_range in seen_ranges:
+                        log_gem_sync(f'pagination did not advance from {next_range}')
                         break
                 except Exception:
+                    log_gem_sync('pagination stopped after navigation error')
                     break
         finally:
             context.close()
