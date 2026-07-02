@@ -289,6 +289,31 @@ def parse_date(value):
     except (TypeError,ValueError):
         return None
 
+def parse_gem_date(value):
+    if not value:
+        return None
+    text=str(value).strip()
+    parsed=parse_date(text)
+    if parsed:
+        return parsed
+    for fmt in ('%d/%m/%Y','%d-%m-%Y','%d.%m.%Y','%d %b %Y','%d %B %Y'):
+        try:
+            return datetime.strptime(text,fmt).date()
+        except ValueError:
+            continue
+    return None
+
+def parse_gem_amount(value):
+    if value in (None,''):
+        return None
+    cleaned=re.sub(r'[^\d.]','',str(value))
+    if not cleaned:
+        return None
+    try:
+        return int(float(cleaned))
+    except ValueError:
+        return None
+
 def parse_datetime(value):
     if not value:
         return None
@@ -1370,6 +1395,93 @@ def upsert_gem_bid_records(db,user,records,source='gem_sync'):
         apply_gem_bid_payload(item,payload,user.id,db,source=source)
         touched.append(item)
     return created,updated,touched
+
+GEM_FULFILMENT_ORDERS_URL='https://fulfilment.gem.gov.in/fulfilment/home#WORKSPACE_ID=ORDERS_WS'
+
+def gem_regex(pattern,text,flags=re.I):
+    match=re.search(pattern,text or '',flags)
+    return match.group(1).strip() if match else ''
+
+def normalize_gem_order_block(block,source_url):
+    contract_no=gem_regex(r'Contract\s*No[:\s]*([A-Z0-9\-\/]+)',block)
+    if not contract_no:
+        return None
+    department=gem_regex(r'Department:\s*(.+?)(?:\n|Total order value|No\. of Consignee|Quantity|$)',block)
+    buyer=gem_regex(r'Buyer Designation:\s*(.+?)(?:\n|Department:|Total order value|$)',block)
+    location=gem_regex(r'Location:\s*(.+?)(?:\n|Total order value|No\. of Consignee|Quantity|$)',block)
+    status=gem_regex(r'Status:\s*(.+?)(?:\n|Buyer Designation|Total order value|$)',block)
+    quantity=gem_regex(r'Quantity:\s*(.+?)(?:\n|APPLY|GENERATE|PAYMENT|AMC|$)',block)
+    order_value=gem_regex(r'Total order value:\s*([^\n]+)',block)
+    contract_date=gem_regex(r'Contract Date:\s*([0-9A-Za-z\/\-. ]+)',block)
+    remarks=[part for part in [
+        f'Source: GeM fulfilment orders',
+        f'Status: {status}' if status else '',
+        f'Buyer designation: {buyer}' if buyer else '',
+        f'Quantity: {quantity}' if quantity else '',
+    ] if part]
+    return {
+        'bid_number':contract_no,
+        'department':department or buyer,
+        'district':location,
+        'item_name':f'GeM order {contract_no}',
+        'bid_end_date':parse_gem_date(contract_date).isoformat() if parse_gem_date(contract_date) else None,
+        'bid_value':parse_gem_amount(order_value),
+        'technical_status':'opened',
+        'our_qualification_status':'qualified',
+        'financial_status':'opened',
+        'final_status':'won',
+        'remarks':' | '.join(remarks),
+        'source_url':source_url,
+    }
+
+def extract_gem_order_blocks(page_text):
+    blocks=[]
+    for match in re.finditer(r'Contract\s*No:',page_text or '',re.I):
+        start=match.start()
+        next_match=re.search(r'\n\s*Contract\s*No:',page_text[start+12:],re.I)
+        end=(start+12+next_match.start()) if next_match else len(page_text)
+        block=page_text[start:end].strip()
+        if block:
+            blocks.append(block)
+    return blocks
+
+def fetch_gem_fulfilment_orders(storage_state,limit_pages=3):
+    try:
+        from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+    except Exception as exc:
+        raise RuntimeError(f'Playwright is not installed: {exc}')
+    records_by_contract={}
+    with sync_playwright() as playwright:
+        browser=playwright.chromium.launch(headless=True,args=['--no-sandbox','--disable-dev-shm-usage'])
+        context=browser.new_context(storage_state=storage_state,viewport={'width':1366,'height':900})
+        page=context.new_page()
+        try:
+            page.goto(GEM_FULFILMENT_ORDERS_URL,wait_until='domcontentloaded',timeout=90000)
+            page.wait_for_timeout(5000)
+            try:
+                page.wait_for_selector('text=Contract No',timeout=30000)
+            except PlaywrightTimeoutError:
+                pass
+            for _ in range(max(1,limit_pages)):
+                page.mouse.wheel(0,4000)
+                page.wait_for_timeout(1000)
+                text=page.locator('body').inner_text(timeout=30000)
+                for block in extract_gem_order_blocks(text):
+                    record=normalize_gem_order_block(block,GEM_FULFILMENT_ORDERS_URL)
+                    if record:
+                        records_by_contract[record['bid_number']]=record
+                next_button=page.locator('a:has-text("Next"), button:has-text("Next"), li:has-text("Next")').last
+                try:
+                    if not next_button.count() or not next_button.is_enabled():
+                        break
+                    next_button.click(timeout=3000)
+                    page.wait_for_timeout(2500)
+                except Exception:
+                    break
+        finally:
+            context.close()
+            browser.close()
+    return list(records_by_contract.values())
 
 def create_gem_deadline_reminders(db,user_id,items):
     created=0
@@ -3423,34 +3535,51 @@ def api_sync_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_cu
         credential.last_login_checked_at=datetime.utcnow()
         db.commit()
         raise HTTPException(400,credential.last_login_error)
-    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
     now=datetime.utcnow()
-    for item in items:
-        item.last_synced_at=now
-        item.last_updated_at=now
+    try:
+        storage_state=json.loads(decrypt_secret(credential.encrypted_storage_state))
+    except Exception:
+        credential.session_status='expired'
+        credential.last_login_status='session_invalid'
+        credential.last_login_error='Saved GeM session could not be read. Capture the GeM session again from Secure Login.'
+        credential.last_login_checked_at=now
+        db.commit()
+        raise HTTPException(400,credential.last_login_error)
+    try:
+        records=fetch_gem_fulfilment_orders(storage_state)
+    except Exception as exc:
+        credential.last_login_checked_at=now
+        credential.last_login_status='sync_failed'
+        credential.last_login_error=f'Could not fetch GeM fulfilment orders: {str(exc)[:300]}'
+        db.commit()
+        raise HTTPException(500,credential.last_login_error)
+    created,updated,touched=upsert_gem_bid_records(db,user,records,source='gem_fulfilment')
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).all()
     reminders=create_gem_deadline_reminders(db,user.id,items)
-    if items:
+    if touched:
         db.add(GemBidStatusLog(
             user_id=user.id,
-            bid_id=items[0].id,
+            bid_id=touched[0].id,
             field_name='sync',
             old_value='',
-            new_value='session_reused',
+            new_value=f'orders_fetched:{len(records)}',
             source='gem_sync',
-            message='Saved GeM session is available and was reused for this sync attempt.',
+            message=f'Fetched {len(records)} GeM fulfilment order record(s) from the seller Orders workspace.',
         ))
     credential.status='session_ready'
     credential.session_status='valid'
     credential.last_login_checked_at=now
-    credential.last_login_status='session_reused'
-    credential.last_login_error='Saved GeM session reused. Live portal extraction worker can run without asking for OTP again until GeM expires the session.'
+    credential.last_login_status='sync_completed'
+    credential.last_login_error=f'Fetched {len(records)} GeM fulfilment order record(s). Created {created}, updated {updated}.'
     db.commit()
     return {
         'ok':True,
-        'synced':0,
+        'synced':len(records),
+        'created':created,
+        'updated':updated,
         'tracked_bids':len(items),
         'alerts_created':reminders,
-        'message':'Saved GeM session is ready and was reused. The live GeM extraction worker can fetch participated bids without asking for OTP again until GeM expires the session.',
+        'message':credential.last_login_error,
         'summary':gem_bid_summary(items),
     }
 
