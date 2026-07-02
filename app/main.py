@@ -1299,6 +1299,9 @@ def create_gem_bid_log(db,user_id,bid,field,old,new,source='manual',message=''):
     if str(old or '')==str(new or ''):
         return
     alert_message=gem_bid_change_alert(field,new,bid)
+    old_has_value=old not in (None,'')
+    if not alert_message and source!='manual' and old_has_value:
+        alert_message=f'{field.replace("_"," ").title()} changed'
     db.add(GemBidStatusLog(
         user_id=user_id,
         bid_id=bid.id,
@@ -1390,6 +1393,7 @@ def upsert_gem_bid_records(db,user,records,source='gem_sync'):
             db.flush()
             created+=1
             db.add(GemBidStatusLog(user_id=user.id,bid_id=item.id,field_name='bid_number',old_value='',new_value=bid_number,source=source,message='Participated bid fetched from GeM'))
+            db.add(NotificationLog(user_id=user.id,tender_id=None,channel='gem_bid_alert',recipient='dashboard',status='pending',message=f'{bid_number}: New GeM record captured'))
         else:
             updated+=1
         apply_gem_bid_payload(item,payload,user.id,db,source=source)
@@ -1419,6 +1423,7 @@ def normalize_gem_order_block(block,source_url):
         f'Buyer designation: {buyer}' if buyer else '',
         f'Quantity: {quantity}' if quantity else '',
     ] if part]
+    is_cancelled='cancel' in status.lower()
     return {
         'bid_number':contract_no,
         'department':department or buyer,
@@ -1429,7 +1434,8 @@ def normalize_gem_order_block(block,source_url):
         'technical_status':'opened',
         'our_qualification_status':'qualified',
         'financial_status':'opened',
-        'final_status':'won',
+        'final_status':'cancelled' if is_cancelled else 'won',
+        'cancelled':is_cancelled,
         'remarks':' | '.join(remarks),
         'source_url':source_url,
     }
@@ -1445,7 +1451,47 @@ def extract_gem_order_blocks(page_text):
             blocks.append(block)
     return blocks
 
-def fetch_gem_fulfilment_orders(storage_state,limit_pages=3):
+def gem_orders_range(page_text):
+    match=re.search(r'Showing\s+(\d+)\s*-\s*(\d+)\s+of\s+(\d+)\s+orders',page_text or '',re.I)
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups())
+
+def click_gem_orders_next_page(page):
+    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+    page.wait_for_timeout(800)
+    return bool(page.evaluate("""
+        () => {
+            const visible = el => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+            const disabled = el => {
+                const node = el.closest('a,button,li') || el;
+                const cls = (node.className || '').toString().toLowerCase();
+                return node.disabled || node.getAttribute('aria-disabled') === 'true' || cls.includes('disabled');
+            };
+            const nodes = Array.from(document.querySelectorAll('a,button,li,span'));
+            const candidates = nodes.filter(el => {
+                if (!visible(el) || disabled(el)) return false;
+                const text = [
+                    el.innerText,
+                    el.textContent,
+                    el.getAttribute('aria-label'),
+                    el.getAttribute('title'),
+                    el.className
+                ].filter(Boolean).join(' ').trim().toLowerCase();
+                return text === 'next' || text.includes('next') || text === '>' || text === '›' || text === '»' || text.includes('pagination-next') || text.includes('page-next');
+            });
+            for (const el of candidates) {
+                const target = el.closest('a,button') || el.querySelector('a,button') || el;
+                if (target && visible(target) && !disabled(target)) {
+                    target.click();
+                    return true;
+                }
+            }
+            return false;
+        }
+    """))
+
+def fetch_gem_fulfilment_orders(storage_state,limit_pages=25):
     try:
         from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
     except Exception as exc:
@@ -1462,20 +1508,29 @@ def fetch_gem_fulfilment_orders(storage_state,limit_pages=3):
                 page.wait_for_selector('text=Contract No',timeout=30000)
             except PlaywrightTimeoutError:
                 pass
+            seen_ranges=set()
             for _ in range(max(1,limit_pages)):
-                page.mouse.wheel(0,4000)
-                page.wait_for_timeout(1000)
+                page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                page.wait_for_timeout(1200)
                 text=page.locator('body').inner_text(timeout=30000)
+                current_range=gem_orders_range(text)
+                if current_range:
+                    seen_ranges.add(current_range)
                 for block in extract_gem_order_blocks(text):
                     record=normalize_gem_order_block(block,GEM_FULFILMENT_ORDERS_URL)
                     if record:
                         records_by_contract[record['bid_number']]=record
-                next_button=page.locator('a:has-text("Next"), button:has-text("Next"), li:has-text("Next")').last
                 try:
-                    if not next_button.count() or not next_button.is_enabled():
+                    if current_range and current_range[1]>=current_range[2]:
                         break
-                    next_button.click(timeout=3000)
-                    page.wait_for_timeout(2500)
+                    clicked=click_gem_orders_next_page(page)
+                    if not clicked:
+                        break
+                    page.wait_for_timeout(3000)
+                    next_text=page.locator('body').inner_text(timeout=30000)
+                    next_range=gem_orders_range(next_text)
+                    if next_range and next_range in seen_ranges:
+                        break
                 except Exception:
                     break
         finally:
