@@ -2,6 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from "https://esm.sh/reac
 import { createRoot } from "https://esm.sh/react-dom@18.3.1/client";
 
 const h = React.createElement;
+let activeApiRequests = 0;
+
+function setGlobalLoading(active, label = "Loading...") {
+    activeApiRequests = Math.max(0, activeApiRequests + (active ? 1 : -1));
+    window.dispatchEvent(new CustomEvent("app:loading", {
+        detail: { active: activeApiRequests > 0, label },
+    }));
+}
 
 const nav = [
     ["Tenders", [["/dashboard", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"]]],
@@ -40,25 +48,30 @@ function roleDashboard(user) {
 async function api(path, options = {}) {
     const headers = { Accept: "application/json", ...(options.headers || {}) };
     if (options.body && !(options.body instanceof FormData)) headers["Content-Type"] = "application/json";
-    const response = await fetch(path, { credentials: "same-origin", headers, ...options });
-    if (response.status === 401 && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup")) {
-        navigate("/login");
-        throw new Error("Login required");
-    }
-    if (!response.ok) {
-        let message = `Request failed: ${response.status}`;
-        const text = await response.text();
-        if (text) {
-            try {
-                message = JSON.parse(text).detail || message;
-            } catch {
-                message = text;
-            }
+    setGlobalLoading(true, options.loadingLabel || (path.includes("gem-bids/sync-now") ? "Syncing GeM records..." : "Loading..."));
+    try {
+        const response = await fetch(path, { credentials: "same-origin", headers, ...options });
+        if (response.status === 401 && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup")) {
+            navigate("/login");
+            throw new Error("Login required");
         }
-        throw new Error(message);
+        if (!response.ok) {
+            let message = `Request failed: ${response.status}`;
+            const text = await response.text();
+            if (text) {
+                try {
+                    message = JSON.parse(text).detail || message;
+                } catch {
+                    message = text;
+                }
+            }
+            throw new Error(message);
+        }
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
+    } finally {
+        setGlobalLoading(false);
     }
-    const text = await response.text();
-    return text ? JSON.parse(text) : null;
 }
 
 function money(value) {
@@ -1034,8 +1047,10 @@ function SellerGemBidsPage() {
         setSyncing(true);
         setMessage(automatic ? "Fetching participated bids from GeM..." : "Checking GeM participated-bid sync...");
         try {
-            const result = await api("/api/seller/gem-bids/sync-now", { method: "POST" });
-            setMessage(result.message || "Sync check finished.");
+            const result = await api("/api/seller/gem-bids/sync-now", { method: "POST", loadingLabel: "Syncing GeM participated bids..." });
+            const delivered = result.alerts_delivered;
+            const deliveryText = delivered ? ` Alerts: dashboard ${delivered.dashboard || 0}, Telegram ${delivered.telegram || 0}, Email ${delivered.email || 0}.` : "";
+            setMessage((result.message || "Sync check finished.") + deliveryText);
             await load();
         } catch (err) {
             const failedFetch = (err.message || "").toLowerCase().includes("failed to fetch");
@@ -2657,6 +2672,7 @@ function App() {
     const [path, setPath] = useState(location.pathname);
     const [me, setMe] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [globalLoading, setGlobalLoadingState] = useState({ active: false, label: "Loading..." });
     const publicRoutes = ["/", "/features", "/pricing", "/how-it-works", "/about", "/contact", "/login", "/signup"];
     useEffect(() => {
         const onNav = () => setPath(location.pathname);
@@ -2666,6 +2682,11 @@ function App() {
     useEffect(() => {
         document.title = `${pageTitle(path)} | Tender AI`;
     }, [path]);
+    useEffect(() => {
+        const onLoading = event => setGlobalLoadingState(event.detail || { active: false, label: "Loading..." });
+        addEventListener("app:loading", onLoading);
+        return () => removeEventListener("app:loading", onLoading);
+    }, []);
     async function refreshMe() {
         try { setMe(await api("/api/me")); }
         finally { setLoading(false); }
@@ -2682,7 +2703,10 @@ function App() {
     if (path === "/contact") return h(ContactPage);
     if (path === "/login") return h(AuthPage, { mode: "login" });
     if (path === "/signup") return h(AuthPage, { mode: "signup" });
-    if (loading) return h("div", { className: "empty" }, "Loading...");
+    if (loading) return h(React.Fragment, null,
+        h("div", { className: "empty" }, "Loading..."),
+        globalLoading.active ? h("div", { className: "loading-overlay" }, h("div", { className: "loading-box" }, h("span", { className: "loader" }), h("strong", null, globalLoading.label || "Loading..."))) : null
+    );
     const sellerOnlyRoutes = ["/dashboard/seller"];
     const buyerOnlyRoutes = ["/dashboard/buyer", "/dashboard/buyers", "/dashboard/market", "/dashboard/reports", "/dashboard/analysis", "/dashboard/competitors", "/dashboard/admin"];
     let route = path === "/dashboard" ? roleDashboard(me) : path;
@@ -2719,7 +2743,10 @@ function App() {
     else if (route === "/dashboard/company-profile") page = h(CompanyProfilePage);
     else if (route === "/dashboard/profile") page = h(ProfilePage, { me, refreshMe });
     else page = h(DashboardPage, { view: "all" });
-    return h(Shell, { me, path: route }, page);
+    return h(React.Fragment, null,
+        h(Shell, { me, path: route }, page),
+        globalLoading.active ? h("div", { className: "loading-overlay" }, h("div", { className: "loading-box" }, h("span", { className: "loader" }), h("strong", null, globalLoading.label || "Loading..."))) : null
+    );
 }
 
 createRoot(document.getElementById("root")).render(h(App));

@@ -5,6 +5,41 @@ body {
     background: #eef4fb;
     color: #0f172a;
 }
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    background: rgba(15,23,42,.08);
+}
+.loading-box {
+    min-width: 220px;
+    max-width: min(420px, calc(100vw - 32px));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid #bfdbfe;
+    background: rgba(255,255,255,.96);
+    color: #0f172a;
+    border-radius: 8px;
+    padding: 14px 18px;
+    box-shadow: 0 20px 46px rgba(15,23,42,.18);
+}
+.loader {
+    width: 22px;
+    height: 22px;
+    border: 3px solid #dbeafe;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+    flex: 0 0 auto;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 a { color: inherit; }
 button {
     transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;

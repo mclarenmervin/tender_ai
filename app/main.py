@@ -32,6 +32,8 @@ from app.auth import hash_password,verify_password,create_access_token,get_curre
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
 from app.alerts.daily_digest import send_daily_digest
+from app.alerts.email_alerts import email_configured, send_email
+from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import run_gem_job
 from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
@@ -1569,6 +1571,50 @@ def create_gem_deadline_reminders(db,user_id,items):
         db.add(NotificationLog(user_id=user_id,tender_id=None,channel='gem_bid_alert',recipient='dashboard',status='pending',message=message))
         created+=1
     return created
+
+def deliver_pending_gem_bid_alerts(db,user,limit=25):
+    alerts=db.query(NotificationLog).filter(
+        NotificationLog.user_id==user.id,
+        NotificationLog.channel=='gem_bid_alert',
+        NotificationLog.status=='pending',
+    ).order_by(NotificationLog.created_at.desc()).limit(limit).all()
+    if not alerts:
+        return {'dashboard':0,'telegram':0,'email':0,'skipped':0,'failed':0}
+    messages=[alert.message for alert in reversed(alerts) if alert.message]
+    if not messages:
+        return {'dashboard':0,'telegram':0,'email':0,'skipped':len(alerts),'failed':0}
+    title='GeM participated bid update'
+    text_body='\n'.join(f'- {message}' for message in messages)
+    html_body='<h2>GeM participated bid update</h2><ul>'+''.join(f'<li>{escape(message)}</li>' for message in messages)+'</ul>'
+    telegram_sent=0
+    email_sent=0
+    skipped=0
+    failed=0
+    telegram_pref=get_notification_preference(db,user.id,'telegram')
+    email_pref=get_notification_preference(db,user.id,'email')
+    if telegram_pref.enabled:
+        try:
+            telegram_sent=broadcast_telegram_message(db,'<b>GeM participated bid update</b>\n'+'\n'.join(f'- {message}' for message in messages),user_id=user.id)
+        except Exception:
+            failed+=1
+    else:
+        skipped+=1
+    if email_pref.enabled:
+        try:
+            if email_configured() and send_email(user.email,title,html_body,text_body):
+                email_sent=1
+            else:
+                skipped+=1
+        except Exception:
+            failed+=1
+    else:
+        skipped+=1
+    status='sent' if (telegram_sent or email_sent) else ('failed' if failed else 'skipped')
+    for alert in alerts:
+        alert.status=status
+        alert.recipient='dashboard,telegram,email'
+    db.commit()
+    return {'dashboard':len(alerts),'telegram':telegram_sent,'email':email_sent,'skipped':skipped,'failed':failed}
 
 def seller_opportunity_for_tender(tender,catalogue_items,readiness_summary,bid_by_tender):
     best,top_matches=catalogue_match_for_tender(tender,catalogue_items)
@@ -3638,6 +3684,7 @@ def api_sync_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_cu
     credential.last_login_status='sync_completed'
     credential.last_login_error=f'Fetched {len(records)} GeM fulfilment order record(s). Created {created}, updated {updated}.'
     db.commit()
+    delivered=deliver_pending_gem_bid_alerts(db,user)
     return {
         'ok':True,
         'synced':len(records),
@@ -3645,6 +3692,7 @@ def api_sync_seller_gem_bids(db:Session=Depends(get_db),user:User=Depends(get_cu
         'updated':updated,
         'tracked_bids':len(items),
         'alerts_created':reminders,
+        'alerts_delivered':delivered,
         'message':credential.last_login_error,
         'summary':gem_bid_summary(items),
     }
