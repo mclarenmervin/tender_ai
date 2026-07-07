@@ -40,6 +40,30 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+.risk-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    border-radius: 8px;
+    padding: 3px 8px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: capitalize;
+}
+.risk-badge.medium {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+}
+.risk-badge.high,
+.risk-badge.very_high {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #991b1b;
+}
 a { color: inherit; }
 button {
     transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;

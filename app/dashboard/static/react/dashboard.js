@@ -31,6 +31,7 @@ const buyerNav = [
 const sellerNav = [
     ["Seller", [["/dashboard/seller", "Seller Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
     ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Participated Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
+    ["Intelligence", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/buyers", "Buyer History"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risk Signals"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Documents"]]],
     ["Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
     ["Bid Work", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
     ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
@@ -135,6 +136,12 @@ function pageTitle(path) {
     if (path === "/dashboard/seller/gem-login") return "GeM Login";
     if (path === "/dashboard/seller/gem-bids") return "GeM Bid Tracking";
     if (path === "/dashboard/seller/gem-alerts") return "GeM Alerts";
+    if (path === "/dashboard/seller/intelligence") return "Seller Intelligence";
+    if (path === "/dashboard/seller/intelligence/buyers") return "Buyer History";
+    if (path === "/dashboard/seller/intelligence/competitors") return "Competitor Intelligence";
+    if (path === "/dashboard/seller/intelligence/risk-signals") return "Risk Signals";
+    if (path === "/dashboard/seller/intelligence/reports") return "Risk Reports";
+    if (path === "/dashboard/seller/intelligence/documents") return "Document Extraction";
     if (path === "/dashboard/seller/readiness") return "Seller Readiness";
     if (path === "/dashboard/seller/catalogue") return "Catalogue Tracker";
     if (path === "/dashboard/seller/opportunities") return "Opportunity Matching";
@@ -2652,6 +2659,138 @@ function CompanyProfilePage() {
     );
 }
 
+function RiskBadge({ level }) {
+    const label = (level || "low").replaceAll("_", " ");
+    return h("span", { className: `risk-badge ${level || "low"}` }, label);
+}
+
+function IntelligenceHero({ title, text }) {
+    return h("div", { className: "hero-panel seller-intel-hero" },
+        h("div", null, h("h2", null, title), h("p", null, text)),
+        h("div", { className: "hero-actions" },
+            h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/gem-bids") }, "Sync GeM Records"),
+            h("button", { onClick: () => navigate("/dashboard/seller/intelligence/risk-signals") }, "Risk Signals"),
+            h("button", { onClick: () => navigate("/dashboard/seller/intelligence/reports") }, "Reports")
+        )
+    );
+}
+
+function SellerIntelligenceOverviewPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/overview").then(setData).catch(err => setMessage(err.message)); }, []);
+    const summary = data?.summary || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Seller Intelligence Overview", text: "Evidence-based buyer, order, concentration, and risk signals from your GeM seller records." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.session_required ? h("div", { className: "notice err" }, data.message) : null,
+        h("div", { className: "summary six" },
+            [["Records", summary.total_records || 0], ["Total Value", `Rs. ${money(summary.total_value || 0)}`], ["Buyers", summary.buyers || 0], ["Districts", summary.districts || 0], ["High Risk", summary.high_risk || 0], ["Cancelled", summary.cancelled || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "chart-grid" },
+            h(ChartCard, { title: "Top Buyers", data: { labels: (data?.top_buyers || []).map(row => row.name), values: (data?.top_buyers || []).map(row => row.count) } }),
+            h(ChartCard, { title: "Order Status", data: { labels: (data?.status_rows || []).map(row => row.name), values: (data?.status_rows || []).map(row => row.count) }, type: "doughnut" })
+        ),
+        h(SimpleTable, {
+            title: "Top Risk Signals",
+            headers: ["Record", "Buyer", "District", "Value", "Risk", "Reasons"],
+            rows: (data?.top_risk_signals || []).map(row => [row.bid_number, row.buyer, row.district, `Rs. ${money(row.value)}`, h(RiskBadge, { level: row.risk_level }), row.reasons.join("; ")])
+        })
+    );
+}
+
+function SellerBuyerHistoryPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/buyers").then(setData).catch(err => setMessage(err.message)); }, []);
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Buyer History", text: "See buyer/department concentration, value share, districts served, and latest fulfilment status." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.session_required ? h("div", { className: "notice err" }, "Capture a valid GeM session and sync participated bids to view buyer history.") : null,
+        h(SimpleTable, {
+            title: "Buyer / Department Records",
+            headers: ["Buyer / Department", "Records", "Value", "Value Share", "Districts", "Latest Status", "Risk"],
+            rows: (data?.items || []).map(row => [row.buyer, row.records, `Rs. ${money(row.value)}`, `${row.value_share}%`, row.districts, row.latest_status, h(RiskBadge, { level: row.risk_level })])
+        })
+    );
+}
+
+function SellerCompetitorIntelligencePage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/competitors").then(setData).catch(err => setMessage(err.message)); }, []);
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Competitor Intelligence", text: "Prepare L1/L2/L3, repeated bidder group, and vendor dominance analytics from result data." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h("div", { className: "summary three" },
+            [["Competitors", data?.summary?.competitors_tracked || 0], ["L1/L2 Records", data?.summary?.l1_l2_records || 0], ["Repeated Groups", data?.summary?.repeated_groups || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card" },
+            h("h3", null, "Next Data Required"),
+            h("p", { className: "desc" }, data?.message || "Upload or ingest financial evaluation/result records to activate competitor analytics."),
+            h("div", { className: "tag-list catalogue-gaps" }, (data?.required_fields || []).map(field => h("span", { key: field }, field)))
+        )
+    );
+}
+
+function SellerRiskSignalsPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/risk-signals").then(setData).catch(err => setMessage(err.message)); }, []);
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Risk Signals", text: "Review evidence-based signals. These are observations for manual review, not allegations." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h("div", { className: "notice" }, data?.language_note || "Risk signals are not proof of wrongdoing."),
+        h(SimpleTable, {
+            title: "Procurement Risk Signals",
+            headers: ["Record", "Buyer", "District", "Value", "Final", "Score", "Risk", "Reasons"],
+            rows: (data?.items || []).map(row => [row.bid_number, row.buyer, row.district, `Rs. ${money(row.value)}`, row.final_status, row.risk_score, h(RiskBadge, { level: row.risk_level }), row.reasons.join("; ")])
+        })
+    );
+}
+
+function SellerRiskReportsPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/reports").then(setData).catch(err => setMessage(err.message)); }, []);
+    const reports = data?.reports || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Risk Reports", text: "Department-wise concentration and seller risk reports, with placeholders for L1/L2/L3 and bidder group reports." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h(SimpleTable, { title: "Department-Wise Risk Report", headers: ["Department", "Total Records", "Total Value", "Record Share %", "Risk Level"], rows: (reports.department_risk || []).map(row => [row.Department, row["Total Records"], `Rs. ${money(row["Total Value"])}`, row["Record Share %"], row["Risk Level"]]) }),
+        h(SimpleTable, { title: "Seller Risk Signal Report", headers: ["Record No", "Buyer", "District", "Value", "Risk Score", "Risk Level", "Reasons"], rows: (reports.seller_risk_signals || []).map(row => [row["Record No"], row.Buyer, row.District, `Rs. ${money(row.Value)}`, row["Risk Score"], row["Risk Level"], row.Reasons]) }),
+        h("div", { className: "admin-grid" },
+            h(SimpleTable, { title: "L1/L2/L3 Price Gap Report", headers: ["Bid No", "L1", "L2", "Gap %", "Risk"], rows: [] }),
+            h(SimpleTable, { title: "Repeated Bidder Group Report", headers: ["Group", "Department", "Bids Together", "Risk"], rows: [] })
+        )
+    );
+}
+
+function SellerDocumentExtractionPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/documents").then(setData).catch(err => setMessage(err.message)); }, []);
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Document Extraction", text: "Track uploaded tender/result documents and extraction readiness for risk analytics." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("section", { className: "card" },
+            h("h3", null, "Extraction Targets"),
+            h("div", { className: "tag-list catalogue-gaps" }, (data?.extraction_tasks || []).map(task => h("span", { key: task }, task)))
+        ),
+        h(SimpleTable, {
+            title: "Uploaded Documents",
+            headers: ["File", "Type", "Status", "Confidence", "Uploaded"],
+            rows: (data?.items || []).map(row => [row.file_name, row.document_type, row.extraction_status, row.confidence_score || "NA", row.uploaded_at || "NA"])
+        })
+    );
+}
+
 function ProfilePage({ me, refreshMe }) {
     const [form, setForm] = useState({ name: me?.name || "", email: me?.email || "", telegram_enabled: me?.notifications?.telegram, email_enabled: me?.notifications?.email });
     const [password, setPassword] = useState({ current_password: "", new_password: "", confirm_password: "" });
@@ -2719,6 +2858,12 @@ function App() {
     else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
     else if (route === "/dashboard/seller/gem-login") page = h(SellerGemLoginPage);
     else if (route === "/dashboard/seller/gem-bids") page = h(SellerGemBidsPage);
+    else if (route === "/dashboard/seller/intelligence") page = h(SellerIntelligenceOverviewPage);
+    else if (route === "/dashboard/seller/intelligence/buyers") page = h(SellerBuyerHistoryPage);
+    else if (route === "/dashboard/seller/intelligence/competitors") page = h(SellerCompetitorIntelligencePage);
+    else if (route === "/dashboard/seller/intelligence/risk-signals") page = h(SellerRiskSignalsPage);
+    else if (route === "/dashboard/seller/intelligence/reports") page = h(SellerRiskReportsPage);
+    else if (route === "/dashboard/seller/intelligence/documents") page = h(SellerDocumentExtractionPage);
     else if (route === "/dashboard/seller/readiness") page = h(SellerReadinessPage);
     else if (route === "/dashboard/seller/catalogue") page = h(SellerCataloguePage);
     else if (route === "/dashboard/seller/opportunities") page = h(SellerOpportunitiesPage);

@@ -1557,6 +1557,119 @@ def fetch_gem_fulfilment_orders(storage_state,limit_pages=12):
             browser.close()
     return list(records_by_contract.values())
 
+def seller_gem_items_for_intelligence(db,user_id):
+    credential=db.query(GemPortalCredential).filter(GemPortalCredential.user_id==user_id).first()
+    if not gem_session_is_valid(credential):
+        return [],credential
+    items=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user_id).order_by(GemParticipatedBid.last_updated_at.desc()).all()
+    return items,credential
+
+def norm_key(value,default='Unknown'):
+    text=re.sub(r'\s+',' ',str(value or '').strip())
+    return text or default
+
+def money_sum(items,field='bid_value'):
+    return sum((getattr(item,field,None) or 0) for item in items)
+
+def counter_rows(counter,total=None,value_counter=None,limit=10):
+    rows=[]
+    total=total if total is not None else sum(counter.values())
+    for name,count in counter.most_common(limit):
+        value=value_counter.get(name,0) if value_counter else 0
+        share=round((count/total)*100,2) if total else 0
+        rows.append({'name':name,'count':count,'value':value,'share':share})
+    return rows
+
+def gem_order_status(item):
+    return gem_regex(r'Status:\s*([^|]+)',item.remarks or '') or item.final_status or 'unknown'
+
+def seller_risk_level(score):
+    if score>=76:
+        return 'very_high'
+    if score>=51:
+        return 'high'
+    if score>=26:
+        return 'medium'
+    return 'low'
+
+def seller_bid_risk_signal(item,department_share=0):
+    score=0
+    reasons=[]
+    value=item.bid_value or 0
+    if item.final_status=='cancelled' or item.cancelled:
+        score+=20
+        reasons.append('Contract/order cancellation signal observed')
+    if department_share>=50:
+        score+=15
+        reasons.append(f'Department concentration in available seller records is {department_share:.1f}%')
+    elif department_share>=30:
+        score+=8
+        reasons.append(f'Department concentration watchlist at {department_share:.1f}%')
+    if value>=5000000:
+        score+=12
+        reasons.append('High value order requires closer follow-up')
+    elif value>=1000000:
+        score+=6
+        reasons.append('Medium-to-high value order')
+    status=gem_order_status(item).lower()
+    if 'received' in status or 'pending' in status:
+        score+=8
+        reasons.append('Order still requires action/follow-up')
+    if not item.source_url:
+        score+=5
+        reasons.append('Source evidence link missing')
+    if not reasons:
+        reasons.append('No major risk signal observed in currently available seller data')
+    return {
+        'bid_number':item.bid_number,
+        'buyer':item.department or '',
+        'district':item.district or '',
+        'item':item.item_name or '',
+        'value':value,
+        'final_status':item.final_status or 'under_evaluation',
+        'risk_score':min(score,100),
+        'risk_level':seller_risk_level(min(score,100)),
+        'reasons':reasons,
+        'source_url':item.source_url or '',
+        'last_updated_at':iso(item.last_updated_at or item.updated_at),
+    }
+
+def seller_intelligence_dataset(db,user):
+    items,credential=seller_gem_items_for_intelligence(db,user.id)
+    dept_counter=Counter(norm_key(item.department) for item in items)
+    district_counter=Counter(norm_key(item.district) for item in items)
+    status_counter=Counter(norm_key(gem_order_status(item)) for item in items)
+    value_by_dept=Counter()
+    value_by_district=Counter()
+    for item in items:
+        value_by_dept[norm_key(item.department)]+=item.bid_value or 0
+        value_by_district[norm_key(item.district)]+=item.bid_value or 0
+    total=len(items)
+    signals=[]
+    for item in items:
+        dept=norm_key(item.department)
+        dept_share=(dept_counter[dept]/total*100) if total else 0
+        signals.append(seller_bid_risk_signal(item,dept_share))
+    signals.sort(key=lambda row:row['risk_score'],reverse=True)
+    return {
+        'items':items,
+        'credential':credential,
+        'summary':{
+            'total_records':total,
+            'total_value':money_sum(items),
+            'buyers':len(dept_counter),
+            'districts':len(district_counter),
+            'won':sum(1 for item in items if item.final_status=='won'),
+            'cancelled':sum(1 for item in items if item.cancelled or item.final_status=='cancelled'),
+            'high_risk':sum(1 for signal in signals if signal['risk_score']>=51),
+            'medium_risk':sum(1 for signal in signals if 26<=signal['risk_score']<51),
+        },
+        'top_buyers':counter_rows(dept_counter,total,value_by_dept,12),
+        'top_districts':counter_rows(district_counter,total,value_by_district,12),
+        'status_rows':counter_rows(status_counter,total,None,12),
+        'signals':signals,
+    }
+
 def create_gem_deadline_reminders(db,user_id,items):
     created=0
     today=date.today()
@@ -3273,6 +3386,120 @@ async def api_create_bid_from_opportunity(tender_id:int,request:Request,db:Sessi
 @app.get('/api/seller/analytics')
 def api_seller_analytics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return build_seller_analytics(db,user)
+
+@app.get('/api/seller/intelligence/overview')
+def api_seller_intelligence_overview(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    data=seller_intelligence_dataset(db,user)
+    if not gem_session_is_valid(data['credential']):
+        return {'session_required':True,'summary':data['summary'],'message':'Capture a valid GeM session and sync participated bids to build seller intelligence.'}
+    return {
+        'session_required':False,
+        'summary':data['summary'],
+        'top_buyers':data['top_buyers'],
+        'top_districts':data['top_districts'],
+        'status_rows':data['status_rows'],
+        'top_risk_signals':data['signals'][:8],
+        'message':'Evidence-based seller intelligence generated from GeM fulfilment/participated records. Not proof of wrongdoing.',
+    }
+
+@app.get('/api/seller/intelligence/buyers')
+def api_seller_intelligence_buyers(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    data=seller_intelligence_dataset(db,user)
+    items=data['items']
+    rows=[]
+    by_buyer={}
+    for item in items:
+        buyer=norm_key(item.department)
+        by_buyer.setdefault(buyer,[]).append(item)
+    total_value=money_sum(items)
+    for buyer,buyer_items in by_buyer.items():
+        value=money_sum(buyer_items)
+        rows.append({
+            'buyer':buyer,
+            'records':len(buyer_items),
+            'value':value,
+            'value_share':round((value/total_value)*100,2) if total_value else 0,
+            'districts':len({norm_key(item.district) for item in buyer_items}),
+            'latest_status':gem_order_status(sorted(buyer_items,key=lambda row:row.last_updated_at or datetime.min,reverse=True)[0]),
+            'risk_level':seller_risk_level(15 if len(buyer_items)>=5 else 8 if len(buyer_items)>=3 else 0),
+        })
+    rows.sort(key=lambda row:(row['value'],row['records']),reverse=True)
+    return {'session_required':not gem_session_is_valid(data['credential']),'items':rows,'summary':data['summary']}
+
+@app.get('/api/seller/intelligence/competitors')
+def api_seller_intelligence_competitors(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    data=seller_intelligence_dataset(db,user)
+    return {
+        'session_required':not gem_session_is_valid(data['credential']),
+        'items':[],
+        'summary':{
+            'competitors_tracked':0,
+            'l1_l2_records':0,
+            'repeated_groups':0,
+        },
+        'message':'Competitor/L1/L2/L3 analytics need financial evaluation results, awarded bid pages, or uploaded result PDFs. The data model and menu are ready; upload/result ingestion is the next step.',
+        'required_fields':['l1_vendor','l1_price','l2_vendor','l2_price','l3_vendor','l3_price','total_bidders','technically_qualified','technically_disqualified'],
+    }
+
+@app.get('/api/seller/intelligence/risk-signals')
+def api_seller_intelligence_risk_signals(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    data=seller_intelligence_dataset(db,user)
+    return {
+        'session_required':not gem_session_is_valid(data['credential']),
+        'items':data['signals'],
+        'summary':data['summary'],
+        'language_note':'Risk signals are evidence-based observations and are not proof of wrongdoing.',
+    }
+
+@app.get('/api/seller/intelligence/reports')
+def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    data=seller_intelligence_dataset(db,user)
+    buyer_rows=[{
+        'Department':row['name'],
+        'Total Records':row['count'],
+        'Total Value':row['value'],
+        'Record Share %':row['share'],
+        'Risk Level':'Medium' if row['share']>=30 else 'Low',
+    } for row in data['top_buyers']]
+    risk_rows=[{
+        'Record No':row['bid_number'],
+        'Buyer':row['buyer'],
+        'District':row['district'],
+        'Value':row['value'],
+        'Risk Score':row['risk_score'],
+        'Risk Level':row['risk_level'],
+        'Reasons':'; '.join(row['reasons']),
+    } for row in data['signals']]
+    return {
+        'session_required':not gem_session_is_valid(data['credential']),
+        'summary':data['summary'],
+        'reports':{
+            'department_risk':buyer_rows,
+            'vendor_dominance':[],
+            'l1_l2_l3_gap':[],
+            'repeated_bidder_group':[],
+            'restrictive_clause':[],
+            'seller_risk_signals':risk_rows,
+        },
+        'message':'Full vendor dominance and L1/L2/L3 reports become available after result/participant data ingestion.',
+    }
+
+@app.get('/api/seller/intelligence/documents')
+def api_seller_intelligence_documents(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    tender_docs=db.query(TenderDocument).join(Tender,TenderDocument.tender_id==Tender.id).filter(Tender.user_id==user.id).order_by(TenderDocument.uploaded_at.desc()).limit(50).all()
+    return {
+        'items':[{
+            'id':doc.id,
+            'file_name':Path(doc.file_path or doc.url or '').name if (doc.file_path or doc.url) else f'Document {doc.id}',
+            'document_type':doc.document_type or '',
+            'extraction_status':doc.status or 'pending',
+            'confidence_score':'',
+            'uploaded_at':iso(doc.created_at),
+        } for doc in tender_docs],
+        'supported_files':['PDF','Excel','CSV','ZIP','Images with OCR later'],
+        'extraction_tasks':['Bid number','Buyer department','Item/service','Quantity','Estimated value','EMD','Bid dates','Eligibility','Turnover','OEM authorization','L1/L2/L3 where present'],
+        'message':'This page reuses tender document storage today. Dedicated seller risk document upload can be added next.',
+    }
 
 @app.get('/api/seller/gem-login')
 def api_get_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
