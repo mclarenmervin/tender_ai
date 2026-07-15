@@ -2022,6 +2022,42 @@ def seller_gem_login_dashboard(request:Request,db:Session=Depends(get_db),user:U
 def seller_gem_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/seller/keywords')
+def seller_keywords_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/scoring')
+def seller_scoring_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/settings')
+def seller_settings_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence')
+def seller_intelligence_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence/buyers')
+def seller_intelligence_buyers_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence/competitors')
+def seller_intelligence_competitors_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence/risk-signals')
+def seller_intelligence_risk_signals_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence/reports')
+def seller_intelligence_reports_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/seller/intelligence/documents')
+def seller_intelligence_documents_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/tenders')
 def tenders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
