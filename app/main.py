@@ -37,7 +37,7 @@ from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import run_gem_job
 from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
-from app.scheduler.scheduler import start_background_scheduler, start_scheduler, stop_background_scheduler
+from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -4500,6 +4500,7 @@ def api_admin_settings(db:Session=Depends(get_db),user:User=Depends(get_current_
         'auto_scrape_interval_hours':get_setting(db,user.id,'auto_scrape_interval_hours','6'),
         'auto_scrape_time':get_setting(db,user.id,'auto_scrape_time','09:00'),
         'auto_scrape_last_run':get_setting(db,user.id,'auto_scrape_last_run',''),
+        'auto_scrape_status':auto_scrape_status_payload(db,user),
         'daily_digest_enabled':get_setting(db,user.id,'daily_digest_enabled','false')=='true',
         'daily_digest_time':get_setting(db,user.id,'daily_digest_time','09:00'),
         'daily_digest_min_score':get_setting(db,user.id,'daily_digest_min_score','70'),
@@ -5020,6 +5021,54 @@ def gem_alert_select_options(db,user):
         'categories':sorted({value for value in categories if value},key=lambda value:value.lower())[:250],
         'company_departments':company_department_options[:250],
         'source':'saved_gem_tenders',
+    }
+
+def auto_scrape_status_payload(db,user):
+    enabled=get_setting(db,user.id,'auto_scrape_enabled','false')=='true'
+    mode=get_setting(db,user.id,'auto_scrape_mode','interval')
+    raw_last=get_setting(db,user.id,'auto_scrape_last_run','')
+    last_run=None
+    if raw_last:
+        try:
+            last_run=datetime.fromisoformat(raw_last)
+        except ValueError:
+            last_run=None
+    now=datetime.now()
+    try:
+        interval_hours=max(1,min(168,int(get_setting(db,user.id,'auto_scrape_interval_hours','6') or '6')))
+    except ValueError:
+        interval_hours=6
+    scrape_time=get_setting(db,user.id,'auto_scrape_time','09:00') or '09:00'
+    next_due=None
+    due_now=False
+    reason='Auto scrape is disabled.'
+    if enabled and mode=='daily':
+        try:
+            hour,minute=[int(part) for part in scrape_time.split(':',1)]
+        except Exception:
+            hour,minute=9,0
+        scheduled=now.replace(hour=hour,minute=minute,second=0,microsecond=0)
+        ran_today=bool(last_run and last_run.date()>=now.date())
+        if not ran_today and now>=scheduled:
+            due_now=True
+            next_due=now
+            reason='Daily scrape is due now.'
+        else:
+            next_due=scheduled if not ran_today and now<scheduled else scheduled+timedelta(days=1)
+            reason='Waiting for daily scrape time.'
+    elif enabled:
+        next_due=last_run+timedelta(hours=interval_hours) if last_run else now
+        due_now=not last_run or now>=next_due
+        reason='Interval scrape is due now.' if due_now else 'Waiting for interval window.'
+    return {
+        'enabled':enabled,
+        'mode':mode,
+        'scheduler_running':background_scheduler_running(),
+        'server_now':now.isoformat(timespec='seconds'),
+        'last_run':raw_last,
+        'next_due':next_due.isoformat(timespec='seconds') if next_due else '',
+        'due_now':due_now,
+        'reason':reason,
     }
 
 @app.post("/scrape-now")

@@ -2919,6 +2919,7 @@ function SettingsPage() {
         setDigestMessage(`Daily digest sent. Email: ${result.email_sent || 0}, Telegram: ${result.telegram_sent || 0}, Tenders: ${result.total_tenders || 0}.`);
         await load();
     }
+    const autoStatus = settings.auto_scrape_status || {};
     return h("div", { className: "admin-grid" },
         h("div", { className: "card" }, h("h3", null, "High Priority Scrape"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }), " Keep only high priority bids")),
         h("div", { className: "card" }, h("h3", null, "Location Filters"), h("form", { onSubmit: saveLocation, className: "stack" },
@@ -2931,7 +2932,15 @@ function SettingsPage() {
             h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time")),
             h("input", { type: "number", value: settings.auto_scrape_interval_hours, onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) }),
             h("input", { type: "time", value: settings.auto_scrape_time, onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) }),
-            h("button", { className: "primary" }, "Save Auto Scrape")
+            h("button", { className: "primary" }, "Save Auto Scrape"),
+            h("div", { className: autoStatus.scheduler_running ? "notice ok" : "notice err" }, autoStatus.scheduler_running ? "Scheduler is running in the web app." : "Scheduler is not running in the web app. Redeploy or restart the container."),
+            h("div", { className: "alert-status-grid" },
+                h("div", null, h("span", null, "Server now"), h("strong", null, autoStatus.server_now || "NA")),
+                h("div", null, h("span", null, "Last auto scrape"), h("strong", null, autoStatus.last_run || "Not run")),
+                h("div", null, h("span", null, "Next due"), h("strong", null, autoStatus.next_due || "NA")),
+                h("div", null, h("span", null, "Due now"), h("strong", null, autoStatus.due_now ? "Yes" : "No"))
+            ),
+            autoStatus.reason ? h("p", { className: "desc" }, autoStatus.reason) : null
         )),
         h("div", { className: "card" }, h("h3", null, "Daily Digest Alerts"), h("form", { onSubmit: saveDigest, className: "stack" },
             digestMessage ? h("p", { className: "status" }, digestMessage) : null,

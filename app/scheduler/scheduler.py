@@ -204,6 +204,10 @@ def stop_background_scheduler():
     _background_scheduler = None
 
 
+def background_scheduler_running():
+    return bool(_background_scheduler and _background_scheduler.running)
+
+
 def start_scheduler():
     scheduler = build_scheduler()
     scheduler.start()
