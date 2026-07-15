@@ -145,6 +145,60 @@ def log_email_notifications(db, tenders, recipient, status, message=None, error=
     db.commit()
 
 
+def log_general_email_notification(db, user_id, recipient, status, message=None, error=None):
+    db.add(NotificationLog(
+        user_id=user_id,
+        tender_id=None,
+        channel="email",
+        recipient=recipient,
+        status=status,
+        message=message,
+        error=error,
+    ))
+    db.commit()
+
+
+def notify_scrape_summary_email(db, user_id, scrape_details, subject=None):
+    readiness = email_notification_readiness(db, user_id)
+    user = db.query(User).filter(User.id == user_id).first()
+    recipient = user.email if user else None
+    if not readiness.get("ok"):
+        if recipient:
+            log_general_email_notification(db, user_id, recipient, "skipped", readiness.get("reason"))
+        return 0
+
+    details = scrape_details or {}
+    inserted = int(details.get("inserted") or 0)
+    scored = int(details.get("scored") or 0)
+    removed = int(details.get("removed_low_priority") or 0)
+    subject = subject or f"Tender AI auto scrape report: {inserted} new tender{'s' if inserted != 1 else ''}"
+    details_html = scrape_details_html(details)
+    details_text = scrape_details_text(details)
+    result_line = (
+        "No new tenders were found in this auto scrape."
+        if inserted == 0
+        else f"{inserted} new tender{'s were' if inserted != 1 else ' was'} inserted."
+    )
+    html_body = f"""
+<div style="font-family:Arial,sans-serif;color:#111827;">
+  <h2>Auto scrape report</h2>
+  <p>{escape(result_line)}</p>
+  <p>Scored: {scored} | Removed low priority: {removed}</p>
+  {details_html}
+</div>
+""".strip()
+    text_body = f"Auto scrape report\n{result_line}\nScored: {scored}\nRemoved low priority: {removed}\n\n{details_text}"
+    try:
+        if send_email(recipient, subject, html_body, text_body):
+            log_general_email_notification(db, user_id, recipient, "sent", subject)
+            return 1
+        log_general_email_notification(db, user_id, recipient, "skipped", "SMTP is not configured")
+        return 0
+    except Exception as e:
+        log_general_email_notification(db, user_id, recipient, "failed", subject, str(e))
+        return 0
+
+
 def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
     if not tender_ids:
         return 0

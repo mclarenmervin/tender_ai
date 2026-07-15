@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.sql import func
 
 from app.alerts.telegram_alerts import notify_new_tenders
-from app.alerts.email_alerts import email_notification_readiness, notify_new_tenders_email
+from app.alerts.email_alerts import email_notification_readiness, notify_new_tenders_email, notify_scrape_summary_email
 from app.ai_engine.keyword_engine import expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders
 from app.database.db_connection import get_db
@@ -86,14 +86,22 @@ def run_gem_job(user_id=None, trigger="manual"):
         removed_low_priority = remove_low_priority_inserts(db, user_id, inserted_ids)
         notified = notify_new_tenders(db, inserted_ids, timeout=5, user_id=user_id)
         email_status = email_notification_readiness(db, user_id, inserted_ids)
-        emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details={
+        scrape_details = {
             "trigger": trigger,
             "keywords": keywords,
             "inserted": inserted,
             "scored": scored,
             "removed_low_priority": removed_low_priority,
             "source_logs": source_logs,
-        })
+        }
+        emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details=scrape_details)
+        if trigger == "auto" and not inserted_ids:
+            emailed = notify_scrape_summary_email(
+                db,
+                user_id,
+                scrape_details,
+                subject="Tender AI auto scrape report: no new tenders found",
+            )
         if inserted_ids and emailed == 0:
             source_logs.append({
                 "source": "Email",
