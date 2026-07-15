@@ -3090,6 +3090,15 @@ def api_me(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
         },
     }
 
+@app.get('/api/server-time')
+def api_server_time(user:User=Depends(get_current_user)):
+    now=datetime.now().astimezone()
+    return {
+        'iso':now.isoformat(),
+        'timezone':now.tzname() or '',
+        'offset':now.strftime('%z'),
+    }
+
 @app.get('/api/dashboard/summary')
 def api_dashboard_summary(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return dashboard_summary(db,user)

@@ -71,6 +71,39 @@ function ThemeToggle() {
     }, theme === "dark" ? SUN_ICON : MOON_ICON);
 }
 
+function ServerClock() {
+    const [serverNow, setServerNow] = useState(null);
+    const [loadedAt, setLoadedAt] = useState(null);
+    const [tick, setTick] = useState(0);
+    useEffect(() => {
+        let alive = true;
+        async function loadTime() {
+            try {
+                const data = await api("/api/server-time", { silent: true });
+                if (!alive) return;
+                setServerNow(new Date(data.iso));
+                setLoadedAt(Date.now());
+            } catch {}
+        }
+        loadTime();
+        const refresh = setInterval(loadTime, 5 * 60 * 1000);
+        return () => { alive = false; clearInterval(refresh); };
+    }, []);
+    useEffect(() => {
+        const timer = setInterval(() => setTick(value => value + 1), 1000);
+        return () => clearInterval(timer);
+    }, []);
+    if (!serverNow || !loadedAt) return h("div", { className: "server-clock" }, h("span", null, "Server"), h("strong", null, "--:--:--"));
+    const current = new Date(serverNow.getTime() + (Date.now() - loadedAt));
+    const time = current.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+    const date = current.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+    void tick;
+    return h("div", { className: "server-clock", title: "Server current time" },
+        h("span", null, date),
+        h("strong", null, time)
+    );
+}
+
 function icon(children, viewBox = "0 0 24 24") {
     return h("svg", { width: 16, height: 16, viewBox, fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" }, children);
 }
@@ -133,7 +166,8 @@ function roleDashboard(user) {
 async function api(path, options = {}) {
     const headers = { Accept: "application/json", ...(options.headers || {}) };
     if (options.body && !(options.body instanceof FormData)) headers["Content-Type"] = "application/json";
-    setGlobalLoading(true, options.loadingLabel || (path.includes("gem-bids/sync-now") ? "Syncing GeM records..." : "Loading..."));
+    const showLoader = !options.silent;
+    if (showLoader) setGlobalLoading(true, options.loadingLabel || (path.includes("gem-bids/sync-now") ? "Syncing GeM records..." : "Loading..."));
     try {
         const response = await fetch(path, { credentials: "same-origin", headers, ...options });
         if (response.status === 401 && !location.pathname.startsWith("/login") && !location.pathname.startsWith("/signup")) {
@@ -155,7 +189,7 @@ async function api(path, options = {}) {
         const text = await response.text();
         return text ? JSON.parse(text) : null;
     } finally {
-        setGlobalLoading(false);
+        if (showLoader) setGlobalLoading(false);
     }
 }
 
@@ -830,6 +864,7 @@ function Shell({ children, me, path }) {
                 ),
                 h("div", { className: "user" },
                     h(ThemeToggle),
+                    h(ServerClock),
                     h("div", { className: "avatar" }, (me?.name || me?.email || "U").slice(0, 1).toUpperCase()),
                     h("strong", null, me?.name || "User"),
                     h("span", { className: "profile-pill role-pill" }, me?.role === "seller" ? "Seller" : "Buyer"),

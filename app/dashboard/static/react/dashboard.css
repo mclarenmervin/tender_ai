@@ -1653,6 +1653,30 @@ textarea {
     flex-wrap: wrap;
     justify-content: flex-end;
 }
+.server-clock {
+    min-height: 38px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+.server-clock span {
+    font-size: 10px;
+    font-weight: 850;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+.server-clock strong {
+    font-size: 13px;
+    color: var(--text);
+}
 .avatar {
     width: 38px;
     height: 38px;
