@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.sql import func
 
 from app.alerts.telegram_alerts import notify_new_tenders
-from app.alerts.email_alerts import notify_new_tenders_email
+from app.alerts.email_alerts import email_notification_readiness, notify_new_tenders_email
 from app.ai_engine.keyword_engine import expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders
 from app.database.db_connection import get_db
@@ -85,6 +85,7 @@ def run_gem_job(user_id=None, trigger="manual"):
         update_keyword_performance_scores(db, user_id, run.id if run else None, inserted_ids)
         removed_low_priority = remove_low_priority_inserts(db, user_id, inserted_ids)
         notified = notify_new_tenders(db, inserted_ids, timeout=5, user_id=user_id)
+        email_status = email_notification_readiness(db, user_id, inserted_ids)
         emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details={
             "trigger": trigger,
             "keywords": keywords,
@@ -93,6 +94,13 @@ def run_gem_job(user_id=None, trigger="manual"):
             "removed_low_priority": removed_low_priority,
             "source_logs": source_logs,
         })
+        if inserted_ids and emailed == 0:
+            source_logs.append({
+                "source": "Email",
+                "status": "skipped" if not email_status.get("ok") else "failed",
+                "message": email_status.get("reason") or "Email notification was not sent.",
+                "inserted_ids": [],
+            })
         failed_sources = [log["source"] for log in source_logs if log["status"] == "failed"]
         status = "failed" if failed_sources else "success"
         message = "; ".join(log.get("message", "") for log in source_logs if log.get("message"))
@@ -120,6 +128,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             "scored": scored,
             "alerts_sent": notified,
             "emails_sent": emailed,
+            "email_status": email_status,
             "removed_low_priority": removed_low_priority,
             "failed_sources": failed_sources,
             "source_logs": source_logs,

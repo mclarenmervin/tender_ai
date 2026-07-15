@@ -2148,9 +2148,10 @@ def api_profile_test_email(db:Session=Depends(get_db),user:User=Depends(get_curr
         db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='skipped',message='SMTP is not configured'))
         db.commit()
         raise HTTPException(400,'SMTP email is not configured or email could not be sent.')
+    get_notification_preference(db,user.id,'email').enabled=True
     db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='sent',message=subject))
     db.commit()
-    return {'ok':True,'message':f'Test email sent to {user.email}'}
+    return {'ok':True,'message':f'Test email sent to {user.email}. Email alerts are now enabled.'}
 
 @app.get('/dashboard/high-priority')
 def high_priority_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):

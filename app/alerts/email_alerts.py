@@ -110,6 +110,27 @@ def send_email(to_email, subject, html_body, text_body):
     return True
 
 
+def email_notification_readiness(db, user_id, tender_ids=None):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user or not user.email:
+        return {"ok": False, "reason": "Profile email is missing."}
+    pref = db.query(NotificationPreference).filter(
+        NotificationPreference.user_id == user_id,
+        NotificationPreference.channel == "email",
+    ).first()
+    if pref and not pref.enabled:
+        return {"ok": False, "reason": "Email alerts are disabled in Profile."}
+    if not email_configured():
+        return {"ok": False, "reason": "SMTP email is not configured on the server."}
+    if tender_ids is not None:
+        if not tender_ids:
+            return {"ok": False, "reason": "No newly inserted tenders were available for email."}
+        count = db.query(Tender.id).filter(Tender.user_id == user_id, Tender.id.in_(tender_ids)).count()
+        if not count:
+            return {"ok": False, "reason": "New tender rows were not available when email was prepared, possibly because they were removed by high-priority-only filtering."}
+    return {"ok": True, "reason": "Email notification ready."}
+
+
 def log_email_notifications(db, tenders, recipient, status, message=None, error=None):
     for tender in tenders:
         db.add(NotificationLog(

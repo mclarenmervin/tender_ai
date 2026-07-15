@@ -3118,6 +3118,7 @@ function ProfilePage({ me, refreshMe }) {
         try {
             const result = await api("/api/profile/test-email", { method: "POST", loadingLabel: "Sending test email..." });
             setMessage(result.message || "Test email sent.");
+            refreshMe();
         } catch (err) {
             setMessage(err.message || "Could not send test email.");
         }
