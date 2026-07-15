@@ -9,6 +9,8 @@ from app.alerts.daily_digest import send_daily_digest
 from app.scraper.gem_job import run_gem_job
 from app.tracking.status_tracker import update_tender_statuses
 
+_background_scheduler = None
+
 
 def get_setting(db, user_id, key, default=None):
     item = db.query(AppSetting).filter(AppSetting.user_id == user_id, AppSetting.key == key).first()
@@ -176,12 +178,34 @@ def daily_digest_job():
         db.close()
 
 
-def start_scheduler():
+def build_scheduler():
     scheduler = BackgroundScheduler()
     scheduler.add_job(scraping_job, "interval", minutes=1, id="auto_scrape_tick", max_instances=1)
     scheduler.add_job(gem_alert_job, "interval", minutes=1, id="gem_alert_tick", max_instances=1)
     scheduler.add_job(daily_digest_job, "interval", minutes=1, id="daily_digest_tick", max_instances=1)
     scheduler.add_job(tracking_job, "interval", days=1, id="tracking_tick", max_instances=1)
+    return scheduler
+
+
+def start_background_scheduler():
+    global _background_scheduler
+    if _background_scheduler and _background_scheduler.running:
+        return _background_scheduler
+    _background_scheduler = build_scheduler()
+    _background_scheduler.start()
+    print("Scheduler running in web app. Auto scrape settings are checked every minute.")
+    return _background_scheduler
+
+
+def stop_background_scheduler():
+    global _background_scheduler
+    if _background_scheduler and _background_scheduler.running:
+        _background_scheduler.shutdown()
+    _background_scheduler = None
+
+
+def start_scheduler():
+    scheduler = build_scheduler()
     scheduler.start()
     print("Scheduler running. Auto scrape settings are checked every minute.")
     try:

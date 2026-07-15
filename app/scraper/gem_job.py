@@ -85,7 +85,14 @@ def run_gem_job(user_id=None, trigger="manual"):
         update_keyword_performance_scores(db, user_id, run.id if run else None, inserted_ids)
         removed_low_priority = remove_low_priority_inserts(db, user_id, inserted_ids)
         notified = notify_new_tenders(db, inserted_ids, timeout=5, user_id=user_id)
-        emailed = notify_new_tenders_email(db, inserted_ids, user_id)
+        emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details={
+            "trigger": trigger,
+            "keywords": keywords,
+            "inserted": inserted,
+            "scored": scored,
+            "removed_low_priority": removed_low_priority,
+            "source_logs": source_logs,
+        })
         failed_sources = [log["source"] for log in source_logs if log["status"] == "failed"]
         status = "failed" if failed_sources else "success"
         message = "; ".join(log.get("message", "") for log in source_logs if log.get("message"))

@@ -37,7 +37,7 @@ from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import run_gem_job
 from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
-from app.scheduler.scheduler import start_scheduler
+from app.scheduler.scheduler import start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -127,6 +127,11 @@ def ensure_schema_updates():
 @app.on_event("startup")
 def startup_schema_sync():
     ensure_schema_updates()
+    start_background_scheduler()
+
+@app.on_event("shutdown")
+def shutdown_scheduler():
+    stop_background_scheduler()
 
 @app.exception_handler(HTTPException)
 def http_exception_handler(request:Request,exc:HTTPException):
@@ -2113,6 +2118,39 @@ async def api_update_profile_password(request:Request,db:Session=Depends(get_db)
     user.password_hash=hash_password(new_password)
     db.commit()
     return {'ok':True}
+
+@app.post('/api/profile/test-email')
+def api_profile_test_email(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    if not user.email:
+        raise HTTPException(400,'Add an email address to your profile first.')
+    if not email_configured():
+        raise HTTPException(400,'SMTP email is not configured on the server. Add SMTP_HOST, SMTP_USERNAME, SMTP_PASSWORD, and SMTP_FROM_EMAIL in .env.')
+    subject='Tender AI test email'
+    text_body=(
+        'This is a Tender AI test email.\n\n'
+        'If you received this, email notifications are configured correctly. '
+        'Auto scrape emails will include only newly inserted tenders and scrape details.'
+    )
+    html_body=(
+        '<div style="font-family:Arial,sans-serif;color:#111827;">'
+        '<h2>Tender AI test email</h2>'
+        '<p>If you received this, email notifications are configured correctly.</p>'
+        '<p>Auto scrape emails will include only newly inserted tenders and scrape details.</p>'
+        '</div>'
+    )
+    try:
+        sent=send_email(user.email,subject,html_body,text_body)
+    except Exception as exc:
+        db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='failed',message=subject,error=str(exc)[:1000]))
+        db.commit()
+        raise HTTPException(500,f'Test email failed: {str(exc)[:300]}')
+    if not sent:
+        db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='skipped',message='SMTP is not configured'))
+        db.commit()
+        raise HTTPException(400,'SMTP email is not configured or email could not be sent.')
+    db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='sent',message=subject))
+    db.commit()
+    return {'ok':True,'message':f'Test email sent to {user.email}'}
 
 @app.get('/dashboard/high-priority')
 def high_priority_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):

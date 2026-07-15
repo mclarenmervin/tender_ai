@@ -39,6 +39,55 @@ def tender_html(tender):
 """.strip()
 
 
+def scrape_details_html(details):
+    if not details:
+        return ""
+    keywords = details.get("keywords") or []
+    source_logs = details.get("source_logs") or []
+    keyword_text = ", ".join(escape(str(keyword)) for keyword in keywords) or "No keywords recorded"
+    source_rows = ""
+    for log in source_logs[:20]:
+        source_rows += f"""
+<tr>
+  <td style="padding:8px;border-bottom:1px solid #e5e7eb;">{escape(str(log.get('source') or 'GeM'))}</td>
+  <td style="padding:8px;border-bottom:1px solid #e5e7eb;">{escape(str(log.get('status') or ''))}</td>
+  <td style="padding:8px;border-bottom:1px solid #e5e7eb;">{escape(str(log.get('message') or ''))}</td>
+</tr>
+""".strip()
+    if not source_rows:
+        source_rows = '<tr><td colspan="3" style="padding:8px;">No source log rows recorded.</td></tr>'
+    return f"""
+<div style="margin:16px 0;padding:12px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;">
+  <h3 style="margin:0 0 8px;">Scrape details</h3>
+  <p style="margin:0 0 6px;">Trigger: {escape(str(details.get('trigger') or 'scrape'))}</p>
+  <p style="margin:0 0 6px;">Inserted: {escape(str(details.get('inserted', 0)))} | Scored: {escape(str(details.get('scored', 0)))} | Removed low priority: {escape(str(details.get('removed_low_priority', 0)))}</p>
+  <p style="margin:0 0 10px;">Keywords: {keyword_text}</p>
+  <table style="border-collapse:collapse;width:100%;font-size:13px;">
+    <thead><tr><th align="left">Source</th><th align="left">Status</th><th align="left">Message</th></tr></thead>
+    <tbody>{source_rows}</tbody>
+  </table>
+</div>
+""".strip()
+
+
+def scrape_details_text(details):
+    if not details:
+        return ""
+    keywords = ", ".join(str(keyword) for keyword in (details.get("keywords") or [])) or "No keywords recorded"
+    lines = [
+        "Scrape details:",
+        f"Trigger: {details.get('trigger') or 'scrape'}",
+        f"Inserted: {details.get('inserted', 0)}",
+        f"Scored: {details.get('scored', 0)}",
+        f"Removed low priority: {details.get('removed_low_priority', 0)}",
+        f"Keywords: {keywords}",
+        "Source logs:",
+    ]
+    for log in (details.get("source_logs") or [])[:20]:
+        lines.append(f"- {log.get('source') or 'GeM'} [{log.get('status') or ''}]: {log.get('message') or ''}")
+    return "\n".join(lines)
+
+
 def send_email(to_email, subject, html_body, text_body):
     if not email_configured() or not to_email:
         return False
@@ -75,7 +124,7 @@ def log_email_notifications(db, tenders, recipient, status, message=None, error=
     db.commit()
 
 
-def notify_new_tenders_email(db, tender_ids, user_id):
+def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
     if not tender_ids:
         return 0
 
@@ -97,17 +146,21 @@ def notify_new_tenders_email(db, tender_ids, user_id):
 
     rows = "\n".join(tender_html(tender) for tender in tenders)
     subject = f"Tender AI: {len(tenders)} new tender{'s' if len(tenders) != 1 else ''} added"
+    details_html = scrape_details_html(scrape_details)
+    details_text = scrape_details_text(scrape_details)
     html_body = f"""
 <div style="font-family:Arial,sans-serif;color:#111827;">
   <h2>New tenders added to Tender AI</h2>
   <p>{len(tenders)} new tender{'s were' if len(tenders) != 1 else ' was'} added during your scrape.</p>
+  {details_html}
   <table style="border-collapse:collapse;width:100%;">{rows}</table>
 </div>
 """.strip()
-    text_body = "\n\n".join(
+    tender_text = "\n\n".join(
         f"{t.title or ''}\nID: {t.tender_id or ''}\nDepartment: {t.department or ''}\nState: {t.state or ''}\nDeadline: {t.deadline or ''}\nScore: {t.relevance_score if t.relevance_score is not None else ''}\nLink: {t.url or ''}"
         for t in tenders
     )
+    text_body = (details_text + "\n\n" if details_text else "") + tender_text
 
     try:
         if send_email(user.email, subject, html_body, text_body):
