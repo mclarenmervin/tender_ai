@@ -6,12 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Tender AI helps teams discover GeM tenders, score opportunities, analyze documents, track bid status, and receive alerts.">
     <meta name="theme-color" content="#0f172a">
-    <link rel="stylesheet" href="/static/react/dashboard.css?v=20260707-seller-intelligence">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/react/dashboard.css?v=20260715-seller-automation-pages">
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem("tender-ai-theme");
+                var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body>
     <div id="root"></div>
     <noscript>Tender AI needs JavaScript enabled to run the dashboard and public website.</noscript>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-    <script type="module" src="/static/react/dashboard.js?v=20260707-seller-intelligence"></script>
+    <script type="module" src="/static/react/dashboard.js?v=20260715-seller-automation-pages"></script>
 </body>
 </html>

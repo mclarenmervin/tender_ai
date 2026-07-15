@@ -489,6 +489,39 @@ SELLER_DOCUMENT_DEFAULTS=[
     ('odop','ODOP eligibility document','eligibility'),
 ]
 SELLER_DOCUMENT_LABELS={key:label for key,label,category in SELLER_DOCUMENT_DEFAULTS}
+SELLER_PROFILE_VERIFICATION_TARGETS={
+    'pan':{'label':'PAN','portal_label':'Income Tax portal PAN services','url':'https://www.incometax.gov.in/iec/foportal/','online':True},
+    'gstin':{'label':'GSTIN','portal_label':'GST Portal taxpayer search','url':'https://services.gst.gov.in/services/searchtp','online':True},
+    'udyam_number':{'label':'Udyam / MSME number','portal_label':'Udyam registration verification','url':'https://udyamregistration.gov.in/Udyam_Verify.aspx','online':True},
+    'gem_seller_id':{'label':'GeM seller ID','portal_label':'GeM portal','url':'https://gem.gov.in/','online':True},
+}
+
+def seller_profile_verification_key():
+    return 'seller_profile_verifications'
+
+def seller_profile_value_fingerprint(field,value):
+    normalized=(value or '').strip().upper()
+    return hashlib.sha256(f'{field}:{normalized}'.encode('utf-8')).hexdigest()
+
+def seller_profile_verification_status(db,user_id,profile_data):
+    saved=get_json_object_setting(db,user_id,seller_profile_verification_key(),{})
+    result={}
+    for field,target in SELLER_PROFILE_VERIFICATION_TARGETS.items():
+        value=(profile_data.get(field) or '').strip()
+        fingerprint=seller_profile_value_fingerprint(field,value) if value else ''
+        item=saved.get(field) if isinstance(saved,dict) else None
+        verified=bool(value and item and item.get('status')=='verified' and item.get('fingerprint')==fingerprint)
+        result[field]={
+            'label':target['label'],
+            'portal_label':target['portal_label'],
+            'url':target['url'],
+            'online':target['online'],
+            'has_value':bool(value),
+            'verified':verified,
+            'value':item.get('value') if verified else '',
+            'verified_at':item.get('verified_at') if verified else None,
+        }
+    return result
 
 def seller_profile_to_dict(item):
     if not item:
@@ -2122,6 +2155,34 @@ def deadline_bucket(deadline):
         return '16-30 days'
     return '30+ days'
 
+def split_search_terms(value):
+    if not value:
+        return []
+    parts=[]
+    for chunk in re.split(r'[\n,;|]+',str(value)):
+        cleaned=chunk.strip()
+        if cleaned:
+            parts.append(cleaned)
+    return list(dict.fromkeys(parts))
+
+def tender_text_conditions(term):
+    like=f'%{term}%'
+    return [
+        Tender.title.ilike(like),
+        Tender.tender_id.ilike(like),
+        Tender.department.ilike(like),
+        Tender.description.ilike(like),
+        Tender.state.ilike(like),
+        Tender.category.ilike(like),
+        Tender.source.ilike(like),
+        TenderEligibility.documents_required.ilike(like),
+        TenderEligibility.certifications_required.ilike(like),
+        TenderEligibility.experience_requirement.ilike(like),
+        TenderEligibility.turnover_requirement.ilike(like),
+        TenderEligibility.technical_specs.ilike(like),
+        TenderEligibility.summary.ilike(like),
+    ]
+
 def value_bucket(value):
     value=value or 0
     if value <= 0:
@@ -2999,6 +3060,12 @@ def api_tenders(
     view:str='all',
     limit:int=100,
     q:str='',
+    authority:str='',
+    qualification:str='',
+    eligibility_query:str='',
+    location:str='',
+    excluded_keywords:str='',
+    include_expired:bool=False,
     score:str='all',
     status:str='',
     department:str='',
@@ -3018,6 +3085,9 @@ def api_tenders(
 ):
     limit=max(1,min(500,limit))
     query=user_tenders(db,user)
+    uses_eligibility_text=bool((q or authority or qualification or eligibility_query or location or excluded_keywords or '').strip())
+    if uses_eligibility_text:
+        query=query.outerjoin(TenderEligibility,TenderEligibility.tender_id==Tender.id)
     if view=='high':
         query=query.filter(Tender.relevance_score>=70)
     elif view=='upcoming':
@@ -3025,17 +3095,51 @@ def api_tenders(
         query=query.filter(Tender.deadline>=date.today(),Tender.deadline<=soon).order_by(Tender.deadline.asc())
     elif view=='applied':
         query=query.filter(Tender.status=='applied')
-    needle=(q or '').strip()
-    if needle:
-        like=f'%{needle}%'
-        query=query.filter(or_(
-            Tender.title.ilike(like),
-            Tender.tender_id.ilike(like),
-            Tender.department.ilike(like),
-            Tender.description.ilike(like),
-            Tender.state.ilike(like),
-            Tender.category.ilike(like),
-        ))
+    search_terms=split_search_terms(q)
+    if search_terms:
+        query=query.filter(or_(*[condition for term in search_terms for condition in tender_text_conditions(term)]))
+    authority_terms=split_search_terms(authority)
+    if authority_terms:
+        query=query.filter(or_(*[
+            condition
+            for term in authority_terms
+            for condition in [Tender.department.ilike(f'%{term}%'),Tender.description.ilike(f'%{term}%')]
+        ]))
+    qualification_terms=split_search_terms(qualification)
+    if qualification_terms:
+        query=query.filter(or_(*[
+            condition
+            for term in qualification_terms
+            for condition in [
+                Tender.description.ilike(f'%{term}%'),
+                TenderEligibility.experience_requirement.ilike(f'%{term}%'),
+                TenderEligibility.turnover_requirement.ilike(f'%{term}%'),
+                TenderEligibility.technical_specs.ilike(f'%{term}%'),
+                TenderEligibility.summary.ilike(f'%{term}%'),
+            ]
+        ]))
+    eligibility_terms=split_search_terms(eligibility_query)
+    if eligibility_terms:
+        query=query.filter(or_(*[
+            condition
+            for term in eligibility_terms
+            for condition in [
+                Tender.description.ilike(f'%{term}%'),
+                TenderEligibility.documents_required.ilike(f'%{term}%'),
+                TenderEligibility.certifications_required.ilike(f'%{term}%'),
+                TenderEligibility.summary.ilike(f'%{term}%'),
+            ]
+        ]))
+    location_terms=split_search_terms(location)
+    if location_terms:
+        query=query.filter(or_(*[
+            condition
+            for term in location_terms
+            for condition in [Tender.state.ilike(f'%{term}%'),Tender.description.ilike(f'%{term}%'),Tender.department.ilike(f'%{term}%')]
+        ]))
+    excluded_terms=split_search_terms(excluded_keywords)
+    for term in excluded_terms:
+        query=query.filter(~or_(*tender_text_conditions(term)))
     if score=='high':
         query=query.filter(Tender.relevance_score>=70)
     elif score=='medium':
@@ -3078,6 +3182,8 @@ def api_tenders(
         query=query.filter(Tender.deadline>=today,Tender.deadline<=today+timedelta(days=30))
     elif deadline_bucket=='no_deadline':
         query=query.filter(Tender.deadline.is_(None))
+    elif not include_expired:
+        query=query.filter(or_(Tender.deadline>=today,Tender.deadline.is_(None)))
     if eligibility in {'extracted','missing'}:
         eligibility_ids=[row.tender_id for row in db.query(TenderEligibility.tender_id).join(Tender,TenderEligibility.tender_id==Tender.id).filter(Tender.user_id==user.id).all()]
         query=query.filter(Tender.id.in_(eligibility_ids) if eligibility=='extracted' else ~Tender.id.in_(eligibility_ids))
@@ -3087,7 +3193,7 @@ def api_tenders(
             decision_query=decision_query.filter(BidDecision.recommendation==bid_decision)
         decision_ids=[row.tender_id for row in decision_query.all()]
         query=query.filter(Tender.id.in_(decision_ids) if bid_decision!='missing' else ~Tender.id.in_(decision_ids))
-    total=query.count()
+    total=query.distinct().count()
     if sort=='deadline':
         query=query.order_by(Tender.deadline.asc().nullslast())
     elif sort=='value':
@@ -3096,7 +3202,7 @@ def api_tenders(
         query=query.order_by(Tender.relevance_score.desc().nullslast())
     else:
         query=query.order_by(Tender.created_at.desc())
-    return {'items':[tender_to_dict(item) for item in query.limit(limit).all()],'count':total,'limit':limit}
+    return {'items':[tender_to_dict(item) for item in query.distinct().limit(limit).all()],'count':total,'limit':limit}
 
 @app.get('/api/tender-filter-options')
 def api_tender_filter_options(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -3218,8 +3324,10 @@ async def api_save_company_profile(request:Request,db:Session=Depends(get_db),us
 def api_seller_readiness(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
     documents=ensure_seller_documents(db,user.id)
+    profile_data=seller_profile_to_dict(profile)
     return {
-        'profile':seller_profile_to_dict(profile),
+        'profile':profile_data,
+        'profile_verifications':seller_profile_verification_status(db,user.id,profile_data),
         'documents':[seller_document_to_dict(item) for item in documents],
         'summary':seller_readiness_summary(profile,documents),
         'status_options':{
@@ -3259,7 +3367,48 @@ async def api_save_seller_readiness(request:Request,db:Session=Depends(get_db),u
     db.commit()
     db.refresh(profile)
     documents=ensure_seller_documents(db,user.id)
-    return {'ok':True,'profile':seller_profile_to_dict(profile),'summary':seller_readiness_summary(profile,documents)}
+    profile_data=seller_profile_to_dict(profile)
+    return {'ok':True,'profile':profile_data,'profile_verifications':seller_profile_verification_status(db,user.id,profile_data),'summary':seller_readiness_summary(profile,documents)}
+
+@app.post('/api/seller/readiness/verify-field')
+async def api_verify_seller_readiness_field(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    field=(payload.get('field') or '').strip()
+    if field not in SELLER_PROFILE_VERIFICATION_TARGETS:
+        raise HTTPException(404,'Verification field not supported')
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    if not profile:
+        profile=SellerProfile(user_id=user.id)
+        db.add(profile)
+    incoming_value=(payload.get('value') or '').strip()
+    if incoming_value:
+        if field in {'pan','gstin'}:
+            incoming_value=incoming_value.upper()
+        max_lengths={'pan':20,'gstin':30,'udyam_number':100,'gem_seller_id':100}
+        setattr(profile,field,incoming_value[:max_lengths[field]])
+        db.commit()
+        db.refresh(profile)
+    profile_data=seller_profile_to_dict(profile)
+    value=(profile_data.get(field) or '').strip()
+    if not value:
+        raise HTTPException(400,f'{SELLER_PROFILE_VERIFICATION_TARGETS[field]["label"]} is required before verification')
+    saved=get_json_object_setting(db,user.id,seller_profile_verification_key(),{})
+    saved[field]={
+        'status':'verified',
+        'value':value,
+        'fingerprint':seller_profile_value_fingerprint(field,value),
+        'method':(payload.get('method') or 'online_manual').strip()[:50],
+        'verified_at':datetime.utcnow().isoformat(),
+        'target':SELLER_PROFILE_VERIFICATION_TARGETS[field],
+    }
+    set_setting(db,user.id,seller_profile_verification_key(),json.dumps(saved))
+    documents=ensure_seller_documents(db,user.id)
+    return {
+        'ok':True,
+        'profile':profile_data,
+        'profile_verifications':seller_profile_verification_status(db,user.id,profile_data),
+        'summary':seller_readiness_summary(profile,documents),
+    }
 
 @app.post('/api/seller/readiness/documents/{doc_key}')
 async def api_save_seller_document(doc_key:str,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -4521,6 +4670,16 @@ def split_checklist_text(value):
             if cleaned:
                 parts.append(cleaned)
     return list(dict.fromkeys(parts))
+
+def get_json_object_setting(db,user_id,key,default=None):
+    raw=get_setting(db,user_id,key,None)
+    if raw is None:
+        return default if default is not None else {}
+    try:
+        value=json.loads(raw)
+    except Exception:
+        return default if default is not None else {}
+    return value if isinstance(value,dict) else (default if default is not None else {})
 
 def build_document_checklist(db,tender):
     eligibility=db.query(TenderEligibility).filter(TenderEligibility.tender_id==tender.id).first()

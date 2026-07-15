@@ -33,6 +33,7 @@ const sellerNav = [
     ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Participated Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
     ["Intelligence", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/buyers", "Buyer History"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risk Signals"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Documents"]]],
     ["Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
+    ["Automation", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Settings"]]],
     ["Bid Work", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
     ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
 ];
@@ -40,6 +41,89 @@ const sellerNav = [
 function navigate(path) {
     history.pushState(null, "", path);
     window.dispatchEvent(new Event("app:navigate"));
+}
+
+function useTheme() {
+    const [theme, setTheme] = useState(() => document.documentElement.getAttribute("data-theme") || "light");
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        try { localStorage.setItem("tender-ai-theme", theme); } catch {}
+    }, [theme]);
+    return [theme, () => setTheme(t => (t === "dark" ? "light" : "dark"))];
+}
+
+const SUN_ICON = h("svg", { width: 17, height: 17, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" },
+    h("circle", { cx: 12, cy: 12, r: 4.5 }),
+    h("path", { d: "M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8L6 18M18 6l1.8-1.8" })
+);
+const MOON_ICON = h("svg", { width: 17, height: 17, viewBox: "0 0 24 24", fill: "currentColor" },
+    h("path", { d: "M20.4 14.7A8.6 8.6 0 1 1 9.3 3.6a7 7 0 0 0 11.1 11.1Z" })
+);
+
+function ThemeToggle() {
+    const [theme, toggleTheme] = useTheme();
+    return h("button", {
+        type: "button",
+        className: "theme-toggle",
+        onClick: toggleTheme,
+        title: theme === "dark" ? "Switch to light mode" : "Switch to dark mode",
+        "aria-label": "Toggle color theme",
+    }, theme === "dark" ? SUN_ICON : MOON_ICON);
+}
+
+function icon(children, viewBox = "0 0 24 24") {
+    return h("svg", { width: 16, height: 16, viewBox, fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" }, children);
+}
+const ICON_MAIL = icon([h("rect", { key: 1, x: 3, y: 5, width: 18, height: 14, rx: 2 }), h("path", { key: 2, d: "m3 7 9 6 9-6" })]);
+const ICON_LOCK = icon([h("rect", { key: 1, x: 4.5, y: 10.5, width: 15, height: 9.5, rx: 2 }), h("path", { key: 2, d: "M7.5 10.5V7.2a4.5 4.5 0 0 1 9 0v3.3" })]);
+const ICON_USER = icon([h("circle", { key: 1, cx: 12, cy: 8, r: 3.4 }), h("path", { key: 2, d: "M4.8 20c1.2-3.8 4.2-5.6 7.2-5.6s6 1.8 7.2 5.6" })]);
+const ICON_EYE = icon([h("path", { key: 1, d: "M2 12s3.6-7.2 10-7.2S22 12 22 12s-3.6 7.2-10 7.2S2 12 2 12Z" }), h("circle", { key: 2, cx: 12, cy: 12, r: 3 })]);
+const ICON_EYE_OFF = icon([
+    h("path", { key: 1, d: "M3 3l18 18" }),
+    h("path", { key: 2, d: "M10.6 5.1A11 11 0 0 1 12 5c6.4 0 10 7 10 7a18 18 0 0 1-3.2 4.2" }),
+    h("path", { key: 3, d: "M6.5 6.7C3.9 8.4 2 12 2 12s3.6 7 10 7c1.4 0 2.7-.3 3.8-.8" }),
+    h("path", { key: 4, d: "M9.9 9.9a3 3 0 0 0 4.2 4.2" }),
+]);
+const ICON_SHIELD = icon([h("path", { key: 1, d: "M12 3.2 5 6v5.4C5 15.9 8 19.4 12 20.6c4-1.2 7-4.7 7-9.2V6l-7-2.8Z" })]);
+const ICON_BRIEFCASE = icon([h("rect", { key: 1, x: 3, y: 7.5, width: 18, height: 12, rx: 2 }), h("path", { key: 2, d: "M8.5 7.5V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5" }), h("path", { key: 3, d: "M3 13h18" })]);
+const ICON_STORE = icon([
+    h("path", { key: 1, d: "M4.5 9 5.6 4h12.8l1.1 5" }),
+    h("path", { key: 2, d: "M4.5 9a2 2 0 0 0 4 .3 2 2 0 0 0 3.9 0 2.1 2.1 0 0 0 .1.3 2 2 0 0 0 3.9-.3 2 2 0 0 0 4 0" }),
+    h("path", { key: 3, d: "M5.5 9.6V20h13V9.6" }),
+]);
+
+function AuthField({ id, label, fieldIcon, type = "text", value, onChange, onBlur, placeholder, error, autoComplete, rightSlot }) {
+    return h("div", { className: "field" + (error ? " field-error" : "") },
+        h("label", { htmlFor: id }, label),
+        h("div", { className: "field-input" },
+            h("span", { className: "field-icon" }, fieldIcon),
+            h("input", { id, type, value, onChange, onBlur, placeholder, autoComplete, required: true }),
+            rightSlot || null
+        ),
+        error ? h("small", { className: "field-message" }, error) : null
+    );
+}
+
+function PasswordField({ id, label, value, onChange, onBlur, placeholder, error, autoComplete }) {
+    const [visible, setVisible] = useState(false);
+    return h(AuthField, {
+        id, label, fieldIcon: ICON_LOCK, type: visible ? "text" : "password", value, onChange, onBlur, placeholder, error, autoComplete,
+        rightSlot: h("button", {
+            type: "button",
+            className: "field-toggle",
+            tabIndex: -1,
+            onClick: () => setVisible(v => !v),
+            "aria-label": visible ? "Hide password" : "Show password",
+        }, visible ? ICON_EYE_OFF : ICON_EYE),
+    });
+}
+
+function RoleOption({ title, text, roleIcon, active, onClick }) {
+    return h("button", { type: "button", className: "role-card" + (active ? " active" : ""), onClick },
+        h("span", { className: "role-icon" }, roleIcon),
+        h("strong", null, title),
+        h("span", { className: "role-text" }, text)
+    );
 }
 
 function roleDashboard(user) {
@@ -142,6 +226,9 @@ function pageTitle(path) {
     if (path === "/dashboard/seller/intelligence/risk-signals") return "Risk Signals";
     if (path === "/dashboard/seller/intelligence/reports") return "Risk Reports";
     if (path === "/dashboard/seller/intelligence/documents") return "Document Extraction";
+    if (path === "/dashboard/seller/keywords") return "Seller Keywords";
+    if (path === "/dashboard/seller/scoring") return "Seller Scoring";
+    if (path === "/dashboard/seller/settings") return "Seller Settings";
     if (path === "/dashboard/seller/readiness") return "Seller Readiness";
     if (path === "/dashboard/seller/catalogue") return "Catalogue Tracker";
     if (path === "/dashboard/seller/opportunities") return "Opportunity Matching";
@@ -266,6 +353,7 @@ function PublicLayout({ children, path }) {
                 onClick: () => navigate(href),
             }, label))),
             h("div", { className: "site-actions" },
+                h(ThemeToggle),
                 me ? h("span", { className: "site-user" }, me.name || me.email) : h("button", { className: "ghost", onClick: () => navigate("/login") }, "Login"),
                 h("button", { className: "primary", onClick: () => navigate(me ? "/dashboard" : "/signup") }, me ? "Go to Dashboard" : "Start Free")
             )
@@ -273,8 +361,29 @@ function PublicLayout({ children, path }) {
         children,
         h(PublicCTA),
         h("footer", { className: "site-footer" },
-            h("div", null, h("strong", null, "Tender AI"), h("p", null, "AI-powered tender discovery, scoring, tracking, analytics, and alerts.")),
-            h("div", null, publicNav.map(([href, label]) => h("button", { key: href, onClick: () => navigate(href) }, label)))
+            h("div", null,
+                h("button", { className: "footer-brand", onClick: () => navigate("/") }, h("span", { className: "brand-mark" }, "T"), "Tender ", h("span", null, "AI")),
+                h("p", null, "AI-powered tender discovery, scoring, tracking, analytics, and alerts for buyer and seller teams working GeM opportunities.")
+            ),
+            h("div", { className: "footer-col" },
+                h("h4", null, "Product"),
+                [["/features", "Features"], ["/pricing", "Pricing"], ["/how-it-works", "How It Works"]].map(([href, label]) =>
+                    h("button", { key: href, onClick: () => navigate(href) }, label))
+            ),
+            h("div", { className: "footer-col" },
+                h("h4", null, "Company"),
+                [["/about", "About"], ["/contact", "Contact"]].map(([href, label]) =>
+                    h("button", { key: href, onClick: () => navigate(href) }, label))
+            ),
+            h("div", { className: "footer-col" },
+                h("h4", null, "Account"),
+                [["/login", "Login"], ["/signup", "Create Account"]].map(([href, label]) =>
+                    h("button", { key: href, onClick: () => navigate(href) }, label))
+            ),
+            h("div", { className: "site-footer-bottom" },
+                h("span", null, `© ${new Date().getFullYear()} Tender AI. All rights reserved.`),
+                h("span", null, "Built for GeM tender discovery and bid workflow teams.")
+            )
         )
     );
 }
@@ -505,29 +614,125 @@ function ContactPage() {
     );
 }
 
+function buildStarfield(count) {
+    const tints = ["#e8effa", "#e8effa", "#e8effa", "#7dd3c0", "#facc86"];
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+        const big = Math.random() < 0.14;
+        stars.push({
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            size: big ? 2.2 + Math.random() * 1.6 : 1 + Math.random() * 1.2,
+            dur: 2.6 + Math.random() * 3.4,
+            delay: Math.random() * 5,
+            tint: tints[Math.floor(Math.random() * tints.length)],
+        });
+    }
+    return stars;
+}
+const AUTH_STARS = buildStarfield(70);
+
+function AuthStarfield() {
+    return h("div", { className: "auth-stars", "aria-hidden": "true" },
+        AUTH_STARS.map((s, i) => h("span", {
+            key: i,
+            className: "star",
+            style: {
+                left: s.left + "%",
+                top: s.top + "%",
+                width: s.size + "px",
+                height: s.size + "px",
+                background: s.tint,
+                color: s.tint,
+                animationDuration: s.dur + "s",
+                animationDelay: s.delay + "s",
+            },
+        })),
+        h("span", { className: "auth-shape shape-a" }),
+        h("span", { className: "auth-shape shape-b" }),
+        h("span", { className: "auth-shape shape-c" })
+    );
+}
+
+function buildRoleStars(count) {
+    const roles = ["a", "b", "c"];
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+        const big = Math.random() < 0.12;
+        stars.push({
+            left: Math.random() * 100,
+            top: Math.random() * 100,
+            size: big ? 2.2 + Math.random() * 1.6 : 1 + Math.random() * 1.2,
+            dur: 2.8 + Math.random() * 3.6,
+            delay: Math.random() * 6,
+            role: roles[Math.floor(Math.random() * roles.length)],
+        });
+    }
+    return stars;
+}
+const GLOBAL_STARS = buildRoleStars(46);
+
+function GlobalBackdrop() {
+    return h("div", { className: "global-backdrop", "aria-hidden": "true" },
+        GLOBAL_STARS.map((s, i) => h("span", {
+            key: i,
+            className: `star role-${s.role}`,
+            style: {
+                left: s.left + "%",
+                top: s.top + "%",
+                width: s.size + "px",
+                height: s.size + "px",
+                animationDuration: s.dur + "s",
+                animationDelay: s.delay + "s",
+            },
+        })),
+        h("span", { className: "g-shape g-shape-1" }),
+        h("span", { className: "g-shape g-shape-2" }),
+        h("span", { className: "g-shape g-shape-3" })
+    );
+}
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function AuthPage({ mode }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("buyer");
     const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [submitting, setSubmitting] = useState(false);
     const isSignup = mode === "signup";
     const { me, checked } = useSessionProbe();
     useEffect(() => {
         if (checked && me) navigate(roleDashboard(me));
     }, [checked, me]);
 
+    function validate() {
+        const next = {};
+        if (isSignup && !name.trim()) next.name = "Enter your full name.";
+        if (!email.trim()) next.email = "Enter your email address.";
+        else if (!EMAIL_PATTERN.test(email.trim())) next.email = "Enter a valid email address.";
+        if (!password) next.password = "Enter your password.";
+        else if (isSignup && password.length < 6) next.password = "Use at least 6 characters.";
+        setFieldErrors(next);
+        return Object.keys(next).length === 0;
+    }
+
     async function submit(event) {
         event.preventDefault();
         setError("");
+        if (!validate()) return;
+        setSubmitting(true);
         try {
             const result = await api(isSignup ? "/api/signup" : "/api/login", {
                 method: "POST",
-                body: JSON.stringify(isSignup ? { name, email, password, role } : { email, password }),
+                body: JSON.stringify(isSignup ? { name: name.trim(), email: email.trim(), password, role } : { email: email.trim(), password }),
             });
             navigate(result?.dashboard_path || roleDashboard(result));
         } catch (err) {
             setError(err.message || "Authentication failed.");
+            setSubmitting(false);
         }
     }
 
@@ -536,48 +741,95 @@ function AuthPage({ mode }) {
 
     return h("div", { className: "auth" },
         h("div", { className: "auth-art" },
+            h(AuthStarfield),
             h("button", { type: "button", className: "auth-home", onClick: () => navigate("/") }, h("span", { className: "brand-mark" }, "T"), "Tender ", h("span", null, "AI")),
-            h("h1", null, isSignup ? "Start tracking smarter bids." : "Welcome back."),
-            h("p", null, "Scrape GeM tenders, score opportunities, analyze bid coverage, and keep each user workspace isolated."),
-            h("div", { className: "auth-proof" }, productStats.slice(1).map(([value, label]) => h("div", { key: value }, h("strong", null, value), h("span", null, label))))
+            h("div", { className: "auth-copy" },
+                h("h1", null, isSignup ? "Start tracking smarter bids." : "Welcome back."),
+                h("p", null, "Scrape GeM tenders, score opportunities, analyze bid coverage, and keep each user workspace isolated."),
+                h("div", { className: "auth-proof" }, productStats.slice(1).map(([value, label]) => h("div", { key: value }, h("strong", null, value), h("span", null, label))))
+            )
         ),
-        h("form", { className: "auth-card", onSubmit: submit },
-            h("h2", null, isSignup ? "Create account" : "Sign in"),
+        h("form", { className: "auth-card", onSubmit: submit, noValidate: true },
+            h("div", { className: "auth-card-head" },
+                h("div", null,
+                    h("h2", null, isSignup ? "Create your account" : "Sign in"),
+                    h("div", { className: "auth-subtitle" }, isSignup ? "Set up a buyer or seller workspace in under a minute." : "Enter your details to open your workspace.")
+                ),
+                h(ThemeToggle)
+            ),
             error ? h("div", { className: "notice err" }, error) : null,
-            isSignup ? h("input", { value: name, onChange: e => setName(e.target.value), placeholder: "Name", required: true }) : null,
-            isSignup ? h("div", { className: "role-choice" },
-                h("button", { type: "button", className: role === "buyer" ? "active" : "", onClick: () => setRole("buyer") }, "Buyer"),
-                h("button", { type: "button", className: role === "seller" ? "active" : "", onClick: () => setRole("seller") }, "Seller")
+            isSignup ? h(AuthField, {
+                id: "auth-name", label: "Full name", fieldIcon: ICON_USER, value: name,
+                onChange: e => setName(e.target.value), placeholder: "Your name",
+                error: fieldErrors.name, autoComplete: "name",
+            }) : null,
+            isSignup ? h("div", { className: "field" },
+                h("label", null, "Workspace type"),
+                h("div", { className: "role-choice" },
+                    h(RoleOption, { title: "Buyer", text: "Discover, score, and track tenders.", roleIcon: ICON_BRIEFCASE, active: role === "buyer", onClick: () => setRole("buyer") }),
+                    h(RoleOption, { title: "Seller", text: "Manage GeM bids, catalogue, and orders.", roleIcon: ICON_STORE, active: role === "seller", onClick: () => setRole("seller") })
+                )
             ) : null,
-            h("input", { value: email, onChange: e => setEmail(e.target.value), placeholder: "Email", type: "email", required: true }),
-            h("input", { value: password, onChange: e => setPassword(e.target.value), placeholder: "Password", type: "password", required: true }),
-            h("button", { className: "primary" }, isSignup ? "Create Account" : "Login"),
-            h("button", { type: "button", className: "link-btn", onClick: () => navigate(isSignup ? "/login" : "/signup") }, isSignup ? "Already have an account?" : "Create new account")
+            h(AuthField, {
+                id: "auth-email", label: "Email", fieldIcon: ICON_MAIL, type: "email", value: email,
+                onChange: e => setEmail(e.target.value), placeholder: "you@company.com",
+                error: fieldErrors.email, autoComplete: "email",
+            }),
+            h(PasswordField, {
+                id: "auth-password", label: "Password", value: password,
+                onChange: e => setPassword(e.target.value), placeholder: isSignup ? "At least 6 characters" : "Your password",
+                error: fieldErrors.password, autoComplete: isSignup ? "new-password" : "current-password",
+            }),
+            h("button", { className: "primary", disabled: submitting },
+                submitting ? h("span", { className: "btn-spinner" }) : null,
+                submitting ? (isSignup ? "Creating account..." : "Signing in...") : (isSignup ? "Create Account" : "Sign In")
+            ),
+            h("div", { className: "auth-switch" },
+                isSignup ? "Already have an account? " : "New to Tender AI? ",
+                h("button", { type: "button", className: "link-btn", onClick: () => navigate(isSignup ? "/login" : "/signup") }, isSignup ? "Sign in" : "Create an account")
+            ),
+            h("div", { className: "auth-trust" }, ICON_SHIELD, "Your workspace, tenders, and settings stay private to your account.")
         )
     );
 }
 
 function Shell({ children, me, path }) {
     const sections = me?.role === "seller" ? sellerNav : buyerNav;
+    const [navOpen, setNavOpen] = useState(false);
+    useEffect(() => { setNavOpen(false); }, [path]);
+    function go(href) {
+        setNavOpen(false);
+        navigate(href);
+    }
     return h("div", { className: "app" },
-        h("aside", { className: "sidebar" },
-            h("div", { className: "brand" }, "Tender ", h("span", null, "AI")),
-            h("div", { className: "muted" }, me?.role === "seller" ? "Seller Workspace" : "Buyer Workspace"),
+        h("div", { className: "sidebar-backdrop" + (navOpen ? " open" : ""), onClick: () => setNavOpen(false) }),
+        h("aside", { className: "sidebar" + (navOpen ? " open" : "") },
+            h("div", { className: "sidebar-head" },
+                h("div", null,
+                    h("div", { className: "brand" }, "Tender ", h("span", null, "AI")),
+                    h("div", { className: "workspace-pill" }, me?.role === "seller" ? "Seller Workspace" : "Buyer Workspace")
+                ),
+                h("button", { className: "sidebar-close", onClick: () => setNavOpen(false), "aria-label": "Close menu" }, "✕")
+            ),
             h("nav", { className: "nav" },
                 sections.map(([section, items]) => h("div", { className: "nav-group", key: section },
                     h("div", { className: "nav-section" }, section),
                     items.map(([href, label]) => h("button", {
                         key: href,
                         className: path === href ? "active" : "",
-                        onClick: () => navigate(href),
+                        onClick: () => go(href),
                     }, label))
                 ))
             )
         ),
         h("main", { className: "main" },
             h("header", { className: "topbar" },
-                h("div", null, h("h1", null, pageTitle(path)), h("div", { className: "muted" }, "Monitor, scrape, score, and analyze tenders")),
+                h("div", { className: "topbar-title" },
+                    h("button", { className: "sidebar-toggle", onClick: () => setNavOpen(true), "aria-label": "Open menu" }, "☰"),
+                    h("div", null, h("h1", null, pageTitle(path)), h("div", { className: "muted" }, "Monitor, scrape, score, and analyze tenders"))
+                ),
                 h("div", { className: "user" },
+                    h(ThemeToggle),
                     h("div", { className: "avatar" }, (me?.name || me?.email || "U").slice(0, 1).toUpperCase()),
                     h("strong", null, me?.name || "User"),
                     h("span", { className: "profile-pill role-pill" }, me?.role === "seller" ? "Seller" : "Buyer"),
@@ -1180,7 +1432,7 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
     return h(React.Fragment, null,
         statusMsg ? h("p", { className: "status" }, statusMsg) : null,
         h("div", { className: "toolbar" },
-            h("input", { value: filters.q, onChange: e => update("q", e.target.value), onKeyDown: e => { if (e.key === "Enter") onApply(); }, placeholder: "Search title, department, state..." }),
+            h("input", { value: filters.q, onChange: e => update("q", e.target.value), onKeyDown: e => { if (e.key === "Enter") onApply(); }, placeholder: "Keywords, category, item, bid no..." }),
             h("select", { value: filters.score, onChange: e => update("score", e.target.value) },
                 h("option", { value: "all" }, "All Scores"),
                 h("option", { value: "high" }, "High 70+"),
@@ -1199,6 +1451,11 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
             select("state", "State", options.states),
             select("category", "Category", options.categories),
             select("source", "Source", options.sources),
+            h("label", { className: "field-block" }, h("span", null, "Tender authority / department"), h("input", { value: filters.authority, onChange: e => update("authority", e.target.value), placeholder: "Authority, office, buyer" })),
+            h("label", { className: "field-block" }, h("span", null, "Qualification criteria"), h("input", { value: filters.qualification, onChange: e => update("qualification", e.target.value), placeholder: "Experience, turnover, technical terms" })),
+            h("label", { className: "field-block" }, h("span", null, "Eligibility criteria"), h("input", { value: filters.eligibility_query, onChange: e => update("eligibility_query", e.target.value), placeholder: "Certificates, documents, OEM, MSME" })),
+            h("label", { className: "field-block" }, h("span", null, "Location / district / state"), h("input", { value: filters.location, onChange: e => update("location", e.target.value), placeholder: "Gujarat, Odisha, district" })),
+            h("label", { className: "field-block" }, h("span", null, "Excluded keywords"), h("input", { value: filters.excluded_keywords, onChange: e => update("excluded_keywords", e.target.value), placeholder: "Separate by comma" })),
             h("label", { className: "field-block" }, h("span", null, "Deadline"), h("select", { value: filters.deadline_bucket, onChange: e => update("deadline_bucket", e.target.value) },
                 h("option", { value: "" }, "Any Deadline"),
                 h("option", { value: "next7" }, "Next 7 days"),
@@ -1211,6 +1468,7 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
             h("label", { className: "field-block" }, h("span", null, "To Date"), h("input", { type: "date", value: filters.deadline_to, onChange: e => update("deadline_to", e.target.value) })),
             h("label", { className: "field-block" }, h("span", null, "Min Value"), h("input", { type: "number", min: 0, value: filters.min_value, onChange: e => update("min_value", e.target.value), placeholder: "Rs." })),
             h("label", { className: "field-block" }, h("span", null, "Max Value"), h("input", { type: "number", min: 0, value: filters.max_value, onChange: e => update("max_value", e.target.value), placeholder: "Rs." })),
+            h("label", { className: "toggle tender-expired-toggle" }, h("input", { type: "checkbox", checked: !!filters.include_expired, onChange: e => update("include_expired", e.target.checked) }), " Include expired / closed tenders"),
             h("label", { className: "field-block" }, h("span", null, "Eligibility"), h("select", { value: filters.eligibility, onChange: e => update("eligibility", e.target.value) },
                 h("option", { value: "" }, "Any"),
                 h("option", { value: "extracted" }, "Extracted"),
@@ -1334,14 +1592,14 @@ function DashboardPage({ view }) {
     const [summary, setSummary] = useState(null);
     const [tenders, setTenders] = useState([]);
     const [options, setOptions] = useState({ departments: [], states: [], categories: [], sources: [], statuses: [] });
-    const blankFilters = { q: "", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
+    const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: false, score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
     const [filters, setFilters] = useState(blankFilters);
     const [resultCount, setResultCount] = useState(0);
     const [message, setMessage] = useState("");
     function queryString(nextFilters = filters) {
         const params = new URLSearchParams({ view, limit: "200" });
         Object.entries(nextFilters).forEach(([key, value]) => {
-            if (value !== "" && value !== null && value !== undefined && !(key === "score" && value === "all") && !(key === "sort" && value === "newest")) {
+            if (value !== "" && value !== null && value !== undefined && value !== false && !(key === "score" && value === "all") && !(key === "sort" && value === "newest")) {
                 params.set(key, value);
             }
         });
@@ -1871,6 +2129,8 @@ function SellerReadinessPage() {
         tds_certificate_status: "missing", notes: "",
     };
     const [profile, setProfile] = useState(blank);
+    const [profileVerifications, setProfileVerifications] = useState({});
+    const [verificationPrompt, setVerificationPrompt] = useState(null);
     const [documents, setDocuments] = useState([]);
     const [summary, setSummary] = useState(null);
     const [options, setOptions] = useState({ document: [], vendor_assessment: [], caution_money: [], tds_certificate: [] });
@@ -1878,6 +2138,7 @@ function SellerReadinessPage() {
     async function load() {
         const data = await api("/api/seller/readiness");
         setProfile({ ...blank, ...(data.profile || {}) });
+        setProfileVerifications(data.profile_verifications || {});
         setDocuments(data.documents || []);
         setSummary(data.summary || null);
         setOptions(data.status_options || options);
@@ -1888,6 +2149,7 @@ function SellerReadinessPage() {
         setMessage("Saving readiness profile...");
         const result = await api("/api/seller/readiness", { method: "POST", body: JSON.stringify(profile) });
         setProfile({ ...blank, ...(result.profile || {}) });
+        setProfileVerifications(result.profile_verifications || {});
         setSummary(result.summary || summary);
         setMessage("Seller readiness profile saved.");
     }
@@ -1901,7 +2163,52 @@ function SellerReadinessPage() {
         setDocuments(documents.map(item => item.doc_key === doc.doc_key ? result.document : item));
         setSummary(result.summary || summary);
     }
+    function currentFieldVerified(key) {
+        const meta = profileVerifications[key] || {};
+        const current = String(profile[key] || "").trim().toUpperCase();
+        const saved = String(meta.value || "").trim().toUpperCase();
+        return !!meta.verified && !!current && current === saved;
+    }
+    function openProfileVerification(key) {
+        const meta = profileVerifications[key] || {};
+        if (!String(profile[key] || "").trim()) {
+            setMessage(`Enter ${meta.label || "the field"} before verification.`);
+            return;
+        }
+        if (meta.url) {
+            window.open(meta.url, "_blank", "noopener,noreferrer,width=1120,height=820");
+            setMessage(`Opened ${meta.portal_label}. Verify the value there, then mark it verified here.`);
+        }
+        setVerificationPrompt({ key, ...meta });
+    }
+    async function markProfileVerified(key) {
+        setMessage("Saving verification...");
+        const result = await api("/api/seller/readiness/verify-field", {
+            method: "POST",
+            body: JSON.stringify({ field: key, value: profile[key] || "", method: "online_manual" }),
+        });
+        setProfile({ ...blank, ...(result.profile || {}) });
+        setProfileVerifications(result.profile_verifications || {});
+        setSummary(result.summary || summary);
+        setVerificationPrompt(null);
+        setMessage(`${result.profile_verifications?.[key]?.label || "Field"} verified.`);
+    }
     const field = (key, label, placeholder = "") => h("label", { className: "field-block" }, h("span", null, label), h("input", { value: profile[key] || "", placeholder, onChange: e => setProfile({ ...profile, [key]: e.target.value }) }));
+    const verifiableField = (key, label, placeholder = "") => {
+        const meta = profileVerifications[key] || {};
+        const hasValue = !!String(profile[key] || "").trim();
+        const verified = currentFieldVerified(key);
+        return h("label", { className: "field-block verifiable-field" },
+            h("span", null, label),
+            h("div", { className: "verify-field-row" },
+                h("input", { value: profile[key] || "", placeholder, onChange: e => setProfile({ ...profile, [key]: e.target.value }) }),
+                hasValue ? verified ?
+                    h("span", { className: "verify-badge" }, "Verified") :
+                    h("button", { type: "button", className: "small verify-btn", onClick: () => openProfileVerification(key) }, "Verify") : null
+            ),
+            hasValue && meta.portal_label ? h("small", null, verified ? `Verified on ${meta.portal_label}` : `Verify on ${meta.portal_label}`) : null
+        );
+    };
     const select = (key, label, values) => h("label", { className: "field-block" }, h("span", null, label), h("select", { value: profile[key] || "", onChange: e => setProfile({ ...profile, [key]: e.target.value }) }, (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")))));
     const toggle = (key, label) => h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profile[key], onChange: e => setProfile({ ...profile, [key]: e.target.checked }) }), label);
     return h(React.Fragment, null,
@@ -1926,10 +2233,10 @@ function SellerReadinessPage() {
                 h("h3", null, "Seller Profile"),
                 h("form", { className: "stack", onSubmit: saveProfile },
                     field("business_name", "Business name", "Registered seller business name"),
-                    field("gem_seller_id", "GeM seller ID", "GeM seller registration ID"),
-                    field("pan", "PAN", "ABCDE1234F"),
-                    field("gstin", "GSTIN", "GST number or leave blank if exempt"),
-                    field("udyam_number", "Udyam / MSME number"),
+                    verifiableField("gem_seller_id", "GeM seller ID", "GeM seller registration ID"),
+                    verifiableField("pan", "PAN", "ABCDE1234F"),
+                    verifiableField("gstin", "GSTIN", "GST number or leave blank if exempt"),
+                    verifiableField("udyam_number", "Udyam / MSME number"),
                     field("startup_india_number", "Startup India certificate number"),
                     h("div", { className: "value-row" }, field("odop_state", "ODOP state"), field("odop_product", "ODOP product")),
                     toggle("aadhaar_linked", " Aadhaar linked with registered mobile"),
@@ -1939,6 +2246,15 @@ function SellerReadinessPage() {
                     select("vendor_assessment_status", "Vendor assessment", options.vendor_assessment),
                     select("caution_money_status", "Caution money", options.caution_money),
                     select("tds_certificate_status", "TDS certificate", options.tds_certificate),
+                    verificationPrompt ? h("div", { className: "verify-panel seller-verify-panel" },
+                        h("strong", null, verificationPrompt.label || "Verification"),
+                        h("span", null, `Check ${profile[verificationPrompt.key] || "this value"} on ${verificationPrompt.portal_label || "the official portal"}, then confirm.`),
+                        h("div", { className: "verify-panel-actions" },
+                            verificationPrompt.url ? h("a", { href: verificationPrompt.url, target: "_blank" }, "Open portal") : null,
+                            h("button", { type: "button", className: "small primary", onClick: () => markProfileVerified(verificationPrompt.key) }, "Mark Verified"),
+                            h("button", { type: "button", className: "small", onClick: () => setVerificationPrompt(null) }, "Cancel")
+                        )
+                    ) : null,
                     h("label", { className: "field-block" }, h("span", null, "Notes"), h("textarea", { value: profile.notes || "", onChange: e => setProfile({ ...profile, notes: e.target.value }), placeholder: "Add internal readiness notes" })),
                     h("button", { className: "primary" }, "Save Readiness Profile")
                 )
@@ -2835,15 +3151,16 @@ function App() {
         if (publicRoutes.includes(path)) { setLoading(false); return; }
         setLoading(true); refreshMe();
     }, [path]);
-    if (path === "/") return h(HomePage);
-    if (path === "/features") return h(FeaturesPage);
-    if (path === "/pricing") return h(PricingPage);
-    if (path === "/how-it-works") return h(HowItWorksPage);
-    if (path === "/about") return h(AboutPage);
-    if (path === "/contact") return h(ContactPage);
+    if (path === "/") return h(React.Fragment, null, h(GlobalBackdrop), h(HomePage));
+    if (path === "/features") return h(React.Fragment, null, h(GlobalBackdrop), h(FeaturesPage));
+    if (path === "/pricing") return h(React.Fragment, null, h(GlobalBackdrop), h(PricingPage));
+    if (path === "/how-it-works") return h(React.Fragment, null, h(GlobalBackdrop), h(HowItWorksPage));
+    if (path === "/about") return h(React.Fragment, null, h(GlobalBackdrop), h(AboutPage));
+    if (path === "/contact") return h(React.Fragment, null, h(GlobalBackdrop), h(ContactPage));
     if (path === "/login") return h(AuthPage, { mode: "login" });
     if (path === "/signup") return h(AuthPage, { mode: "signup" });
     if (loading) return h(React.Fragment, null,
+        h(GlobalBackdrop),
         h("div", { className: "empty" }, "Loading..."),
         globalLoading.active ? h("div", { className: "loading-overlay" }, h("div", { className: "loading-box" }, h("span", { className: "loader" }), h("strong", null, globalLoading.label || "Loading..."))) : null
     );
@@ -2869,6 +3186,9 @@ function App() {
     else if (route === "/dashboard/seller/opportunities") page = h(SellerOpportunitiesPage);
     else if (route === "/dashboard/seller/bids") page = h(SellerBidsPage);
     else if (route === "/dashboard/seller/orders") page = h(SellerOrdersPage);
+    else if (route === "/dashboard/seller/keywords") page = h(KeywordsPage);
+    else if (route === "/dashboard/seller/scoring") page = h(ScoringPage);
+    else if (route === "/dashboard/seller/settings") page = h(SettingsPage);
     else if (route === "/dashboard/tenders") page = h(DashboardPage, { view: "all" });
     else if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
     else if (route === "/dashboard/upcoming-deadlines") page = h(DashboardPage, { view: "upcoming" });
@@ -2890,6 +3210,7 @@ function App() {
     else if (route === "/dashboard/profile") page = h(ProfilePage, { me, refreshMe });
     else page = h(DashboardPage, { view: "all" });
     return h(React.Fragment, null,
+        h(GlobalBackdrop),
         h(Shell, { me, path: route }, page),
         globalLoading.active ? h("div", { className: "loading-overlay" }, h("div", { className: "loading-box" }, h("span", { className: "loader" }), h("strong", null, globalLoading.label || "Loading..."))) : null
     );
