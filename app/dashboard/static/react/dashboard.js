@@ -1592,7 +1592,7 @@ function DashboardPage({ view }) {
     const [summary, setSummary] = useState(null);
     const [tenders, setTenders] = useState([]);
     const [options, setOptions] = useState({ departments: [], states: [], categories: [], sources: [], statuses: [] });
-    const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: false, score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
+    const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: view !== "upcoming", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
     const [filters, setFilters] = useState(blankFilters);
     const [resultCount, setResultCount] = useState(0);
     const [message, setMessage] = useState("");
