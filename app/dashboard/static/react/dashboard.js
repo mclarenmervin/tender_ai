@@ -12,30 +12,29 @@ function setGlobalLoading(active, label = "Loading...") {
 }
 
 const nav = [
-    ["Tenders", [["/dashboard", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"]]],
-    ["Workflow", [["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
-    ["Intelligence", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market Intelligence"], ["/dashboard/reports", "Executive Reports"], ["/dashboard/buyers", "Buyer Intelligence"], ["/dashboard/competitors", "Competitor Intelligence"]]],
-    ["Automation", [["/dashboard/admin", "Admin"], ["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/gem-alerts", "GeM Alerts"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Delete Data"]]],
-    ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
+    ["Tenders", [["/dashboard", "All"], ["/dashboard/high-priority", "Priority"], ["/dashboard/upcoming-deadlines", "Deadlines"], ["/dashboard/applied", "Applied"]]],
+    ["Work", [["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
+    ["Insights", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market"], ["/dashboard/reports", "Reports"], ["/dashboard/buyers", "Buyers"], ["/dashboard/competitors", "Competitors"]]],
+    ["Setup", [["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Data"]]],
+    ["Account", [["/dashboard/company-profile", "Company"], ["/dashboard/profile", "Profile"]]],
 ];
 
 const buyerNav = [
-    ["Buyer", [["/dashboard/buyer", "Buyer Dashboard"]]],
-    ["Tenders", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"]]],
-    ["Workflow", [["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
-    ["Intelligence", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market Intelligence"], ["/dashboard/reports", "Executive Reports"], ["/dashboard/buyers", "Buyer Intelligence"], ["/dashboard/competitors", "Competitor Intelligence"]]],
-    ["Automation", [["/dashboard/admin", "Admin"], ["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Delete Data"]]],
-    ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
+    ["Home", [["/dashboard/buyer", "Dashboard"]]],
+    ["Tenders", [["/dashboard/tenders", "All"], ["/dashboard/high-priority", "Priority"], ["/dashboard/upcoming-deadlines", "Deadlines"], ["/dashboard/applied", "Applied"]]],
+    ["Work", [["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
+    ["Insights", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market"], ["/dashboard/reports", "Reports"], ["/dashboard/buyers", "Buyers"], ["/dashboard/competitors", "Competitors"]]],
+    ["Setup", [["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Data"]]],
+    ["Account", [["/dashboard/company-profile", "Company"], ["/dashboard/profile", "Profile"]]],
 ];
 
 const sellerNav = [
-    ["Seller", [["/dashboard/seller", "Seller Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
-    ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Participated Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
-    ["Intelligence", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/buyers", "Buyer History"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risk Signals"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Documents"]]],
-    ["Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Opportunity Match"], ["/dashboard/seller/bids", "Bid/RA Workflow"], ["/dashboard/seller/orders", "Orders"]]],
-    ["Automation", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Settings"]]],
-    ["Bid Work", [["/dashboard/tenders", "All Tenders"], ["/dashboard/high-priority", "High Priority"], ["/dashboard/upcoming-deadlines", "Upcoming"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline Kanban"], ["/dashboard/tracking", "Status Tracking"]]],
-    ["Account", [["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "Profile"]]],
+    ["Home", [["/dashboard/seller", "Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
+    ["GeM", [["/dashboard/seller/gem-login", "Login"], ["/dashboard/seller/gem-bids", "Bids"], ["/dashboard/seller/gem-alerts", "Alerts"]]],
+    ["Risk Intel", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/risk-data", "Risk Data"], ["/dashboard/seller/intelligence/buyers", "Buyers"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risks"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Docs"]]],
+    ["Ops", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Matches"], ["/dashboard/seller/bids", "Bid/RA"], ["/dashboard/seller/orders", "Orders"]]],
+    ["Tenders", [["/dashboard/tenders", "All"], ["/dashboard/high-priority", "Priority"], ["/dashboard/upcoming-deadlines", "Deadlines"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
+    ["Setup", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Settings"], ["/dashboard/company-profile", "Company"], ["/dashboard/profile", "Profile"]]],
 ];
 
 function navigate(path) {
@@ -255,6 +254,7 @@ function pageTitle(path) {
     if (path === "/dashboard/seller/gem-bids") return "GeM Bid Tracking";
     if (path === "/dashboard/seller/gem-alerts") return "GeM Alerts";
     if (path === "/dashboard/seller/intelligence") return "Seller Intelligence";
+    if (path === "/dashboard/seller/intelligence/risk-data") return "Risk Data";
     if (path === "/dashboard/seller/intelligence/buyers") return "Buyer History";
     if (path === "/dashboard/seller/intelligence/competitors") return "Competitor Intelligence";
     if (path === "/dashboard/seller/intelligence/risk-signals") return "Risk Signals";
@@ -3061,6 +3061,32 @@ function SellerIntelligenceOverviewPage() {
     );
 }
 
+function SellerRiskDataPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/seller/intelligence/risk-data").then(setData).catch(err => setMessage(err.message)); }, []);
+    const summary = data?.summary || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Risk Data Foundation", text: "Track the data needed for vendor concentration, L1/L2/L3 price-gap, repeated bidder group, and restrictive-clause analytics." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("div", { className: "summary six" },
+            [["Vendors", summary.vendors || 0], ["Buyers", summary.buyers || 0], ["Categories", summary.categories || 0], ["Risk Bids", summary.risk_bids || 0], ["Participants", summary.participants || 0], ["Risk Flags", summary.risk_flags || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h(SimpleTable, {
+            title: "Phase Progress",
+            headers: ["Phase", "Name", "Status", "Done", "Next"],
+            rows: (data?.phases || []).map(row => [row.phase, row.name, row.status, (row.done || []).join("; "), (row.next || []).join("; ")])
+        }),
+        h("section", { className: "card" },
+            h("h3", null, "Missing For Full Anomaly Engine"),
+            h("div", { className: "tag-list catalogue-gaps" }, (data?.missing || []).map(item => h("span", { key: item }, item)))
+        )
+    );
+}
+
 function SellerBuyerHistoryPage() {
     const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
@@ -3229,6 +3255,7 @@ function App() {
     else if (route === "/dashboard/seller/gem-login") page = h(SellerGemLoginPage);
     else if (route === "/dashboard/seller/gem-bids") page = h(SellerGemBidsPage);
     else if (route === "/dashboard/seller/intelligence") page = h(SellerIntelligenceOverviewPage);
+    else if (route === "/dashboard/seller/intelligence/risk-data") page = h(SellerRiskDataPage);
     else if (route === "/dashboard/seller/intelligence/buyers") page = h(SellerBuyerHistoryPage);
     else if (route === "/dashboard/seller/intelligence/competitors") page = h(SellerCompetitorIntelligencePage);
     else if (route === "/dashboard/seller/intelligence/risk-signals") page = h(SellerRiskSignalsPage);

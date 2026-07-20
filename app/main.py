@@ -27,7 +27,7 @@ from jose import jwt,JWTError
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.database.db_connection import Base,engine,get_db,SessionLocal
-from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
+from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,ProcurementVendor,ProcurementBuyer,ProcurementCategory,ProcurementBid,ProcurementBidParticipant,ProcurementRiskFlag,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
@@ -112,6 +112,18 @@ def ensure_schema_updates():
             "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_tender_id ON seller_bid_participations(tender_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_user_id ON seller_order_fulfillments(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_order_fulfillments_tender_id ON seller_order_fulfillments(tender_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_vendors_user_id ON procurement_vendors(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_buyers_user_id ON procurement_buyers(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_categories_user_id ON procurement_categories(user_id)",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_user_procurement_bid_no ON procurement_bids(user_id,bid_no)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bids_user_id ON procurement_bids(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bids_buyer_id ON procurement_bids(buyer_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bids_category_id ON procurement_bids(category_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bid_participants_user_id ON procurement_bid_participants(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bid_participants_bid_id ON procurement_bid_participants(bid_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_bid_participants_vendor_id ON procurement_bid_participants(vendor_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_risk_flags_user_id ON procurement_risk_flags(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_procurement_risk_flags_bid_id ON procurement_risk_flags(bid_id)",
             "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS encrypted_storage_state TEXT",
             "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS session_status VARCHAR(50) DEFAULT 'not_started'",
             "ALTER TABLE gem_portal_credentials ADD COLUMN IF NOT EXISTS session_captured_at TIMESTAMP WITH TIME ZONE",
@@ -2058,6 +2070,10 @@ def seller_intelligence_reports_dashboard(request:Request,db:Session=Depends(get
 def seller_intelligence_documents_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/seller/intelligence/risk-data')
+def seller_intelligence_risk_data_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/tenders')
 def tenders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
@@ -3732,6 +3748,47 @@ def api_seller_intelligence_documents(db:Session=Depends(get_db),user:User=Depen
         'supported_files':['PDF','Excel','CSV','ZIP','Images with OCR later'],
         'extraction_tasks':['Bid number','Buyer department','Item/service','Quantity','Estimated value','EMD','Bid dates','Eligibility','Turnover','OEM authorization','L1/L2/L3 where present'],
         'message':'This page reuses tender document storage today. Dedicated seller risk document upload can be added next.',
+    }
+
+@app.get('/api/seller/intelligence/risk-data')
+def api_seller_intelligence_risk_data(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    vendor_count=db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user.id).count()
+    buyer_count=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id).count()
+    category_count=db.query(ProcurementCategory).filter(ProcurementCategory.user_id==user.id).count()
+    bid_count=db.query(ProcurementBid).filter(ProcurementBid.user_id==user.id).count()
+    participant_count=db.query(ProcurementBidParticipant).filter(ProcurementBidParticipant.user_id==user.id).count()
+    risk_count=db.query(ProcurementRiskFlag).filter(ProcurementRiskFlag.user_id==user.id).count()
+    gem_count=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).count()
+    document_count=db.query(TenderDocument).join(Tender,TenderDocument.tender_id==Tender.id).filter(Tender.user_id==user.id).count()
+    phases=[
+        {'phase':'Phase 1','name':'Internal MVP','status':'started','done':['Login','GeM participated records','Basic document extraction','Excel/CSV exports','Risk-data tables created'],'next':['Upload/import historical bid/result files','Manual correction screen','Vendor/buyer/category master screens']},
+        {'phase':'Phase 2','name':'Analytics Dashboard','status':'started','done':['Seller analytics','Buyer history','Department concentration','Risk signal dashboard'],'next':['Vendor dashboard','Department dashboard','Repeated bidder group charts','PDF risk report export']},
+        {'phase':'Phase 3','name':'Automated Data Collection','status':'started','done':['Scheduled GeM scrape','Seller GeM session sync','Duplicate prevention','Scrape logs/emails'],'next':['Public contract search ingestion','Awarded bid page ingestion','BOQ/result import validation']},
+        {'phase':'Phase 4','name':'AI/NLP Risk Engine','status':'started','done':['Eligibility extraction','Bid/No-Bid reasoning','Basic risk signal wording'],'next':['Restrictive clause scoring','L1/L2/L3 gap engine','Risk explanation generator','Similar tender comparison']},
+        {'phase':'Phase 5','name':'SaaS / Client Product','status':'started','done':['Buyer/seller role split','Cloud deployment','Per-user data separation','Notification preferences'],'next':['Granular roles','Audit logs','Subscription/client workspaces','White-label report templates']},
+    ]
+    missing=[
+        'Historical bid/result PDF or Excel upload/import',
+        'Vendor master management screen',
+        'Buyer master management screen',
+        'Category master management screen',
+        'L1/L2/L3 participant ingestion',
+        'Formula-based anomaly scoring engine',
+    ]
+    return {
+        'summary':{
+            'vendors':vendor_count,
+            'buyers':buyer_count,
+            'categories':category_count,
+            'risk_bids':bid_count,
+            'participants':participant_count,
+            'risk_flags':risk_count,
+            'gem_records':gem_count,
+            'documents':document_count,
+        },
+        'phases':phases,
+        'missing':missing,
+        'message':'Phase foundations are started. Upload/import and master-data screens are the next build step before full anomaly formulas can run.',
     }
 
 @app.get('/api/seller/gem-login')
