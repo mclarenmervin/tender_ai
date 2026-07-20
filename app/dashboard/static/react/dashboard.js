@@ -1656,10 +1656,54 @@ function TenderRow({ tender, onSave }) {
     );
 }
 
+function ScrapeQueryBar({ data }) {
+    if (!data) {
+        return h("section", { className: "scrape-query-card loading" },
+            h("div", null,
+                h("span", { className: "eyebrow" }, "Scrape query"),
+                h("strong", null, "Loading scrape inputs...")
+            )
+        );
+    }
+    const keywordChips = data.final_keywords || [];
+    const locationChips = [...(data.states || []), data.city ? data.city : null].filter(Boolean);
+    const scheduleText = data.auto_scrape_enabled
+        ? data.auto_scrape_mode === "daily"
+            ? `Auto: daily at ${data.auto_scrape_time || "09:00"}`
+            : `Auto: every ${data.auto_scrape_interval_hours || 6} hour(s)`
+        : "Auto scrape off";
+    return h("section", { className: "scrape-query-card" },
+        h("div", { className: "scrape-query-head" },
+            h("div", null,
+                h("span", { className: "eyebrow" }, "Scrape query"),
+                h("h3", null, data.used_default_keywords ? "Using starter keywords" : "Current scrape inputs"),
+                h("p", null, data.message || "These terms and locations are used by manual and auto scrape.")
+            ),
+            h("div", { className: "scrape-query-actions" },
+                h("span", { className: data.only_high_priority ? "query-pill active" : "query-pill" }, data.only_high_priority ? "High priority only" : "All matching bids"),
+                h("span", { className: "query-pill" }, scheduleText)
+            )
+        ),
+        h("div", { className: "query-row" },
+            h("span", null, "Keywords"),
+            h("div", { className: "query-chip-row" },
+                keywordChips.length ? keywordChips.map(term => h("span", { className: "query-chip", key: term }, term)) : h("em", null, "No keywords")
+            )
+        ),
+        h("div", { className: "query-row" },
+            h("span", null, "Locations"),
+            h("div", { className: "query-chip-row" },
+                locationChips.length ? locationChips.map((term, index) => h("span", { className: "query-chip location", key: `${term}-${index}` }, term)) : h("em", null, "All India")
+            )
+        )
+    );
+}
+
 function DashboardPage({ view }) {
     const [summary, setSummary] = useState(null);
     const [tenders, setTenders] = useState([]);
     const [options, setOptions] = useState({ departments: [], states: [], categories: [], sources: [], statuses: [] });
+    const [scrapeQuery, setScrapeQuery] = useState(null);
     const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: view !== "upcoming", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
     const [filters, setFilters] = useState(blankFilters);
     const [resultCount, setResultCount] = useState(0);
@@ -1680,10 +1724,11 @@ function DashboardPage({ view }) {
     async function load(nextFilters = filters, nextPage = page, nextPageSize = pageSize) {
         setListLoading(true);
         try {
-            const [s, t, o] = await Promise.all([
+            const [s, t, o, q] = await Promise.all([
                 api("/api/dashboard/summary", { silent: true }),
                 api(`/api/tenders?${queryString(nextFilters, nextPage, nextPageSize)}`, { silent: true }),
                 api("/api/tender-filter-options", { silent: true }),
+                api("/api/scrape-query", { silent: true }),
             ]);
             setSummary(s);
             setTenders(t.items || []);
@@ -1692,6 +1737,7 @@ function DashboardPage({ view }) {
             setPages(t.pages || 1);
             setPageSize(t.limit || nextPageSize);
             setOptions(o);
+            setScrapeQuery(q);
         } finally {
             setListLoading(false);
         }
@@ -1749,6 +1795,7 @@ function DashboardPage({ view }) {
     }
     return h(React.Fragment, null,
         message ? h("p", { className: "status" }, message) : null,
+        view === "all" ? h(ScrapeQueryBar, { data: scrapeQuery }) : null,
         h(Summary, { summary }),
         h("div", { className: "top-actions" },
             h("button", { className: "primary", onClick: scrape }, "Manual Scrape"),
@@ -2984,37 +3031,93 @@ function SettingsPage() {
         await load();
     }
     const autoStatus = settings.auto_scrape_status || {};
-    return h("div", { className: "admin-grid" },
-        h("div", { className: "card" }, h("h3", null, "High Priority Scrape"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }), " Keep only high priority bids")),
-        h("div", { className: "card" }, h("h3", null, "Location Filters"), h("form", { onSubmit: saveLocation, className: "stack" },
-            h("select", { multiple: true, value: settings.scrape_states, onChange: e => setSettings({ ...settings, scrape_states: Array.from(e.target.selectedOptions).map(o => o.value) }) }, settings.indian_states.map(s => h("option", { key: s, value: s }, s))),
-            h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "City" }),
-            h("button", { className: "primary" }, "Save Location")
-        )),
-        h("div", { className: "card" }, h("h3", null, "Auto Scrape"), h("form", { onSubmit: saveAuto, className: "stack" },
-            h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }), " Enabled"),
-            h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time")),
-            h("input", { type: "number", value: settings.auto_scrape_interval_hours, onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) }),
-            h("input", { type: "time", value: settings.auto_scrape_time, onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) }),
-            h("button", { className: "primary" }, "Save Auto Scrape"),
-            h("div", { className: autoStatus.scheduler_running ? "notice ok" : "notice err" }, autoStatus.scheduler_running ? "Scheduler is running in the web app." : "Scheduler is not running in the web app. Redeploy or restart the container."),
-            h("div", { className: "alert-status-grid" },
-                h("div", null, h("span", null, "Server now"), h("strong", null, autoStatus.server_now || "NA")),
-                h("div", null, h("span", null, "Last auto scrape"), h("strong", null, autoStatus.last_run || "Not run")),
-                h("div", null, h("span", null, "Next due"), h("strong", null, autoStatus.next_due || "NA")),
-                h("div", null, h("span", null, "Due now"), h("strong", null, autoStatus.due_now ? "Yes" : "No"))
+    const selectedStates = settings.scrape_states || [];
+    return h("div", { className: "settings-page" },
+        h("section", { className: "settings-hero" },
+            h("div", null,
+                h("span", { className: "eyebrow" }, "Seller settings"),
+                h("h2", null, "Scrape, filters, and alerts"),
+                h("p", null, "Control where Tender AI searches, how often it runs, and how reports are sent.")
             ),
-            autoStatus.reason ? h("p", { className: "desc" }, autoStatus.reason) : null
-        )),
-        h("div", { className: "card" }, h("h3", null, "Daily Digest Alerts"), h("form", { onSubmit: saveDigest, className: "stack" },
-            digestMessage ? h("p", { className: "status" }, digestMessage) : null,
-            h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!settings.daily_digest_enabled, onChange: e => setSettings({ ...settings, daily_digest_enabled: e.target.checked }) }), " Send daily digest"),
-            h("label", { className: "field-block" }, h("span", null, "Digest time"), h("input", { type: "time", value: settings.daily_digest_time || "09:00", onChange: e => setSettings({ ...settings, daily_digest_time: e.target.value }) })),
-            h("label", { className: "field-block" }, h("span", null, "High priority minimum score"), h("input", { type: "number", min: 0, max: 100, value: settings.daily_digest_min_score || "70", onChange: e => setSettings({ ...settings, daily_digest_min_score: e.target.value }) })),
-            settings.daily_digest_last_run ? h("p", { className: "desc" }, `Last digest: ${settings.daily_digest_last_run}`) : h("p", { className: "desc" }, "No daily digest sent yet."),
-            h("button", { className: "primary" }, "Save Digest Settings"),
-            h("button", { type: "button", onClick: sendDigestNow }, "Send Digest Now")
-        ))
+            h("div", { className: "settings-hero-stats" },
+                h("div", null, h("span", null, "Scheduler"), h("strong", null, autoStatus.scheduler_running ? "Running" : "Stopped")),
+                h("div", null, h("span", null, "Last run"), h("strong", null, autoStatus.last_run || "Not run")),
+                h("div", null, h("span", null, "Next due"), h("strong", null, autoStatus.next_due || "NA"))
+            )
+        ),
+        h("div", { className: "settings-grid" },
+            h("section", { className: "settings-card" },
+                h("div", { className: "settings-card-head" },
+                    h("div", null, h("h3", null, "Scrape Quality"), h("p", null, "Limit stored tenders to the best scored matches."))
+                ),
+                h("label", { className: "setting-toggle" },
+                    h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }),
+                    h("span", null, h("strong", null, "Keep only high priority bids"), h("small", null, "Low-score tenders will be removed after scrape."))
+                )
+            ),
+            h("section", { className: "settings-card wide" },
+                h("div", { className: "settings-card-head" },
+                    h("div", null, h("h3", null, "Location Filters"), h("p", null, "Narrow GeM search by state and optional city. Leave blank for All India."))
+                ),
+                h("form", { onSubmit: saveLocation, className: "settings-form" },
+                    h("label", { className: "field-block" },
+                        h("span", null, "States"),
+                        h("select", { className: "state-select", multiple: true, value: selectedStates, onChange: e => setSettings({ ...settings, scrape_states: Array.from(e.target.selectedOptions).map(o => o.value) }) }, settings.indian_states.map(s => h("option", { key: s, value: s }, s)))
+                    ),
+                    h("label", { className: "field-block" },
+                        h("span", null, "City"),
+                        h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "Optional city" })
+                    ),
+                    h("div", { className: "selected-location-row" },
+                        selectedStates.length ? selectedStates.slice(0, 8).map(s => h("span", { key: s }, s)) : h("em", null, "No state selected"),
+                        settings.scrape_city ? h("span", null, settings.scrape_city) : null
+                    ),
+                    h("button", { className: "primary" }, "Save Location")
+                )
+            ),
+            h("section", { className: "settings-card" },
+                h("div", { className: "settings-card-head" },
+                    h("div", null, h("h3", null, "Auto Scrape"), h("p", null, "Run GeM scrape automatically from the server."))
+                ),
+                h("form", { onSubmit: saveAuto, className: "settings-form" },
+                    h("label", { className: "setting-toggle" },
+                        h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }),
+                        h("span", null, h("strong", null, "Enable scheduled scraping"), h("small", null, "Uses active keywords, profile terms, GeM alert terms, and location filters."))
+                    ),
+                    h("div", { className: "settings-two" },
+                        h("label", { className: "field-block" }, h("span", null, "Schedule mode"), h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time"))),
+                        h("label", { className: "field-block" }, h("span", null, "Interval hours"), h("input", { type: "number", min: 1, value: settings.auto_scrape_interval_hours, onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) }))
+                    ),
+                    h("label", { className: "field-block" }, h("span", null, "Daily time"), h("input", { type: "time", value: settings.auto_scrape_time, onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) })),
+                    h("button", { className: "primary" }, "Save Auto Scrape"),
+                    h("div", { className: autoStatus.scheduler_running ? "notice ok" : "notice err" }, autoStatus.scheduler_running ? "Scheduler is running in the web app." : "Scheduler is not running in the web app. Redeploy or restart the container."),
+                    h("div", { className: "settings-status-grid" },
+                        h("div", null, h("span", null, "Server now"), h("strong", null, autoStatus.server_now || "NA")),
+                        h("div", null, h("span", null, "Last auto scrape"), h("strong", null, autoStatus.last_run || "Not run")),
+                        h("div", null, h("span", null, "Next due"), h("strong", null, autoStatus.next_due || "NA")),
+                        h("div", null, h("span", null, "Due now"), h("strong", null, autoStatus.due_now ? "Yes" : "No"))
+                    ),
+                    autoStatus.reason ? h("p", { className: "desc" }, autoStatus.reason) : null
+                )
+            ),
+            h("section", { className: "settings-card" },
+                h("div", { className: "settings-card-head" },
+                    h("div", null, h("h3", null, "Daily Digest Alerts"), h("p", null, "Send a tender summary even when no new bids are found."))
+                ),
+                h("form", { onSubmit: saveDigest, className: "settings-form" },
+                    digestMessage ? h("p", { className: "status" }, digestMessage) : null,
+                    h("label", { className: "setting-toggle" },
+                        h("input", { type: "checkbox", checked: !!settings.daily_digest_enabled, onChange: e => setSettings({ ...settings, daily_digest_enabled: e.target.checked }) }),
+                        h("span", null, h("strong", null, "Send daily digest"), h("small", null, "Uses your email and Telegram notification profile."))
+                    ),
+                    h("label", { className: "field-block" }, h("span", null, "Digest time"), h("input", { type: "time", value: settings.daily_digest_time || "09:00", onChange: e => setSettings({ ...settings, daily_digest_time: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "High priority minimum score"), h("input", { type: "number", min: 0, max: 100, value: settings.daily_digest_min_score || "70", onChange: e => setSettings({ ...settings, daily_digest_min_score: e.target.value }) })),
+                    settings.daily_digest_last_run ? h("p", { className: "desc" }, `Last digest: ${settings.daily_digest_last_run}`) : h("p", { className: "desc" }, "No daily digest sent yet."),
+                    h("button", { className: "primary" }, "Save Digest Settings"),
+                    h("button", { type: "button", onClick: sendDigestNow }, "Send Digest Now")
+                )
+            )
+        )
     );
 }
 

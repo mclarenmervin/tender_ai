@@ -35,7 +35,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
         used_default_keywords = False
-        if not expanded_keywords and trigger == "manual" and not is_gem_alert:
+        if not expanded_keywords and not is_gem_alert:
             expanded_keywords.extend(DEFAULT_BOOTSTRAP_TERMS)
             used_default_keywords = True
         rotation_offset = int(setting_value(db, user_id, "keyword_rotation_offset", "0") or "0")

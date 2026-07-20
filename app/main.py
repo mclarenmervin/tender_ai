@@ -35,7 +35,7 @@ from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import run_gem_job
-from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword
+from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
@@ -5080,6 +5080,70 @@ def get_json_setting(db,user_id,key,default=None):
     except Exception:
         return default if default is not None else []
     return value if isinstance(value,list) else (default if default is not None else [])
+
+SCRAPE_BOOTSTRAP_TERMS=['iot','automation','software','hardware','security']
+
+def scrape_term_parts(value):
+    parts=[]
+    for chunk in re.split(r'[,;\n|]+',value or ''):
+        cleaned=chunk.strip().lower()
+        if cleaned:
+            parts.append(cleaned)
+    return parts
+
+def active_scrape_query_payload(db,user):
+    keyword_rows=db.query(ScrapeKeyword).filter(ScrapeKeyword.user_id==user.id,ScrapeKeyword.is_active.is_(True)).order_by(ScrapeKeyword.keyword.asc()).all()
+    expanded=[]
+    for item in keyword_rows:
+        expanded.extend(expand_keyword(item.keyword,item.profile,item.synonyms))
+    profile=db.query(CompanyProfile).filter(CompanyProfile.user_id==user.id,CompanyProfile.is_active.is_(True)).first()
+    profile_terms=[]
+    if profile:
+        for field in ['products','services','industries','experience_keywords']:
+            profile_terms.extend(scrape_term_parts(getattr(profile,field,None)))
+    gem_categories=get_json_setting(db,user.id,'gem_alert_categories',[])
+    gem_companies=get_json_setting(db,user.id,'gem_alert_companies',[])
+    gem_terms=list(dict.fromkeys([str(term).strip().lower() for term in gem_categories+gem_companies if str(term).strip()]))
+    expanded.extend(profile_terms)
+    expanded.extend(gem_terms)
+    used_default_keywords=False
+    if not expanded:
+        expanded.extend(SCRAPE_BOOTSTRAP_TERMS)
+        used_default_keywords=True
+    try:
+        rotation_offset=int(get_setting(db,user.id,'keyword_rotation_offset','0') or '0')
+    except Exception:
+        rotation_offset=0
+    final_keywords=rotate_terms(expanded,rotation_offset,limit=10)
+    scrape_states=get_json_setting(db,user.id,'scrape_states',[])
+    legacy_state=get_setting(db,user.id,'scrape_state','')
+    if legacy_state and legacy_state not in scrape_states:
+        scrape_states.append(legacy_state)
+    auto_enabled=get_setting(db,user.id,'auto_scrape_enabled','false')=='true'
+    auto_mode=get_setting(db,user.id,'auto_scrape_mode','interval')
+    interval_hours=get_setting(db,user.id,'auto_scrape_interval_hours','6')
+    scrape_time=get_setting(db,user.id,'auto_scrape_time','09:00')
+    return {
+        'active_keywords':[keyword_to_dict(item) for item in keyword_rows],
+        'active_keyword_count':len(keyword_rows),
+        'final_keywords':final_keywords,
+        'profile_terms':list(dict.fromkeys(profile_terms))[:40],
+        'gem_alert_terms':gem_terms[:40],
+        'states':scrape_states,
+        'city':get_setting(db,user.id,'scrape_city',''),
+        'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
+        'auto_scrape_enabled':auto_enabled,
+        'auto_scrape_mode':auto_mode,
+        'auto_scrape_interval_hours':interval_hours,
+        'auto_scrape_time':scrape_time,
+        'used_default_keywords':used_default_keywords,
+        'rotation_offset':rotation_offset,
+        'message':'Starter keywords are being used because no active scrape keywords, company profile terms, or GeM alert terms are configured.' if used_default_keywords else 'Scrape runs use the keyword rotation and location filters shown here.',
+    }
+
+@app.get('/api/scrape-query')
+def api_scrape_query(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return active_scrape_query_payload(db,user)
 
 def clean_alert_terms(values):
     if isinstance(values,str):
