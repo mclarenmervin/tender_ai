@@ -3159,6 +3159,7 @@ def api_dashboard_summary(db:Session=Depends(get_db),user:User=Depends(get_curre
 def api_tenders(
     view:str='all',
     limit:int=100,
+    offset:int=0,
     q:str='',
     authority:str='',
     qualification:str='',
@@ -3184,6 +3185,7 @@ def api_tenders(
     user:User=Depends(get_current_user),
 ):
     limit=max(1,min(500,limit))
+    offset=max(0,offset)
     query=user_tenders(db,user)
     uses_eligibility_text=bool((q or authority or qualification or eligibility_query or location or excluded_keywords or '').strip())
     if uses_eligibility_text:
@@ -3302,7 +3304,16 @@ def api_tenders(
         query=query.order_by(Tender.relevance_score.desc().nullslast())
     else:
         query=query.order_by(Tender.created_at.desc())
-    return {'items':[tender_to_dict(item) for item in query.distinct().limit(limit).all()],'count':total,'limit':limit}
+    page=(offset//limit)+1
+    pages=max(1,(total+limit-1)//limit)
+    return {
+        'items':[tender_to_dict(item) for item in query.distinct().offset(offset).limit(limit).all()],
+        'count':total,
+        'limit':limit,
+        'offset':offset,
+        'page':page,
+        'pages':pages,
+    }
 
 @app.get('/api/tender-filter-options')
 def api_tender_filter_options(db:Session=Depends(get_db),user:User=Depends(get_current_user)):

@@ -1446,7 +1446,38 @@ function SellerGemBidsPage() {
     );
 }
 
-function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply, onReset, resultCount }) {
+function TenderPager({ page, pages, pageSize, resultCount, loading, onPage, onPageSize }) {
+    const safePage = Math.min(Math.max(page || 1, 1), pages || 1);
+    const start = resultCount ? ((safePage - 1) * pageSize) + 1 : 0;
+    const end = Math.min(resultCount || 0, safePage * pageSize);
+    const pageItems = [];
+    const first = Math.max(1, safePage - 2);
+    const last = Math.min(pages || 1, safePage + 2);
+    for (let i = first; i <= last; i++) pageItems.push(i);
+    return h("div", { className: "tender-pager" },
+        h("div", { className: "pager-meta" },
+            h("strong", null, resultCount ? `${start}-${end}` : "0"),
+            h("span", null, `of ${resultCount || 0} tenders`)
+        ),
+        h("div", { className: "pager-controls" },
+            h("button", { type: "button", disabled: loading || safePage <= 1, onClick: () => onPage(1) }, "First"),
+            h("button", { type: "button", disabled: loading || safePage <= 1, onClick: () => onPage(safePage - 1) }, "Prev"),
+            first > 1 ? h("span", { className: "pager-ellipsis" }, "...") : null,
+            pageItems.map(item => h("button", { type: "button", key: item, className: item === safePage ? "active" : "", disabled: loading, onClick: () => onPage(item) }, item)),
+            last < pages ? h("span", { className: "pager-ellipsis" }, "...") : null,
+            h("button", { type: "button", disabled: loading || safePage >= pages, onClick: () => onPage(safePage + 1) }, "Next"),
+            h("button", { type: "button", disabled: loading || safePage >= pages, onClick: () => onPage(pages) }, "Last")
+        ),
+        h("label", { className: "pager-size" },
+            h("span", null, "Rows"),
+            h("select", { value: pageSize, disabled: loading, onChange: e => onPageSize(Number(e.target.value)) },
+                [10, 25, 50, 100, 200].map(size => h("option", { key: size, value: size }, size))
+            )
+        )
+    );
+}
+
+function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply, onReset, resultCount, loading, page, pages, pageSize, onPage, onPageSize }) {
     const [advancedOpen, setAdvancedOpen] = useState(false);
     const [statusMsg, setStatusMsg] = useState("");
     const update = (field, value) => setFilters({ ...filters, [field]: value });
@@ -1524,14 +1555,16 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
             )),
             h("div", { className: "filter-actions" }, h("button", { className: "primary", onClick: onApply }, "Apply Filters"), h("button", { onClick: onReset }, "Reset"))
         ) : null,
-        h("div", { className: "filter-result" }, `Showing ${tenders.length} of ${resultCount ?? tenders.length} matching tenders`),
-        h("div", { className: "panel" },
+        h(TenderPager, { page, pages, pageSize, resultCount, loading, onPage, onPageSize }),
+        h("div", { className: "panel tender-list-panel" },
+            loading ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, "Loading tenders...")) :
             tenders.length === 0 ? h("div", { className: "empty" }, "No tenders found.") :
             h("table", null,
                 h("thead", null, h("tr", null, ["Tender", "Department", "Value", "Deadline", "Score", "Status", "Actions"].map(x => h("th", { key: x }, x)))),
                 h("tbody", null, tenders.map(t => h(TenderRow, { key: t.id, tender: t, onSave: saveStatus })))
             )
-        )
+        ),
+        h(TenderPager, { page, pages, pageSize, resultCount, loading, onPage, onPageSize })
     );
 }
 
@@ -1630,9 +1663,13 @@ function DashboardPage({ view }) {
     const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: view !== "upcoming", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
     const [filters, setFilters] = useState(blankFilters);
     const [resultCount, setResultCount] = useState(0);
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
+    const [pageSize, setPageSize] = useState(25);
+    const [listLoading, setListLoading] = useState(false);
     const [message, setMessage] = useState("");
-    function queryString(nextFilters = filters) {
-        const params = new URLSearchParams({ view, limit: "200" });
+    function queryString(nextFilters = filters, nextPage = page, nextPageSize = pageSize) {
+        const params = new URLSearchParams({ view, limit: String(nextPageSize), offset: String((Math.max(1, nextPage) - 1) * nextPageSize) });
         Object.entries(nextFilters).forEach(([key, value]) => {
             if (value !== "" && value !== null && value !== undefined && value !== false && !(key === "score" && value === "all") && !(key === "sort" && value === "newest")) {
                 params.set(key, value);
@@ -1640,18 +1677,45 @@ function DashboardPage({ view }) {
         });
         return params.toString();
     }
-    async function load(nextFilters = filters) {
-        const [s, t, o] = await Promise.all([api("/api/dashboard/summary"), api(`/api/tenders?${queryString(nextFilters)}`), api("/api/tender-filter-options")]);
-        setSummary(s); setTenders(t.items || []); setResultCount(t.count ?? (t.items || []).length); setOptions(o);
+    async function load(nextFilters = filters, nextPage = page, nextPageSize = pageSize) {
+        setListLoading(true);
+        try {
+            const [s, t, o] = await Promise.all([
+                api("/api/dashboard/summary", { silent: true }),
+                api(`/api/tenders?${queryString(nextFilters, nextPage, nextPageSize)}`, { silent: true }),
+                api("/api/tender-filter-options", { silent: true }),
+            ]);
+            setSummary(s);
+            setTenders(t.items || []);
+            setResultCount(t.count ?? (t.items || []).length);
+            setPage(t.page || nextPage);
+            setPages(t.pages || 1);
+            setPageSize(t.limit || nextPageSize);
+            setOptions(o);
+        } finally {
+            setListLoading(false);
+        }
     }
     useEffect(() => {
         setFilters(blankFilters);
-        load(blankFilters).catch(e => setMessage(e.message));
+        setPage(1);
+        load(blankFilters, 1, pageSize).catch(e => setMessage(e.message));
     }, [view]);
-    async function applyFilters() { await load(filters); }
+    async function applyFilters() { setPage(1); await load(filters, 1, pageSize); }
     async function resetFilters() {
         setFilters(blankFilters);
-        await load(blankFilters);
+        setPage(1);
+        await load(blankFilters, 1, pageSize);
+    }
+    async function changePage(nextPage) {
+        const safePage = Math.min(Math.max(1, nextPage), pages || 1);
+        setPage(safePage);
+        await load(filters, safePage, pageSize);
+    }
+    async function changePageSize(nextSize) {
+        setPageSize(nextSize);
+        setPage(1);
+        await load(filters, 1, nextSize);
     }
     async function scrape() {
         setMessage("Manual scrape running...");
@@ -1664,7 +1728,7 @@ function DashboardPage({ view }) {
             } catch {}
         }
         setMessage(nextMessage);
-        await load();
+        await load(filters, page, pageSize);
     }
     async function showScrapeDiagnostics() {
         setMessage("Checking scrape diagnostics...");
@@ -1675,13 +1739,13 @@ function DashboardPage({ view }) {
         setMessage("Extracting eligibility from current tender list...");
         const result = await api("/api/eligibility/extract", { method: "POST" });
         setMessage(`Eligibility extraction finished. Extracted ${result.extracted || 0}, failed ${result.failed || 0}.`);
-        await load();
+        await load(filters, page, pageSize);
     }
     async function generateAllBidDecisions() {
         setMessage("Generating bid/no-bid recommendations...");
         const result = await api("/api/bid-decisions/generate", { method: "POST" });
         setMessage(`Bid/no-bid generation finished. Generated ${result.generated || 0}, failed ${result.failed || 0}.`);
-        await load();
+        await load(filters, page, pageSize);
     }
     return h(React.Fragment, null,
         message ? h("p", { className: "status" }, message) : null,
@@ -1692,7 +1756,7 @@ function DashboardPage({ view }) {
             h("button", { onClick: extractAllEligibility }, "Extract Eligibility"),
             h("button", { onClick: generateAllBidDecisions }, "Generate Bid/No-Bid")
         ),
-        h(TenderTable, { tenders, options, filters, setFilters, onRefresh: () => load(filters), onApply: applyFilters, onReset: resetFilters, resultCount })
+        h(TenderTable, { tenders, options, filters, setFilters, onRefresh: () => load(filters, page, pageSize), onApply: applyFilters, onReset: resetFilters, resultCount, loading: listLoading, page, pages, pageSize, onPage: changePage, onPageSize: changePageSize })
     );
 }
 

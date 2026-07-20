@@ -1777,6 +1777,86 @@ textarea {
     margin: 0 0 10px;
     font-weight: 800;
 }
+.tender-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+    padding: 12px;
+    border: 1px solid rgba(203,213,225,.95);
+    background: rgba(255,255,255,.9);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(15,23,42,.05);
+}
+.pager-meta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 750;
+}
+.pager-meta strong {
+    color: #0f172a;
+    font-size: 15px;
+}
+.pager-controls {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+.pager-controls button {
+    min-width: 38px;
+    min-height: 36px;
+    padding: 8px 11px;
+    border-color: #dbe3ef;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 800;
+}
+.pager-controls button.active {
+    border-color: transparent;
+    background: linear-gradient(135deg, #2563eb, #14b8a6);
+    color: white;
+    box-shadow: 0 10px 22px rgba(37,99,235,.2);
+}
+.pager-ellipsis {
+    color: #94a3b8;
+    font-weight: 900;
+    padding: 0 2px;
+}
+.pager-size {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+.pager-size select {
+    min-height: 36px;
+    padding: 7px 30px 7px 10px;
+}
+.tender-list-panel {
+    position: relative;
+    overflow: hidden;
+}
+.table-loader {
+    min-height: 220px;
+    display: grid;
+    place-items: center;
+    gap: 10px;
+    color: #64748b;
+}
+.table-loader .loader {
+    width: 30px;
+    height: 30px;
+}
 input,
 select,
 button {
@@ -3205,6 +3285,15 @@ select[multiple] {
     .summary { grid-template-columns: repeat(2, 1fr); }
     .toolbar,
     .advanced-filters { grid-template-columns: 1fr; }
+    .tender-pager {
+        align-items: stretch;
+    }
+    .pager-controls,
+    .pager-meta,
+    .pager-size {
+        width: 100%;
+        justify-content: center;
+    }
     .auth { grid-template-columns: 1fr; }
     .auth-art { padding: 32px 24px; min-height: 300px; gap: 24px; }
     .auth-art h1 { font-size: 34px; }
