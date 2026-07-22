@@ -21,7 +21,6 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Tenders", [["/dashboard/tenders", "All"], ["/dashboard/high-priority", "Priority"], ["/dashboard/upcoming-deadlines", "Deadlines"], ["/dashboard/applied", "Applied"]]],
     ["Work", [["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
     ["Insights", [["/dashboard/analysis", "Analysis"], ["/dashboard/market", "Market"], ["/dashboard/reports", "Reports"], ["/dashboard/buyers", "Buyers"], ["/dashboard/competitors", "Competitors"]]],
     ["Setup", [["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Data"]]],
