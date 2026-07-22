@@ -2011,7 +2011,13 @@ BUYER_MODULES={
     'account':{'label':'Account','description':'Department details, buyer role mapping, notifications, and profile readiness.'},
 }
 
-BUYER_STATUS_OPTIONS=['pending','draft','published','under_evaluation','approved','ordered','payment_pending','completed','cancelled','blocked']
+BUYER_STATUS_OPTIONS=[
+    'pending','draft','demand_created','category_selected','spec_ready','approval_pending','ready_to_publish',
+    'published','clarification','corrigendum','technical_opened','technical_evaluation','representation',
+    'financial_opened','l1_review','award_decision','approved','ordered','seller_acceptance','dispatched',
+    'consignee_received','crac_pending','crac_completed','invoice_received','payment_pending','paid',
+    'audit_ready','report_ready','certification_pending','completed','cancelled','blocked'
+]
 BUYER_PRIORITY_OPTIONS=['low','normal','high','urgent']
 BUYER_PROCUREMENT_MODES=['Direct Purchase','L1 Purchase','Bid/RA','Custom Bid','Forward Auction','Service Procurement']
 

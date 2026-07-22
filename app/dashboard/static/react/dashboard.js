@@ -32,51 +32,72 @@ const buyerModules = {
     planning: {
         path: "/dashboard/buyer/planning",
         title: "Procurement Planning",
-        text: "Demand creation, requirement builder, category, value, and procurement mode readiness.",
+        text: "Build buyer demand before GeM publishing: product/service requirement, consignee, category, budget, and procurement mode.",
         sampleTitle: "New procurement demand",
-        checklist: ["Requirement approved", "Category selected", "Estimated value captured", "Procurement mode confirmed"],
+        stages: ["Demand", "Category", "Specification", "Budget", "Approval", "Ready"],
+        focus: ["Product procurement", "Service procurement", "Direct Purchase", "L1 Purchase", "Bid/RA", "Custom Bid"],
+        checklist: ["Requirement note approved", "Product/service category selected", "Consignee and delivery location captured", "Estimated value and budget head captured", "Specification avoids restrictive clauses", "Procurement mode confirmed"],
+        templates: ["Product demand", "Service demand", "Custom bid requirement", "Forward auction plan"],
     },
     "bid-management": {
         path: "/dashboard/buyer/bids",
         title: "Bid Management",
-        text: "Draft bid, publication, bid opening, corrigendum, clarification, and cancellation tracking.",
+        text: "Control the published GeM bid lifecycle: draft, publish, clarification, corrigendum, technical opening, financial opening, and cancellation.",
         sampleTitle: "Bid publication tracker",
-        checklist: ["Bid document prepared", "Approvals complete", "Technical opening scheduled", "Corrigendum reviewed"],
+        stages: ["Draft", "Published", "Clarification", "Corrigendum", "Technical Open", "Financial Open", "Award/Cancel"],
+        focus: ["Bid", "Reverse Auction", "Custom Bid", "Global Tender", "Forward Auction"],
+        checklist: ["Bid document prepared", "Approvals complete", "Bid start/end dates checked", "Clarification window monitored", "Corrigendum approval recorded", "Technical opening scheduled", "Cancellation reason recorded if applicable"],
+        templates: ["Product Bid/RA", "Service Bid", "Custom Bid", "Corrigendum tracker"],
     },
     "vendor-evaluation": {
         path: "/dashboard/buyer/vendors",
         title: "Vendor Evaluation",
-        text: "Technical evaluation, bidder qualification, representation window, L1 comparison, and price reasonability.",
+        text: "Record technical qualification, disqualification reasons, representation handling, financial ranking, and L1 price reasonability.",
         sampleTitle: "Technical evaluation file",
-        checklist: ["Qualified bidders recorded", "Disqualification reasons captured", "L1 price checked", "Representation window reviewed"],
+        stages: ["Technical Open", "Technical Evaluation", "Representation", "Financial Open", "L1 Review", "Award Decision"],
+        focus: ["Qualified bidders", "Disqualified bidders", "Representation", "L1 price", "Price reasonability"],
+        checklist: ["Qualified bidders recorded", "Disqualification reasons captured exactly", "Representation allowed dates checked", "Buyer remarks recorded", "L1 price and vendor recorded", "Price reasonability note prepared"],
+        templates: ["Technical evaluation", "Representation review", "Financial comparison", "L1 approval note"],
     },
     orders: {
         path: "/dashboard/buyer/orders",
         title: "Order Management",
-        text: "Contract, acceptance, delivery, consignee, CRAC, invoice, payment, and incident tracking.",
+        text: "Track GeM order processing after award: contract, seller acceptance, delivery, consignee receipt, CRAC, invoice, payment, and incidents.",
         sampleTitle: "Order fulfillment tracker",
-        checklist: ["Contract issued", "Delivery timeline set", "CRAC pending/complete", "Payment status updated"],
+        stages: ["Contract", "Seller Acceptance", "Dispatch", "Consignee Receipt", "CRAC", "Invoice", "Payment", "Closed"],
+        focus: ["Order acceptance", "Delivery", "Consignee", "CRAC", "Invoice", "Payment", "Incident"],
+        checklist: ["Contract issued", "Seller acceptance checked", "Delivery timeline set", "Consignee receipt tracked", "CRAC pending/complete", "Invoice verified", "Payment status updated", "Incident/return/replacement logged"],
+        templates: ["Contract received", "CRAC pending", "Payment pending", "Incident case"],
     },
     compliance: {
         path: "/dashboard/buyer/compliance",
         title: "Compliance & Audit",
-        text: "Role checklist, approval evidence, purchase file, corrigendum justification, and audit trail.",
+        text: "Keep a defensible purchase file: buyer role, approval trail, bid conditions, corrigendum justification, evaluation evidence, and payment delay notes.",
         sampleTitle: "Purchase file compliance",
-        checklist: ["Approval note attached", "Bid audit trail complete", "Justification recorded", "Payment delay checked"],
+        stages: ["Role Check", "Approval", "Bid File", "Evaluation File", "Order File", "Payment File", "Audit Ready"],
+        focus: ["Buyer roles", "Approvals", "Purchase file", "Audit trail", "Corrigendum justification", "Payment delay"],
+        checklist: ["Buyer role and delegation checked", "Approval note attached", "Bid audit trail complete", "Corrigendum justification recorded", "Evaluation evidence attached", "Order and CRAC evidence retained", "Payment delay checked"],
+        templates: ["Purchase file", "Corrigendum justification", "Evaluation audit", "Payment delay note"],
     },
     reports: {
         path: "/dashboard/buyer/reports",
         title: "Reports",
-        text: "Procurement summary, bid status, vendor participation, savings, delay, payment, and audit reports.",
+        text: "Prepare buyer management reports for procurement status, bid lifecycle, vendor participation, savings, delayed orders, payments, and audit.",
         sampleTitle: "Monthly procurement report",
-        checklist: ["Bid status updated", "Savings checked", "Delayed orders reviewed", "Payment pending listed"],
+        stages: ["Collect", "Validate", "Summarize", "Review", "Export", "Share"],
+        focus: ["Procurement summary", "Bid status", "Vendor participation", "Savings", "Delayed orders", "Payment pending"],
+        checklist: ["Procurement list updated", "Bid status updated", "Vendor participation checked", "Savings checked", "Delayed orders reviewed", "Payment pending listed", "Audit export prepared"],
+        templates: ["Monthly report", "Bid status report", "Delayed order report", "Payment pending report"],
     },
     account: {
         path: "/dashboard/buyer/account",
         title: "Buyer Account",
-        text: "Department details, buyer role mapping, notification readiness, and GeM account housekeeping.",
+        text: "Maintain GeM buyer account readiness: government email, department mapping, buyer role, training/certification, and notifications.",
         sampleTitle: "Buyer account readiness",
-        checklist: ["Department details verified", "Role mapping complete", "Notifications configured", "Training/certification tracked"],
+        stages: ["Registration", "Department", "Role Mapping", "Training", "Certification", "Notifications", "Ready"],
+        focus: ["gov.in/nic.in email", "Department mapping", "Buyer role", "Buyer certification", "Notifications"],
+        checklist: ["Government email verified", "Department details verified", "Buyer role mapping complete", "Interactive buyer training tracked", "Buyer certification status recorded", "Notifications configured"],
+        templates: ["Buyer registration", "Role mapping", "Certification tracker", "Notification setup"],
     },
 };
 
@@ -1019,6 +1040,17 @@ function BuyerModulePage({ moduleKey }) {
         await api(`/api/buyer/workspace/${item.id}`, { method: "DELETE" });
         setData({ ...data, items: items.filter(row => row.id !== item.id) });
     }
+    function applyTemplate(template) {
+        setForm({
+            ...form,
+            title: template,
+            checklist: (meta.checklist || []).join("\n"),
+            notes: `${template} created for ${meta.title}. Track each GeM stage, approval, evidence, and next action here.`,
+        });
+    }
+    const openItems = items.filter(item => !item.completed);
+    const completedItems = items.filter(item => item.completed);
+    const urgentItems = items.filter(item => item.priority === "urgent");
     const selectOptions = (values) => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
     return h(React.Fragment, null,
         h("div", { className: "hero-panel buyer-module-hero" },
@@ -1029,8 +1061,39 @@ function BuyerModulePage({ moduleKey }) {
             )
         ),
         message ? h("p", { className: "status" }, message) : null,
+        h("section", { className: "buyer-gem-flow" },
+            h("div", { className: "buyer-stage-rail" },
+                (meta.stages || []).map((stage, index) => h("div", { className: "buyer-stage", key: stage },
+                    h("span", null, index + 1),
+                    h("strong", null, stage)
+                ))
+            ),
+            h("div", { className: "buyer-guide-grid" },
+                h("div", { className: "buyer-guide-card" },
+                    h("h3", null, "GeM Focus"),
+                    h("div", { className: "query-chip-row" }, (meta.focus || []).map(item => h("span", { className: "query-chip", key: item }, item)))
+                ),
+                h("div", { className: "buyer-guide-card" },
+                    h("h3", null, "Default Checklist"),
+                    h("ul", { className: "buyer-default-checklist" }, (meta.checklist || []).map(item => h("li", { key: item }, item)))
+                ),
+                h("div", { className: "buyer-guide-card" },
+                    h("h3", null, "Module Health"),
+                    h("div", { className: "buyer-process-metrics compact" },
+                        h("div", null, h("span", null, "Open"), h("strong", null, openItems.length)),
+                        h("div", null, h("span", null, "Done"), h("strong", null, completedItems.length)),
+                        h("div", null, h("span", null, "Urgent"), h("strong", null, urgentItems.length))
+                    )
+                )
+            )
+        ),
         h("section", { className: "card buyer-form-card" },
-            h("h3", null, `Add ${meta.title} Item`),
+            h("div", { className: "buyer-form-head" },
+                h("div", null, h("h3", null, `Add ${meta.title} Item`), h("p", { className: "desc" }, "Use quick templates or create a custom tracker row for a GeM buyer task.")),
+                h("div", { className: "buyer-template-row" }, (meta.templates || []).map(template =>
+                    h("button", { type: "button", key: template, onClick: () => applyTemplate(template) }, template)
+                ))
+            ),
             h("form", { className: "buyer-workspace-form", onSubmit: createItem },
                 h("label", { className: "field-block" }, h("span", null, "Title"), h("input", { value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
                 h("label", { className: "field-block" }, h("span", null, "Reference no."), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: "Bid / demand / order no." })),

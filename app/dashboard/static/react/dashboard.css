@@ -2442,6 +2442,85 @@ td {
 .buyer-form-card {
     margin-bottom: 16px;
 }
+.buyer-gem-flow {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.buyer-stage-rail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}
+.buyer-stage {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #dbeafe;
+    background: rgba(239,246,255,.96);
+    border-radius: 8px;
+    padding: 10px;
+}
+.buyer-stage span {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+}
+.buyer-stage strong {
+    color: #0f172a;
+    font-size: 13px;
+}
+.buyer-guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr .8fr;
+    gap: 14px;
+}
+.buyer-guide-card {
+    background: rgba(255,255,255,.95);
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    box-shadow: 0 12px 26px rgba(15,23,42,.06);
+    padding: 16px;
+}
+.buyer-guide-card h3 {
+    margin: 0 0 12px;
+    color: #0f172a;
+}
+.buyer-default-checklist {
+    margin: 0;
+    padding-left: 18px;
+    color: #334155;
+    line-height: 1.55;
+}
+.buyer-form-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+.buyer-form-head h3 {
+    margin: 0 0 4px;
+}
+.buyer-template-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+.buyer-template-row button {
+    min-height: 34px;
+    padding: 7px 10px;
+}
+.buyer-process-metrics.compact {
+    margin: 0;
+}
 .buyer-workspace-form {
     display: grid;
     grid-template-columns: repeat(2, minmax(220px, 1fr));
@@ -3622,6 +3701,7 @@ select[multiple] {
     .buyer-workspace-form,
     .buyer-process-metrics,
     .buyer-item-card .buyer-process-metrics,
+    .buyer-guide-grid,
     .keyword-form,
     .gem-alert-grid,
     .profile-grid,
@@ -3649,8 +3729,12 @@ select[multiple] {
     .pipeline-board { grid-template-columns: repeat(6, minmax(250px, 82vw)); }
     .hero-panel { flex-direction: column; }
     .settings-hero,
-    .scrape-query-head {
+    .scrape-query-head,
+    .buyer-form-head {
         flex-direction: column;
+    }
+    .buyer-template-row {
+        justify-content: flex-start;
     }
     .query-row {
         grid-template-columns: 1fr;
