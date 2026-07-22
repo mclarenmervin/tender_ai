@@ -905,15 +905,28 @@ function AuthPage({ mode }) {
 
 function Shell({ children, me, path }) {
     const sections = me?.role === "seller" ? sellerNav : buyerNav;
-    const [navOpen, setNavOpen] = useState(false);
-    useEffect(() => { setNavOpen(false); }, [path]);
+    const currentSection = sections.find(([, items]) => items.some(([href]) => href === path))?.[0] || sections[0]?.[0];
+    const [openSection, setOpenSection] = useState(currentSection);
+    const [menuOpen, setMenuOpen] = useState(true);
+    const [transitioning, setTransitioning] = useState(false);
+    useEffect(() => {
+        setOpenSection(currentSection);
+        setMenuOpen(true);
+        setTransitioning(true);
+        const timer = setTimeout(() => setTransitioning(false), 260);
+        return () => clearTimeout(timer);
+    }, [path, currentSection]);
     function go(href) {
-        setNavOpen(false);
+        setMenuOpen(false);
         navigate(href);
     }
+    function toggleSection(section) {
+        setOpenSection(section);
+        setMenuOpen(value => section === openSection ? !value : true);
+    }
+    const openItems = sections.find(([section]) => section === openSection)?.[1] || [];
     return h("div", { className: "app" },
-        h("div", { className: "sidebar-backdrop" + (navOpen ? " open" : ""), onClick: () => setNavOpen(false) }),
-        h("aside", { className: "sidebar" + (navOpen ? " open" : "") },
+        false && h("aside", { className: "sidebar" },
             h("div", { className: "sidebar-head" },
                 h("div", null,
                     h("div", { className: "brand" }, "Tender ", h("span", null, "AI")),
@@ -934,7 +947,30 @@ function Shell({ children, me, path }) {
         ),
         h("main", { className: "main" },
             h("header", { className: "topbar" },
-                h("div", { className: "topbar-title" },
+                transitioning ? h("div", { className: "route-loader", "aria-hidden": "true" }) : null,
+                h("div", { className: "topbar-primary" },
+                    h("button", { className: "topbar-brand", onClick: () => navigate(roleDashboard(me)), "aria-label": "Open dashboard" },
+                        h("span", { className: "brand-mark" }, "T"),
+                        h("span", null, "Tender ", h("strong", null, "AI")),
+                        h("small", null, me?.role === "seller" ? "Seller Workspace" : "Buyer Workspace")
+                    ),
+                    h("nav", { className: "top-menu", "aria-label": "Dashboard groups" },
+                        sections.map(([section, items]) => {
+                            const active = section === currentSection;
+                            const open = section === openSection && menuOpen;
+                            return h("button", {
+                                key: section,
+                                className: (active ? "active " : "") + (open ? "open" : ""),
+                                onClick: () => toggleSection(section),
+                                "aria-expanded": open,
+                            },
+                                h("span", null, section),
+                                h("em", null, items.length)
+                            );
+                        })
+                    )
+                ),
+                false && h("div", { className: "topbar-title" },
                     h("button", { className: "sidebar-toggle", onClick: () => setNavOpen(true), "aria-label": "Open menu" }, "☰"),
                     h("div", null, h("h1", null, pageTitle(path)), h("div", { className: "muted" }, "Monitor, scrape, score, and analyze tenders"))
                 ),
@@ -948,7 +984,27 @@ function Shell({ children, me, path }) {
                     h("button", { className: "logout", onClick: async () => { await fetch("/api/logout", { method: "POST" }); navigate("/login"); } }, "Logout")
                 )
             ),
-            h("section", { className: "content" }, children)
+            h("div", { className: "top-menu-panel" + (menuOpen ? " open" : "") },
+                h("div", { className: "top-menu-panel-head" },
+                    h("div", null,
+                        h("span", { className: "eyebrow" }, "Current Group"),
+                        h("strong", null, openSection),
+                        h("small", { className: "top-menu-current" }, pageTitle(path))
+                    ),
+                    h("button", { onClick: () => setMenuOpen(false), "aria-label": "Collapse menu" }, "Collapse")
+                ),
+                h("div", { className: "top-menu-links" },
+                    openItems.map(([href, label]) => h("button", {
+                        key: href,
+                        className: path === href ? "active" : "",
+                        onClick: () => go(href),
+                    },
+                        h("span", null, label),
+                        h("small", null, href.replace("/dashboard/", "").replaceAll("/", " / "))
+                    ))
+                )
+            ),
+            h("section", { className: "content page-transition" + (transitioning ? " changing" : "") }, children)
         )
     );
 }
