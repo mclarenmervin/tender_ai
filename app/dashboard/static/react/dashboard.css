@@ -2364,6 +2364,95 @@ td {
     color: #0f172a;
     overflow-wrap: anywhere;
 }
+.buyer-process-grid,
+.buyer-item-list {
+    display: grid;
+    gap: 14px;
+}
+.buyer-process-grid {
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+}
+.buyer-process-card,
+.buyer-item-card {
+    background: rgba(255,255,255,.95);
+    border: 1px solid #dbe3ef;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    box-shadow: 0 14px 32px rgba(15,23,42,.07);
+    padding: 18px;
+}
+.buyer-process-card:nth-child(2n) {
+    border-left-color: #14b8a6;
+}
+.buyer-process-card:nth-child(3n) {
+    border-left-color: #f59e0b;
+}
+.buyer-item-card.urgent {
+    border-left-color: #dc2626;
+}
+.buyer-item-card.high {
+    border-left-color: #f59e0b;
+}
+.buyer-process-head,
+.buyer-item-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+.buyer-process-head h3,
+.buyer-item-head h3 {
+    margin: 0 0 6px;
+    color: #0f172a;
+}
+.buyer-process-head p,
+.buyer-item-head p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.45;
+}
+.buyer-process-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+}
+.buyer-item-card .buyer-process-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.buyer-process-metrics div {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px;
+}
+.buyer-process-metrics span {
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+.buyer-process-metrics strong {
+    color: #0f172a;
+    overflow-wrap: anywhere;
+}
+.buyer-form-card {
+    margin-bottom: 16px;
+}
+.buyer-workspace-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 12px;
+}
+.buyer-workspace-form .span-2 {
+    grid-column: 1 / -1;
+}
+.buyer-checklist {
+    margin: 10px 0;
+}
 .chart-box {
     height: 260px;
 }
@@ -3529,6 +3618,10 @@ select[multiple] {
     .settings-grid,
     .settings-hero-stats,
     .settings-two,
+    .buyer-process-grid,
+    .buyer-workspace-form,
+    .buyer-process-metrics,
+    .buyer-item-card .buyer-process-metrics,
     .keyword-form,
     .gem-alert-grid,
     .profile-grid,

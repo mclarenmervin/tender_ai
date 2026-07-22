@@ -21,10 +21,64 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Work", [["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
-    ["Setup", [["/dashboard/admin/keywords", "Keywords"], ["/dashboard/admin/scoring", "Scoring"], ["/dashboard/admin/settings", "Settings"], ["/dashboard/admin/delete", "Data"]]],
-    ["Account", [["/dashboard/company-profile", "Company"], ["/dashboard/profile", "Profile"]]],
+    ["Procurement", [["/dashboard/buyer/planning", "Planning"], ["/dashboard/buyer/bids", "Bids"]]],
+    ["Evaluation", [["/dashboard/buyer/vendors", "Vendors"]]],
+    ["Fulfillment", [["/dashboard/buyer/orders", "Orders"]]],
+    ["Governance", [["/dashboard/buyer/compliance", "Compliance"], ["/dashboard/buyer/reports", "Reports"]]],
+    ["Account", [["/dashboard/buyer/account", "Buyer Account"], ["/dashboard/profile", "Profile"]]],
 ];
+
+const buyerModules = {
+    planning: {
+        path: "/dashboard/buyer/planning",
+        title: "Procurement Planning",
+        text: "Demand creation, requirement builder, category, value, and procurement mode readiness.",
+        sampleTitle: "New procurement demand",
+        checklist: ["Requirement approved", "Category selected", "Estimated value captured", "Procurement mode confirmed"],
+    },
+    "bid-management": {
+        path: "/dashboard/buyer/bids",
+        title: "Bid Management",
+        text: "Draft bid, publication, bid opening, corrigendum, clarification, and cancellation tracking.",
+        sampleTitle: "Bid publication tracker",
+        checklist: ["Bid document prepared", "Approvals complete", "Technical opening scheduled", "Corrigendum reviewed"],
+    },
+    "vendor-evaluation": {
+        path: "/dashboard/buyer/vendors",
+        title: "Vendor Evaluation",
+        text: "Technical evaluation, bidder qualification, representation window, L1 comparison, and price reasonability.",
+        sampleTitle: "Technical evaluation file",
+        checklist: ["Qualified bidders recorded", "Disqualification reasons captured", "L1 price checked", "Representation window reviewed"],
+    },
+    orders: {
+        path: "/dashboard/buyer/orders",
+        title: "Order Management",
+        text: "Contract, acceptance, delivery, consignee, CRAC, invoice, payment, and incident tracking.",
+        sampleTitle: "Order fulfillment tracker",
+        checklist: ["Contract issued", "Delivery timeline set", "CRAC pending/complete", "Payment status updated"],
+    },
+    compliance: {
+        path: "/dashboard/buyer/compliance",
+        title: "Compliance & Audit",
+        text: "Role checklist, approval evidence, purchase file, corrigendum justification, and audit trail.",
+        sampleTitle: "Purchase file compliance",
+        checklist: ["Approval note attached", "Bid audit trail complete", "Justification recorded", "Payment delay checked"],
+    },
+    reports: {
+        path: "/dashboard/buyer/reports",
+        title: "Reports",
+        text: "Procurement summary, bid status, vendor participation, savings, delay, payment, and audit reports.",
+        sampleTitle: "Monthly procurement report",
+        checklist: ["Bid status updated", "Savings checked", "Delayed orders reviewed", "Payment pending listed"],
+    },
+    account: {
+        path: "/dashboard/buyer/account",
+        title: "Buyer Account",
+        text: "Department details, buyer role mapping, notification readiness, and GeM account housekeeping.",
+        sampleTitle: "Buyer account readiness",
+        checklist: ["Department details verified", "Role mapping complete", "Notifications configured", "Training/certification tracked"],
+    },
+};
 
 const sellerNav = [
     ["Home", [["/dashboard/seller", "Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
@@ -234,7 +288,7 @@ function scrapeDiagnosticsMessage(data) {
 }
 
 function pageTitle(path) {
-    const match = nav.flatMap(([, items]) => items).find(([href]) => href === path);
+    const match = [...nav, ...buyerNav, ...sellerNav].flatMap(([, items]) => items).find(([href]) => href === path);
     if (match) return match[1];
     if (path === "/") return "Tender AI";
     if (path === "/features") return "Features";
@@ -246,6 +300,8 @@ function pageTitle(path) {
     if (path === "/signup") return "Create Account";
     if (path === "/dashboard/tenders") return "All Tenders";
     if (path === "/dashboard/buyer") return "Buyer Dashboard";
+    const buyerModuleTitle = Object.values(buyerModules).find(item => item.path === path)?.title;
+    if (buyerModuleTitle) return buyerModuleTitle;
     if (path === "/dashboard/seller") return "Seller Dashboard";
     if (path === "/dashboard/seller/analytics") return "Seller Analytics";
     if (path === "/dashboard/seller/gem-login") return "GeM Login";
@@ -888,58 +944,129 @@ function Summary({ summary }) {
 }
 
 function BuyerDashboardPage() {
-    const [summary, setSummary] = useState(null);
-    const [buyerData, setBuyerData] = useState(null);
-    const [marketData, setMarketData] = useState(null);
-    const [upcoming, setUpcoming] = useState([]);
+    const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
     useEffect(() => {
-        Promise.all([
-            api("/api/dashboard/summary"),
-            api("/api/buyers"),
-            api("/api/market"),
-            api("/api/tenders?view=upcoming&limit=6&sort=deadline"),
-        ]).then(([s, b, m, t]) => {
-            setSummary(s);
-            setBuyerData(b);
-            setMarketData(m);
-            setUpcoming(t.items || []);
-        }).catch(err => setMessage(err.message));
+        api("/api/buyer/workspace/summary").then(setData).catch(err => setMessage(err.message));
     }, []);
-    const topBuyers = buyerData?.buyers || [];
-    const opportunities = marketData?.opportunities || [];
+    const modules = data?.modules || [];
     return h(React.Fragment, null,
         h("div", { className: "hero-panel buyer-landing" },
             h("div", null,
                 h("h2", null, "Buyer Dashboard"),
-                h("p", null, "Review procurement demand, buyer behavior, market movement, and upcoming tender deadlines from one workspace.")
+                h("p", null, "Plan procurement, manage bids, evaluate vendors, track orders, and keep audit records from one buyer workspace.")
             ),
             h("div", { className: "hero-actions" },
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyers") }, "Buyer Intelligence"),
-                h("button", { onClick: () => navigate("/dashboard/market") }, "Market View")
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyer/planning") }, "Start Planning"),
+                h("button", { onClick: () => navigate("/dashboard/buyer/bids") }, "Bid Management"),
+                h("button", { onClick: () => navigate("/dashboard/buyer/orders") }, "Orders")
             )
         ),
         message ? h("div", { className: "notice err" }, message) : null,
-        h(Summary, { summary }),
-        h("div", { className: "admin-grid" },
-            h("div", { className: "card" }, h("h3", null, "Top Buyers"), topBuyers.length ? topBuyers.slice(0, 5).map(buyer =>
-                h("div", { className: "rule-list", key: buyer.name },
-                    h("span", null, buyer.name),
-                    h("strong", null, `${buyer.tender_count || 0} tenders`)
+        h("div", { className: "summary five" },
+            [["Total Items", data?.total_items || 0], ["Open", data?.open_items || 0], ["Completed", data?.completed_items || 0], ["Urgent", data?.urgent_items || 0], ["Value", `Rs. ${money(data?.total_value || 0)}`]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("div", { className: "buyer-process-grid" },
+            modules.length ? modules.map(item => {
+                const meta = buyerModules[item.module] || {};
+                return h("article", { className: "buyer-process-card", key: item.module },
+                    h("div", { className: "buyer-process-head" },
+                        h("div", null, h("h3", null, item.label), h("p", null, item.description)),
+                        h("span", { className: item.open ? "query-pill active" : "query-pill" }, `${item.open || 0} open`)
+                    ),
+                    h("div", { className: "buyer-process-metrics" },
+                        h("div", null, h("span", null, "Total"), h("strong", null, item.total || 0)),
+                        h("div", null, h("span", null, "Done"), h("strong", null, item.completed || 0)),
+                        h("div", null, h("span", null, "Urgent"), h("strong", null, item.urgent || 0))
+                    ),
+                    h("button", { onClick: () => navigate(meta.path || "/dashboard/buyer") }, "Open Module")
+                );
+            }) : h("div", { className: "empty" }, data ? "No buyer modules found." : "Loading buyer workspace...")
+        )
+    );
+}
+
+function BuyerModulePage({ moduleKey }) {
+    const meta = buyerModules[moduleKey] || buyerModules.planning;
+    const [data, setData] = useState(null);
+    const [form, setForm] = useState({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+    const [message, setMessage] = useState("");
+    async function load() {
+        const result = await api(`/api/buyer/workspace?module=${encodeURIComponent(moduleKey)}`);
+        setData(result);
+    }
+    useEffect(() => {
+        setForm(current => ({ ...current, module: moduleKey, title: "", checklist: (meta.checklist || []).join("\n") }));
+        load().catch(err => setMessage(err.message));
+    }, [moduleKey]);
+    const items = data?.items || [];
+    const update = (field, value) => setForm({ ...form, [field]: value });
+    async function createItem(e) {
+        e.preventDefault();
+        setMessage("Saving buyer tracker item...");
+        await api("/api/buyer/workspace", { method: "POST", body: JSON.stringify({ ...form, module: moduleKey }) });
+        setForm({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+        setMessage("Buyer tracker item saved.");
+        await load();
+    }
+    async function updateItem(item, patch) {
+        const result = await api(`/api/buyer/workspace/${item.id}`, { method: "PUT", body: JSON.stringify(patch) });
+        setData({ ...data, items: items.map(row => row.id === item.id ? result.item : row) });
+    }
+    async function deleteItem(item) {
+        await api(`/api/buyer/workspace/${item.id}`, { method: "DELETE" });
+        setData({ ...data, items: items.filter(row => row.id !== item.id) });
+    }
+    const selectOptions = (values) => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel buyer-module-hero" },
+            h("div", null, h("h2", null, meta.title), h("p", null, meta.text)),
+            h("div", { className: "hero-actions" },
+                h("button", { onClick: () => navigate("/dashboard/buyer") }, "Dashboard"),
+                h("button", { onClick: load }, "Refresh")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("section", { className: "card buyer-form-card" },
+            h("h3", null, `Add ${meta.title} Item`),
+            h("form", { className: "buyer-workspace-form", onSubmit: createItem },
+                h("label", { className: "field-block" }, h("span", null, "Title"), h("input", { value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
+                h("label", { className: "field-block" }, h("span", null, "Reference no."), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: "Bid / demand / order no." })),
+                h("label", { className: "field-block" }, h("span", null, "Status"), h("select", { value: form.status, onChange: e => update("status", e.target.value) }, selectOptions(data?.status_options || []))),
+                h("label", { className: "field-block" }, h("span", null, "Priority"), h("select", { value: form.priority, onChange: e => update("priority", e.target.value) }, selectOptions(data?.priority_options || []))),
+                h("label", { className: "field-block" }, h("span", null, "Procurement mode"), h("select", { value: form.procurement_mode, onChange: e => update("procurement_mode", e.target.value) }, h("option", { value: "" }, "Select mode"), (data?.procurement_modes || []).map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Department"), h("input", { value: form.department, onChange: e => update("department", e.target.value), placeholder: "Department / office" })),
+                h("label", { className: "field-block" }, h("span", null, "Category"), h("input", { value: form.category, onChange: e => update("category", e.target.value), placeholder: "Product / service category" })),
+                h("label", { className: "field-block" }, h("span", null, "Vendor / L1"), h("input", { value: form.vendor_name, onChange: e => update("vendor_name", e.target.value), placeholder: "Vendor name, if applicable" })),
+                h("label", { className: "field-block" }, h("span", null, "Estimated value"), h("input", { type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
+                h("label", { className: "field-block" }, h("span", null, "Due date"), h("input", { type: "date", value: form.due_date, onChange: e => update("due_date", e.target.value) })),
+                h("label", { className: "field-block span-2" }, h("span", null, "Checklist"), h("textarea", { value: form.checklist, onChange: e => update("checklist", e.target.value), placeholder: "One checklist item per line" })),
+                h("label", { className: "field-block span-2" }, h("span", null, "Notes"), h("textarea", { value: form.notes, onChange: e => update("notes", e.target.value), placeholder: "Remarks, evidence, next action, risks" })),
+                h("button", { className: "primary span-2" }, "Save Item")
+            )
+        ),
+        h("section", { className: "buyer-item-list" },
+            items.length ? items.map(item => h("article", { className: `buyer-item-card ${item.priority}`, key: item.id },
+                h("div", { className: "buyer-item-head" },
+                    h("div", null, h("h3", null, item.title), h("p", null, [item.reference_no, item.department, item.category].filter(Boolean).join(" | ") || "No reference details")),
+                    h("span", { className: item.completed ? "query-pill active" : "query-pill" }, item.status.replaceAll("_", " "))
+                ),
+                h("div", { className: "buyer-process-metrics" },
+                    h("div", null, h("span", null, "Priority"), h("strong", null, item.priority)),
+                    h("div", null, h("span", null, "Mode"), h("strong", null, item.procurement_mode || "NA")),
+                    h("div", null, h("span", null, "Value"), h("strong", null, `Rs. ${money(item.estimated_value || 0)}`)),
+                    h("div", null, h("span", null, "Due"), h("strong", null, item.due_date || "NA"))
+                ),
+                item.checklist?.length ? h("div", { className: "tag-list buyer-checklist" }, item.checklist.map(check => h("span", { key: check }, check))) : null,
+                item.notes ? h("p", { className: "desc" }, item.notes) : null,
+                h("div", { className: "mini-links" },
+                    h("button", { onClick: () => updateItem(item, { completed: !item.completed }) }, item.completed ? "Reopen" : "Mark Complete"),
+                    h("button", { onClick: () => updateItem(item, { priority: item.priority === "urgent" ? "normal" : "urgent" }) }, item.priority === "urgent" ? "Normal Priority" : "Urgent"),
+                    h("button", { onClick: () => deleteItem(item) }, "Delete")
                 )
-            ) : h("div", { className: "empty" }, "No buyer data yet."), h("button", { onClick: () => navigate("/dashboard/buyers") }, "Open Buyers")),
-            h("div", { className: "card" }, h("h3", null, "Market Opportunities"), opportunities.length ? opportunities.slice(0, 5).map(item =>
-                h("div", { className: "rule-list", key: item.id || item.title },
-                    h("span", null, item.title || item.department || "Opportunity"),
-                    h("strong", null, item.market_score ? `${item.market_score} score` : money(item.value || 0))
-                )
-            ) : h("div", { className: "empty" }, "No market signals yet."), h("button", { onClick: () => navigate("/dashboard/reports") }, "Open Reports")),
-            h("div", { className: "card" }, h("h3", null, "Upcoming Deadlines"), upcoming.length ? upcoming.map(tender =>
-                h("div", { className: "rule-list", key: tender.id },
-                    h("span", null, tender.title),
-                    h("strong", null, tender.deadline || "No deadline")
-                )
-            ) : h("div", { className: "empty" }, "No upcoming tenders."), h("button", { onClick: () => navigate("/dashboard/upcoming-deadlines") }, "Review Upcoming"))
+            )) : h("div", { className: "empty" }, data ? "No records in this buyer module yet." : "Loading records...")
         )
     );
 }
@@ -3307,11 +3434,20 @@ function App() {
     );
     const sellerOnlyRoutes = ["/dashboard/seller"];
     const buyerOnlyRoutes = ["/dashboard/buyer", "/dashboard/buyers", "/dashboard/market", "/dashboard/reports", "/dashboard/analysis", "/dashboard/competitors", "/dashboard/admin"];
+    const restrictedBuyerRoutes = ["/dashboard/tenders", "/dashboard/high-priority", "/dashboard/upcoming-deadlines", "/dashboard/applied", "/dashboard/pipeline", "/dashboard/tracking", "/dashboard/analysis", "/dashboard/market", "/dashboard/reports", "/dashboard/buyers", "/dashboard/competitors", "/dashboard/admin"];
     let route = path === "/dashboard" ? roleDashboard(me) : path;
     if (me?.role === "seller" && buyerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/seller";
     if (me?.role !== "seller" && sellerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
+    if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
+    else if (route === "/dashboard/buyer/planning") page = h(BuyerModulePage, { moduleKey: "planning" });
+    else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bid-management" });
+    else if (route === "/dashboard/buyer/vendors") page = h(BuyerModulePage, { moduleKey: "vendor-evaluation" });
+    else if (route === "/dashboard/buyer/orders") page = h(BuyerModulePage, { moduleKey: "orders" });
+    else if (route === "/dashboard/buyer/compliance") page = h(BuyerModulePage, { moduleKey: "compliance" });
+    else if (route === "/dashboard/buyer/reports") page = h(BuyerModulePage, { moduleKey: "reports" });
+    else if (route === "/dashboard/buyer/account") page = h(BuyerModulePage, { moduleKey: "account" });
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
     else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
     else if (route === "/dashboard/seller/gem-login") page = h(SellerGemLoginPage);

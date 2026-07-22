@@ -27,7 +27,7 @@ from jose import jwt,JWTError
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.database.db_connection import Base,engine,get_db,SessionLocal
-from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,ProcurementVendor,ProcurementBuyer,ProcurementCategory,ProcurementBid,ProcurementBidParticipant,ProcurementRiskFlag,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
+from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,BuyerWorkspaceItem,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,ProcurementVendor,ProcurementBuyer,ProcurementCategory,ProcurementBid,ProcurementBidParticipant,ProcurementRiskFlag,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
@@ -103,6 +103,8 @@ def ensure_schema_updates():
             "CREATE INDEX IF NOT EXISTS ix_marketing_leads_email ON marketing_leads(email)",
             "CREATE INDEX IF NOT EXISTS ix_marketing_leads_lead_type ON marketing_leads(lead_type)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_company_profiles_user_id ON company_profiles(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_buyer_workspace_items_user_id ON buyer_workspace_items(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_buyer_workspace_items_module ON buyer_workspace_items(module)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_tender_eligibility_tender_id ON tender_eligibility(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_decisions_tender_id ON bid_decisions(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_seller_profiles_user_id ON seller_profiles(user_id)",
@@ -1977,6 +1979,15 @@ def performance_to_dict(item):
         'created_at':iso(item.created_at),
     }
 
+def decode_json_list(value):
+    if not value:
+        return []
+    try:
+        decoded=json.loads(value)
+        return decoded if isinstance(decoded,list) else []
+    except Exception:
+        return []
+
 def dashboard_summary(db,user):
     soon=date.today()+timedelta(days=10)
     tender_query=user_tenders(db,user)
@@ -1990,12 +2001,185 @@ def dashboard_summary(db,user):
         'high_priority_score':float(os.getenv('HIGH_PRIORITY_SCORE','70')),
     }
 
+BUYER_MODULES={
+    'planning':{'label':'Procurement Planning','description':'Demand creation, category selection, estimated value, and procurement mode recommendation.'},
+    'bid-management':{'label':'Bid Management','description':'Draft bids, published bids, bid opening, corrigendum, clarification, and cancellation tracking.'},
+    'vendor-evaluation':{'label':'Vendor Evaluation','description':'Technical evaluation, disqualification reasons, representation window, L1 comparison, and price reasonability.'},
+    'orders':{'label':'Order Management','description':'Contract/order acceptance, delivery, consignee, CRAC, invoice, payment, and incident tracking.'},
+    'compliance':{'label':'Compliance & Audit','description':'Approval, purchase file, bid audit trail, corrigendum justification, and payment delay evidence.'},
+    'reports':{'label':'Reports','description':'Procurement, bid status, vendor participation, savings, delayed order, payment, and audit exports.'},
+    'account':{'label':'Account','description':'Department details, buyer role mapping, notifications, and profile readiness.'},
+}
+
+BUYER_STATUS_OPTIONS=['pending','draft','published','under_evaluation','approved','ordered','payment_pending','completed','cancelled','blocked']
+BUYER_PRIORITY_OPTIONS=['low','normal','high','urgent']
+BUYER_PROCUREMENT_MODES=['Direct Purchase','L1 Purchase','Bid/RA','Custom Bid','Forward Auction','Service Procurement']
+
+def require_buyer(user):
+    if user.role=='seller':
+        raise HTTPException(403,'Buyer workspace is not available for seller accounts')
+
+def buyer_workspace_to_dict(item):
+    return {
+        'id':item.id,
+        'module':item.module,
+        'title':item.title,
+        'reference_no':item.reference_no or '',
+        'status':item.status or 'pending',
+        'priority':item.priority or 'normal',
+        'procurement_mode':item.procurement_mode or '',
+        'department':item.department or '',
+        'category':item.category or '',
+        'vendor_name':item.vendor_name or '',
+        'estimated_value':item.estimated_value or 0,
+        'due_date':str(item.due_date or ''),
+        'completed':bool(item.completed),
+        'checklist':decode_json_list(item.checklist),
+        'notes':item.notes or '',
+        'created_at':iso(item.created_at),
+        'updated_at':iso(item.updated_at),
+    }
+
+def buyer_workspace_summary(db,user):
+    items=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.user_id==user.id).all()
+    by_module={key:{'module':key,'label':meta['label'],'description':meta['description'],'total':0,'open':0,'completed':0,'urgent':0,'value':0} for key,meta in BUYER_MODULES.items()}
+    for item in items:
+        bucket=by_module.setdefault(item.module,{'module':item.module,'label':item.module.replace('-',' ').title(),'description':'','total':0,'open':0,'completed':0,'urgent':0,'value':0})
+        bucket['total']+=1
+        bucket['completed']+=1 if item.completed or item.status=='completed' else 0
+        bucket['open']+=0 if item.completed or item.status=='completed' else 1
+        bucket['urgent']+=1 if item.priority=='urgent' else 0
+        bucket['value']+=item.estimated_value or 0
+    return {
+        'total_items':len(items),
+        'open_items':sum(row['open'] for row in by_module.values()),
+        'completed_items':sum(row['completed'] for row in by_module.values()),
+        'urgent_items':sum(row['urgent'] for row in by_module.values()),
+        'total_value':sum(row['value'] for row in by_module.values()),
+        'modules':list(by_module.values()),
+    }
+
+@app.get('/api/buyer/workspace/summary')
+def api_buyer_workspace_summary(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    return buyer_workspace_summary(db,user)
+
+@app.get('/api/buyer/workspace')
+def api_buyer_workspace(module:str='',db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    query=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.user_id==user.id)
+    if module:
+        query=query.filter(BuyerWorkspaceItem.module==module)
+    items=query.order_by(BuyerWorkspaceItem.completed.asc(),BuyerWorkspaceItem.due_date.asc().nullslast(),BuyerWorkspaceItem.updated_at.desc()).all()
+    return {
+        'modules':BUYER_MODULES,
+        'status_options':BUYER_STATUS_OPTIONS,
+        'priority_options':BUYER_PRIORITY_OPTIONS,
+        'procurement_modes':BUYER_PROCUREMENT_MODES,
+        'items':[buyer_workspace_to_dict(item) for item in items],
+        'summary':buyer_workspace_summary(db,user),
+    }
+
+@app.post('/api/buyer/workspace')
+def api_create_buyer_workspace(payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    module=(payload.get('module') or 'planning').strip()
+    if module not in BUYER_MODULES:
+        raise HTTPException(400,'Invalid buyer module')
+    title=(payload.get('title') or '').strip()[:255]
+    if not title:
+        raise HTTPException(400,'Title is required')
+    item=BuyerWorkspaceItem(user_id=user.id,module=module,title=title)
+    apply_buyer_workspace_payload(item,payload)
+    db.add(item)
+    db.commit()
+    db.refresh(item)
+    return {'item':buyer_workspace_to_dict(item)}
+
+@app.put('/api/buyer/workspace/{item_id}')
+def api_update_buyer_workspace(item_id:int,payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.id==item_id,BuyerWorkspaceItem.user_id==user.id).first()
+    if not item:
+        raise HTTPException(404,'Buyer item not found')
+    apply_buyer_workspace_payload(item,payload)
+    db.commit()
+    db.refresh(item)
+    return {'item':buyer_workspace_to_dict(item)}
+
+@app.delete('/api/buyer/workspace/{item_id}')
+def api_delete_buyer_workspace(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.id==item_id,BuyerWorkspaceItem.user_id==user.id).first()
+    if not item:
+        raise HTTPException(404,'Buyer item not found')
+    db.delete(item)
+    db.commit()
+    return {'ok':True}
+
+def apply_buyer_workspace_payload(item,payload):
+    for field,limit in [('title',255),('reference_no',120),('department',255),('category',255),('vendor_name',255),('notes',5000)]:
+        if field in payload:
+            value=(payload.get(field) or '').strip()
+            setattr(item,field,value[:limit] or None)
+    if 'status' in payload:
+        value=(payload.get('status') or 'pending').strip()
+        item.status=value if value in BUYER_STATUS_OPTIONS else 'pending'
+        item.completed=item.status=='completed'
+    if 'priority' in payload:
+        value=(payload.get('priority') or 'normal').strip()
+        item.priority=value if value in BUYER_PRIORITY_OPTIONS else 'normal'
+    if 'procurement_mode' in payload:
+        value=(payload.get('procurement_mode') or '').strip()
+        item.procurement_mode=value[:100] or None
+    if 'estimated_value' in payload:
+        item.estimated_value=parse_optional_int(payload.get('estimated_value'))
+    if 'due_date' in payload:
+        item.due_date=parse_date(payload.get('due_date'))
+    if 'completed' in payload:
+        item.completed=bool(payload.get('completed'))
+        if item.completed:
+            item.status='completed'
+    if 'checklist' in payload:
+        checklist=payload.get('checklist')
+        if isinstance(checklist,str):
+            checklist=[part.strip() for part in re.split(r'[\n,;]+',checklist) if part.strip()]
+        item.checklist=json.dumps(checklist[:30]) if isinstance(checklist,list) else None
+
 @app.get('/dashboard')
 def dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/buyer')
 def buyer_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/planning')
+def buyer_planning_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/bids')
+def buyer_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/vendors')
+def buyer_vendors_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/orders')
+def buyer_orders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/compliance')
+def buyer_compliance_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/reports')
+def buyer_reports_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/account')
+def buyer_account_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/seller')

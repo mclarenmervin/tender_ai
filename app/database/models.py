@@ -210,6 +210,26 @@ class CompanyProfile(Base):
     is_active=Column(Boolean,default=True)
     created_at=Column(DateTime(timezone=True),server_default=func.now())
     updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
+class BuyerWorkspaceItem(Base):
+    __tablename__='buyer_workspace_items'
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey('users.id'),index=True,nullable=False)
+    module=Column(String(80),index=True,nullable=False)
+    title=Column(String(255),nullable=False)
+    reference_no=Column(String(120))
+    status=Column(String(80),default='pending')
+    priority=Column(String(50),default='normal')
+    procurement_mode=Column(String(100))
+    department=Column(String(255))
+    category=Column(String(255))
+    vendor_name=Column(String(255))
+    estimated_value=Column(BigInteger)
+    due_date=Column(Date)
+    completed=Column(Boolean,default=False)
+    checklist=Column(Text)
+    notes=Column(Text)
+    created_at=Column(DateTime(timezone=True),server_default=func.now())
+    updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
 class SellerProfile(Base):
     __tablename__='seller_profiles'
     id=Column(Integer,primary_key=True,index=True)
