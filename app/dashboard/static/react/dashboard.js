@@ -2629,6 +2629,7 @@ function SellerReadinessPage() {
     const [profile, setProfile] = useState(blank);
     const [profileVerifications, setProfileVerifications] = useState({});
     const [verificationPrompt, setVerificationPrompt] = useState(null);
+    const [documentVerification, setDocumentVerification] = useState(null);
     const [documents, setDocuments] = useState([]);
     const [summary, setSummary] = useState(null);
     const [options, setOptions] = useState({ document: [], vendor_assessment: [], caution_money: [], tds_certificate: [] });
@@ -2656,10 +2657,25 @@ function SellerReadinessPage() {
         setDocuments(documents.map(item => item.doc_key === doc.doc_key ? next : item));
         const result = await api(`/api/seller/readiness/documents/${doc.doc_key}`, {
             method: "POST",
-            body: JSON.stringify({ status: next.status, expiry_date: next.expiry_date, notes: next.notes }),
+            body: JSON.stringify({ status: next.status, expiry_date: next.expiry_date, notes: next.notes, evidence_reference: next.evidence_reference }),
         });
         setDocuments(documents.map(item => item.doc_key === doc.doc_key ? result.document : item));
         setSummary(result.summary || summary);
+    }
+    async function verifyDocument(doc) {
+        const current = documentVerification?.doc_key === doc.doc_key ? documentVerification : doc;
+        setMessage(`Verifying ${doc.label}...`);
+        const result = await api(`/api/seller/readiness/documents/${doc.doc_key}/verify`, {
+            method: "POST",
+            body: JSON.stringify({
+                evidence_reference: current.evidence_reference || "",
+                notes: current.notes || doc.notes || "",
+            }),
+        });
+        setDocuments(documents.map(item => item.doc_key === doc.doc_key ? result.document : item));
+        setSummary(result.summary || summary);
+        setDocumentVerification(null);
+        setMessage(`${result.document?.label || "Document"} verified and readiness updated.`);
     }
     function currentFieldVerified(key) {
         const meta = profileVerifications[key] || {};
@@ -2767,12 +2783,43 @@ function SellerReadinessPage() {
         h("section", { className: "card readiness-documents" },
             h("h3", null, "Document Tracker"),
             h("div", { className: "document-grid" }, documents.map(doc => h("article", { className: `document-card ${doc.status}`, key: doc.doc_key },
-                h("div", { className: "document-card-head" }, h("strong", null, doc.label), h("span", null, (doc.status || "missing").replaceAll("_", " "))),
+                h("div", { className: "document-card-head" },
+                    h("strong", null, doc.label),
+                    h("span", null, doc.verified ? "verified" : (doc.status || "missing").replaceAll("_", " "))
+                ),
                 h("select", { value: doc.status || "missing", onChange: e => saveDocument(doc, { status: e.target.value }) },
                     (options.document || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")))
                 ),
                 h("input", { type: "date", value: doc.expiry_date || "", onChange: e => saveDocument(doc, { expiry_date: e.target.value }) }),
-                h("textarea", { value: doc.notes || "", placeholder: "Notes", onBlur: e => saveDocument(doc, { notes: e.target.value }), onChange: e => setDocuments(documents.map(item => item.doc_key === doc.doc_key ? { ...item, notes: e.target.value } : item)) })
+                h("input", {
+                    value: doc.evidence_reference || "",
+                    placeholder: (doc.verification?.evidence_label || "Evidence / reference number"),
+                    onBlur: e => saveDocument(doc, { evidence_reference: e.target.value }),
+                    onChange: e => setDocuments(documents.map(item => item.doc_key === doc.doc_key ? { ...item, evidence_reference: e.target.value } : item))
+                }),
+                h("textarea", { value: doc.notes || "", placeholder: "Notes", onBlur: e => saveDocument(doc, { notes: e.target.value }), onChange: e => setDocuments(documents.map(item => item.doc_key === doc.doc_key ? { ...item, notes: e.target.value } : item)) }),
+                doc.verified ? h("div", { className: "notice ok document-verified" }, `Verified ${doc.verified_at || ""}`) :
+                    h("button", { type: "button", className: "small verify-btn", onClick: () => setDocumentVerification({ ...doc }) }, "Verify Document"),
+                documentVerification?.doc_key === doc.doc_key ? h("div", { className: "verify-panel document-verify-panel" },
+                    h("strong", null, `Verify ${doc.label}`),
+                    h("span", null, `Complete the checks below. Open ${doc.verification?.portal_label || "the relevant portal"} only if you need to cross-check online.`),
+                    h("ul", { className: "verify-checklist" }, (doc.verification?.checks || ["Document is readable", "Details match seller profile", "Validity and expiry are recorded"]).map(check => h("li", { key: check }, check))),
+                    h("input", {
+                        value: documentVerification.evidence_reference || "",
+                        placeholder: doc.verification?.evidence_label || "Evidence / reference number",
+                        onChange: e => setDocumentVerification({ ...documentVerification, evidence_reference: e.target.value })
+                    }),
+                    h("textarea", {
+                        value: documentVerification.notes || "",
+                        placeholder: "Verification remarks",
+                        onChange: e => setDocumentVerification({ ...documentVerification, notes: e.target.value })
+                    }),
+                    h("div", { className: "verify-panel-actions" },
+                        doc.verification?.url ? h("a", { href: doc.verification.url, target: "_blank", rel: "noopener noreferrer" }, "Open official portal") : null,
+                        h("button", { type: "button", className: "small primary", onClick: () => verifyDocument(doc) }, "Mark Verified"),
+                        h("button", { type: "button", className: "small", onClick: () => setDocumentVerification(null) }, "Cancel")
+                    )
+                ) : null
             )))
         )
     );

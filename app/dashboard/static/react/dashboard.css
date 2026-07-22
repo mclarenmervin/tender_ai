@@ -2226,9 +2226,44 @@ td {
     font-weight: 900;
     text-decoration: none;
 }
+.verify-checklist {
+    display: grid;
+    gap: 6px;
+    margin: 4px 0;
+    padding: 0;
+    list-style: none;
+}
+.verify-checklist li {
+    position: relative;
+    padding-left: 20px;
+    color: #334155;
+    font-size: 12px;
+    line-height: 1.35;
+}
+.verify-checklist li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #14b8a6);
+}
+.document-verify-panel {
+    border-color: #99f6e4;
+    background: linear-gradient(135deg, #f0fdfa, #eff6ff);
+}
+.document-verified {
+    justify-content: center;
+    font-weight: 850;
+}
 :root[data-theme="dark"] .verify-panel {
     border-color: #2c3b57;
     background: #0f1626;
+    color: #cbd5e1;
+}
+:root[data-theme="dark"] .verify-checklist li {
     color: #cbd5e1;
 }
 .bid-box {
@@ -3394,8 +3429,10 @@ td {
 .document-card.ready,
 .document-card.approved,
 .document-card.submitted,
-.document-card.not_applicable {
+.document-card.not_applicable,
+.document-card:has(.document-verified) {
     border-color: #86efac;
+    box-shadow: 0 10px 24px rgba(22,163,74,.08);
 }
 .document-card.rejected,
 .document-card.expired,

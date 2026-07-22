@@ -109,6 +109,9 @@ def ensure_schema_updates():
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_decisions_tender_id ON bid_decisions(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_seller_profiles_user_id ON seller_profiles(user_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_user_seller_document ON seller_documents(user_id,doc_key)",
+            "ALTER TABLE seller_documents ADD COLUMN IF NOT EXISTS verification_status VARCHAR(50) DEFAULT 'not_verified'",
+            "ALTER TABLE seller_documents ADD COLUMN IF NOT EXISTS evidence_reference VARCHAR(255)",
+            "ALTER TABLE seller_documents ADD COLUMN IF NOT EXISTS verified_at TIMESTAMP WITH TIME ZONE",
             "CREATE INDEX IF NOT EXISTS ix_seller_catalogue_items_user_id ON seller_catalogue_items(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_user_id ON seller_bid_participations(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_seller_bid_participations_tender_id ON seller_bid_participations(tender_id)",
@@ -508,6 +511,19 @@ SELLER_DOCUMENT_DEFAULTS=[
     ('odop','ODOP eligibility document','eligibility'),
 ]
 SELLER_DOCUMENT_LABELS={key:label for key,label,category in SELLER_DOCUMENT_DEFAULTS}
+SELLER_DOCUMENT_VERIFICATION_TARGETS={
+    'pan':{'portal_label':'Income Tax portal PAN services','url':'https://www.incometax.gov.in/iec/foportal/','checks':['PAN number matches seller profile','Name matches business/authorized person','Document image is readable'],'evidence_label':'PAN acknowledgement/reference'},
+    'aadhaar':{'portal_label':'UIDAI Aadhaar services','url':'https://myaadhaar.uidai.gov.in/','checks':['Aadhaar is linked with registered mobile','Authorized user name matches seller record','OTP/mobile access is available'],'evidence_label':'Last four digits / internal reference'},
+    'gstin':{'portal_label':'GST Portal taxpayer search','url':'https://services.gst.gov.in/services/searchtp','checks':['GSTIN is active','Legal/trade name matches seller','State and address match profile'],'evidence_label':'GSTIN status/reference'},
+    'udyam':{'portal_label':'Udyam registration verification','url':'https://udyamregistration.gov.in/Udyam_Verify.aspx','checks':['Udyam number is valid','Enterprise name matches seller','Activity/category is relevant'],'evidence_label':'Udyam verification reference'},
+    'bank':{'portal_label':'GeM seller bank profile','url':'https://gem.gov.in/','checks':['Account holder matches seller','Cancelled cheque/bank proof is readable','IFSC/account details are current'],'evidence_label':'Bank verification note'},
+    'address':{'portal_label':'GeM seller profile','url':'https://gem.gov.in/','checks':['Address proof is current','Address matches seller profile','Document is readable and complete'],'evidence_label':'Address proof reference'},
+    'tds':{'portal_label':'Income Tax TRACES / certificate records','url':'https://www.tdscpc.gov.in/app/login.xhtml','checks':['Certificate/declaration period is valid','PAN/GST details match seller','Expiry/validity is recorded'],'evidence_label':'TDS certificate/reference'},
+    'caution_money':{'portal_label':'GeM seller caution money','url':'https://gem.gov.in/','checks':['Payment is visible/recorded','Amount and transaction date are captured','Refundable/not applicable status is clear'],'evidence_label':'Transaction/reference number'},
+    'vendor_assessment':{'portal_label':'GeM vendor assessment','url':'https://gem.gov.in/','checks':['Assessment status is submitted/approved','Assessment validity is recorded','Report or acknowledgement is available'],'evidence_label':'Assessment report/reference'},
+    'startup_india':{'portal_label':'Startup India recognition','url':'https://www.startupindia.gov.in/','checks':['Recognition number is valid','Entity name matches seller','Certificate validity is recorded'],'evidence_label':'Recognition/reference number'},
+    'odop':{'portal_label':'ODOP / state eligibility records','url':'https://odop.gov.in/','checks':['State and product match profile','Eligibility proof is readable','Relevant scheme/category is noted'],'evidence_label':'ODOP reference'},
+}
 SELLER_PROFILE_VERIFICATION_TARGETS={
     'pan':{'label':'PAN','portal_label':'Income Tax portal PAN services','url':'https://www.incometax.gov.in/iec/foportal/','online':True},
     'gstin':{'label':'GSTIN','portal_label':'GST Portal taxpayer search','url':'https://services.gst.gov.in/services/searchtp','online':True},
@@ -585,11 +601,17 @@ def seller_profile_to_dict(item):
     }
 
 def seller_document_to_dict(item):
+    target=SELLER_DOCUMENT_VERIFICATION_TARGETS.get(item.doc_key,{})
     return {
         'id':item.id,
         'doc_key':item.doc_key,
         'label':item.label or SELLER_DOCUMENT_LABELS.get(item.doc_key,item.doc_key),
         'status':item.status or 'missing',
+        'verification_status':item.verification_status or 'not_verified',
+        'verified':(item.verification_status or '')=='verified',
+        'verified_at':iso(item.verified_at),
+        'evidence_reference':item.evidence_reference or '',
+        'verification':target,
         'expiry_date':iso(item.expiry_date),
         'notes':item.notes or '',
         'created_at':iso(item.created_at),
@@ -627,7 +649,7 @@ def seller_readiness_summary(profile,documents):
         ('Caution money',profile_data['caution_money_status'] in {'paid','not_applicable'}),
         ('TDS certificate',profile_data['tds_certificate_status'] in {'available','not_applicable'}),
     ]
-    ready_docs=[doc for doc in documents if (doc.status or '') in {'ready','submitted','approved','not_applicable'}]
+    ready_docs=[doc for doc in documents if (doc.status or '') in {'ready','submitted','approved','not_applicable'} or (doc.verification_status or '')=='verified']
     expired_docs=[doc for doc in documents if (doc.status or '')=='expired']
     missing_docs=[doc for doc in documents if (doc.status or 'missing') in {'missing','rejected'}]
     doc_score=(len(ready_docs)/len(documents))*35 if documents else 0
@@ -3724,7 +3746,36 @@ async def api_save_seller_document(doc_key:str,request:Request,db:Session=Depend
     status=(payload.get('status') or 'missing').strip()
     item.status=status if status in {'missing','ready','submitted','approved','rejected','expired','not_applicable'} else 'missing'
     item.expiry_date=parse_date(payload.get('expiry_date'))
+    if 'evidence_reference' in payload:
+        item.evidence_reference=(payload.get('evidence_reference') or '').strip()[:255] or None
     item.notes=(payload.get('notes') or '').strip()[:2000] or None
+    db.commit()
+    db.refresh(item)
+    documents=ensure_seller_documents(db,user.id)
+    profile=db.query(SellerProfile).filter(SellerProfile.user_id==user.id).first()
+    return {'ok':True,'document':seller_document_to_dict(item),'summary':seller_readiness_summary(profile,documents)}
+
+@app.post('/api/seller/readiness/documents/{doc_key}/verify')
+async def api_verify_seller_document(doc_key:str,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    allowed={key for key,label,category in SELLER_DOCUMENT_DEFAULTS}
+    if doc_key not in allowed:
+        raise HTTPException(404,'Seller document not found')
+    documents=ensure_seller_documents(db,user.id)
+    item=next((doc for doc in documents if doc.doc_key==doc_key),None)
+    if not item:
+        raise HTTPException(404,'Seller document not found')
+    evidence=(payload.get('evidence_reference') or '').strip()
+    notes=(payload.get('notes') or '').strip()
+    if not evidence and (item.status or 'missing') not in {'not_applicable'}:
+        raise HTTPException(400,'Add an evidence/reference note before marking this document verified')
+    item.verification_status='verified'
+    item.evidence_reference=evidence[:255] or item.evidence_reference
+    item.verified_at=datetime.utcnow()
+    if (item.status or 'missing') in {'missing','rejected','expired'}:
+        item.status='ready'
+    if notes:
+        item.notes=notes[:2000]
     db.commit()
     db.refresh(item)
     documents=ensure_seller_documents(db,user.id)
