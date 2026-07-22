@@ -102,12 +102,13 @@ const buyerModules = {
 };
 
 const sellerNav = [
-    ["Home", [["/dashboard/seller", "Dashboard"], ["/dashboard/seller/analytics", "Analytics"]]],
-    ["GeM", [["/dashboard/seller/gem-login", "Login"], ["/dashboard/seller/gem-bids", "Bids"], ["/dashboard/seller/gem-alerts", "Alerts"]]],
-    ["Risk Intel", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/risk-data", "Risk Data"], ["/dashboard/seller/intelligence/buyers", "Buyers"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risks"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Docs"]]],
-    ["Ops", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/opportunities", "Matches"], ["/dashboard/seller/bids", "Bid/RA"], ["/dashboard/seller/orders", "Orders"]]],
-    ["Tenders", [["/dashboard/tenders", "All"], ["/dashboard/high-priority", "Priority"], ["/dashboard/upcoming-deadlines", "Deadlines"], ["/dashboard/applied", "Applied"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"]]],
-    ["Setup", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Settings"], ["/dashboard/company-profile", "Company"], ["/dashboard/profile", "Profile"]]],
+    ["Control Center", [["/dashboard/seller", "Overview"], ["/dashboard/seller/analytics", "Performance"]]],
+    ["Tender Discovery", [["/dashboard/tenders", "Scraped Bids"], ["/dashboard/high-priority", "Priority Matches"], ["/dashboard/upcoming-deadlines", "Closing Soon"], ["/dashboard/seller/opportunities", "Opportunity Match"]]],
+    ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Own Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
+    ["Seller Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/bids", "Bid/RA Workflow"]]],
+    ["Fulfillment", [["/dashboard/seller/orders", "Orders"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"], ["/dashboard/applied", "Applied"]]],
+    ["Intelligence", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/risk-data", "Risk Data"], ["/dashboard/seller/intelligence/buyers", "Buyers"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risk Signals"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Documents"]]],
+    ["Configuration", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Automation"], ["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "User Profile"]]],
 ];
 
 function navigate(path) {
@@ -964,6 +965,109 @@ function Summary({ summary }) {
     ));
 }
 
+function EmptyAction({ title, text, action, onAction }) {
+    return h("div", { className: "empty action-empty" },
+        h("h3", null, title),
+        h("p", null, text),
+        action ? h("button", { className: "primary", onClick: onAction }, action) : null
+    );
+}
+
+function WorkflowTimeline({ steps }) {
+    return h("section", { className: "workflow-timeline" },
+        steps.map((step, index) => h("button", {
+            key: step.label,
+            className: `workflow-step ${step.status || "pending"}`,
+            type: "button",
+            onClick: () => step.href && navigate(step.href),
+        },
+            h("span", null, index + 1),
+            h("strong", null, step.label),
+            h("small", null, step.hint || "")
+        ))
+    );
+}
+
+function NextActionPanel({ title = "What To Do Next", actions }) {
+    const visible = (actions || []).filter(Boolean).slice(0, 6);
+    return h("section", { className: "next-action-panel" },
+        h("div", { className: "next-action-head" },
+            h("div", null, h("span", { className: "eyebrow" }, "Guided workflow"), h("h3", null, title)),
+            h("strong", null, visible.length ? `${visible.length} action(s)` : "Ready")
+        ),
+        visible.length ? h("div", { className: "next-action-list" }, visible.map(item =>
+            h("article", { className: `next-action ${item.level || "info"}`, key: item.title },
+                h("div", null, h("h4", null, item.title), h("p", null, item.text)),
+                h("button", { className: item.primary ? "primary" : "", onClick: () => navigate(item.href) }, item.action || "Open")
+            )
+        )) : h("div", { className: "notice ok" }, "Everything important is configured. Continue monitoring alerts and open work items.")
+    );
+}
+
+function buyerDashboardGuidance(data) {
+    const modules = data?.modules || [];
+    const byModule = Object.fromEntries(modules.map(item => [item.module, item]));
+    const open = key => byModule[key]?.open || 0;
+    const done = key => byModule[key]?.completed || 0;
+    const total = key => byModule[key]?.total || 0;
+    const steps = [
+        { label: "Account", href: "/dashboard/buyer/account", status: done("account") ? "complete" : open("account") ? "active" : "pending", hint: "Role and department" },
+        { label: "Planning", href: "/dashboard/buyer/planning", status: total("planning") ? "active" : "pending", hint: "Demand and mode" },
+        { label: "Bid Creation", href: "/dashboard/buyer/bids", status: total("bid-management") ? "active" : "pending", hint: "Publish and manage" },
+        { label: "Evaluation", href: "/dashboard/buyer/vendors", status: total("vendor-evaluation") ? "active" : "pending", hint: "Technical and L1" },
+        { label: "Order", href: "/dashboard/buyer/orders", status: total("orders") ? "active" : "pending", hint: "CRAC and payment" },
+        { label: "Compliance", href: "/dashboard/buyer/compliance", status: total("compliance") ? "active" : "pending", hint: "Audit file" },
+        { label: "Reports", href: "/dashboard/buyer/reports", status: total("reports") ? "active" : "pending", hint: "Export and share" },
+    ];
+    const actions = [
+        !total("account") && { title: "Complete buyer account readiness", text: "Start by recording department, buyer role, certification, and notification readiness.", href: "/dashboard/buyer/account", action: "Open Account", primary: true },
+        !total("planning") && { title: "Create your first procurement plan", text: "Capture requirement, category, budget, consignee, and procurement mode before bid creation.", href: "/dashboard/buyer/planning", action: "Create Plan", primary: true },
+        total("planning") && !total("bid-management") && { title: "Move planning into bid management", text: "Track draft, publication, clarification, corrigendum, and bid opening dates.", href: "/dashboard/buyer/bids", action: "Open Bids" },
+        open("vendor-evaluation") > 0 && { title: "Finish vendor evaluation", text: "Record qualified/disqualified bidders, representation, L1, and price reasonability.", href: "/dashboard/buyer/vendors", action: "Review Vendors", level: "warn" },
+        open("orders") > 0 && { title: "Follow up order and payment", text: "Check seller acceptance, delivery, CRAC, invoice, payment, and incidents.", href: "/dashboard/buyer/orders", action: "Open Orders", level: "warn" },
+        open("compliance") > 0 && { title: "Complete audit evidence", text: "Keep approval, bid file, evaluation evidence, order file, and payment notes audit ready.", href: "/dashboard/buyer/compliance", action: "Audit File" },
+    ];
+    return { steps, actions };
+}
+
+function sellerDashboardGuidance(data) {
+    const readiness = data.readiness?.summary || {};
+    const catalogue = data.catalogue?.summary || {};
+    const credential = data.credential || {};
+    const gemSummary = data.gemBids?.summary || {};
+    const bidSummary = data.bids?.summary || {};
+    const orderSummary = data.orders?.summary || {};
+    const query = data.scrapeQuery || {};
+    const readinessDone = (readiness.health_score || 0) >= 70;
+    const catalogueDone = (catalogue.total || 0) > 0;
+    const keywordsDone = (query.final_keywords || []).length > 0;
+    const gemReady = !!credential.session_valid;
+    const gemSynced = (gemSummary.total || 0) > 0;
+    const bidsDone = (bidSummary.total || 0) > 0;
+    const ordersDone = (orderSummary.total || 0) > 0;
+    const status = done => done ? "complete" : "pending";
+    const steps = [
+        { label: "Profile", href: "/dashboard/seller/readiness", status: status(readinessDone), hint: `${readiness.health_score || 0}% ready` },
+        { label: "Catalogue", href: "/dashboard/seller/catalogue", status: status(catalogueDone), hint: `${catalogue.total || 0} item(s)` },
+        { label: "Keywords", href: "/dashboard/seller/keywords", status: status(keywordsDone), hint: "Scrape query" },
+        { label: "GeM Login", href: "/dashboard/seller/gem-login", status: status(gemReady), hint: gemReady ? "Session ready" : "Needs OTP" },
+        { label: "Opportunities", href: "/dashboard/tenders", status: (data.summary?.total || 0) ? "active" : "pending", hint: `${data.summary?.total || 0} tenders` },
+        { label: "Participated", href: "/dashboard/seller/gem-bids", status: status(gemSynced), hint: `${gemSummary.total || 0} records` },
+        { label: "Bid/RA", href: "/dashboard/seller/bids", status: status(bidsDone), hint: `${bidSummary.total || 0} workflows` },
+        { label: "Orders", href: "/dashboard/seller/orders", status: status(ordersDone), hint: `${orderSummary.total || 0} orders` },
+    ];
+    const actions = [
+        !readinessDone && { title: "Complete seller profile and documents", text: "Add business identity, tax documents, bank/address checks, caution money, TDS, and vendor assessment status.", href: "/dashboard/seller/readiness", action: "Complete Readiness", primary: true, level: "warn" },
+        !catalogueDone && { title: "Add your first catalogue item", text: "Products and services are needed before Tender AI can judge catalogue readiness for opportunities.", href: "/dashboard/seller/catalogue", action: "Add Catalogue", primary: true },
+        !keywordsDone && { title: "Configure scrape keywords", text: "Add active keywords or company profile terms so scraping and scoring match your business.", href: "/dashboard/seller/keywords", action: "Add Keywords" },
+        !gemReady && { title: "Capture GeM login session", text: "Complete one OTP/CAPTCHA login so participated bids can sync automatically.", href: "/dashboard/seller/gem-login", action: "Start GeM Login", level: "warn" },
+        gemReady && !gemSynced && { title: "Sync participated bids", text: "Fetch bids from your logged-in GeM seller account and start status tracking.", href: "/dashboard/seller/gem-bids", action: "Sync Bids", primary: true },
+        (data.summary?.total || 0) === 0 && { title: "Run first tender scrape", text: "Open All Tenders, confirm scrape query, and run Manual Scrape to fill the opportunity list.", href: "/dashboard/tenders", action: "Open Tenders" },
+        (gemSummary.alerts || 0) > 0 && { title: "Review GeM bid alerts", text: "Some participated bids have status changes, deadlines, or attention items.", href: "/dashboard/seller/gem-bids", action: "Review Alerts", level: "warn" },
+    ];
+    return { steps, actions };
+}
+
 function BuyerDashboardPage() {
     const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
@@ -971,6 +1075,7 @@ function BuyerDashboardPage() {
         api("/api/buyer/workspace/summary").then(setData).catch(err => setMessage(err.message));
     }, []);
     const modules = data?.modules || [];
+    const guidance = buyerDashboardGuidance(data);
     return h(React.Fragment, null,
         h("div", { className: "hero-panel buyer-landing" },
             h("div", null,
@@ -984,6 +1089,8 @@ function BuyerDashboardPage() {
             )
         ),
         message ? h("div", { className: "notice err" }, message) : null,
+        h(WorkflowTimeline, { steps: guidance.steps }),
+        h(NextActionPanel, { actions: guidance.actions }),
         h("div", { className: "summary five" },
             [["Total Items", data?.total_items || 0], ["Open", data?.open_items || 0], ["Completed", data?.completed_items || 0], ["Urgent", data?.urgent_items || 0], ["Value", `Rs. ${money(data?.total_value || 0)}`]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
@@ -1004,7 +1111,7 @@ function BuyerDashboardPage() {
                     ),
                     h("button", { onClick: () => navigate(meta.path || "/dashboard/buyer") }, "Open Module")
                 );
-            }) : h("div", { className: "empty" }, data ? "No buyer modules found." : "Loading buyer workspace...")
+            }) : h(EmptyAction, { title: data ? "Start with buyer account readiness" : "Loading buyer workspace...", text: data ? "Create your first buyer account or procurement planning item to begin the guided workflow." : "Fetching buyer modules and next steps.", action: data ? "Open Buyer Account" : "", onAction: () => navigate("/dashboard/buyer/account") })
         )
     );
 }
@@ -1087,6 +1194,12 @@ function BuyerModulePage({ moduleKey }) {
                 )
             )
         ),
+        !items.length && data ? h(EmptyAction, {
+            title: `Start ${meta.title}`,
+            text: `Use a quick template below to create the first ${meta.title.toLowerCase()} record. The checklist is prefilled with the normal GeM buyer steps.`,
+            action: "Use First Template",
+            onAction: () => applyTemplate((meta.templates || [meta.sampleTitle])[0]),
+        }) : null,
         h("section", { className: "card buyer-form-card" },
             h("div", { className: "buyer-form-head" },
                 h("div", null, h("h3", null, `Add ${meta.title} Item`), h("p", { className: "desc" }, "Use quick templates or create a custom tracker row for a GeM buyer task.")),
@@ -1129,73 +1242,110 @@ function BuyerModulePage({ moduleKey }) {
                     h("button", { onClick: () => updateItem(item, { priority: item.priority === "urgent" ? "normal" : "urgent" }) }, item.priority === "urgent" ? "Normal Priority" : "Urgent"),
                     h("button", { onClick: () => deleteItem(item) }, "Delete")
                 )
-            )) : h("div", { className: "empty" }, data ? "No records in this buyer module yet." : "Loading records...")
+            )) : h(EmptyAction, { title: data ? "No tracker records yet" : "Loading records...", text: data ? "Create a record above to track status, due date, checklist, evidence, and next action." : "Fetching records for this module.", action: data ? "Use Template" : "", onAction: () => applyTemplate((meta.templates || [meta.sampleTitle])[0]) })
         )
     );
 }
 
 function SellerDashboardPage() {
-    const [summary, setSummary] = useState(null);
-    const [readiness, setReadiness] = useState(null);
+    const [dashboardData, setDashboardData] = useState({ summary: null, readiness: null, catalogue: null, credential: null, gemBids: null, bids: null, orders: null, scrapeQuery: null });
     const [message, setMessage] = useState("");
     useEffect(() => {
         Promise.all([
-            api("/api/dashboard/summary"),
-            api("/api/seller/readiness"),
-        ]).then(([s, r]) => {
-            setSummary(s);
-            setReadiness(r.summary || null);
+            api("/api/dashboard/summary", { silent: true }),
+            api("/api/seller/readiness", { silent: true }),
+            api("/api/seller/catalogue", { silent: true }),
+            api("/api/seller/gem-login", { silent: true }),
+            api("/api/seller/gem-bids", { silent: true }),
+            api("/api/seller/bids", { silent: true }),
+            api("/api/seller/orders", { silent: true }),
+            api("/api/scrape-query", { silent: true }),
+        ]).then(([summary, readiness, catalogue, credential, gemBids, bids, orders, scrapeQuery]) => {
+            setDashboardData({ summary, readiness, catalogue, credential, gemBids, bids, orders, scrapeQuery });
         }).catch(err => setMessage(err.message));
     }, []);
+    const summary = dashboardData.summary;
+    const readiness = dashboardData.readiness?.summary || null;
+    const guidance = sellerDashboardGuidance(dashboardData);
+    const catalogue = dashboardData.catalogue?.summary || {};
+    const credential = dashboardData.credential || {};
+    const gemSummary = dashboardData.gemBids?.summary || {};
+    const bidSummary = dashboardData.bids?.summary || {};
+    const orderSummary = dashboardData.orders?.summary || {};
+    const scrapeQuery = dashboardData.scrapeQuery || {};
+    const sellerCards = [
+        { title: "Scraped Bids", value: summary?.total || 0, meta: `${summary?.high_priority || 0} priority matches`, href: "/dashboard/tenders", action: "Review Scraped Bids", tone: "blue" },
+        { title: "Own GeM Bids", value: gemSummary.total || 0, meta: `${gemSummary.alerts || 0} alerts`, href: "/dashboard/seller/gem-bids", action: "Track Own Bids", tone: gemSummary.alerts ? "amber" : "green" },
+        { title: "Seller Setup", value: readiness?.health_score ?? 0, suffix: "%", meta: `${readiness?.missing_documents?.length || 0} missing docs`, href: "/dashboard/seller/readiness", action: "Improve Readiness", tone: (readiness?.health_score || 0) >= 70 ? "green" : "amber" },
+        { title: "Catalogue", value: catalogue.total || 0, meta: `${catalogue.ready || 0} ready items`, href: "/dashboard/seller/catalogue", action: "Manage Catalogue", tone: catalogue.ready ? "green" : "blue" },
+        { title: "Bid/RA Workflows", value: bidSummary.total || 0, meta: `${bidSummary.due_soon || 0} due soon`, href: "/dashboard/seller/bids", action: "Open Workflows", tone: bidSummary.due_soon ? "amber" : "blue" },
+        { title: "Orders", value: orderSummary.total || 0, meta: `${orderSummary.overdue_payment || 0} payment overdue`, href: "/dashboard/seller/orders", action: "Open Orders", tone: orderSummary.overdue_payment ? "red" : "green" },
+    ];
     return h(React.Fragment, null,
-        h("div", { className: "hero-panel seller-landing" },
+        h("div", { className: "hero-panel seller-landing seller-command-hero" },
             h("div", null,
-                h("h2", null, "Seller Dashboard"),
-                h("p", null, "Manage seller readiness, bid workflow, document health, and tender follow-up.")
+                h("span", { className: "eyebrow" }, "Seller command center"),
+                h("h2", null, "Know what to do next"),
+                h("p", null, "Track scraped bids, own GeM participated bids, readiness, catalogue, automation, alerts, and fulfillment from one workspace.")
             ),
             h("div", { className: "hero-actions" },
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/analytics") }, "Analytics"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/readiness") }, "Readiness"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/gem-bids") }, "GeM Bids"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/orders") }, "Orders"),
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/high-priority") }, "High Priority"),
-                h("button", { onClick: () => navigate("/dashboard/pipeline") }, "Pipeline")
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/tenders") }, "Scraped Bids"),
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/gem-bids") }, "Own Bids"),
+                h("button", { onClick: () => navigate("/dashboard/seller/settings") }, "Automation")
             )
         ),
         message ? h("div", { className: "notice err" }, message) : null,
-        h("div", { className: "summary six seller-summary" },
-            [["Tenders", summary?.total || 0], ["High Priority", summary?.high_priority || 0], ["Applied", summary?.applied_count || 0], ["Upcoming", summary?.upcoming_count || 0], ["Readiness", readiness?.health_score ?? 0], ["Missing Docs", readiness?.missing_documents?.length || 0]].map(([label, value]) =>
-                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
-            )
+        h(WorkflowTimeline, { steps: guidance.steps }),
+        h(NextActionPanel, { actions: guidance.actions }),
+        h("section", { className: "seller-command-grid" },
+            sellerCards.map(card => h("article", { className: `seller-command-card ${card.tone}`, key: card.title },
+                h("div", null,
+                    h("span", null, card.title),
+                    h("strong", null, `${card.value}${card.suffix || ""}`),
+                    h("small", null, card.meta)
+                ),
+                h("button", { onClick: () => navigate(card.href) }, card.action)
+            ))
         ),
-        h("div", { className: "admin-grid seller-ops-grid" },
-            h("section", { className: "card" },
-                h("h3", null, "Seller Readiness"),
-                h("div", { className: `readiness-score compact ${readiness?.level || "incomplete"}` }, h("span", null, "Health Score"), h("strong", null, readiness?.health_score ?? 0)),
-                (readiness?.profile_gaps || []).length ? h("ul", { className: "log-list" }, readiness.profile_gaps.slice(0, 5).map(gap => h("li", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Seller profile checks are complete."),
-                h("button", { onClick: () => navigate("/dashboard/seller/readiness") }, "Open Readiness")
-            ),
-            h("section", { className: "card" },
-                h("h3", null, "Seller Workbench"),
-                h("div", { className: "seller-action-grid" },
-                    h("button", { onClick: () => navigate("/dashboard/seller/catalogue") }, "Catalogue"),
-                    h("button", { onClick: () => navigate("/dashboard/seller/bids") }, "Bid/RA Workflow"),
-                    h("button", { onClick: () => navigate("/dashboard/seller/orders") }, "Orders"),
-                    h("button", { onClick: () => navigate("/dashboard/pipeline") }, "Pipeline"),
-                    h("button", { onClick: () => navigate("/dashboard/high-priority") }, "High Priority"),
-                    h("button", { onClick: () => navigate("/dashboard/upcoming-deadlines") }, "Upcoming"),
-                    h("button", { onClick: () => navigate("/dashboard/company-profile") }, "Company Profile")
+        h("div", { className: "seller-dashboard-panels" },
+            h("section", { className: "card seller-dashboard-panel" },
+                h("div", { className: "panel-title-row" }, h("div", null, h("span", { className: "eyebrow" }, "Discovery"), h("h3", null, "Scraped Bid Pipeline")), h("button", { onClick: () => navigate("/dashboard/tenders") }, "Open")),
+                h("p", { className: "desc" }, "Use scraped bids for opportunity discovery, scoring, filtering, eligibility extraction, and bid/no-bid decisions."),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Total scraped"), h("strong", null, summary?.total || 0)),
+                    h("div", null, h("span", null, "Priority"), h("strong", null, summary?.high_priority || 0)),
+                    h("div", null, h("span", null, "Closing soon"), h("strong", null, summary?.upcoming_count || 0)),
+                    h("div", null, h("span", null, "Query terms"), h("strong", null, (scrapeQuery.final_keywords || []).slice(0, 3).join(", ") || "Not set"))
                 )
             ),
-            h("section", { className: "card" },
-                h("h3", null, "Bid Follow-Up"),
-                h("div", { className: "seller-action-grid" },
-                    h("button", { onClick: () => navigate("/dashboard/applied") }, "Applied"),
-                    h("button", { onClick: () => navigate("/dashboard/tracking") }, "Tracking"),
-                    h("button", { onClick: () => navigate("/dashboard/tenders") }, "All Tenders"),
-                    h("button", { onClick: () => navigate("/dashboard/seller/readiness") }, "Documents")
+            h("section", { className: "card seller-dashboard-panel" },
+                h("div", { className: "panel-title-row" }, h("div", null, h("span", { className: "eyebrow" }, "GeM Portal"), h("h3", null, "Own Participated Bids")), h("button", { onClick: () => navigate("/dashboard/seller/gem-bids") }, "Open")),
+                h("p", { className: "desc" }, "Use own bids for technical status, disqualification reason, representation window, financial opening, L1, and final result tracking."),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Session"), h("strong", null, credential.session_valid ? "Ready" : "Needs login")),
+                    h("div", null, h("span", null, "Tracked bids"), h("strong", null, gemSummary.total || 0)),
+                    h("div", null, h("span", null, "Alerts"), h("strong", null, gemSummary.alerts || 0)),
+                    h("div", null, h("span", null, "Financial open"), h("strong", null, gemSummary.financial_opened || 0))
+                )
+            ),
+            h("section", { className: "card seller-dashboard-panel" },
+                h("div", { className: "panel-title-row" }, h("div", null, h("span", { className: "eyebrow" }, "Setup"), h("h3", null, "Readiness & Catalogue")), h("button", { onClick: () => navigate("/dashboard/seller/readiness") }, "Open")),
+                h("p", { className: "desc" }, "Complete profile, documents, catalogue, stock, brand/OEM, and MRP evidence before serious bid participation."),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Readiness"), h("strong", null, `${readiness?.health_score ?? 0}%`)),
+                    h("div", null, h("span", null, "Missing docs"), h("strong", null, readiness?.missing_documents?.length || 0)),
+                    h("div", null, h("span", null, "Catalogue items"), h("strong", null, catalogue.total || 0)),
+                    h("div", null, h("span", null, "Ready catalogue"), h("strong", null, catalogue.ready || 0))
+                )
+            ),
+            h("section", { className: "card seller-dashboard-panel" },
+                h("div", { className: "panel-title-row" }, h("div", null, h("span", { className: "eyebrow" }, "Fulfillment"), h("h3", null, "Workflows & Orders")), h("button", { onClick: () => navigate("/dashboard/seller/orders") }, "Open")),
+                h("p", { className: "desc" }, "Move selected tenders into Bid/RA workflows, then track order delivery, invoices, payment, incidents, and TReDS."),
+                h("div", { className: "alert-status-grid" },
+                    h("div", null, h("span", null, "Bid workflows"), h("strong", null, bidSummary.total || 0)),
+                    h("div", null, h("span", null, "Due soon"), h("strong", null, bidSummary.due_soon || 0)),
+                    h("div", null, h("span", null, "Orders"), h("strong", null, orderSummary.total || 0)),
+                    h("div", null, h("span", null, "Incidents"), h("strong", null, orderSummary.incidents || 0))
                 )
             )
         )
@@ -1629,7 +1779,12 @@ function SellerGemBidsPage() {
                 item.remarks ? h("div", { className: "notice" }, item.remarks) : null,
                 item.logs?.length ? h("details", { className: "gem-bid-log" }, h("summary", null, "Status change logs"), h("ul", { className: "log-list" }, item.logs.slice(0, 8).map(log => h("li", { key: log.id }, `${log.created_at || ""} | ${log.field_name}: ${log.old_value || "-"} -> ${log.new_value || "-"}`)))) : null,
                 h("div", { className: "notice" }, "Fetched from GeM. Manual editing is disabled on this page.")
-            )) : h("div", { className: "empty" }, syncing ? "Fetching participated bids from GeM..." : items.length ? "No bids match this filter." : "No participated bids fetched yet. Save GeM login, then sync this page.")
+            )) : h(EmptyAction, {
+                title: syncing ? "Fetching participated bids..." : items.length ? "No bids match this filter" : "No participated bids fetched yet",
+                text: syncing ? "GeM sync can take some time. Keep this page open while the server reads your authorized GeM session." : items.length ? "Clear filters or search terms to see all fetched participated bids." : "First capture a valid GeM session, then sync this page to import participated bid status, L1, representation, and alert data.",
+                action: syncing ? "" : items.length ? "Show All Bids" : "Open GeM Login",
+                onAction: () => items.length ? setFilters({ status: "all", search: "" }) : navigate("/dashboard/seller/gem-login"),
+            })
         )
     );
 }
@@ -1746,7 +1901,7 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
         h(TenderPager, { page, pages, pageSize, resultCount, loading, onPage, onPageSize }),
         h("div", { className: "panel tender-list-panel" },
             loading ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, "Loading tenders...")) :
-            tenders.length === 0 ? h("div", { className: "empty" }, "No tenders found.") :
+            tenders.length === 0 ? h(EmptyAction, { title: "No tenders shown", text: "Check the scrape query above, clear filters, or run Manual Scrape to bring matching GeM tenders into this list.", action: "Reset Filters", onAction: onReset }) :
             h("table", null,
                 h("thead", null, h("tr", null, ["Tender", "Department", "Value", "Deadline", "Score", "Status", "Actions"].map(x => h("th", { key: x }, x)))),
                 h("tbody", null, tenders.map(t => h(TenderRow, { key: t.id, tender: t, onSave: saveStatus })))
@@ -2664,7 +2819,7 @@ function SellerCataloguePage() {
                 (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Catalogue item is ready."),
                 h("textarea", { value: item.notes || "", placeholder: "Notes for rejected/notified repair workflow, brand approval, reseller panel, or catalogue pairing", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
                 h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
-            )) : h("div", { className: "empty" }, "No catalogue items yet.")
+            )) : h(EmptyAction, { title: "Add your first catalogue item", text: "Catalogue items let Tender AI check whether you are ready for each tender. Start with one product or service you sell on GeM.", action: "Add Catalogue Item", onAction: () => document.querySelector(".catalogue-form-card input")?.focus() })
         )
     );
 }
@@ -2780,7 +2935,7 @@ function SellerBidsPage() {
                 (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Bid workflow is ready."),
                 h("textarea", { value: item.notes || "", placeholder: "Notes for bid/RA participation, BOQ, EMD/PBG, clarification, representation, L1 negotiation, or global tender requirements", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
                 h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
-            )) : h("div", { className: "empty" }, "No bid/RA workflows yet.")
+            )) : h(EmptyAction, { title: "No Bid/RA workflow yet", text: "Create a workflow when a tender is worth pursuing. Track eligibility, documents, EMD/PBG, BOQ, RA, clarification, representation, and L1 negotiation.", action: "Create Workflow", onAction: () => document.querySelector(".bids-form-card select")?.focus() })
         )
     );
 }
@@ -2877,7 +3032,7 @@ function SellerOpportunitiesPage() {
                     h("button", { className: "primary", disabled: !!item.bid_workflow || creatingId === item.tender.id, onClick: () => createBid(item) }, item.bid_workflow ? "Workflow Exists" : creatingId === item.tender.id ? "Creating..." : "Create Bid Workflow"),
                     h("button", { onClick: () => navigate("/dashboard/tenders") }, "Open Tenders")
                 )
-            )) : h("div", { className: "empty" }, "No tenders available for opportunity matching yet.")
+            )) : h(EmptyAction, { title: "No opportunities to match yet", text: "Run a tender scrape and add catalogue items first. Opportunity matching needs tenders, seller readiness, and catalogue readiness.", action: "Open All Tenders", onAction: () => navigate("/dashboard/tenders") })
         )
     );
 }
@@ -2988,7 +3143,7 @@ function SellerOrdersPage() {
                 (item.readiness?.gaps || []).length ? h("div", { className: "tag-list catalogue-gaps" }, item.readiness.gaps.map(gap => h("span", { key: gap }, gap))) : h("div", { className: "notice ok" }, "Order fulfillment is on track."),
                 h("textarea", { value: item.notes || "", placeholder: "Notes for invoice generation, supplementary invoice, service billing, DP extension, incident, TReDS, or payment follow-up", onBlur: e => updateItem(item, { notes: e.target.value }), onChange: e => setItems(items.map(row => row.id === item.id ? { ...row, notes: e.target.value } : row)) }),
                 h("button", { className: "danger", onClick: () => deleteItem(item) }, "Remove")
-            )) : h("div", { className: "empty" }, "No order trackers yet.")
+            )) : h(EmptyAction, { title: "No order tracker yet", text: "Create an order tracker after award or contract receipt. Track delivery, CRAC, invoice, payment, incidents, and next action.", action: "Create Order Tracker", onAction: () => document.querySelector(".orders-form-card input")?.focus() })
         )
     );
 }

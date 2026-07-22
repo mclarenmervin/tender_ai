@@ -1549,22 +1549,25 @@ textarea {
     font-size: 13px;
 }
 .nav {
-    margin-top: 22px;
+    margin-top: 18px;
     display: grid;
-    gap: 8px;
+    gap: 10px;
     flex: 1;
 }
 .nav-group {
     display: grid;
-    gap: 2px;
+    gap: 3px;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
 }
 .nav-section {
     color: var(--text-faint);
     font-size: 11px;
     text-transform: uppercase;
     font-weight: 900;
-    letter-spacing: .08em;
-    margin: 16px 0 6px 12px;
+    letter-spacing: 0;
+    margin: 3px 0 6px 6px;
 }
 .nav button,
 .nav a {
@@ -1572,10 +1575,10 @@ textarea {
     background: transparent;
     color: var(--text-muted);
     text-align: left;
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
+    border-radius: 8px;
+    padding: 9px 11px;
     font: inherit;
-    font-size: 14px;
+    font-size: 13px;
     text-decoration: none;
     cursor: pointer;
     display: block;
@@ -1587,11 +1590,13 @@ textarea {
 .nav a:hover {
     color: var(--text);
     background: var(--surface-2);
+    border-color: var(--border);
 }
 .nav button.active {
-    color: var(--accent);
-    background: var(--accent-soft);
-    font-weight: 700;
+    color: var(--accent-strong);
+    background: linear-gradient(135deg, var(--accent-soft), rgba(20,184,166,.12));
+    border-color: var(--accent-soft-strong);
+    font-weight: 800;
 }
 .nav button.active::before {
     content: "";
@@ -2068,6 +2073,138 @@ td {
 .status {
     margin: 0 0 14px;
     color: #64748b;
+}
+.action-empty {
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+    border: 1px dashed #bfdbfe;
+    background: rgba(239,246,255,.72);
+    border-radius: 8px;
+}
+.action-empty h3 {
+    margin: 0;
+    color: #0f172a;
+}
+.action-empty p {
+    max-width: 680px;
+    margin: 0;
+    color: #64748b;
+    line-height: 1.5;
+}
+.workflow-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 10px;
+    margin: 0 0 16px;
+}
+.workflow-step {
+    display: grid;
+    gap: 7px;
+    align-content: start;
+    min-height: 112px;
+    text-align: left;
+    border: 1px solid #dbe3ef;
+    background: rgba(255,255,255,.95);
+    color: #334155;
+    border-radius: 8px;
+    padding: 13px;
+    box-shadow: 0 10px 24px rgba(15,23,42,.05);
+}
+.workflow-step span {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #334155;
+    font-weight: 900;
+}
+.workflow-step strong {
+    color: #0f172a;
+}
+.workflow-step small {
+    color: #64748b;
+    line-height: 1.35;
+}
+.workflow-step.complete {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+}
+.workflow-step.complete span {
+    background: #16a34a;
+    color: white;
+}
+.workflow-step.active {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+.workflow-step.active span {
+    background: #2563eb;
+    color: white;
+}
+.workflow-step.pending:hover,
+.workflow-step.active:hover,
+.workflow-step.complete:hover {
+    transform: translateY(-1px);
+}
+.next-action-panel {
+    background: rgba(255,255,255,.96);
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 14px 32px rgba(15,23,42,.07);
+}
+.next-action-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+.next-action-head h3 {
+    margin: 3px 0 0;
+    color: #0f172a;
+}
+.next-action-head > strong {
+    border: 1px solid #dbeafe;
+    background: #eff6ff;
+    color: #1e40af;
+    border-radius: 999px;
+    padding: 7px 10px;
+    height: fit-content;
+}
+.next-action-list {
+    display: grid;
+    gap: 10px;
+}
+.next-action {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    padding: 12px;
+}
+.next-action.warn {
+    border-left-color: #f59e0b;
+    background: #fffbeb;
+}
+.next-action h4,
+.next-action p {
+    margin: 0;
+}
+.next-action h4 {
+    color: #0f172a;
+}
+.next-action p {
+    color: #64748b;
+    margin-top: 4px;
+    line-height: 1.45;
 }
 .top-actions {
     display: flex;
@@ -3116,6 +3253,78 @@ td {
 .seller-ops-grid {
     align-items: start;
 }
+.seller-command-hero {
+    background: linear-gradient(135deg, #0f172a, #155e75);
+}
+.seller-command-hero .eyebrow {
+    color: #bae6fd;
+}
+.seller-command-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.seller-command-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-end;
+    border: 1px solid #dbe3ef;
+    border-left: 4px solid #2563eb;
+    background: rgba(255,255,255,.96);
+    border-radius: 8px;
+    box-shadow: 0 14px 32px rgba(15,23,42,.07);
+    padding: 16px;
+}
+.seller-command-card.green {
+    border-left-color: #16a34a;
+}
+.seller-command-card.amber {
+    border-left-color: #f59e0b;
+}
+.seller-command-card.red {
+    border-left-color: #dc2626;
+}
+.seller-command-card span,
+.seller-command-card small {
+    display: block;
+    color: #64748b;
+}
+.seller-command-card span {
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.seller-command-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.seller-command-card button {
+    white-space: nowrap;
+}
+.seller-dashboard-panels {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 16px;
+}
+.seller-dashboard-panel {
+    display: grid;
+    gap: 12px;
+}
+.panel-title-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+}
+.panel-title-row h3 {
+    margin: 4px 0 0;
+}
 .seller-action-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(120px, 1fr));
@@ -3697,6 +3906,8 @@ select[multiple] {
     .settings-grid,
     .settings-hero-stats,
     .settings-two,
+    .seller-command-grid,
+    .seller-dashboard-panels,
     .buyer-process-grid,
     .buyer-workspace-form,
     .buyer-process-metrics,
@@ -3730,8 +3941,15 @@ select[multiple] {
     .hero-panel { flex-direction: column; }
     .settings-hero,
     .scrape-query-head,
-    .buyer-form-head {
+    .buyer-form-head,
+    .next-action-head,
+    .seller-command-card,
+    .panel-title-row {
         flex-direction: column;
+        align-items: stretch;
+    }
+    .next-action {
+        grid-template-columns: 1fr;
     }
     .buyer-template-row {
         justify-content: flex-start;
