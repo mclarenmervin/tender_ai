@@ -105,6 +105,8 @@ def ensure_schema_updates():
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_company_profiles_user_id ON company_profiles(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_buyer_workspace_items_user_id ON buyer_workspace_items(user_id)",
             "CREATE INDEX IF NOT EXISTS ix_buyer_workspace_items_module ON buyer_workspace_items(module)",
+            "ALTER TABLE buyer_workspace_items ADD COLUMN IF NOT EXISTS state VARCHAR(100)",
+            "ALTER TABLE buyer_workspace_items ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_tender_eligibility_tender_id ON tender_eligibility(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_bid_decisions_tender_id ON bid_decisions(tender_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS uq_seller_profiles_user_id ON seller_profiles(user_id)",
@@ -2024,13 +2026,8 @@ def dashboard_summary(db,user):
     }
 
 BUYER_MODULES={
-    'planning':{'label':'Procurement Planning','description':'Demand creation, category selection, estimated value, and procurement mode recommendation.'},
-    'bid-management':{'label':'Bid Management','description':'Draft bids, published bids, bid opening, corrigendum, clarification, and cancellation tracking.'},
-    'vendor-evaluation':{'label':'Vendor Evaluation','description':'Technical evaluation, disqualification reasons, representation window, L1 comparison, and price reasonability.'},
-    'orders':{'label':'Order Management','description':'Contract/order acceptance, delivery, consignee, CRAC, invoice, payment, and incident tracking.'},
-    'compliance':{'label':'Compliance & Audit','description':'Approval, purchase file, bid audit trail, corrigendum justification, and payment delay evidence.'},
-    'reports':{'label':'Reports','description':'Procurement, bid status, vendor participation, savings, delayed order, payment, and audit exports.'},
-    'account':{'label':'Account','description':'Department details, buyer role mapping, notifications, and profile readiness.'},
+    'bids':{'label':'Bids','description':'Add and track bids with their complete procurement details and price.'},
+    'grants':{'label':'Grants','description':'Record department grant allocations and monitor used and remaining balances.'},
 }
 
 BUYER_STATUS_OPTIONS=[
@@ -2057,6 +2054,8 @@ def buyer_workspace_to_dict(item):
         'priority':item.priority or 'normal',
         'procurement_mode':item.procurement_mode or '',
         'department':item.department or '',
+        'state':item.state or '',
+        'city':item.city or '',
         'category':item.category or '',
         'vendor_name':item.vendor_name or '',
         'estimated_value':item.estimated_value or 0,
@@ -2069,7 +2068,10 @@ def buyer_workspace_to_dict(item):
     }
 
 def buyer_workspace_summary(db,user):
-    items=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.user_id==user.id).all()
+    items=db.query(BuyerWorkspaceItem).filter(
+        BuyerWorkspaceItem.user_id==user.id,
+        BuyerWorkspaceItem.module.in_(list(BUYER_MODULES)),
+    ).all()
     by_module={key:{'module':key,'label':meta['label'],'description':meta['description'],'total':0,'open':0,'completed':0,'urgent':0,'value':0} for key,meta in BUYER_MODULES.items()}
     for item in items:
         bucket=by_module.setdefault(item.module,{'module':item.module,'label':item.module.replace('-',' ').title(),'description':'','total':0,'open':0,'completed':0,'urgent':0,'value':0})
@@ -2078,12 +2080,31 @@ def buyer_workspace_summary(db,user):
         bucket['open']+=0 if item.completed or item.status=='completed' else 1
         bucket['urgent']+=1 if item.priority=='urgent' else 0
         bucket['value']+=item.estimated_value or 0
+    bids=[item for item in items if item.module=='bids']
+    grants=[item for item in items if item.module=='grants']
+    total_grant=sum(item.estimated_value or 0 for item in grants)
+    grant_used=sum(item.estimated_value or 0 for item in bids)
+    departments={}
+    for item in grants:
+        name=(item.department or 'Unassigned').strip() or 'Unassigned'
+        departments.setdefault(name,{'department':name,'allocated':0,'used':0,'remaining':0})
+        departments[name]['allocated']+=item.estimated_value or 0
+    for item in bids:
+        name=(item.department or 'Unassigned').strip() or 'Unassigned'
+        departments.setdefault(name,{'department':name,'allocated':0,'used':0,'remaining':0})
+        departments[name]['used']+=item.estimated_value or 0
+    for row in departments.values():
+        row['remaining']=row['allocated']-row['used']
     return {
         'total_items':len(items),
         'open_items':sum(row['open'] for row in by_module.values()),
         'completed_items':sum(row['completed'] for row in by_module.values()),
         'urgent_items':sum(row['urgent'] for row in by_module.values()),
         'total_value':sum(row['value'] for row in by_module.values()),
+        'total_grant':total_grant,
+        'grant_used':grant_used,
+        'grant_remaining':total_grant-grant_used,
+        'department_balances':sorted(departments.values(),key=lambda row:row['department'].lower()),
         'modules':list(by_module.values()),
     }
 
@@ -2111,7 +2132,7 @@ def api_buyer_workspace(module:str='',db:Session=Depends(get_db),user:User=Depen
 @app.post('/api/buyer/workspace')
 def api_create_buyer_workspace(payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     require_buyer(user)
-    module=(payload.get('module') or 'planning').strip()
+    module=(payload.get('module') or 'bids').strip()
     if module not in BUYER_MODULES:
         raise HTTPException(400,'Invalid buyer module')
     title=(payload.get('title') or '').strip()[:255]
@@ -2146,7 +2167,7 @@ def api_delete_buyer_workspace(item_id:int,db:Session=Depends(get_db),user:User=
     return {'ok':True}
 
 def apply_buyer_workspace_payload(item,payload):
-    for field,limit in [('title',255),('reference_no',120),('department',255),('category',255),('vendor_name',255),('notes',5000)]:
+    for field,limit in [('title',255),('reference_no',120),('department',255),('state',100),('city',150),('category',255),('vendor_name',255),('notes',5000)]:
         if field in payload:
             value=(payload.get(field) or '').strip()
             setattr(item,field,value[:limit] or None)
@@ -2188,6 +2209,10 @@ def buyer_planning_dashboard(request:Request,db:Session=Depends(get_db),user:Use
 
 @app.get('/dashboard/buyer/bids')
 def buyer_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/grants')
+def buyer_grants_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/buyer/vendors')

@@ -21,14 +21,31 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Procurement", [["/dashboard/buyer/planning", "Planning"], ["/dashboard/buyer/bids", "Bids"]]],
-    ["Evaluation", [["/dashboard/buyer/vendors", "Vendors"]]],
-    ["Fulfillment", [["/dashboard/buyer/orders", "Orders"]]],
-    ["Governance", [["/dashboard/buyer/compliance", "Compliance"], ["/dashboard/buyer/reports", "Reports"]]],
-    ["Account", [["/dashboard/buyer/account", "Buyer Account"], ["/dashboard/profile", "Profile"]]],
+    ["Buyer Modules", [["/dashboard/buyer/bids", "Add Bids"], ["/dashboard/buyer/grants", "Grants"]]],
+    ["Account", [["/dashboard/profile", "Profile"]]],
 ];
 
 const buyerModules = {
+    bids: {
+        path: "/dashboard/buyer/bids",
+        title: "Add Bids",
+        text: "Create buyer bids with reference, department, category, vendor, dates, status, procurement details, and the final price.",
+        sampleTitle: "New buyer bid",
+        stages: ["Details", "Department", "Category", "Procurement", "Price", "Review"],
+        focus: ["Bid reference", "Department", "Category", "Vendor", "Due date", "Final price"],
+        checklist: ["Bid details verified", "Department selected", "Category entered", "Procurement mode selected", "Price confirmed", "Due date checked"],
+        templates: ["Product Bid", "Service Bid", "Custom Bid"],
+    },
+    grants: {
+        path: "/dashboard/buyer/grants",
+        title: "Grants",
+        text: "Add grants, identify the allocating department, and see allocated, used, and remaining grant balances.",
+        sampleTitle: "New grant allocation",
+        stages: ["Grant", "Department", "Allocation", "Bid Usage", "Balance"],
+        focus: ["Grant reference", "Allocating department", "Allocated amount", "Used by bids", "Remaining balance"],
+        checklist: ["Grant reference recorded", "Allocating department selected", "Amount verified", "Allocation notes added"],
+        templates: ["Department Grant", "Project Grant", "Special Allocation"],
+    },
     planning: {
         path: "/dashboard/buyer/planning",
         title: "Procurement Planning",
@@ -1067,21 +1084,14 @@ function buyerDashboardGuidance(data) {
     const done = key => byModule[key]?.completed || 0;
     const total = key => byModule[key]?.total || 0;
     const steps = [
-        { label: "Account", href: "/dashboard/buyer/account", status: done("account") ? "complete" : open("account") ? "active" : "pending", hint: "Role and department" },
-        { label: "Planning", href: "/dashboard/buyer/planning", status: total("planning") ? "active" : "pending", hint: "Demand and mode" },
-        { label: "Bid Creation", href: "/dashboard/buyer/bids", status: total("bid-management") ? "active" : "pending", hint: "Publish and manage" },
-        { label: "Evaluation", href: "/dashboard/buyer/vendors", status: total("vendor-evaluation") ? "active" : "pending", hint: "Technical and L1" },
-        { label: "Order", href: "/dashboard/buyer/orders", status: total("orders") ? "active" : "pending", hint: "CRAC and payment" },
-        { label: "Compliance", href: "/dashboard/buyer/compliance", status: total("compliance") ? "active" : "pending", hint: "Audit file" },
-        { label: "Reports", href: "/dashboard/buyer/reports", status: total("reports") ? "active" : "pending", hint: "Export and share" },
+        { label: "Add Grants", href: "/dashboard/buyer/grants", status: total("grants") ? "complete" : "pending", hint: "Department allocation" },
+        { label: "Add Bids", href: "/dashboard/buyer/bids", status: total("bids") ? "active" : "pending", hint: "Details and price" },
+        { label: "Track Balance", href: "/dashboard/buyer/grants", status: total("grants") ? "active" : "pending", hint: "Used and remaining" },
     ];
     const actions = [
-        !total("account") && { title: "Complete buyer account readiness", text: "Start by recording department, buyer role, certification, and notification readiness.", href: "/dashboard/buyer/account", action: "Open Account", primary: true },
-        !total("planning") && { title: "Create your first procurement plan", text: "Capture requirement, category, budget, consignee, and procurement mode before bid creation.", href: "/dashboard/buyer/planning", action: "Create Plan", primary: true },
-        total("planning") && !total("bid-management") && { title: "Move planning into bid management", text: "Track draft, publication, clarification, corrigendum, and bid opening dates.", href: "/dashboard/buyer/bids", action: "Open Bids" },
-        open("vendor-evaluation") > 0 && { title: "Finish vendor evaluation", text: "Record qualified/disqualified bidders, representation, L1, and price reasonability.", href: "/dashboard/buyer/vendors", action: "Review Vendors", level: "warn" },
-        open("orders") > 0 && { title: "Follow up order and payment", text: "Check seller acceptance, delivery, CRAC, invoice, payment, and incidents.", href: "/dashboard/buyer/orders", action: "Open Orders", level: "warn" },
-        open("compliance") > 0 && { title: "Complete audit evidence", text: "Keep approval, bid file, evaluation evidence, order file, and payment notes audit ready.", href: "/dashboard/buyer/compliance", action: "Audit File" },
+        !total("grants") && { title: "Add the first grant allocation", text: "Record the grant amount and the department that allocated it.", href: "/dashboard/buyer/grants", action: "Add Grant", primary: true },
+        !total("bids") && { title: "Add the first buyer bid", text: "Enter all bid details and its final price so grant usage can be calculated.", href: "/dashboard/buyer/bids", action: "Add Bid", primary: true },
+        (data?.grant_remaining || 0) < 0 && { title: "Grant is over-allocated", text: `Bid prices exceed available grants by Rs. ${money(Math.abs(data.grant_remaining))}.`, href: "/dashboard/buyer/grants", action: "Review Balance", level: "warn" },
     ];
     return { steps, actions };
 }
@@ -1136,22 +1146,22 @@ function BuyerDashboardPage() {
         h("div", { className: "hero-panel buyer-landing" },
             h("div", null,
                 h("h2", null, "Buyer Dashboard"),
-                h("p", null, "Plan procurement, manage bids, evaluate vendors, track orders, and keep audit records from one buyer workspace.")
+                h("p", null, "Add bids and manage department grant allocations, usage, and remaining balances in one place.")
             ),
             h("div", { className: "hero-actions" },
-                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyer/planning") }, "Start Planning"),
-                h("button", { onClick: () => navigate("/dashboard/buyer/bids") }, "Bid Management"),
-                h("button", { onClick: () => navigate("/dashboard/buyer/orders") }, "Orders")
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyer/bids") }, "Add Bid"),
+                h("button", { onClick: () => navigate("/dashboard/buyer/grants") }, "Manage Grants")
             )
         ),
         message ? h("div", { className: "notice err" }, message) : null,
         h(WorkflowTimeline, { steps: guidance.steps }),
         h(NextActionPanel, { actions: guidance.actions }),
         h("div", { className: "summary five" },
-            [["Total Items", data?.total_items || 0], ["Open", data?.open_items || 0], ["Completed", data?.completed_items || 0], ["Urgent", data?.urgent_items || 0], ["Value", `Rs. ${money(data?.total_value || 0)}`]].map(([label, value]) =>
+            [["Total Grants", `Rs. ${money(data?.total_grant || 0)}`], ["Used by Bids", `Rs. ${money(data?.grant_used || 0)}`], ["Remaining", `Rs. ${money(data?.grant_remaining || 0)}`], ["Bids", byBuyerModule(data, "bids")], ["Grants", byBuyerModule(data, "grants")]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
+        h(DepartmentGrantBalances, { rows: data?.department_balances || [] }),
         h("div", { className: "buyer-process-grid" },
             modules.length ? modules.map(item => {
                 const meta = buyerModules[item.module] || {};
@@ -1167,15 +1177,36 @@ function BuyerDashboardPage() {
                     ),
                     h("button", { onClick: () => navigate(meta.path || "/dashboard/buyer") }, "Open Module")
                 );
-            }) : h(EmptyAction, { title: data ? "Start with buyer account readiness" : "Loading buyer workspace...", text: data ? "Create your first buyer account or procurement planning item to begin the guided workflow." : "Fetching buyer modules and next steps.", action: data ? "Open Buyer Account" : "", onAction: () => navigate("/dashboard/buyer/account") })
+            }) : h(EmptyAction, { title: data ? "Add your first grant" : "Loading buyer workspace...", text: data ? "Create a department grant allocation, then add bids to track its usage." : "Fetching buyer modules and balances.", action: data ? "Add Grant" : "", onAction: () => navigate("/dashboard/buyer/grants") })
         )
     );
 }
 
+function byBuyerModule(data, key) {
+    return data?.modules?.find(item => item.module === key)?.total || 0;
+}
+
+function DepartmentGrantBalances({ rows }) {
+    return h("section", { className: "card" },
+        h("h3", null, "Department Grant Balances"),
+        rows.length ? h("div", { className: "table-wrap" },
+            h("table", null,
+                h("thead", null, h("tr", null, ["Department", "Allocated Grant", "Used by Bids", "Remaining"].map(label => h("th", { key: label }, label)))),
+                h("tbody", null, rows.map(row => h("tr", { key: row.department },
+                    h("td", null, row.department),
+                    h("td", null, `Rs. ${money(row.allocated || 0)}`),
+                    h("td", null, `Rs. ${money(row.used || 0)}`),
+                    h("td", { className: row.remaining < 0 ? "negative-value" : "" }, `Rs. ${money(row.remaining || 0)}`)
+                )))
+            )
+        ) : h("p", { className: "desc" }, "No department allocations yet.")
+    );
+}
+
 function BuyerModulePage({ moduleKey }) {
-    const meta = buyerModules[moduleKey] || buyerModules.planning;
+    const meta = buyerModules[moduleKey] || buyerModules.bids;
     const [data, setData] = useState(null);
-    const [form, setForm] = useState({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+    const [form, setForm] = useState({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
     const [message, setMessage] = useState("");
     async function load() {
         const result = await api(`/api/buyer/workspace?module=${encodeURIComponent(moduleKey)}`);
@@ -1191,17 +1222,17 @@ function BuyerModulePage({ moduleKey }) {
         e.preventDefault();
         setMessage("Saving buyer tracker item...");
         await api("/api/buyer/workspace", { method: "POST", body: JSON.stringify({ ...form, module: moduleKey }) });
-        setForm({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+        setForm({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
         setMessage("Buyer tracker item saved.");
         await load();
     }
     async function updateItem(item, patch) {
-        const result = await api(`/api/buyer/workspace/${item.id}`, { method: "PUT", body: JSON.stringify(patch) });
-        setData({ ...data, items: items.map(row => row.id === item.id ? result.item : row) });
+        await api(`/api/buyer/workspace/${item.id}`, { method: "PUT", body: JSON.stringify(patch) });
+        await load();
     }
     async function deleteItem(item) {
         await api(`/api/buyer/workspace/${item.id}`, { method: "DELETE" });
-        setData({ ...data, items: items.filter(row => row.id !== item.id) });
+        await load();
     }
     function applyTemplate(template) {
         setForm({
@@ -1258,38 +1289,41 @@ function BuyerModulePage({ moduleKey }) {
         }) : null,
         h("section", { className: "card buyer-form-card" },
             h("div", { className: "buyer-form-head" },
-                h("div", null, h("h3", null, `Add ${meta.title} Item`), h("p", { className: "desc" }, "Use quick templates or create a custom tracker row for a GeM buyer task.")),
+                h("div", null, h("h3", null, moduleKey === "grants" ? "Add Grant" : "Add Bid"), h("p", { className: "desc" }, moduleKey === "grants" ? "Record the grant and the department from which it was allocated." : "Enter the complete bid details, including its final price.")),
                 h("div", { className: "buyer-template-row" }, (meta.templates || []).map(template =>
                     h("button", { type: "button", key: template, onClick: () => applyTemplate(template) }, template)
                 ))
             ),
             h("form", { className: "buyer-workspace-form", onSubmit: createItem },
-                h("label", { className: "field-block" }, h("span", null, "Title"), h("input", { value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
-                h("label", { className: "field-block" }, h("span", null, "Reference no."), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: "Bid / demand / order no." })),
+                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant name" : "Bid title"), h("input", { required: true, value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
+                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant reference no." : "Bid reference no."), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: moduleKey === "grants" ? "Grant / sanction no." : "Bid no." })),
                 h("label", { className: "field-block" }, h("span", null, "Status"), h("select", { value: form.status, onChange: e => update("status", e.target.value) }, selectOptions(data?.status_options || []))),
                 h("label", { className: "field-block" }, h("span", null, "Priority"), h("select", { value: form.priority, onChange: e => update("priority", e.target.value) }, selectOptions(data?.priority_options || []))),
                 h("label", { className: "field-block" }, h("span", null, "Procurement mode"), h("select", { value: form.procurement_mode, onChange: e => update("procurement_mode", e.target.value) }, h("option", { value: "" }, "Select mode"), (data?.procurement_modes || []).map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, "Department"), h("input", { value: form.department, onChange: e => update("department", e.target.value), placeholder: "Department / office" })),
+                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Allocating department" : "Department"), h("input", { required: true, value: form.department, onChange: e => update("department", e.target.value), placeholder: moduleKey === "grants" ? "Department providing the grant" : "Department using the bid" })),
+                h("label", { className: "field-block" }, h("span", null, "State"), h("input", { required: true, value: form.state, onChange: e => update("state", e.target.value), placeholder: "State" })),
+                h("label", { className: "field-block" }, h("span", null, "City"), h("input", { required: true, value: form.city, onChange: e => update("city", e.target.value), placeholder: "City" })),
                 h("label", { className: "field-block" }, h("span", null, "Category"), h("input", { value: form.category, onChange: e => update("category", e.target.value), placeholder: "Product / service category" })),
                 h("label", { className: "field-block" }, h("span", null, "Vendor / L1"), h("input", { value: form.vendor_name, onChange: e => update("vendor_name", e.target.value), placeholder: "Vendor name, if applicable" })),
-                h("label", { className: "field-block" }, h("span", null, "Estimated value"), h("input", { type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
-                h("label", { className: "field-block" }, h("span", null, "Due date"), h("input", { type: "date", value: form.due_date, onChange: e => update("due_date", e.target.value) })),
+                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant allocated (Rs.)" : "Final price (Rs.)"), h("input", { required: true, type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
+                h("label", { className: "field-block" }, h("span", null, "Date"), h("input", { required: true, type: "date", value: form.due_date, onChange: e => update("due_date", e.target.value) })),
                 h("label", { className: "field-block span-2" }, h("span", null, "Checklist"), h("textarea", { value: form.checklist, onChange: e => update("checklist", e.target.value), placeholder: "One checklist item per line" })),
                 h("label", { className: "field-block span-2" }, h("span", null, "Notes"), h("textarea", { value: form.notes, onChange: e => update("notes", e.target.value), placeholder: "Remarks, evidence, next action, risks" })),
                 h("button", { className: "primary span-2" }, "Save Item")
             )
         ),
+        moduleKey === "grants" ? h(DepartmentGrantBalances, { rows: data?.summary?.department_balances || [] }) : null,
         h("section", { className: "buyer-item-list" },
             items.length ? items.map(item => h("article", { className: `buyer-item-card ${item.priority}`, key: item.id },
                 h("div", { className: "buyer-item-head" },
-                    h("div", null, h("h3", null, item.title), h("p", null, [item.reference_no, item.department, item.category].filter(Boolean).join(" | ") || "No reference details")),
+                    h("div", null, h("h3", null, item.title), h("p", null, [item.reference_no, item.department, item.city, item.state, item.category].filter(Boolean).join(" | ") || "No reference details")),
                     h("span", { className: item.completed ? "query-pill active" : "query-pill" }, item.status.replaceAll("_", " "))
                 ),
                 h("div", { className: "buyer-process-metrics" },
                     h("div", null, h("span", null, "Priority"), h("strong", null, item.priority)),
                     h("div", null, h("span", null, "Mode"), h("strong", null, item.procurement_mode || "NA")),
-                    h("div", null, h("span", null, "Value"), h("strong", null, `Rs. ${money(item.estimated_value || 0)}`)),
-                    h("div", null, h("span", null, "Due"), h("strong", null, item.due_date || "NA"))
+                    h("div", null, h("span", null, moduleKey === "grants" ? "Allocated" : "Final Price"), h("strong", null, `Rs. ${money(item.estimated_value || 0)}`)),
+                    h("div", null, h("span", null, "Date"), h("strong", null, item.due_date || "NA"))
                 ),
                 item.checklist?.length ? h("div", { className: "tag-list buyer-checklist" }, item.checklist.map(check => h("span", { key: check }, check))) : null,
                 item.notes ? h("p", { className: "desc" }, item.notes) : null,
@@ -3762,13 +3796,9 @@ function App() {
     if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
-    else if (route === "/dashboard/buyer/planning") page = h(BuyerModulePage, { moduleKey: "planning" });
-    else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bid-management" });
-    else if (route === "/dashboard/buyer/vendors") page = h(BuyerModulePage, { moduleKey: "vendor-evaluation" });
-    else if (route === "/dashboard/buyer/orders") page = h(BuyerModulePage, { moduleKey: "orders" });
-    else if (route === "/dashboard/buyer/compliance") page = h(BuyerModulePage, { moduleKey: "compliance" });
-    else if (route === "/dashboard/buyer/reports") page = h(BuyerModulePage, { moduleKey: "reports" });
-    else if (route === "/dashboard/buyer/account") page = h(BuyerModulePage, { moduleKey: "account" });
+    else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
+    else if (route === "/dashboard/buyer/grants") page = h(BuyerModulePage, { moduleKey: "grants" });
+    else if (route.startsWith("/dashboard/buyer/")) page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
     else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
     else if (route === "/dashboard/seller/gem-login") page = h(SellerGemLoginPage);

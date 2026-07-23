@@ -221,6 +221,8 @@ class BuyerWorkspaceItem(Base):
     priority=Column(String(50),default='normal')
     procurement_mode=Column(String(100))
     department=Column(String(255))
+    state=Column(String(100))
+    city=Column(String(150))
     category=Column(String(255))
     vendor_name=Column(String(255))
     estimated_value=Column(BigInteger)
