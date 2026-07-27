@@ -1,3836 +1,0 @@
-
---- PAGE 1 ---
- 
-Contract
-Contract No: GEMC-511687731657959
-Generated Date: 25-Feb-2022
-Bid/RA/PR No:GEM/2022/B/1828786
-Organisation Details
-Type: State Government
-Ministry: -
-Department: Education Department Chandigarh
-Organisation Name: Government Medical College and Hos pital
-Office Zone: Sector 32, Chandigarh
-Buyer Details
-Designation: Office Superintendent Procurement1
-Contact No.: 0172-2601023-4206
-Email ID: hemanti@gmch.gov.in
-GSTIN: 04AAAGD0158H1ZY
-Address:
-Government Medical College and Hospital Sector 32,
-Chandigarh, 160031,
-CHANDIGARH, CHANDIGARH-160031, India
- 
-Financial Approval Detail
-IFD Concurrence: Yes
-Designation of Administrative Approval: Medical Superi ntendent
-Designation of Financial Approval: Medical Superintend ent
-Paying Authority Details
-Payment Mode: Offline
-Designation: ACF&A
-Email ID: ddogmch32-chd@nic.in
-GSTIN: N
-Address:
-Government Medical College & Hospital Sector 32,
-Chandigarh, 160031,
-CHANDIGARH, CHANDIGARH-160031, India
- 
- 
-Seller Details
-GeM Seller ID: 3F3E200001234314
-Company Name: ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.: 07206099599
-Email ID: zenotrexmedico@gmail.com
-Address:
-PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinashpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME verified: Yes
-MSME Registration number: UDYAM-HR-01-0000220
-MSE Social Category: NA
-MSE Gender: NA
-GSTIN: 06AABCZ5449G1Z5 , 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of - Buyer
-Product Details
-# Item Description Ordered
-Quantity Unit Unit Price
-(INR) Tax Bifurcation (INR)
-Price 
-(Inclusive
-of all
-Duties and
-Taxes in
-INR)
-1
-Product Name : ZENOTREX MEDICO Autoclave
-Brand : ZENOTREX MEDICO
-Brand Type : Registered Brand
-Catalogue Status : OEM verified catalogue
-Selling As : OEM
-Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-ZPL-A22R 
-HSN not specified by seller
-1 pieces 77,900 NA 77,900
-Total Order Value (in INR) 77,900
- 
-Consignee Detail
-S.No Consignee Item Lot
-No. Quantity Delivery
-Start After
-Delivery To Be
-Completed By
-1
-Designation: -
-Email ID: aso-stores@gmch.gov.in
-Contact: 0172-2601023-2003
-GSTIN: 04AAAGD0158H1ZY
-Address: Government Medical College & Hospital Sector 32,
-Chandigarh, 160031,
-CHANDIGARH, CHANDIGARH-160031, India
-ZENOTREX MEDICO
-Autoclave
-- 1 25-Feb-2022 11-Apr-2022
- 
-Product Specification for ZENOTREX MEDICO Autoclave
-
---- PAGE 2 ---
-
---- PAGE 3 ---
-
---- PAGE 4 ---
- 
-Contract
-Contract No: GEMC-511687759533652
-Generated Date: 06-Mar-2022
-Bid/RA/PR No:GEM/2022/B/1885754
-Organisation Details
-Type: Central Autonomous
-Ministry: Ministry of Agriculture and Farmers Welfare
-Department: Department of Agricultural Research and Ed ucation (DARE)
-Organisation Name: Indian Council of Agricultural Research (ICAR)
-Office Zone: National Institute Of Abiotic Stress Ma nagement
-Buyer Details
-Designation: AAO
-Contact No.: 02112-254057-
-Email ID: buycon118.icari.mh@gembuyer.in
-GSTIN: 27AAAGN0035R1Z3
-Address: Gat No.35, Malegaon Kh, Baramati,
-PUNE, MAHARASHTRA-413115, India
- 
-Financial Approval Detail
-IFD Concurrence: No
-Designation of Administrative Approval: The Director
-Designation of Financial Approval: FAO
-Paying Authority Details
-Payment Mode: Offline
-Designation: DDO
-Email ID: purnima.ghadge@icar.gov.in
-GSTIN: -
-Address: Gat No.35, Malegaon Kh, Baramati,
-PUNE RURAL, MAHARASHTRA-413115, India
- 
- 
-Seller Details
-GeM Seller ID: 3F3E200001234314
-Company Name: ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.: 07206099599
-Email ID: zenotrexmedico@gmail.com
-Address: PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinashpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME verified: Yes
-MSME Registration number: UDYAM-HR-01-0000220
-MSE Social Category: NA
-MSE Gender: NA
-GSTIN: 06AABCZ5449G1Z5 , 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of - Buyer
-Product Details
-# Item Description Ordered
-Quantity Unit Unit Price
-(INR) Tax Bifurcation (INR)
-Price 
-(Inclusive
-of all
-Duties and
-Taxes in
-INR)
-1
-Product Name : Autoclave
-Brand : ZENOTREX MEDICO
-Brand Type : Unbranded
-Catalogue Status : Catalogue not verified by OEM
-Selling As : Reseller not verified by OEM
-Category Name & Quadrant : BOQ (Q3)
-ZPL-A22R 
-84192090
-1 Number 117,900 NA 117,900
-Total Order Value (in INR) 117,900
- 
-Consignee Detail
-S.No Consignee Item Lot No. Quantity Delivery Start After Del ivery To Be Completed By
-1
-Designation: -
-Email ID: buycon118.icari.mh@gembuyer.in
-Contact: 02112-254057-
-GSTIN: 27AAAGN0035R1Z3
-Address: Gat No.35, Malegaon Kh, Baramati,
-PUNE, MAHARASHTRA-413115, India
-Autoclave - 1 06-Mar-2022 31-Mar-2022
- 
-Specification 1
-Specification Document
-Buyer BOQ Document
-Compliance of BOQ Specification And Supporting Document
-
---- PAGE 5 ---
-
---- PAGE 6 ---
-D ate: 79 ,06.2022
-To,
-M/s. Zenotrex Medibo Pvt. Ltd.
-This is certified. that Autoclave machine was supplied by'M/s. T,enotrexMedico Pvt, Ltd.,
-AMBAL A atlcAR*National Institute of Abiotic Stress Managem srrt, B;aramati,r Maharashtra
-and that was installed in March 2022.The equiprlent is working to our full satisfaction. We
-are satisfied with the perfonnarlce of the equipment as well as after sales and services provided
-by the company.
-Dr SS Pawar
-Sr. Scientist
-ICAR-National Institute of Abiotic Stress Management
-A
-r,... rrpa srdfro ds mtqq dwrFtN a rio na | | nsriture of Abi6tic 
--iir" 
-*u'rri#, g***nrqlfuiq,{Rrffi-s t I q i.f q4 wnr6lvtahgsn. Barsrn*iqig i rs F.,,;;:;3
-With regards
---- PAGE 7 ---
- 
-Contract
-Contract No: GEMC-511687796517501
-Generated Date: 16-Feb-2022
-Bid/RA/PR No:GEM/2021/B/1804396
-Organisation Details
-Type: Central PSU
-Ministry: Ministry of Petroleum and Natural Gas
-Department: NA
-Organisation Name: Hindustan Petroleum Corporation Ltd
-Office Zone: Petroleum House
-Buyer Details
-Designation: Manager Materials
-Contact No.: -9980070588-
-Email ID: buycon22.hpcl.blr@gembuyer.in
-GSTIN: -
-Address:
-HPCL Green R&D Centre KIADB IND AREA,
-Tarabanahalli, Devangundhi, Hosakote Taluk,
-Bangalore-560067,
-BANGALORE, KARNATAKA-560067, India
- 
-Financial Approval Detail
-IFD Concurrence: Yes
-Designation of Administrative Approval: DGM-Materials
-Designation of Financial Approval: DGM-Finance
-Paying Authority Details
-Payment Mode: HPCL
-Designation: Manager Materials
-Email ID: buycon22.hpcl.blr@gembuyer.in
-GSTIN: -
-Address:
-HPCL Green R&D Centre KIADB IND AREA,
-Tarabanahalli, Devangundhi, Hosakote Taluk,
-Bangalore-560067,
-Bangalore, KARNATAKA-560067, India
- 
- 
-Seller Details
-GeM Seller ID: 3F3E200001234314
-Company Name: ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.: 07206099599
-Email ID: zenotrexmedico@gmail.com
-Address:
-PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinashpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME verified: Yes
-MSME Registration number: UDYAM-HR-01-0000220
-MSE Social Category: NA
-MSE Gender: NA
-GSTIN: 06AABCZ5449G1Z5 , 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of - Consignee
-Product Details
-# Item Description Ordered
-Quantity Unit Unit Price
-(INR) Tax Bifurcation (INR)
-Price 
-(Inclusive
-of all
-Duties and
-Taxes in
-INR)
-1
-Product Name : ZENOTREX MEDICO Autoclave
-Brand : ZENOTREX MEDICO
-Brand Type : Registered Brand
-Catalogue Status : OEM verified catalogue
-Selling As : OEM
-Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-ZPL-A22R 
-HSN not specified by seller
-1 pieces 72,698 NA 72,698
-Total Order Value (in INR) 72,698
- 
-Consignee Detail
-S.No Consignee Item Lot
-No. Quantity Delivery
-Start After
-Delivery To Be
-Completed By
-1
-Designation: -
-Email ID: con500.hpcl.ka@gembuyer.in
-Contact: -9849496200-
-GSTIN: -
-Address: HPCL Green R&D Centre KIADB IND AREA, Tarabanahalli,
-Devangundhi, Hosakote Taluk, Bangalore-560067,
-BANGALORE, KARNATAKA-560067, India
-ZENOTREX
-MEDICO Autoclave
-- 1 16-Feb-2022 17-Apr-2022
- 
-
---- PAGE 8 ---
-
---- PAGE 9 ---
- 
-Contract
-Contract No: GEMC-511687732469167
-Generated Date: 06-Jul-2022
-Bid/RA No: GEM/2022/B/2269466
-Organisation Details
-Type: State Government
-Ministry: -
-Department: Health Department Haryana
-Organisation
-Name:
-N/A
-Office Zone: Director Bps Govt. Medical College For Women Khanpur Kalan
-Sonipat
-Buyer Details
-Name: Vinod Kumar
-Designation: VINOD KUMAR
-Contact No.: 01263-283063-
-Email ID: buyer6.hdh.hr@gembuyer.in
-GSTIN: 06AAAGD0402N1D3
-Address:
-Director BPS Government Medical College for Women
-Khanpur Kalan,
-SONIPAT, HARYANA-131001, India
- 
-Financial Approval Detail
-IFD Concurrence: No
-Designation of Administrative Approval: Director
-Designation of Financial Approval: Director
-Paying Authority Details
-Payment Mode: Offline
-Designation: DEVI DAYAL PORIYA
-Email ID: pao4.hdh.hr@gembuyer.in
-GSTIN: -
-Address:
-Director BPS Government Medical College for Women
-Khanpur Kalan,
-SONIPAT, HARYANA-131001, India
- 
- 
-Seller Details
-GeM Seller ID: 3F3E200001234314
-Company Name: ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.: 07206099599
-Email ID: zenotrexmedico@gmail.com
-Address: PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinashpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME verified: Yes
-MSME Registration number: UDYAM-HR-01-0000220
-MSE Social Category: NA
-MSE Gender: NA
-GSTIN: 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of - Consignee
-Product Details
-# Item Description Ordered
-Quantity Unit Unit Price
-(INR) Tax Bifurcation (INR)
-Price 
-(Inclusive
-of all
-Duties and
-Taxes in
-INR)
-1
-Product Name : ZENOTREX MEDICO Autoclave
-Brand : ZENOTREX MEDICO
-Brand Type : Registered Brand
-Catalogue Status : OEM verified catalogue
-Selling As : OEM
-Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-ZPL-A22R 
-HSN not specified by seller
-1 pieces 59,000 NA 59,000
-Total Order Value (in INR) 59,000
- 
-Consignee Detail
-S.No Consignee Item Lot
-No. Quantity Delivery Start
-After
-Delivery To Be
-Completed By
-1
-Designation: -
-Email ID: con4.hdh.hr@gembuyer.in
-Contact: 01263-298659-
-GSTIN: -
-Address: Director BPS Government Medical College for
-Women Khanpur Kalan,
-SONIPAT, HARYANA-131001, India
-ZENOTREX MEDICO
-Autoclave - 1 06-Jul-2022 21-Jul-2022Product Specification for ZENOTREX MEDICO Autoclave
-Specification Sub-Spec Value
-
---- PAGE 10 ---
-
---- PAGE 11 ---
- 
-Contract
-Contract No: GEMC-511687736749739
-Generated Date: 24-Nov-2022
-Bid/RA/PBP No.: GEM/2022/B/2567414
-Organisation Details
-Type: Central Autonomous
-Ministry: Ministry of Science and Technology
-Department: Department of Science and Technology (DST)
-Organisation
-Name:
-Sree Chitra Tirunal Institute for Medical Sciences and
-Technology (SCTIMST)
-Office Zone: Thiruvananthapuram
-Buyer Details
-Designation: Upper Division Clerk Lekshmy S S
-Contact No.: 0471-2520338-
-Email ID: buycon23.sctimsts.kl@gembuyer.in
-GSTIN: 32AAAJS0437M1Z4
-Address:
-Biomedical Technology Wing Sree Chitra Tirunal
-Institute for Medical Sciences & Technology Satelmond
-Palace, Poojappura, Thiruvananthapuram, Kerala, India
-Pin Code : 695012, Thiruvananthapuram, 695012,
-THIRUVANANTHAPURAM, KERALA-695012, India
- 
-Financial Approval Detail
-IFD Concurrence: No
-Designation of Administrative Approval: HEAD, BMT WING
-Designation of Financial Approval: SR ACCOUNTS OFFICER
-Paying Authority Details
-Payment Mode: Offline
-Designation: SR ACCOUNTS OFFICER VIPIN
-Email ID: sao1.sctimst-ker@gov.in
-GSTIN: 32AAAJS0437M1Z4
-Address:
-Biomedical Technology Wing Sree Chitra Tirunal
-Institute for Medical Sciences & Technology Satelmond
-Palace, Poojappura, Thiruvananthapuram, Kerala, India
-Pin Code : 695012, Thiruvananthapuram, 695012,
-Thiruvananthapuram, KERALA-695012, India
- 
- 
-Seller Details
-GeM Seller ID: 3F3E200001234314
-Company Name: ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.: 07206099599
-Email ID: zenotrexmedico@gmail.com
-Address: PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinashpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME verified: Yes
-MSME Registration number: UDYAM-HR-01-0000220
-MSE Social Category: NA
-MSE Gender: NA
-GSTIN: 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of - Consignee
-Product Details
-# Item Description Ordered
-Quantity Unit Unit Price
-(INR) Tax Bifurcation (INR)
-Price 
-(Inclusive
-of all
-Duties and
-Taxes in
-INR)
-1
-Product Name : ZENOTREX MEDICO Keyboard Interface Radial Type
-Brand : ZENOTREX MEDICO
-Brand Type : Registered Brand
-Catalogue Status : OEM verified catalogue
-Selling As : OEM
-Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
-Model: ZPL-A22R 
-HSN Code: HSN not specified by seller
-1 pieces 96,700 NA 96,700
-Total Order Value (in INR) 96,700
- 
-Consignee Detail
-S.No Consignee Item Lot
-No. Quantity
-Delivery
-Start
-After
-Delivery
-To Be
-Completed
-By
-1
-Designation: -
-Email ID: buycon21.sctimsts.kl@gembuyer.in
-Contact: 0471-2520338-
-GSTIN: 32AAAJS0437M1Z4
-Address: Biomedical Technology Wing Sree Chitra Tirunal Institute for Medical Sciences
-& Technology Satelmond Palace, Poojappura, Thiruvananthapuram, Kerala, India Pin
-ZENOTREX MEDICO
-Keyboard Interface
-Radial Type
-- 1 24-Nov-
-2022 09-Dec-2022
-
---- PAGE 12 ---
-
---- PAGE 13 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687731021187
-Generated Date| Generated Date|)I-/ )I-/  %-%- %-%- :  : 14-Feb-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  9:/? 9:/?: :  GEM/2022/B/2808754
-Organisation Details| Organisation Details|9)) 9))  %==9+ %==9+
-Type|GH+ : Central Autonomous
-Ministry|/K?;/ : Ministry of Education
-Department|%=-? : Department of Higher Education
-Organisation Name|9)) ? )?/ : Indian Institute of Techn ology (IIT)
-Oûce Zone|?/?U;/ VOK: Bombay
-Buyer Details| Buyer Details|9I/?9 9I/?9  %==9+ %==9+
-Designation|+/ : Software Engineer
-Contact No.|9+ U  )-9 : 022-25763814-
-Email ID|	/O; 	)I : buycon2314.iiti.mh@gembuyer.in
-GSTIN|I9a	) : -
-Address|+-? : ESED ,IIT Bombay, Powai, Mumbai-400076,
-MUMBAI, MAHARASHTRA-400076, India
- 
-Financial Approval Detail| Financial Approval Detail|%=eI/ %=eI/  f=I K %- f=I K %-  %==9+ %==9+
-IFD Concurrence|	+)I 99/%- : No
-Designation of Administrative Approval|
-G??9%) )I/K/) ? +/)?/:
-professor
-Designation of Financial Approval|
-%=eI/ )I/K/) ? +/)?/ : professor
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  G?%/9+ G?%/9+  %==9+ %==9+
-Role: BUYER
-Payment Mode|-I-?) ?
--9I?:
-Offline
-Designation|+/ : Software Engineer
-Email ID|	/O; 	)I : buycon2314.iiti.mh@gembuyer.in
-GSTIN|I9a	) : -
-Address|+-?: ESED ,IIT Bombay, Powai, Mumbai-400076,
-MUMBAI, MAHARASHTRA-400076, India
- 
- 
-Seller Details| Seller Details|%= O -? %= O -?  %==9+ %==9+
-GeM Seller ID|O/ %= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ U  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinash puri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9t/?%+- : Yes
-MSME Registration number|/9/	 +I9+ 9:/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?% uO+I : NA
-MSE Gender|/9	 %; uO+I : NA
-GSTIN|I9a	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|%9O  )?/  O  +V /w GST/TAX )=I9 +O? %/? ?? - Consignee
-Product Details| Product Details|	t+?/ 	t+?/  %==9+ %==9+
-# # Item Description| Item Description|/ /  %==9+ %==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-%==9+ %==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K~/ /K~/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  %=-?) %=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K~/ /K~/ (INR  (INR /w /w
-9-I 9-I  ?I~ ?I~  9 9
-9 9  9%9- 9%9-) )
-1
-Product Name| Product Name|	t+?/ 	t+?/  ? ?  )?/ )?/ :  : VERTICAL AUTOCLAVE
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  G?9 G?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     %%- %%-: : Catalogue not verified by OEM
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : Reseller not verified by OEM
-Category Name & Quadrant| Category Name & Quadrant|uO+I uO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : VERTICAL AUTOCLAVE (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-1 set 320,000 NA 320,000
-Total Order Value | I ; )U9 /K~/ (in INR) 320,000 320,000
- 
-Consignee Detail| Consignee Detail|+9O%?-I +9O%?-I  %==9+ %==9+
-S.No| S.No|.9. .9. Consignee| Consignee|+9O%?-I +9O%?-I It em| Item|=f-I =f-ILot No.| Lot No.|
-;I ;I  )-9 )-9Quantity| Quantity|/?K? /?K?
-Delivery Start Delivery Start
-After| After|
-%/)? %/)?   O  O   -?/ -?/
-%);I=9I %);I=9I  ?IH ?IH
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-%=-9+ %=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-1
-Designation|+/ : -
-Email ID|	/O; 	)I : buycon1748.iiti.mh@gembuyer.in
-Contact|9+ U  : 022-25767859-7859
-GSTIN|I9a	) : 27AAATI1446A1Z7
-Address|+-? : ESED ,IIT Bombay, Powai, Mumbai-400076,
-MUMBAI, MAHARASHTRA-400076, India
-VERTICAL AUTOCLAVE - 1 14-Feb-2023 16-Mar-2023
-
---- PAGE 14 ---
-
---- PAGE 15 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687757628989
-Generated Date| Generated Date|)I-/ )I-/  $-$- $-$- :  : 15-Mar-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  98/? 98/?: :  GEM/2023/B/3043797
-Organisation Details| Organisation Details|9)) 9))  $==9+ $==9+
-Type|FG+ : Central Autonomous
-Ministry|/J?;/ : Ministry of Science and Technology
-Department|$=-? : Department of Science and Technology (D ST)
-Organisation Name|9)) ?
-)?/ :
-Jawaharlal Nehru Centre for Advanced Scientific Research
-(JNCASR)
-Oûce Zone|?/?V;/ WOJ: Bangalore
-Buyer Details| Buyer Details|9I/?9 9I/?9  $==9+ $==9+
-Designation|+/ : Jr Admin Assistant
-Contact No.|9+ V  )-9 : 080-22082982-
-Email ID|	/O; 	)I : buycon2.jncasr.bnglr@gembuyer.in
-GSTIN|I9c	) : 29AAATJ1269J1ZE
-Address|+-? : JAKKUR , BANGALORE,
-BANGALORE, KARNATAKA-560064, India
- 
-Financial Approval Detail| Financial Approval Detail|$=iI/ $=iI/  j=I K $- j=I K $-  $==9+ $==9+
-IFD Concurrence|	+)I 99/$- : No
-Designation of Administrative Approval|
-F??9$) )I/K/) ? +/)?/:
-Administrative Officer
-Designation of Financial Approval|
-$=iI/ )I/K/) ? +/)?/ : Accounts Officer
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  F?$/9+ F?$/9+  $==9+ $==9+
-Role: PAO
-Payment Mode|
--I-?) ? -9I?:
-Offline
-Designation|+/ : Accounts Officer
-Email ID|	/O; 	)I : sampad.patra@gov.in
-GSTIN|I9c	) : N
-Address|+-?: JAKKUR , BANGALORE,
-BANGALORE CITY, KARNATAKA-560064, India
- 
- 
-Seller Details| Seller Details|$= O -? $= O -?  $==9+ $==9+
-GeM Seller ID|O/ $= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ V  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinas hpuri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9v/?$+- : Yes
-MSME Registration number|/9/	 +I9+ 98/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?$ wO+I : NA
-MSE Gender|/9	 $; wO+I : NA
-GSTIN|I9c	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|$9O  )?/  O  +W /y GST/TAX )=I9 +O? $/? ?? - Consignee
-Product Details| Product Details|	v+?/ 	v+?/  $==9+ $==9+
-# # Item Description| Item Description|/ /  $==9+ $==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-$==9+ $==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K/ /K/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  $=-?) $=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K/ /K/ (INR  (INR /y /y
-9-I 9-I  ?I ?I  9 9
-9 9  9$9- 9$9-) )
-1
-Product Name| Product Name|	v+?/ 	v+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Autoclave
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  F?9 F?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     $$- $$-: : OEM verified catalogue
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : OEM
-Category Name & Quadrant| Category Name & Quadrant|wO+I wO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Autoclave (ICMR Specs) (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-1 pieces 117,000 NA 117,000
-Total Order Value | I ; )V9 /K/ (in INR) 117,000 117,000
- 
-Consignee Detail| Consignee Detail|+9O$?-I +9O$?-I  $==9+ $==9+
-S.No| S.No|.9. .9. Consignee| Consignee|+9O$?-I +9O$?-I It em| Item|=j-I =j-ILot No.| Lot No.|
-;I ;I  )-9 )-9Quantity| Quantity|/?J? /?J?
-Delivery Start Delivery Start
-After| After|
-$/)? $/)?   O  O   -?/ -?/
-$);I=9I $);I=9I  ?IG ?IG
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-$=-9+ $=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-1
-Designation|+/ : -
-Email ID|	/O; 	)I : buycon2.jncasr.bnglr@gembuyer.in
-Contact|9+ V  : 080-22082982-
-GSTIN|I9c	) : 29AAATJ1269J1ZE
-Address|+-? : JAKKUR , BANGALORE,
-BANGALORE, KARNATAKA-560064, India
-ZENOTREX MEDICO
-Autoclave - 1 15-Mar-2023 30-Mar-2023
-
---- PAGE 16 ---
-
---- PAGE 17 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687710921269
-Generated Date| Generated Date|)I-/ )I-/  %-%- %-%- :  : 11-Apr-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  99/? 99/?: :  GEM/2022/B/2908789
-Organisation Details| Organisation Details|9)) 9))  %==9+ %==9+
-Type|EF+ : Central Autonomous
-Ministry|/I?;/ : Ministry of Health and Family Welfare
-Department|%=-? : Department of Health and Family Welfare
-Organisation Name|9)) ? )?/ : All India Institute of Med ical Sciences (AIIMS)
-Oûce Zone|?/?V;/ WOI: Patna
-Buyer Details| Buyer Details|9I/?9 9I/?9  %==9+ %==9+
-Designation|+/ : STORE KEEPER
-Contact No.|9+ V  )-9 : 0612-2451203-
-Email ID|	/O; 	)I : buyer59.aiimsa.bh@gembuyer.in
-GSTIN|I9c	) : 10PTNA02781C1D9
-Address|+-? : AIIMS, Phulwarisarif, PATNA PIN-851507,
-PATNA, BIHAR-801507, India
- 
-Financial Approval Detail| Financial Approval Detail|%=gI/ %=gI/  h=I K %- h=I K %-  %==9+ %==9+
-IFD Concurrence|	+)I 99/%- : No
-Designation of Administrative Approval|
-E??9%) )I/K/) ? +/)?/:
-EXECUTIVE DIRECTOR
-Designation of Financial Approval|
-%=gI/ )I/K/) ? +/)?/ : F & CAO
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  E?%/9+ E?%/9+  %==9+ %==9+
-Role: PAO
-Payment Mode|
--I-?) ? -9I?:
-Offline
-Designation|+/ : MITHLESH KUMAR SINGH
-Email ID|	/O; 	)I : mksingh.dad@hub.nic.in
-GSTIN|I9c	) : -
-Address|+-?: AIIMS, Phulwarisarif, PATNA PIN-851507,
-Patna, BIHAR-801507, India
- 
- 
-Seller Details| Seller Details|%= O -? %= O -?  %==9+ %==9+
-GeM Seller ID|O/ %= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ V  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinash puri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9w/?%+- : Yes
-MSME Registration number|/9/	 +I9+ 99/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?% xO+I : NA
-MSE Gender|/9	 %; xO+I : NA
-GSTIN|I9c	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|%9O  )?/  O  +W /z GST/TAX )=I9 +O? %/? ?? - Consignee
-Product Details| Product Details|	w+?/ 	w+?/  %==9+ %==9+
-# # Item Description| Item Description|/ /  %==9+ %==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-%==9+ %==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K/ /K/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  %=-?) %=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K/ /K/ (INR  (INR /z /z
-9-I 9-I  ?I ?I  9 9
-9 9  9%9- 9%9-) )
-1
-Product Name| Product Name|	w+?/ 	w+?/  ? ?  )?/ )?/ :  : VERTICAL AUTOCLAVE
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  E?9 E?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     %%- %%-: : Catalogue not verified by OEM
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : Reseller not verified by OEM
-Category Name & Quadrant| Category Name & Quadrant|xO+I xO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : VERTICAL AUTOCLAVE (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-3 set 197,000 NA 591,000
-Total Order Value | I ; )V9 /K/ (in INR) 591,000 591,000
- 
-Consignee Detail| Consignee Detail|+9O%?-I +9O%?-I  %==9+ %==9+
-S.No| S.No|.9. .9. Consignee| Consignee|+9O%?-I +9O%?-I It em| Item|=h-I =h-ILot No.| Lot No.|
-;I ;I  )-9 )-9Quantity| Quantity|/?I? /?I?
-Delivery Start Delivery Start
-After| After|
-%/)? %/)?   O  O   -?/ -?/
-%);I=9I %);I=9I  ?IF ?IF
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-%=-9+ %=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-1
-Designation|+/ : -
-Email ID|	/O; 	)I : drsanjeev.k@aiims.gov.in
-Contact|9+ V  : 8544-423536-
-GSTIN|I9c	) : N
-Address|+-? : AIIMS, Phulwarisarif, PATNA PIN-851507,
-PATNA, BIHAR-801507, India
-VERTICAL AUTOCLAVE - 3 11-Apr-2023 23-May-2023
-
---- PAGE 18 ---
-
---- PAGE 19 ---
- 
-)I-/ )I-/|Contract |Contract
-)I-/ )I-/  /? /?|Contract No: |Contract No: GEMC-511687771632172
-)I-/ )I-/  !-!- !-!-|Generated Date : |Generated Date : 02-Mar-2024
--K;I -K;I/ /9 9/ /+I-I+I +I-I+I  92/? 92/?|Bid/RA/PBP No.: |Bid/RA/PBP No.:  GEM/2024/B/4534261
-)I9KI )I9KI  )?/ )?/|Schedule Name: |Schedule Name:Schedule 5
-9)) 9))  !==9+ !==9+|Organisation Details |Organisation Details
-HI+|Type : State Government
-/N?;/|Ministry : -
-!=-?|Department : Horticulture Production Departmen t
-9)) ? )?/|Organisation Name : Directorate of Horti culture,Jammu
-?/?T;/ UON|Oûce Zone: Talab Tiloo Jammu
-9I/?9 9I/?9  !==9+ !==9+|Buyer Details |Buyer Details
-+/|Designation : Horticulture Development Officer
-9+ T  )-9|Contact No. : 0191-2554354-
-	/O; 	)I|Email ID : pardeep.dhingra@jk.gov.in
-I9e	)|GSTIN : -
-+-?|Address : Mega Fruit Plant Nursery Chakrohi RS PURA Jammu,
-JAMMU, JAMMU & KASHMIR-181102, India
- 
-!=jI/ !=jI/  k=I K !- k=I K !-  !==9+ !==9+|Financial Approval Detail |Financial Approval Detail
-	+)I 99/!-|IFD Concurrence : No
-H??9!) )I/K/) ? +/)?/|
-Designation of Administrative Approval: District Horticulture Officer Jammu
-!=jI/ )I/K/) ? +/)?/|
-Designation of Financial Approval : District Horticulture Officer Jammu
--I-?) -I-?)  H?!/9+ H?!/9+  !==9+ !==9+|Paying Authority Details |Paying Authority Details
-Role: PAO
--I-?) ? -9I?|
-Payment Mode: Offline
-+/|Designation : District Horticulture Officer
-	/O; 	)I|Email ID : vijay.kumar94192@jk.gov.in
-I9e	)|GSTIN : -
-+-?|Address:
-Mega Fruit Plant Nursery Chakrohi RS PURA Jammu,
-Jammu, JAMMU & KASHMIR-181102, India
- 
- 
-!= O -? != O -?  !==9+ !==9+|Seller Details |Seller Details
-O/ != O -? 	)I|GeM Seller ID : 3F3E200001234314
-  +)I ? )?/|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-9+ T  )-9|Contact No. : 07206099599
-	/O; 	)I|Email ID : zenotrexmedico@gmail.com
-+-?| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-/9/	 +I9+ 92/?|MSME Registration number : UDYAM -HR-01-0000220
-/9	 9?/?! vO+I|MSE Social Category : NA
-/9	 !; vO+I|MSE Gender : NA
-I9e	)|GSTIN: 06AABCZ5449G1Z5
-*!9 O  )?/  O  +U /x GST/TAX )=I9 +O? !/? ??|GST / Tax invoice to be raised in the name of - Buyer
-!=-9+ !)/{? | Delivery Instructions : NA
-	}+?/ 	}+?/  !==9+ !==9+|Product Details |Product Details
-# # / /  !==9+ !==9+|Item Description |Item Description
-/ /
-!==9+ !==9+| |
-Ordered Ordered
-Quantity Quantity
-?	 ?	 |  |
-Unit Unit
-?	 ?	  /K/ /K/
-(INR)| (INR)|
-Unit Price Unit Price
-(INR) (INR)
-9 9  !=-?) !=-?) (INR)|  (INR)|
-Tax Bifurcation (INR) Tax Bifurcation (INR)
-/K/ /K/  
-(INR (INR /x /x  9-I 9-I
-?I ?I  9 9  9 9
-9!9- 9!9-)| )|
-Price Price
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in INR) Taxes in INR)
-1
-	}+?/ 	}+?/  ? ?  )?/ )?/ |Product Name :  |Product Name : Vertical autoclave
-?) ?)|Brand : |Brand : ZENOTREX MEDICO
-?) ?)  H?9 H?9|Brand Type : |Brand Type : Unbranded
- I ;I  I ;I     !!- !!-|Catalogue Status: |Catalogue Status: Catalogue not verified by OEM
- I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I|Selling As : |Selling As : Reseller not verified by OEM
-vO+I vO+I  ? ?  )?/ )?/  9 9  -I-?? -I-??|Category Name & Quadrant : |Category Name & Quadrant : BOQ (Q3)
-/I); /I);|Model: |Model: ZPL-A22R 
-9) 9)  K) K)|HSN Code: |HSN Code: 84192090
-2 Piece 146,000 NA 292,000
- I ; )T9 /K/ |Total Order Value (in INR) 292,000 292, 000
- 
-+9O!?-I +9O!?-I  !==9+ !==9+|Consignee Detail |Consignee Detail
-.9. .9.|S.No |S.No +9O!?-I +9O!?-I|Consignee |Consignee = k-I =k-I|Item |Item;I ;I  )-9 )-9| |
-Lot No. Lot No./?N? /?N?|Quantity |Quantity
-!/)? !/)?   O  O   -?/ -?/
-!);I=9I !);I=9I  ?II ?II
-9)? 9)?  9I 9I| |
-Delivery Start Delivery Start
-After After
-!=-9+ !=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I| |
-Delivery To Delivery To
-Be Be
-Completed Completed
-By By
-+/| Designation : -
-	/O; 	)I|Email ID : pardeep.dhingra@jk.gov.in
-9+ T |Contact : 0191-2554354-
---- PAGE 20 ---
-
---- PAGE 21 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687712584224
-Generated Date| Generated Date|)I-/ )I-/  $-$- $-$- :  : 22-Nov-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  99/? 99/?: :  GEM/2023/B/4023898
-Organisation Details| Organisation Details|9)) 9))  $==9+ $==9+
-Type|GH+ : State Local Bodies
-Ministry|/K?;/ : -
-Department|$=-? : Panchayats and Rural Housing Departm ent Gujarat
-Organisation Name|9)) ? )?/ : Jamnagar District Panchayat
-Oûce Zone|?/?U;/ VOK: jamnagar
-Buyer Details| Buyer Details|9I/?9 9I/?9  $==9+ $==9+
-Designation|+/ : Chief District Health Officer
-Contact No.|9+ U  )-9 : 0288-2671097-
-Email ID|	/O; 	)I : dho1-ddo-jam@gujarat.gov.in
-GSTIN|I9a	) : 24RKTH02221C1DD
-Address|+-? :
-Panchayat Bhavan, District Panchayat, Opp.Cricket Bunglow,
-Jamnagar.,
-JAMNAGAR, GUJARAT-361001, India
- 
-Financial Approval Detail| Financial Approval Detail|$=hI/ $=hI/  i=I K $- i=I K $-  $==9+ $==9+
-IFD Concurrence|	+)I 99/$- : No
-Designation of Administrative Approval|
-G??9$) )I/K/) ? +/)?/: DISTRICT DEVELOPMENT OFFICER
-Designation of Financial Approval|
-$=hI/ )I/K/) ? +/)?/ : DISTRICT DEVELOPMENT OFFICER
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  G?$/9+ G?$/9+  $==9+ $==9+
-Role: PAO
-Payment Mode|
--I-?) ? -9I?: Offline
-Designation|+/ : Accounts Officer
-Email ID|	/O; 	)I : ao-ddo-jam@gujarat.gov.in
-GSTIN|I9a	) : -
-Address|+-?:
-Panchayat Bhavan, District Panchayat, Opp.Cricket Bunglow,
-Jamnagar.,
-Jamnagar, GUJARAT-361001, India
- 
- 
-Seller Details| Seller Details|$= O -? $= O -?  $==9+ $==9+
-GeM Seller ID|O/ $= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ U  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-MSME Registration number|/9/	 +I9+ 99/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?$ tO+I : NA
-MSE Gender|/9	 $; tO+I : NA
-GSTIN|I9a	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|$9O  )?/  O  +V /v GST/TAX )=I9 +O? $/? ?? - Buyer
-Delivery Instructions|$=-9+ $)/y? : NA
-Product Details| Product Details|	{+?/ 	{+?/  $==9+ $==9+
-# # Item Description| Item Description|/ /  $==9+ $==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-$==9+ $==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K/ /K/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  $=-?) $=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K/ /K/ (INR  (INR /v /v
-9-I 9-I  ?I ?I  9 9
-9 9  9$9- 9$9-) )
-1
-Product Name| Product Name|	{+?/ 	{+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Keyboard Interface Radial Type
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  G?9 G?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     $$- $$-: : Catalogue not verified by OEM
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : Reseller not verified by OEM
-Category Name & Quadrant| Category Name & Quadrant|tO+I tO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Steam Sterlizer (V2) (Q2)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-33 pieces 50,000 NA 1,650,000
-Total Order Value | I ; )U9 /K/ (in INR) 1,650,000 1,650 ,000
- 
-Consignee Detail| Consignee Detail|+9O$?-I +9O$?-I  $==9+ $==9+
-S.No| S.No|
-.9. .9. Consignee| Consignee|+9O$?-I +9O$?-I Item| Item|=i-I =i-I Lot No.| Lot No.|
-;I ;I  )-9 )-9
-Quantity| Quantity|
-/?K? /?K?
-Delivery Start Delivery Start
-After| After|
-$/)? $/)?   O  O   -?/ -?/
-$);I=9I $);I=9I  ?IH ?IH
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-$=-9+ $=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-Designation|+/ : -
-Email ID|	/O; 	)I : dho1-ddo-jam@gujarat.gov.in
-
---- PAGE 22 ---
-
---- PAGE 23 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687795531181
-Generated Date| Generated Date|)I-/ )I-/  $-$- $-$- :  : 10-Oct-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  99/? 99/?: :  GEM/2023/B/3988355
-Organisation Details| Organisation Details|9)) 9))  $==9+ $==9+
-Type|EF+ : State Government
-Ministry|/J?;/ : -
-Department|$=-? : Animal Husbandary Darirying and Fisheries Department
-Tamil Nadu
-Organisation Name|9)) ?
-)?/ : N/A
-Oûce Zone|?/?S;/ TOJ: Directorate Of Animal Husbandry  And Veterinary Ser
-Buyer Details| Buyer Details|9I/?9 9I/?9  $==9+ $==9+
-Designation|+/ : DD Mecheri
-Contact No.|9+ S  )-9 : -
-Email ID|	/O; 	)I : buycon49.ahdfdtn.tn@gembuyer.in
-GSTIN|I9a	) : -
-Address|+-? :
-Deputy Director, Mecheri Sheep Liquid Semen Production
-Station, Pallapatti, Mecheri,
-SALEM, TAMIL NADU-636458, India
- 
-Financial Approval Detail| Financial Approval Detail|$=fI/ $=fI/  g=I K $- g=I K $-  $==9+ $==9+
-IFD Concurrence|	+)I 99/$- : No
-Designation of Administrative
-Approval|
-E??9$) )I/K/) ? +/)?/:
-Regional Joint Director of Animal Husbandry-SA
-LEM
-Designation of Financial Approval|
-$=fI/ )I/K/) ? +/)?/ :
-Regional Joint Director of Animal Husbandry-SA
-LEM
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  E?$/9+ E?$/9+  $==9+ $==9+
-Role: PAO
-Payment Mode|
--I-?) ? -9I?: Offline
-Designation|+/ : ACCOUNTS OFFICER
-Email ID|	/O; 	)I : pavishreeyogesh@gmail.com
-GSTIN|I9a	) : -
-Address|+-?:
-571, Integrated Animal Husbandry and Fisheries
-Department Complex, Veterinary Hospital Compound,
-Annasalai, Nandanam.,
-Chennai, TAMIL NADU-600035, India
- 
- 
-Seller Details| Seller Details|$= O -? $= O -?  $==9+ $==9+
-GeM Seller ID|O/ $= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LIMITED
-Contact No.|9+ S  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? :
-PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-MSME Registration number|/9/	 +I9+ 99/? : UDYAM -HR-01-0000220
-MSE Social Category|/9	 9?/?$ qO+I : NA
-MSE Gender|/9	 $; qO+I : NA
-GSTIN|I9a	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|$9O  )?/  O  +T /s GST/TAX )=I9 +O? $/? ?? - Consignee
-Delivery Instructions|$=-9+ $)/v? : NA
-Product Details| Product Details|	x+?/ 	x+?/  $==9+ $==9+
-# # Item Description| Item Description|/ /  $==9+$==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-$==9+ $==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K~/ /K~/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  $=-?) $=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K~/ /K~/ (INR  (INR /s /s
-9-I 9-I  ?I~ ?I~  9 9
-9 9  9$9- 9$9-) )
-1
-Product Name| Product Name|	x+?/ 	x+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Keyboard Interface Radial Type
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  E?9 E?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     $$- $$-: : Catalogue not verified by OEM
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : Reseller not verified by OEM
-Category Name & Quadrant| Category Name & Quadrant|qO+I qO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Steam Sterlizer (V2) (Q2)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-1 pieces 96,000 NA 96,000
-Total Order Value | I ; )S9 /K~/ (in INR) 96,000 96,00 0
- 
-Consignee Detail| Consignee Detail|+9O$?-I +9O$?-I  $==9+ $==9+
-S.No| S.No|
-.9. .9. Consignee| Consignee|+9O$?-I +9O$?-I Item| Item|=g-I =g-I Lot No.| Lot No.|
-;I ;I  )-9 )-9
-Quantity| Quantity|
-/?J? /?J?
-Delivery Start Delivery Start
-After| After|
-$/)? $/)?   O  O   -?/ -?/
-$);I=9I $);I=9I  ?IF ?IF
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-$=-9+ $=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-Designation|+/ : -
-
---- PAGE 24 ---
-
---- PAGE 25 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687759535583
-Generated Date| Generated Date|)I-/ )I-/  $-$- $-$- :  : 11-Apr-2023
-Organisation Details| Organisation Details|9)) 9))  $==9+ $==9+
-Type|89+ : Central Government
-Ministry|/=?;/ : Ministry of Defence
-Department|$=-? : Department of Defence
-Organisation Name|9)) ? )?/ : DG Armed Forces Medical S ervice
-Oûce Zone|?/?F;/ GO=: Armed Forces Medical Store Depot Delhi
-Buyer Details| Buyer Details|9I/?9 9I/?9  $==9+ $==9+
-Designation|+/ : LPO4
-Contact No.|9+ F  )-9 : 011-25688747-
-Email ID|	/O; 	)I : buycon11.afmsd.delhi@gembuyer.in
-GSTIN|I9\	) : -
-Address|+-? :
-ARMED FORCES MEDICAL STORES DEPOT (AFMSD) SADAR
-BAZAAR, MAUDE LINES, DELHI CANTT,
-NEW DELHI, DELHI-110010, India
- 
-Financial Approval Detail| Financial Approval Detail|$=dI/ $=dI/  e=I K $- e=I K $-  $==9+ $==9+
-IFD Concurrence|	+)I 99/$- : Yes
-Designation of Administrative Approval|
-8??9$) )I/K/) ? +/)?/: Commandant
-Designation of Financial Approval|
-$=dI/ )I/K/) ? +/)?/ : Commandant
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  8?$/9+ 8?$/9+  $==9+ $==9+
-Role: BUYER
-Payment Mode|
--I-?) ? -9I?: CGDA-CDA
-Designation|+/ : LPO4
-Email ID|	/O; 	)I : buycon11.afmsd.delhi@gembuyer.in
-GSTIN|I9\	) : -
-Address|+-?:
-ARMED FORCES MEDICAL STORES DEPOT (AFMSD) SADAR
-BAZAAR, MAUDE LINES, DELHI CANTT,
-SOUTH WEST DELHI, DELHI-110010, India
- 
- 
-Seller Details| Seller Details|$= O -? $= O -?  $==9+ $==9+
-GeM Seller ID|O/ $= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ F  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinash puri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9r/?$+- : Yes
-MSME Registration number|/9/	 +I9+ 9s/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?$ tO+I : NA
-MSE Gender|/9	 $; tO+I : NA
-GSTIN|I9\	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|$9O  )?/  O  +G /w GST/TAX )=I9 +O? $/? ?? - Buyer
-Product Details| Product Details|	r+?/ 	r+?/  $==9+ $==9+
-# # Item Description| Item Description|/ /  $==9+ $==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-$==9+ $==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K~/ /K~/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  $=-?) $=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K~/ /K~/ (INR  (INR /w /w
-9-I 9-I  ?I~ ?I~  9 9
-9 9  9$9- 9$9-) )
-1
-Product Name| Product Name|	r+?/ 	r+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Autoclave
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  8?9 8?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     $$- $$-: : OEM verified catalogue
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : OEM
-Category Name & Quadrant| Category Name & Quadrant|tO+I tO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Autoclave (ICMR Specs) (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-2 pieces 174,900 NA 349,800
-Total Order Value | I ; )F9 /K~/ (in INR) 349,800 349,800
- 
-Consignee Detail| Consignee Detail|+9O$?-I +9O$?-I  $==9+ $==9+
-S.No| S.No|
-.9. .9. Consignee| Consignee|+9O$?-I +9O$?-I Item| Item|=e-I =e-I Lot No.| Lot No.|
-;I ;I  )-9 )-9
-Quantity| Quantity|
-/?=? /?=?
-Delivery Start Delivery Start
-After| After|
-$/)? $/)?   O  O   -?/ -?/
-$);I=9I $);I=9I  ?I9 ?I9
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-$=-9+ $=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-1
-Designation|+/ : OIC RECEIPT
-Email ID|	/O; 	)I : shital.020x@gov.in
-Contact|9+ F  : 011-25693456-
-GSTIN|I9\	) : - ZENOTREX MEDICO - 2 11-Apr-2023 26-Apr-2023
-
---- PAGE 26 ---
-
---- PAGE 27 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687721130793
-Generated Date| Generated Date|)I-/ )I-/  &-&- &-&- :  : 12-Apr-2023
-Organisation Details| Organisation Details|9)) 9))  &==9+ &==9+
-Type|89+ : Central Government
-Ministry|/=?;/ : Ministry of Defence
-Department|&=-? : Department of Defence
-Organisation Name|9)) ? )?/ : DG Armed Forces Medical S ervice
-Oûce Zone|?/?F;/ GO=: Armed Forces Medical Store Depot Delhi
-Buyer Details| Buyer Details|9I/?9 9I/?9  &==9+ &==9+
-Designation|+/ : LPO4
-Contact No.|9+ F  )-9 : 011-25688747-
-Email ID|	/O; 	)I : buycon11.afmsd.delhi@gembuyer.in
-GSTIN|I9\	) : -
-Address|+-? :
-ARMED FORCES MEDICAL STORES DEPOT (AFMSD) SADAR
-BAZAAR, MAUDE LINES, DELHI CANTT,
-NEW DELHI, DELHI-110010, India
- 
-Financial Approval Detail| Financial Approval Detail|&=dI/ &=dI/  e=I K &- e=I K &-  &==9+ &==9+
-IFD Concurrence|	+)I 99/&- : Yes
-Designation of Administrative Approval|
-8??9&) )I/K/) ? +/)?/: Commandant
-Designation of Financial Approval|
-&=dI/ )I/K/) ? +/)?/ : Commandant
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  8?&/9+ 8?&/9+  &==9+ &==9+
-Role: BUYER
-Payment Mode|
--I-?) ? -9I?: CGDA-CDA
-Designation|+/ : LPO4
-Email ID|	/O; 	)I : buycon11.afmsd.delhi@gembuyer.in
-GSTIN|I9\	) : -
-Address|+-?:
-ARMED FORCES MEDICAL STORES DEPOT (AFMSD) SADAR
-BAZAAR, MAUDE LINES, DELHI CANTT,
-SOUTH WEST DELHI, DELHI-110010, India
- 
- 
-Seller Details| Seller Details|&= O -? &= O -?  &==9+ &==9+
-GeM Seller ID|O/ &= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ F  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinash puri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9r/?&+- : Yes
-MSME Registration number|/9/	 +I9+ 9s/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?& tO+I : NA
-MSE Gender|/9	 &; tO+I : NA
-GSTIN|I9\	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|&9O  )?/  O  +G /w GST/TAX )=I9 +O? &/? ?? - Buyer
-Product Details| Product Details|	r+?/ 	r+?/  &==9+ &==9+
-# # Item Description| Item Description|/ /  &==9+ &==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-&==9+ &==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K~/ /K~/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  &=-?) &=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K~/ /K~/ (INR  (INR /w /w
-9-I 9-I  ?I~ ?I~  9 9
-9 9  9&9- 9&9-) )
-1
-Product Name| Product Name|	r+?/ 	r+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Autoclave
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  8?9 8?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     &&- &&-: : OEM verified catalogue
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : OEM
-Category Name & Quadrant| Category Name & Quadrant|tO+I tO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Autoclave (ICMR Specs) (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-4 pieces 124,900 NA 499,600
-Total Order Value | I ; )F9 /K~/ (in INR) 499,600 499,600
- 
-Consignee Detail| Consignee Detail|+9O&?-I +9O&?-I  &==9+ &==9+
-S.No| S.No|
-.9. .9. Consignee| Consignee|+9O&?-I +9O&?-I Item| Item|=e-I =e-I Lot No.| Lot No.|
-;I ;I  )-9 )-9
-Quantity| Quantity|
-/?=? /?=?
-Delivery Start Delivery Start
-After| After|
-&/)? &/)?   O  O   -?/ -?/
-&);I=9I &);I=9I  ?I9 ?I9
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-&=-9+ &=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-1
-Designation|+/ : OIC RECEIPT
-Email ID|	/O; 	)I : shital.020x@gov.in
-Contact|9+ F  : 011-25693456-
-GSTIN|I9\	) : - ZENOTREX MEDICO - 4 12-Apr-2023 27-Apr-2023
-
---- PAGE 28 ---
-
---- PAGE 29 ---
-
---- PAGE 30 ---
-
---- PAGE 31 ---
-
---- PAGE 32 ---
-
---- PAGE 33 ---
- 
-Contract| Contract|)I-/ )I-/
-Contract No| Contract No|)I-/ )I-/  /? /?: : GEMC-511687767932213
-Generated Date| Generated Date|)I-/ )I-/  %-%- %-%- :  : 28-Feb-2023
-Bid/RA/PBP No.| Bid/RA/PBP No.|-K;I -K;I/ /9 9/ /+I-I+I +I-I+I  9:/? 9:/?: :  GEM/2022/B/2802928
-Organisation Details| Organisation Details|9)) 9))  %==9+ %==9+
-Type|GH+ : State Government
-Ministry|/L?;/ : -
-Department|%=-? : Health and Family Welfare Services Department
-Puducherry
-Organisation Name|9)) ?
-)?/ : N/A
-Oûce Zone|?/?U;/ VOL: Puducherry
-Buyer Details| Buyer Details|9I/?9 9I/?9  %==9+ %==9+
-Designation|+/ : Chief of Government Pharmacy
-Contact No.|9+ U  )-9 : 0413-2272170-
-Email ID|	/O; 	)I : cgp-health.pon@nic.in
-GSTIN|I9a	) : -
-Address|+-? :
-CHIEF OF GOVT. PHARMACY, GOVT. PHARMACY, INDIRA
-NAGAR, GORIMEDU, OPP to ESI HOSPITAL, PUDUCHERRY -
-605006.,
-PONDICHERRY, PUDUCHERRY-605006, India
- 
-Financial Approval Detail| Financial Approval Detail|%=gI/ %=gI/  h=I K %- h=I K %-  %==9+ %==9+
-IFD Concurrence|	+)I 99/%- : No
-Designation of Administrative Approval|
-G??9%) )I/K/) ? +/)?/: Mission Director, PSHS
-Designation of Financial Approval|
-%=gI/ )I/K/) ? +/)?/ : Mission Director, PSHS
-Paying Authority Details| Paying Authority Details|-I-?) -I-?)  G?%/9+ G?%/9+  %==9+ %==9+
-Role: PAO
-Payment Mode|-I-?) ?
--9I?: Offline
-Designation|+/ : Junior Accounts Officer
-Email ID|	/O; 	)I : jao-gp.pon@gov.in
-GSTIN|I9a	) : -
-Address|+-?:
-CHIEF OF GOVT. PHARMACY, GOVT. PHARMACY, INDIRA
-NAGAR, GORIMEDU, OPP to ESI HOSPITAL, PUDUCHERRY -
-605006.,
-Pondicherry, PUDUCHERRY-605006, India
- 
- 
-Seller Details| Seller Details|%= O -? %= O -?  %==9+ %==9+
-GeM Seller ID|O/ %= O -? 	)I : 3F3E200001234314
-Company Name|  +)I ? )?/ : ZENOTREX MEDICO PRIVATE LI MITED
-Contact No.|9+ U  )-9 : 07206099599
-Email ID|	/O; 	)I : zenotrexmedico@gmail.com
-Address|+-? : PLOT NO-150,Plot No.:-150, Opp Bhole Dharam Kanta, Avinash puri,AMBALA CANT, AMBALA,
-Ambala, HARYANA-133006, -
-MSME veriûed|/9/	 9t/?%+- : Yes
-MSME Registration number|/9/	 +I9+ 9:/? : UDYAM-H R-01-0000220
-MSE Social Category|/9	 9?/?% uO+I : NA
-MSE Gender|/9	 %; uO+I : NA
-GSTIN|I9a	): 06AABCZ5449G1Z5
-*GST / Tax invoice to be raised in the name of|%9O  )?/  O  +V /w GST/TAX )=I9 +O? %/? ?? - Buyer
-Product Details| Product Details|	t+?/ 	t+?/  %==9+ %==9+
-# # Item Description| Item Description|/ /  %==9+ %==9+
-Ordered Ordered
-Quantity| Quantity|
-/ /
-%==9+ %==9+
-Unit | Unit |
-?	 ?	
-Unit Price Unit Price
-(INR)| (INR)|
-?	 ?	  /K/ /K/ (INR)  (INR)
-Tax Bifurcation (INR)| Tax Bifurcation (INR)|
-9 9  %=-?) %=-?) (INR)  (INR)
-Price Price 
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in Taxes in
-INR)| INR)|
-/K/ /K/ (INR  (INR /w /w
-9-I 9-I  ?I ?I  9 9
-9 9  9%9- 9%9-) )
-1
-Product Name| Product Name|	t+?/ 	t+?/  ? ?  )?/ )?/ :  : ZENOTREX MEDICO Autoclave
-Brand| Brand|?) ?) :  : ZENOTREX MEDICO
-Brand Type| Brand Type|?) ?)  G?9 G?9 :  : Registered Brand
-Catalogue Status| Catalogue Status| I ;I  I ;I     %%- %%-: : OEM verified catalogue
-Selling As| Selling As| I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I  : : OEM
-Category Name & Quadrant| Category Name & Quadrant|uO+I uO+I  ? ?  )?/ )?/  9 9  -I-?? -I-?? :  : Autoclave (ICMR Specs) (Q3)
-Model| Model|/I); /I);: : ZPL-A22R 
-HSN Code| HSN Code|9) 9)  K) K): : HSN not specified by seller
-2 pieces 87,000 NA 174,000
-Total Order Value | I ; )U9 /K/ (in INR) 174,000 174,000
- 
-Consignee Detail| Consignee Detail|+9O%?-I +9O%?-I  %==9+ %==9+
-S.No| S.No|
-.9. .9. Consignee| Consignee|+9O%?-I +9O%?-I Item| Item|=h-I =h-I Lot No.| Lot No.|
-;I ;I  )-9 )-9
-Quantity| Quantity|
-/?L? /?L?
-Delivery Start Delivery Start
-After| After|
-%/)? %/)?   O  O   -?/ -?/
-%);I=9I %);I=9I  ?IH ?IH
-9)? 9)?  9I 9I
-Delivery To Delivery To
-Be Be
-Completed Completed
-By| By|
-%=-9+ %=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I
-Designation|+/ : -
-Email ID|	/O; 	)I : g.premanand86@py.gov.in
-
---- PAGE 34 ---
-
---- PAGE 35 ---
-
---- PAGE 36 ---
- 
-)I-/ )I-/|Contract |Contract
-)I-/ )I-/  /? /?|Contract No: |Contract No: GEMC-511687759377123
-)I-/ )I-/  "-"- "-"-|Generated Date : |Generated Date : 01-Feb-2024
--K;I -K;I/ /9 9/ /+I-I+I +I-I+I  95/? 95/?|Bid/RA/PBP No.: |Bid/RA/PBP No.:  GEM/2023/B/4358436
-9)) 9))  "==9+ "==9+|Organisation Details |Organisation Details
-EF+|Type : Central Government
-/L?;/|Ministry : Ministry of Textiles
-"=-?|Department : NA
-9)) ? )?/|Organisation
-Name : Central Silk Board
-?/?R;/ SOL|Oûce Zone:
-Central Sericultural Research And Training Institut e,
-Berhampore (w.b.)
-9I/?9 9I/?9  "==9+ "==9+|Buyer Details |Buyer Details
-+/|Designation : Consignee3
-9+ R  )-9|Contact No. : 3482-224716-215
-	/O; 	)I|Email ID : chandanpal.csb@nic.in
-I9e	)|GSTIN : -
-+-?|Address :
-Central Sericultural Research and Training Institut e
-&#x28;CSRTI&#x29; Berhampore,
-MURSHIDABAD, WEST BENGAL-742101, India
- 
-"=mI/ "=mI/  n=I K "- n=I K "-  "==9+ "==9+|Financial Approval Detail |Financial Approval Detail
-	+)I 99/"-|IFD Concurrence : No
-E??9") )I/K/) ? +/)?/|
-Designation of Administrative Approval: DIRECTOR
-"=mI/ )I/K/) ? +/)?/|
-Designation of Financial Approval : DIRECTOR
--I-?) -I-?)  E?"/9+ E?"/9+  "==9+ "==9+|Paying Authority Details |Paying Authority Details
-Role: PAO
--I-?) ? -9I?|
-Payment Mode: Offline
-+/|Designation : PAOcsrti
-	/O; 	)I|Email ID : pradeep.csb@gov.in
-I9e	)|GSTIN : -
-+-?|Address:
-Central Sericultural Research and Training Institut e,
-Berhampore,
-MURSHIDABAD, WEST BENGAL-742101, India
- 
- 
-"= O -? "= O -?  "==9+ "==9+|Seller Details |Seller Details
-O/ "= O -? 	)I|GeM Seller ID : 3F3E200001234314
-  +)I ? )?/|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-9+ R  )-9|Contact No. : 07206099599
-	/O; 	)I|Email ID : zenotrexmedico@gmail.com
-+-?| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-/		 "w"-| MII Status : True
-/9/	 9x/?"+-|MSME veriûed : Yes
-/9/	 +I9+ 95/?|MSME Registration number : UDYAM -HR-01-0000220
-/9	 9?/?" zO+I|MSE Social Category : NA
-/9	 "; zO+I|MSE Gender : NA
-I9e	)|GSTIN: 06AABCZ5449G1Z5
-*"9 O  )?/  O  +S /| GST/TAX )=I9 +O? "/? ??|GST / Tax invoice to be raised in the name of - Consignee
-"=-9+ ")/? | Delivery Instructions : NA
-	x+?/ 	x+?/  "==9+ "==9+|Product Details |Product Details
-# # / /  "==9+ "==9+|Item Description |Item Description
-/ /
-"==9+ "==9+| |
-Ordered Ordered
-Quantity Quantity
-?	 ?	 |  |
-Unit Unit
-?	 ?	  /K/ /K/
-(INR)| (INR)|
-Unit Price Unit Price
-(INR) (INR)
-9 9  "=-?) "=-?) (INR)|  (INR)|
-Tax Bifurcation Tax Bifurcation
-(INR) (INR)
-/K/ /K/  
-(INR (INR /| /|  9-I 9-I
-?I ?I  9 9  9 9
-9"9- 9"9-)| )|
-Price Price
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in INR) Taxes in INR)
-1
-	x+?/ 	x+?/  ? ?  )?/ )?/ |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx . 80-120 Liters
-?) ?)|Brand : |Brand : ZENOTREX
-?) ?)  E?9 E?9|Brand Type : |Brand Type : Registered Brand
- I ;I  I ;I     "w"- "w"-|Catalogue Status: |Catalogue Status: OEM verified catalogue
- I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I|Selling As : |Selling As : OEM
-zO+I zO+I  ? ?  )?/ )?/  9 9  -I-?? -I-??|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-/I); /I);|Model: |Model: ZPL-A22R 
-9) 9)  K) K)|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 217,000 NA 217,000
- I ; )R9 /K/ |Total Order Value (in INR) 217,000 217, 000
- 
-+9O"?-I +9O"?-I  "==9+ "==9+|Consignee Detail |Consignee Detail
-.9. .9.|S.No |S.No +9O"?-I +9O"?-I|Consignee |Consignee = n-I =n-I|Item |Item;I ;I  )-9 )-9| |
-Lot No. Lot No./?L? /?L?|Quantity |Quantity
-"/)? "/)?   O  O   -?/ -?/
-");I=9I ");I=9I  ?IF ?IF
-9)? 9)?  9I 9I| |
-Delivery Start Delivery Start
-After After
-"=-9+ "=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I| |
-Delivery To Delivery To
-Be Be
-Completed Completed
-By By
-
---- PAGE 37 ---
-
---- PAGE 38 ---
- 
-)I-/ )I-/|Contract |Contract
-)I-/ )I-/  /? /?|Contract No: |Contract No: GEMC-511687714459566
-)I-/ )I-/  !-!- !-!-|Generated Date : |Generated Date : 28-Mar-2024
--K;I -K;I/ /9 9/ /+I-I+I +I-I+I  92/? 92/?|Bid/RA/PBP No.: |Bid/RA/PBP No.:  GEM/2024/B/4717719
-9)) 9))  !==9+ !==9+|Organisation Details |Organisation Details
-BC+|Type : Central Government
-/I?;/|Ministry : Ministry of Defence
-!=-?|Department : Department of Defence Research & Development
-9)) ? )?/|Organisation Name
-:
-Defence Research and Development Organisation
-(DRDO)
-?/?P;/ QOI|Oûce Zone: DRDE Jhansi Road Gwalior 474002  Madhya Pradesh
-9I/?9 9I/?9  !==9+ !==9+|Buyer Details |Buyer Details
-+/|Designation : Kapil Dev Pandey
-9+ P  )-9|Contact No. : 0751-2390234-234
-	/O; 	)I|Email ID : kapildevpandey.drde@gov.in
-I9c	)|GSTIN : -
-+-?|Address : DRDE, JHANSI ROAD, GWALIOR,
-GWALIOR, MADHYA PRADESH-474002, India
- 
-!=jI/ !=jI/  k=I K !- k=I K !-  !==9+ !==9+|Financial Approval Detail |Financial Approval Detail
-	+)I 99/!-|IFD Concurrence : No
-B??9!) )I/K/) ? +/)?/|
-Designation of Administrative Approval:
-Scientist G
-!=jI/ )I/K/) ? +/)?/|
-Designation of Financial Approval : Scientist G
--I-?) -I-?)  B?!/9+ B?!/9+  !==9+ !==9+|Paying Authority Details |Paying Authority Details
-Role: BUYER
--I-?) ? -9I?|
-Payment Mode:
-CGDA-CDA
-+/|Designation : Kapil Dev Pandey
-	/O; 	)I|Email ID : kapildevpandey.drde@gov.in
-I9c	)|GSTIN : -
-+-?|Address: DRDE, JHANSI ROAD, GWALIOR,
-GWALIOR, MADHYA PRADESH-474002, India
- 
- 
-!= O -? != O -?  !==9+ !==9+|Seller Details |Seller Details
-O/ != O -? 	)I|GeM Seller ID : 3F3E200001234314
-  +)I ? )?/|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-9+ P  )-9|Contact No. : 07206099599
-	/O; 	)I|Email ID : zenotrexmedico@gmail.com
-+-?| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-/9/	 9w/?!+-|MSME veriûed : No
-/9/	 +I9+ 92/?|MSME Registration number : UDYAM -HR-01-0000220
-/9	 9?/?! yO+I|MSE Social Category : NA
-/9	 !; yO+I|MSE Gender : NA
-I9c	)|GSTIN: 06AABCZ5449G1Z5
-*!9 O  )?/  O  +Q /{ GST/TAX )=I9 +O? !/? ??|GST / Tax invoice to be raised in the name of - Buyer
-!=-9+ !)/~? | Delivery Instructions : NA
-	w+?/ 	w+?/  !==9+ !==9+|Product Details |Product Details
-# # / /  !==9+ !==9+|Item Description |Item Description
-/ /
-!==9+ !==9+| |
-Ordered Ordered
-Quantity Quantity
-?	 ?	 |  |
-Unit Unit
-?	 ?	  /K/ /K/
-(INR)| (INR)|
-Unit Price Unit Price
-(INR) (INR)
-9 9  !=-?) !=-?) (INR)|  (INR)|
-Tax Bifurcation Tax Bifurcation
-(INR) (INR)
-/K/ /K/  
-(INR (INR /{ /{  9-I 9-I
-?I ?I  9 9  9 9
-9!9- 9!9-)| )|
-Price Price
-(Inclusive of (Inclusive of
-all Duties and all Duties and
-Taxes in INR) Taxes in INR)
-1
-	w+?/ 	w+?/  ? ?  )?/ )?/ |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx . 80-120 Liters
-?) ?)|Brand : |Brand : ZENOTREX
-?) ?)  B?9 B?9|Brand Type : |Brand Type : Registered Brand
- I ;I  I ;I     !!- !!-|Catalogue Status: |Catalogue Status: OEM verified catalogue
- I 9O  I 9O  -O? -O?  ? ?  99? 99?  9I 9I|Selling As : |Selling As : OEM
-yO+I yO+I  ? ?  )?/ )?/  9 9  -I-?? -I-??|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-/I); /I);|Model: |Model: ZPL-A22R 
-9) 9)  K) K)|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 100,000 NA 100,000
- I ; )P9 /K/ |Total Order Value (in INR) 100,000 100, 000
- 
-+9O!?-I +9O!?-I  !==9+ !==9+|Consignee Detail |Consignee Detail
-.9. .9.|S.No |S.No +9O!?-I +9O!?-I|Consignee |Consignee = k-I =k-I|Item |Item;I ;I  )-9 )-9| |
-Lot No. Lot No./?I? /?I?|Quantity |Quantity
-!/)? !/)?   O  O   -?/ -?/
-!);I=9I !);I=9I  ?IC ?IC
-9)? 9)?  9I 9I| |
-Delivery Start Delivery Start
-After After
-!=-9+ !=-9+  +K9? +K9?  - -
-- -  9)? 9)?  9I 9I| |
-Delivery To Delivery To
-Be Be
-Completed Completed
-By By
-1
-+/| Designation : -
-	/O; 	)I|Email ID : kapildevpandey.drde@gov.in
-9+ P |Contact : 0751-2390234-234 ZENOTREX Vertical
-Autoclave, Capacity - 1 28-Mar-2024 12-May-2024
-
---- PAGE 39 ---
-
---- PAGE 40 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687740631465
-अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 25-Jul-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2023/B/4382982
-संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
-EFप|Type : Central Autonomous
-मंKालय|Ministry : Ministry of Labour and Employment
-"वभाग|Department : Employees State Insuarnce Corporation
-संगठन का नाम|Organisation Name : Employees State Insurance Corporation
-कायाRलय SेK|Oﬃce Zone: Model Hospital Basaidarapur
-खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
-पद|Designation : Professor
-संपकR नंबर|Contact No. : 011-25100664-
-ईमेल आईडी|Email ID : dr.sonia.khattar@esic.nic.in
-जीएसटaआईएन|GSTIN : -
-पता|Address : ESIC MODEL HOSPITAL BASAIDARAPUR NEW DELHI,
-WEST DELHI, DELHI-110015, India
- 
-"वeीय"वeीय  fवीकृ "तfवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम"त|IFD Concurrence : Yes
-Eशास"नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: ms
-"वeीय अनुमोदन का पदनाम|
-Designation of Financial Approval : ddf
-भुगतानभुगतान  Eा"धकरणEा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : Assistant Director
-ईमेल आईडी|Email ID : prashant.baijal@esic.nic.in
-जीएसटaआईएन|GSTIN : -
-पता|Address: ESIC MODEL HOSPITAL BASAIDARAPUR NEW DELHI,
-West Delhi, DELHI-110015, India
- 
- 
-"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
-जेम "वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकR नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमआईआई "s "त| MII Status : True
-एमएसएमई सtया"पत|MSME veriﬁed : Yes
-एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा"जक vेणी|MSE Social Category : NA
-एमएसई "लंग vेणी|MSE Gender : NA
-जीएसटaआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*"जसके  नाम के  पS मz GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-"वतरण "नद}श | Delivery Instructions : NA
-उtपादउtपाद  "ववरण"ववरण|Product Details|Product Details
-## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
-आइटमआइटम
-"ववरण"ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  "वभाजन"वभाजन (INR)| (INR)|
-Tax BifurcationTax Bifurcation
-(INR)(INR)
-मूयमूय  
-(INR (INR मzमz  सभीसभी
-शुकशुक  औरऔर  करकर
-स"हतस"हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उtपादउtपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx. 80-120 Liters
-ांडांड|Brand : |Brand : ZENOTREX
-ांडांड  EकारEकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  "s "त"s "त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-2 pieces 615,700 NA 1,231,400
-कु ल ऑडRर मूय |Total Order Value (in INR) 1,231,4001,231,400
- 
-परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-"दनांक"दनांक  केके   बादबाद
-"डलीवरी"डलीवरी  शुFशुF
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-"वतरण"वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : dr.sonia.khattar@esic.nic.in ZENOTREX Vertical
-
---- PAGE 41 ---
-
---- PAGE 42 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687713882817
-अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 13-Sep-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं4यासं4या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/4960380
-संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
-EFप|Type : Central Government
-मंKालय|Ministry : Ministry of Defence
-!वभाग|Department : Department of Military Affairs
-संगठन का नाम|Organisation Name : Indian Air Force
-कायाPलय QेK|Oﬃce Zone: 5AFH JORHAT
-खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
-पद|Designation : OIC MEDICAL STORE
-संपकP नंबर|Contact No. : -
-ईमेल आईडी|Email ID : buyer267.iaf.as@gembuyer.in
-जीएसटaआईएन|GSTIN : -
-पता|Address : 5 AIR FORCE HOSPITAL ROWRIAH JORHAT ASSAM-785005,
-Jorhat, ASSAM-785005, India
- 
-!वeीय!वeीय  fवीकृ !तfवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम!त|IFD Concurrence : Yes
-Eशास!नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: AOC,5AFH
-!वeीय अनुमोदन का पदनाम|
-Designation of Financial Approval : CFA
-भुगतानभुगतान  Eा!धकरणEा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : PAYING OFFR
-ईमेल आईडी|Email ID : virgo.111@gov.in
-जीएसटaआईएन|GSTIN : 18AAALA2578D1DM
-पता|Address: 5 AIR FORCE HOSPITAL ROWRIAH JORHAT ASSAM-785005,
-Jorhat, ASSAM-785005, India
- 
- 
-!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
-जेम !वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकP नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई सpया!पत|MSME veriﬁed : No
-एमएसएमई पंजीकरण सं4या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा!जक sेणी|MSE Social Category : NA
-एमएसई !लंग sेणी|MSE Gender : NA
-जीएसटaआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*!जसके  नाम के  पQ मw GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-!वतरण !नदzश | Delivery Instructions : NA
-उpपादउpपाद  !ववरण!ववरण|Product Details|Product Details
-## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
-आइटमआइटम
-!ववरण!ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  !वभाजन!वभाजन (INR)| (INR)|
-Tax BifurcationTax Bifurcation
-(INR)(INR)
-मूयमूय  
-(INR (INR मwमw  सभीसभी
-शुकशुक  औरऔर  करकर
-स!हतस!हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उpपादउpपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx. 80-120 Liters
-ांडांड|Brand : |Brand : ZENOTREX
-ांडांड  EकारEकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 116,850 NA 116,850
-कु ल ऑडPर मूय |Total Order Value (in INR) 116,850116,850
- 
-परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-!दनांक!दनांक  केके   बादबाद
-!डलीवरी!डलीवरी  शुFशुF
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-!वतरण!वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : buyer267.iaf.as@gembuyer.in
-संपकP|Contact : - ZENOTREX Vertical
-
---- PAGE 43 ---
-
---- PAGE 44 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687724050078
-अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 10-Sep-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं3यासं3या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/4975446
-संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
-DEप|Type : Central Government
-मंJालय|Ministry : Ministry of Defence
-"वभाग|Department : Department of Military Affairs
-संगठन का नाम|Organisation Name : Indian Air Force
-कायाOलय PेJ|Oﬃce Zone: Air Force Station Jamnagar Gujarat
-खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
-पद|Designation : SHO
-संपकO नंबर|Contact No. : 288-2569500-7240
-ईमेल आईडी|Email ID : chikitsa.101@gov.in
-जीएसटaआईएन|GSTIN : 24AAAGZ0011P1Z9
-पता|Address :
-AIR OFFICER COMMANDING AIR FORCE STATION,
-JAMNAGAR NEAR DIGJAM CIRCLE GUJRAT - 361003,
-JAMNAGAR, GUJARAT-361003, India
- 
-"वfीय"वfीय  gवीकृ "तgवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम"त|IFD Concurrence : Yes
-Dशास"नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: CFA 33WG, AF
-"वfीय अनुमोदन का पदनाम|
-Designation of Financial Approval : SAO
-भुगतानभुगतान  Dा"धकरणDा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Internet Banking
-पद|Designation : SENIOR ACCOUNTS OFFICER
-ईमेल आईडी|Email ID : sao.33wg.iaf@nic.in
-जीएसटaआईएन|GSTIN : N
-पता|Address:
-AIR OFFICER COMMANDING AIR FORCE STATION,
-JAMNAGAR NEAR DIGJAM CIRCLE GUJRAT - 361003,
-JAMNAGAR, GUJARAT-361003, India
- 
- 
-"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
-जेम "वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकO नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं3या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा"जक tेणी|MSE Social Category : NA
-एमएसई "लंग tेणी|MSE Gender : NA
-जीएसटaआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*"जसके  नाम के  पP मx GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-"वतरण "नद{श | Delivery Instructions : NA
-उ}पादउ}पाद  "ववरण"ववरण|Product Details|Product Details
-## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
-आइटमआइटम
-"ववरण"ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  "वभाजन"वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मxमx  सभीसभी
-शुकशुक  औरऔर  करकर
-स"हतस"हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उ}पादउ}पाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  DकारDकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 70,000 NA 70,000
-कु ल ऑडOर मूय |Total Order Value (in INR) 70,00070,000
- 
-परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वgतुवgतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माJामाJा|Quantity|Quantity
-"दनांक"दनांक  केके   बादबाद
-"डलीवरी"डलीवरी  शुEशुE
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-"वतरण"वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : chikitsa.101@gov.in
-
---- PAGE 45 ---
-
---- PAGE 46 ---
- 
-अनुबंध
-अनुबंध
-|Contract
-|Contract
-अनुबंध
-अनुबंध
- 
- 
-मांक
-मांक
-|Contract No: 
-|Contract No: 
-GEMC-511687761143711
-अनुबंध
-अनुबंध
- 
- 
-!त!थ
-!त!थ
-|Generated Date :
-|Generated Date :
- 
-11-Oct-2024
-बोली
-बोली
-/
-/
-आरए
-आरए
-/
-/
-पीबीपी
-पीबीपी
- 
- 
-सं3या
-सं3या
-|Bid/RA/PBP No.:
-|Bid/RA/PBP No.:
- 
- GEM/2024/B/4534724
-संगठन
-संगठन
- 
- 
-!ववरण
-!ववरण
-|Organisation Details
-|Organisation Details
-BCप
-|Type :
-State Government
-मंJालय
-|Ministry :
--
-!वभाग
-|Department :
-Health and Family Welfare Department Delhi
-संगठन
- 
-का
- 
-नाम
-|Organisation Name :
-N/A
-कायाQलय
- 
-RेJ
-|Oﬃce Zone:
-City Zone,delhi
-खरीदार
-खरीदार
- 
- 
-!ववरण
-!ववरण
-|Buyer Details
-|Buyer Details
-पद
-|Designation :
-Addl.MS
-संपकQ
- 
-नंबर
-|Contact No. :
-011-23282917-2917
-ईमेल
- 
-आईडी
-|Email ID :
-cmoadmin-kasturbah@mcd.nic.in
-जीएसटcआईएन
-|GSTIN :
--
-पता
-|Address :
-Kasturba Hospital Daryaganj,Delhi-110002,
-CENTRAL DELHI, DELHI-110002, India
- 
-!वgीय
-!वgीय
- 
- 
-hवीकृ !त
-hवीकृ !त
- 
- 
-!ववरण
-!ववरण
-|Financial Approval Detail
-|Financial Approval Detail
-आईएफडी
- 
-सहम!त
-|IFD Concurrence :
-No
-Bशास!नक
- 
-अनुमोदन
- 
-का
- 
-पदनाम
-|
-Designation of Administrative Approval:
-MS/KH
-!वgीय
- 
-अनुमोदन
- 
-का
- 
-पदनाम
-|
-Designation of Financial Approval :
-DCA/HEALTH
-भुगतान
-भुगतान
- 
- 
-Bा!धकरण
-Bा!धकरण
- 
- 
-!ववरण
-!ववरण
-|Paying Authority Details
-|Paying Authority Details
-Role:
-BUYER
-भुगतान
- 
-का
- 
-तरीका
-|
-Payment Mode:
-Offline
-पद
-|Designation :
-Addl.MS
-ईमेल
- 
-आईडी
-|Email ID :
-cmoadmin-kasturbah@mcd.nic.in
-जीएसटcआईएन
-|GSTIN :
--
-पता
-|Address:
-Kasturba Hospital 
-Daryaganj,Delhi-110002,
-CENTRAL DELHI, DELHI-110002, India
- 
- 
-!वे ता
-!वे ता
- 
- 
-!ववरण
-!ववरण
-|Seller Details
-|Seller Details
-जेम
- 
-!वे ता
- 
-आईडी
-|GeM Seller ID :
-3F3E200001234314
-कं पनी
- 
-का
- 
-नाम
-|Company Name :
-ZENOTREX MEDICO PRIVATE LIMITED
-संपकQ
- 
-नंबर
-|Contact No. :
-07206099599
-ईमेल
- 
-आईडी
-|Email ID :
-zenotrexmedico@gmail.com
-पता
-| Address :
-PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई
- 
-पंजीकरण
- 
-सं3या
-|MSME Registration number :
-UDYAM-HR-01-0000220
-जीएसटcआईएन
-|GSTIN:
-06AABCZ5449G1Z5 (R) 
-, (M)
-एमएसई
- 
-सामा!जक
- 
-uेणी
-|MSE Social Category :
-NA
-एमएसई
- 
-!लंग
- 
-uेणी
-|MSE Gender :
-NA
-*
-!जसके
- 
-नाम
- 
-के
- 
-पR
- 
-मw
- GST/TAX 
-इनवॉइस
- 
-पेश
- 
-!कया
- 
-जाएगा
-|GST / Tax invoice to be raised in the name of - Buyer
-!वतरण
- 
-!नदzश
- | Delivery Instructions : 
-NA
-उ|पाद
-उ|पाद
- 
- 
-!ववरण
-!ववरण
-|Product Details
-|Product Details
-#
-#
-आइटम
-आइटम
- 
- 
-!ववरण
-!ववरण
-|Item Description
-|Item Description
-आइटम
-आइटम
-!ववरण
-!ववरण
-|
-|
-Ordered
-Ordered
-Quantity
-Quantity
-इकाई
-इकाई
- |
- |
-Unit
-Unit
-इकाई
-इकाई
- 
- 
-मूय
-मूय
-(INR)|
-(INR)|
-Unit Price
-Unit Price
-(INR)
-(INR)
-कर
-कर
- 
- 
-!वभाजन
-!वभाजन
- (INR)|
- (INR)|
-Tax Bifurcation (INR)
-Tax Bifurcation (INR)
-मूय
-मूय
- 
- 
-(INR 
-(INR 
-मw
-मw
- 
- 
-सभी
-सभी
-शुक
-शुक
- 
- 
-और
-और
- 
- 
-कर
-कर
-स!हत
-स!हत
-)|
-)|
-Price
-Price
-(Inclusive of
-(Inclusive of
-all Duties and
-all Duties and
-Taxes in INR)
-Taxes in INR)
-1
-उ|पाद
-उ|पाद
- 
- 
-का
-का
- 
- 
-नाम
-नाम
- |Product Name : 
- |Product Name : 
-ZENOTREX MEDICO Autoclave
-ांड
-ांड
-|Brand : 
-|Brand : 
-ZENOTREX MEDICO
-ांड
-ांड
- 
- 
-Bकार
-Bकार
-|Brand Type : 
-|Brand Type : 
-Registered Brand
-कै टलॉग
-कै टलॉग
- 
- 
-क
-क
- 
- 
-!!त
-!!त
-|Catalogue Status: 
-|Catalogue Status: 
-OEM verified catalogue
-कै से
-कै से
- 
- 
-बेचा
-बेचा
- 
- 
-जा
-जा
- 
- 
-रहा
-रहा
- 
- 
-है
-है
-|Selling As : 
-|Selling As : 
-OEM
-uेणी
-uेणी
- 
- 
-का
-का
- 
- 
-नाम
-नाम
- 
- 
-और
-और
- 
- 
-चतुथाश
-चतुथाश
-|Category Name & Quadrant : 
-|Category Name & Quadrant : 
-Autoclave (ICMR Specs) (Q3)
-मॉडल
-मॉडल
-|Model:
-|Model:
- 
-ZPL-A22R 
-एचएसएन
-एचएसएन
- 
- 
-कोड
-कोड
-|HSN Code: 
-|HSN Code: 
-HSN not specified by seller
-1
-pieces
-96,800
-NA
-96,800
-कु ल
- 
-ऑडQर
- 
-मूय
- |Total Order Value 
-(in INR)
-96,800
-96,800
- 
-परे!षती
-परे!षती
- 
- 
-!ववरण
-!ववरण
-|Consignee Detail
-|Consignee Detail
-.सं.
-.सं.
-|S.No
-|S.No
-परे!षती
-परे!षती
-|Consignee
-|Consignee
-वhतु
-वhतु
-|Item
-|Item
-लॉट
-लॉट
- 
- 
-नंबर
-नंबर
-|
-|
-Lot No.
-Lot No.
-माJा
-माJा
-|Quantity
-|Quantity
-!दनांक
-!दनांक
- 
- 
-के
-के
- 
- 
-बाद
-बाद
-!डलीवरी
-!डलीवरी
- 
- 
-शुC
-शुC
-करना
-करना
- 
- 
-है
-है
-|
-|
-Delivery Start
-Delivery Start
-After
-After
-!वतरण
-!वतरण
- 
- 
-पूरा
-पूरा
- 
- 
-कब
-कब
-तक
-तक
- 
- 
-करना
-करना
- 
- 
-है
-है
-|
-|
-Delivery To
-Delivery To
-Be
-Be
-Completed
-Completed
-By
-By
-1
-पद
-| Designation : 
--
-ईमेल
- 
-आईडी
-|Email ID : 
-cmoit-kasturbah@mcd.nic.in
-संपकQ
-|Contact : 
-011-23282914-
-जीएसटcआईएन
-|GSTIN : 
--
-ZENOTREX MEDICO
-Autoclave
--
-1
-11-Oct-2024
-10-Nov-2024
-
---- PAGE 47 ---
-
---- PAGE 48 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687768370554
-अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 30-Aug-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5163697
-संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
-DEप|Type : State Government
-मंLालय|Ministry : -
-"वभाग|Department : Labour and Employment Department Tamil Nadu
-संगठन का नाम|Organisation Name : N/A
-कायाPलय QेL|Oﬃce Zone: ESI Directorate
-खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
-पद|Designation : HOSPITAL SUPERINTENDENT
-संपकP नंबर|Contact No. : 0452-2667161-
-ईमेल आईडी|Email ID : ms-madurai.tn@esic.nic.in
-जीएसट_आईएन|GSTIN : -
-पता|Address : ESI HOSPITAL MADURAI, THATHANERI, MADURAI 625018,
-MADURAI, TAMIL NADU-625018, India
- 
-"वaीय"वaीय  bवीकृ "तbवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम"त|IFD Concurrence : No
-Dशास"नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Superintendent
-"वaीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Superintendent
-भुगतानभुगतान  Dा"धकरणDा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
-Role: BUYER
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : HOSPITAL SUPERINTENDENT
-ईमेल आईडी|Email ID : ms-madurai.tn@esic.nic.in
-जीएसट_आईएन|GSTIN : -
-पता|Address: ESI HOSPITAL MADURAI, THATHANERI, MADURAI 625018,
-Madurai, TAMIL NADU-625018, India
- 
- 
-"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
-जेम "वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकP नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा"जक oेणी|MSE Social Category : NA
-एमएसई "लंग oेणी|MSE Gender : NA
-जीएसट_आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*"जसके  नाम के  पQ मs GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-"वतरण "नदvश | Delivery Instructions : NA
-उxपादउxपाद  "ववरण"ववरण|Product Details|Product Details
-## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
-आइटमआइटम
-"ववरण"ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मू|यमू|य
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  "वभाजन"वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मू|यमू|य  
-(INR (INR मsमs  सभीसभी
-शु|कशु|क  औरऔर  करकर
-स"हतस"हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उxपादउxपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-~ांड~ांड|Brand : |Brand : ZENOTREX MEDICO
-~ांड~ांड  DकारDकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-oेणीoेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-H01O 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 97,000 NA 97,000
-कु ल ऑडPर मू|य |Total Order Value (in INR) 97,00097,000
- 
-परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वbतुवbतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माLामाLा|Quantity|Quantity
-"दनांक"दनांक  केके   बादबाद
-"डलीवरी"डलीवरी  शुEशुE
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-"वतरण"वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-1
-पद| Designation : -
-ईमेल आईडी|Email ID : ms-madurai.tn@esic.nic.in
-संपकP|Contact : 0452-2667161-
-जीएसट_आईएन|GSTIN : - ZENOTREX MEDICO
-Autoclave - 1 30-Aug-2024 14-Sep-2024
-
---- PAGE 49 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687791353711
-अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 13-Sep-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2023/B/3947027
-संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
-EFप|Type : Central Government
-मंKालय|Ministry : Ministry of Defence
-!वभाग|Department : Department of Defence
-संगठन का नाम|Organisation Name
-: DG Armed Forces Medical Service
-कायाOलय PेK|Oﬃce Zone: DIRECTORATE GENERAL ARMED FORCES MEDICAL
-SERVICES
-खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
-पद|Designation : DG 2S
-संपकO नंबर|Contact No. : -
-ईमेल आईडी|Email ID : fmgt24.ce@nic.in
-जीएसट_आईएन|GSTIN : -
-पता|Address :
-M Block, Central Secretriat, Church Road, Near Gurudwara
-Rakabganj, New Delhi,
-Central Delhi, DELHI-110001, India
- 
-!नरीPण!नरीPण  काका  EकारEकार|Type of Inspection:|Type of Inspection:  Post Dispatch !नरीPण!नरीPण  काका  gानgान|Place of|Place ofInspection:Inspection:
-Inspection To be conducted at Consignee
-location
-F
-गुणवhा आi ासन योजना के  !लए कृ पया बोली देखk|For Quality Assurance Plan please refer to the
-bid GEM/2023/B/3947027
-!नरीPण!नरीPण  एजkसीएजkसी /  / Eा!धकरणEा!धकरण|Inspection Agency/ Authority:|Inspection Agency/ Authority:  Board of
-Officers
-!वhीय!वhीय  mवीकृ !तmवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम!त|IFD Concurrence : Yes
-Eशास!नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: ADG(E&S)
-!वhीय अनुमोदन का पदनाम|
-Designation of Financial Approval : CFA
-भुगतानभुगतान  Eा!धकरणEा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
-Role: BUYER
-भुगतान का तरीका|
-Payment Mode: CGDA-CDA
-पद|Designation : DG 2S
-ईमेल आईडी|Email ID : fmgt24.ce@nic.in
-जीएसट_आईएन|GSTIN : -
-पता|Address:
-M Block, Central Secretriat, Church Road, Near Gurudwara
-Rakabganj, New Delhi,
-Central Delhi, DELHI-110001, India
- 
- 
-!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
-जेम !वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकO नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा!जक yेणी|MSE Social Category : NA
-एमएसई !लंग yेणी|MSE Gender : NA
-जीएसट_आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*!जसके  नाम के  पP मk GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-!वतरण !नद}श | Delivery Instructions : NA
-उपादउपाद  !ववरण!ववरण|Product Details|Product Details
-## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
-आइटमआइटम
-!ववरण!ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  !वभाजन!वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मkमk  सभीसभी
-शुकशुक  औरऔर  करकर
-स!हतस!हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उपादउपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  EकारEकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  !g!त!g!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-yेणीyेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 940,000 NA 940,000
-कु ल ऑडOर मूय |Total Order Value (in INR) 940,000940,000
-!नरीPण!नरीPण  अ!धकारीअ!धकारी|Inspection Oﬃcer:|Inspection Oﬃcer:
-नामनाम|Name:|Name: Board of Officers as nominated by the Buying Authority
-ईमेलईमेल|E-mail:|E-mail: notapplicable@boardofofficers.in
-संपकOसंपकO|Phone:|Phone: Not applicable
-
---- PAGE 50 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687758933413
-अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 26-Sep-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5291903
-संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
-EFप|Type : Central Autonomous
-मंKालय|Ministry : Ministry of Commerce and Industry
-"वभाग|Department : Department of Commerce
-संगठन का नाम|Organisation Name : Coffee Board
-कायाOलय PेK|Oﬃce Zone: Bengaluru
-खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
-पद|Designation : Director of Research
-संपकO नंबर|Contact No. : 08265-243029-
-ईमेल आईडी|Email ID : dr.coffeeboard@nic.in
-जीएसट]आईएन|GSTIN : 29AAAJC0174B2ZR
-पता|Address :
-Coffee Research Station Post, Balehonnur, Chickmagalur -
-District 577117,
-Chickmagalur, KARNATAKA-577117, India
- 
-"वbीय"वbीय  cवीकृ "तcवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम"त|IFD Concurrence : No
-Eशास"नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Director of Research
-"वbीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Director of Research
-भुगतानभुगतान  Eा"धकरणEा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : Deputy Secretary Accounts
-ईमेल आईडी|Email ID : roopa.coffeeboard@gov.in
-जीएसट]आईएन|GSTIN : -
-पता|Address: No. 1 Dr. B.R. Ambedkar Veedhi, Bengaluru,
-BANGALORE, KARNATAKA-560001, India
- 
- 
-"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
-जेम "वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकO नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई सqया"पत|MSME veriﬁed : Yes
-एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-HR-01-0000220
-एमएसई सामा"जक tेणी|MSE Social Category : NA
-एमएसई "लंग tेणी|MSE Gender : NA
-जीएसट]आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-*"जसके  नाम के  पP मx GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-"वतरण "नद{श | Delivery Instructions : NA
-उqपादउqपाद  "ववरण"ववरण|Product Details|Product Details
-## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
-आइटमआइटम
-"ववरण"ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  "वभाजन"वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मxमx  सभीसभी
-शुकशुक  औरऔर  करकर
-स"हतस"हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उqपादउqपाद  काका  नामनाम |Product Name :  |Product Name : Autoclave (Thermolab– Model: TA 50 G)
-ांडांड|Brand : |Brand : Zenotrex Medico
-ांडांड  EकारEकार|Brand Type : |Brand Type : NA
-कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: NA
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : NA
-tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : NA (-)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-2 set 97,000 NA 194,000
-कु ल ऑडOर मूय |Total Order Value (in INR) 194,000194,000
- 
-परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वcतुवcतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-"दनांक"दनांक  केके   बादबाद
-"डलीवरी"डलीवरी  शुFशुF
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-"वतरण"वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : dr.coffeeboard@nic.in
-
---- PAGE 51 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687753926346
-अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 26-Oct-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं4यासं4या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5426852
-संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
-CDप|Type : State Government
-मंKालय|Ministry : -
-#वभाग|Department : Forest and Environment Department Odisha
-संगठन का नाम|Organisation Name :P.C.C.F.,Orissa,Bhubaneswar
-कायाSलय TेK|Oﬃce Zone: DEPUTY DIRECTOR NANDANKANAN ZOOLOGICAL PARK
-खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
-पद|Designation : ASSSITANT CONSERVATOR OF FORESTS SBG
-संपकS नंबर|Contact No. : 7609-065696-
-ईमेल आईडी|Email ID : acf-nandankanansbg@gov.in
-जीएसटgआईएन|GSTIN : 21BBNW00027G1DL
-पता|Address :
-OFFICE OF THE DEPUTY DIRECTOR NANDANKANAN
-BIOLOGICAL PARK, AT/PO-BARANG,
-Cuttack, ODISHA-754005, India
- 
-#वj ीय#वj ीय  kवीकृ #तkवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम#त|IFD Concurrence : No
-Cशास#नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Sanath kumar N
-#वj ीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Deputy Director Nandankanan
-भुगतानभुगतान  Cा#धकरणCा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : ASSISTANT CONSERVATOR OF FORESTS VM
-ईमेल आईडी|Email ID : acf-nandankananvm@gov.in
-जीएसटgआईएन|GSTIN : -
-पता|Address:
-OFFICE OF THE DEPUTY DIRECTOR NANDANKANAN
-BIOLOGICAL PARK, AT/PO-BARANG,
-Cuttack, ODISHA-754005, India
- 
- 
-#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
-जेम #वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकS नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं4या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसटgआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-एमएसई सामा#जक uेणी|MSE Social Category : General
-एमएसई #लंग uेणी|MSE Gender : Male
-*#जसके  नाम के  पT मw GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-#वतरण #नदzश | Delivery Instructions : please deliver the products with in 20 days failing which fine will be imposed
-उ|पादउ|पाद  #ववरण#ववरण|Product Details|Product Details
-## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
-आइटमआइटम
-#ववरण#ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  #वभाजन#वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मwमw  सभीसभी
-शुकशुक  औरऔर  करकर
-स#हतस#हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  CकारCकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  ##त##त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-uेणीuेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 65,000 NA 65,000
-कु ल ऑडSर मूय |Total Order Value (in INR) 65,00065,000
- 
-परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वkतुवkतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-#दनांक#दनांक  केके   बादबाद
-#डलीवरी#डलीवरी  शुDशुD
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-#वतरण#वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : acf-nandankanansbg@gov.in
-
---- PAGE 52 ---
-
---- PAGE 53 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687787245190
-अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 16-Dec-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं2यासं2या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5657233
-संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
-CDप|Type : Central Autonomous
-मंJालय|Ministry : Ministry of Education
-#वभाग|Department : Department of Higher Education
-संगठन का नाम|Organisation Name : Assam University
-कायाQलय RेJ|Oﬃce Zone: Northeast788011
-खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
-पद|Designation : Assos Pr
-संपकQ नंबर|Contact No. : -
-ईमेल आईडी|Email ID : buycon116.au.as@gembuyer.in
-जीएसट_आईएन|GSTIN : -
-पता|Address : Assam University, Dargakona, Cachar, Assam, Pin-788011,
-Cachar, ASSAM-788011, India
- 
-#वcीय#वcीय  dवीकृ #तdवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम#त|IFD Concurrence : No
-Cशास#नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Vice Chancellor
-#वcीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Finance Officer
-भुगतानभुगतान  Cा#धकरणCा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
-Role: BUYER
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : Assos Pr
-ईमेल आईडी|Email ID : buycon116.au.as@gembuyer.in
-जीएसट_आईएन|GSTIN : 18SHLA00740F1DO
-पता|Address: Assam University, Dargakona, Cachar, Assam, Pin-788011,
-Cachar, ASSAM-788011, India
- 
- 
-#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
-जेम #वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकQ नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं2या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसट_आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-खरीदार rारा मूtयां#कत एमआईआई #u#त | MII Status as
-evaluated by buyer : Verified
-खरीदार rारा सvया#पत एमएसएमई #u#त |MSME Status as
-verified by buyer : Not Verified
-एमएसई सामा#जक wेणी|MSE Social Category : General
-एमएसई #लंग wेणी|MSE Gender : Male
-*#जसके  नाम के  पR मy GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-#वतरण #नद|श | Delivery Instructions : In any case, sipping (Delivery) and installation will take no more than 33 days. After
-that, the order will be terminated either automatically or by the buyer or consignee.
-उvपादउvपाद  #ववरण#ववरण|Product Details|Product Details
-## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
-आइटमआइटम
-#ववरण#ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूtयमूtय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  #वभाजन#वभाजन (INR)| (INR)|
-Tax BifurcationTax Bifurcation
-(INR)(INR)
-मूtयमूtय  
-(INR (INR मyमy  सभीसभी
-शुtकशुtक  औरऔर  करकर
-स#हतस#हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उvपादउvपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx. 80-120 Liters
-ांडांड|Brand : |Brand : ZENOTREX
-ांडांड  CकारCकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  #u#त#u#त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-wेणीwेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 272,000 NA 272,000
-कु ल ऑडQर मूtय |Total Order Value (in INR) 272,000272,000
- 
-परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वdतुवdतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माJामाJा|Quantity|Quantity
-#दनांक#दनांक  केके   बादबाद
-#डलीवरी#डलीवरी  शुDशुD
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-#वतरण#वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-
---- PAGE 54 ---
-
---- PAGE 55 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687708085833
-अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 15-Oct-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं3यासं3या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5204301
-संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
-BCप|Type : Central Government
-मंIालय|Ministry : Ministry of Railways
-!वभाग|Department : Indian Railways
-संगठन का नाम|Organisation Name : South Western Railway
-कायाRलय SेI|Oﬃce Zone: SOUTH WESTERN RAILWAY
-खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
-पद|Designation : Sr DMM DIV MYS
-संपकR नंबर|Contact No. : 0821-2866620-
-ईमेल आईडी|Email ID : srdmm@mys.railnet.gov.in
-जीएसटcआईएन|GSTIN : 29AAAGM0289C1ZF
-पता|Address :
-O/o Divisional Railway Manager, Office Complex, South
-Western Railway Divisional Office, Mysore.,
-MYSORE, KARNATAKA-570001, India
- 
-!वi ीय!वi ीय  jवीकृ !तjवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम!त|IFD Concurrence : No
-Bशास!नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: CMS/MYS
-!वi ीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Sr.DFM/MYS
-भुगतानभुगतान  Bा!धकरणBा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
-Role: BUYER
-भुगतान का तरीका|
-Payment Mode: Railways
-पद|Designation : Sr DMM DIV MYS
-ईमेल आईडी|Email ID : srdmm@mys.railnet.gov.in
-जीएसटcआईएन|GSTIN : 29AAAGM0289C1ZF
-पता|Address:
-O/o Divisional Railway Manager, Office Complex, South
-Western Railway Divisional Office, Mysore.,
-MYSORE, KARNATAKA-570001, India
- 
- 
-!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
-जेम !वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकR नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं3या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसटcआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-खरीदार tारा सuया!पत एमएसएमई !v!त |MSME Status as
-verified by buyer : Verified
-एमएसई सामा!जक wेणी|MSE Social Category : NA
-एमएसई !लंग wेणी|MSE Gender : NA
-*!जसके  नाम के  पS मy GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-!वतरण !नद|श | Delivery Instructions : CONSIGNEE ADDRESS FOR DISPATCH OF MATERIAL CHIEF PHARMACIST RAILWAY
-HOSPITAL YADHAVAGIRI VONTI KOPPAL CIRCLE SOUTH WESTERN RAILWAY KRS ROAD GOKULAM 4TH STAGE MYSURU
-KARNATAKA 570020 MOBILE NO 9731667532 CASE NO L9245870
-उuपादउuपाद  !ववरण!ववरण|Product Details|Product Details
-## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
-आइटमआइटम
-!ववरण!ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  !वभाजन!वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मyमy  सभीसभी
-शुकशुक  औरऔर  करकर
-स!हतस!हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उuपादउuपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  BकारBकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  !v!त!v!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-wेणीwेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 147,000 NA 147,000
-कु ल ऑडRर मूय |Total Order Value (in INR) 147,000147,000
- 
-परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वjतुवjतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माIामाIा|Quantity|Quantity
-!दनांक!दनांक  केके   बादबाद
-!डलीवरी!डलीवरी  शुCशुC
-करनाकरना  हैहै||
-!वतरण!वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-
---- PAGE 56 ---
-
---- PAGE 57 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687739020093
-अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 15-Oct-2024
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं4यासं4या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2023/B/4094585
-संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
-CDप|Type : Central Government
-मंJालय|Ministry : Ministry of Defence
-#वभाग|Department : Department of Military Affairs
-संगठन का नाम|Organisation Name : Indian Army
-कायाNलय OेJ|Oﬃce Zone: DIRECTOR GENERAL MEDICAL SERVICE ARMY
-खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
-पद|Designation : DIRECTOR PROCUREMENT
-संपकN नंबर|Contact No. : 011-23093490-
-ईमेल आईडी|Email ID : preetitripat.279h@gov.in
-जीएसटaआईएन|GSTIN : -
-पता|Address :
-DGMS (Army) L Block AG's Branch IHQ od MoD (Army) New
-Delhi 110001,
-Central Delhi, DELHI-110001, India
- 
-#नरीOण#नरीOण  काका  CकारCकार|Type of Inspection:|Type of Inspection:  Post Dispatch #नरीOण#नरीOण  काका  j ानj ान|Place of|Place ofInspection:Inspection:
-Inspection To be conducted at Consignee
-location
-F
-गुणवmा आnासन योजना के  #लए कृ पया बोली देखp|For Quality Assurance Plan please refer to the
-bid GEM/2023/B/4094585
-#नरीOण#नरीOण  एजpसीएजpसी /  / Cा#धकरणCा#धकरण|Inspection Agency/ Authority:|Inspection Agency/ Authority:  Board of
-Officers
-#वmीय#वmीय  qवीकृ #तqवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम#त|IFD Concurrence : Yes
-Cशास#नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: DGMS(ARMY )WITH IFA
-#वmीय अनुमोदन का पदनाम|
-Designation of Financial Approval : DGMS(ARMY) WITH IFA
-भुगतानभुगतान  Cा#धकरणCा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
-Role: BUYER
-भुगतान का तरीका|
-Payment Mode: CGDA-CDA
-पद|Designation : DIRECTOR PROCUREMENT
-ईमेल आईडी|Email ID : preetitripat.279h@gov.in
-जीएसटaआईएन|GSTIN : -
-पता|Address:
-DGMS (Army) L Block AG's Branch IHQ od MoD (Army) New
-Delhi 110001,
-Central Delhi, DELHI-110001, India
- 
- 
-#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
-जेम #वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकN नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं4या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसटaआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-एमएसई सामा#जक yेणी|MSE Social Category : NA
-एमएसई #लंग yेणी|MSE Gender : NA
-*#जसके  नाम के  पO मp GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-#वतरण #नद}श | Delivery Instructions : NA
-उपादउपाद  #ववरण#ववरण|Product Details|Product Details
-## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
-आइटमआइटम
-#ववरण#ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  #वभाजन#वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मpमp  सभीसभी
-शुकशुक  औरऔर  करकर
-स#हतस#हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उपादउपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  CकारCकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  #j #त#j #त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-yेणीyेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-16 pieces 59,128 NA 946,048
-कु ल ऑडNर मूय |Total Order Value (in INR) 946,048946,048
-#नरीOण#नरीOण  अ#धकारीअ#धकारी|Inspection Oﬃcer:|Inspection Oﬃcer:
-नामनाम|Name:|Name: Board of Officers as nominated by the Buying Authority
-ईमेलईमेल|E-mail:|E-mail: notapplicable@boardofofficers.in
-संपकNसंपकN|Phone:|Phone: Not applicable
-
---- PAGE 58 ---
-ZENOTREX 
-1 2 
-4 
-Sr. No. 
-1 
-Customer Name Address Supplier Name PO. No, and date 
-0047 
-4004 FIELD HOSPITAL 
-Fietu 
-Name of the Equipment 
-VERTICAL AUTOCLAVE 
-8. Remarks: New Installation 9 Customer Feedback: 
-Pn\904004 
-Solmara Cantt, Tezpur, Sonitpur, Assarn-784501 
-Installation Acceptance Certificate 
-ZENOTREX MEDICO PVT LTD 6 Installation Date GEMC -511087739020093 Dated: -15-0ct-2024 
-ZENOTREX MEDICO PVT LTD 
-Qty 
-2 
-5 Involce no./date 
-Signature & Stamp with date 
-Make 
-ZENOTREX MEDICO 
-10. 
-Model 
-Engineer's Name: 
-www.zenotrex,com 
-ZPL-A22R 
-59/ZPL/2024-25 Dated:02-DEC-2024 
-13-02-2025 
-Serial No, ZPL-A22R/2024/11391 ZPL-A22R/2024/11388 
-VISHAL SRIVASTAV 
-Plot No. -375, HSIIDC, SEC-2, IGC, Saha, Ambala, Haryana, 133104 Contact No.: +91 72060 99599, Email ld: sales.zenotrex@gmail.com 
-Signature & Stamp with date 
---- PAGE 59 ---
-
---- PAGE 60 ---
-
---- PAGE 61 ---
-
---- PAGE 62 ---
-
---- PAGE 63 ---
-
---- PAGE 64 ---
-
---- PAGE 65 ---
-
---- PAGE 66 ---
-
---- PAGE 67 ---
-
---- PAGE 68 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687750846132
-अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 17-Apr-2025
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं4यासं4या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2025/B/5984960
-संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
-DEप|Type : Central PSU
-मंJालय|Ministry : Ministry of Heavy Industries and Public Enterprises
-#वभाग|Department : Department of Heavy Industry
-संगठन का नाम|Organisation Name : Bharat Heavy Electricals Limited (BHEL)
-कायाWलय XेJ|Oﬃce Zone: 10060010-R&D
-खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
-पद|Designation : MANAGER01
-संपकW नंबर|Contact No. : 040-23882804-
-ईमेल आईडी|Email ID : buycon2281.bhelb.ts@gembuyer.in
-जीएसटdआईएन|GSTIN : 36AAACB4146P1ZG
-पता|Address : BHEL, Corp.R&D, Vikasnagar, Near BBR Hospital, Hyderabad,
-Rangareddi, TELANGANA-500042, India
- 
-#वhीय#वhीय  iवीकृ #तiवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम#त|IFD Concurrence : No
-Dशास#नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Senior Manager
-#वhीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Senior manager
-भुगतानभुगतान  Dा#धकरणDा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : DY MANAGER FINANCE01
-ईमेल आईडी|Email ID : pao51.bhelb.ts@gembuyer.in
-जीएसटdआईएन|GSTIN : 36AAACB4146P1ZG
-पता|Address: BHEL, Corp.R&D, Vikasnagar, Near BBR Hospital, Hyderabad,
-Rangareddi, TELANGANA-500042, India
- 
- 
-#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
-जेम #वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकW नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं4या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसटdआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-खरीदार sारा सtया#पत एमएसएमई #u#त |MSME Status as
-verified by buyer : Verified
-एमएसई सामा#जक vेणी|MSE Social Category : General
-एमएसई #लंग vेणी|MSE Gender : Male
-*#जसके  नाम के  पX मx GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-#वतरण #नद{श | Delivery Instructions : NA
-उtपादउtपाद  #ववरण#ववरण|Product Details|Product Details
-## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
-आइटमआइटम
-#ववरण#ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  #वभाजन#वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मxमx  सभीसभी
-शुकशुक  औरऔर  करकर
-स#हतस#हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उtपादउtपाद  काका  नामनाम |Product Name :  |Product Name : Supply of Autoclave
-ांडांड|Brand : |Brand : Zenotrex Medico
-ांडांड  DकारDकार|Brand Type : |Brand Type : NA
-कै टलॉगकै टलॉग  कक  #u#त#u#त|Catalogue Status: |Catalogue Status: NA
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : NA
-vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : NA (-)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-2 pieces 97,000 NA 194,000
-कु ल ऑडWर मूय |Total Order Value (in INR) 194,000194,000
- 
-परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वiतुवiतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माJामाJा|Quantity|Quantity
-#दनांक#दनांक  केके   बादबाद
-#डलीवरी#डलीवरी  शुEशुE
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-#वतरण#वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : buycon1185.bhelb.ts@gembuyer.in
-
---- PAGE 69 ---
-
---- PAGE 70 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687793385000
-अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 31-Mar-2025
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं2यासं2या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5162087
-संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
-CDप|Type : State Government
-मंKालय|Ministry : -
-"वभाग|Department : Health and Family Welfare Services Department
-Puducherry
-संगठन का नाम|Organisation Name
-: N/A
-कायाSलय TेK|Oﬃce Zone: Puducherry
-खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
-पद|Designation : UDC
-संपकS नंबर|Contact No. : -
-ईमेल आईडी|Email ID : d.iswarkumar99@py.gov.in
-जीएसटcआईएन|GSTIN : -
-पता|Address :
-Office of the Chief of Government Pharmacy, Indira Nagar,
-Gorimedu, Opp To Esi Hospital, Puducherry.,
-Pondicherry, PUDUCHERRY-605006, India
- 
-"वfीय"वfीय  gवीकृ "तgवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम"त|IFD Concurrence : Yes
-Cशास"नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: LT. GOVERNOR
-"वfीय अनुमोदन का पदनाम|
-Designation of Financial Approval : LT. GOVERNOR
-भुगतानभुगतान  Cा"धकरणCा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
-Role: PAO
-भुगतान का तरीका|
-Payment Mode: Offline
-पद|Designation : JAO
-ईमेल आईडी|Email ID : jao-gp.pon@gov.in
-जीएसटcआईएन|GSTIN : 34CHEG02561G1DW
-पता|Address:
-Office of the Chief of Government Pharmacy, Indira Nagar,
-Gorimedu, Opp To Esi Hospital, Puducherry.,
-Pondicherry, PUDUCHERRY-605006, India
- 
- 
-"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
-जेम "वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकS नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं2या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसटcआईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-एमएसई सामा"जक vेणी|MSE Social Category : General
-एमएसई "लंग vेणी|MSE Gender : Male
-*"जसके  नाम के  पT मx GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
-"वतरण "नद{श | Delivery Instructions : NA
-उ}पादउ}पाद  "ववरण"ववरण|Product Details|Product Details
-## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
-आइटमआइटम
-"ववरण"ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  "वभाजन"वभाजन (INR)| (INR)|
-Tax BifurcationTax Bifurcation
-(INR)(INR)
-मूयमूय  
-(INR (INR मxमx  सभीसभी
-शुकशुक  औरऔर  करकर
-स"हतस"हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उ}पादउ}पाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx. 80-120 Liters
-ांडांड|Brand : |Brand : ZENOTREX
-ांडांड  CकारCकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 188,500 NA 188,500
-कु ल ऑडSर मूय |Total Order Value (in INR) 188,500188,500
- 
-परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वgतुवgतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-"दनांक"दनांक  केके   बादबाद
-"डलीवरी"डलीवरी  शुDशुD
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-"वतरण"वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : con4.hfwsdp.py@gembuyer.in
-
---- PAGE 71 ---
-
---- PAGE 72 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687787822475
-अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 16-Apr-2025
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं3यासं3या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5656578
-संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
-BCप|Type : State Government
-मंIालय|Ministry : -
-!वभाग|Department : Medical Education & Research Department Haryana
-संगठन का नाम|Organisation Name : Directorate of Medical Education & Research
-कायाPलय QेI|Oﬃce Zone: FARIDABAD
-खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
-पद|Designation : Assistant Professor
-संपकP नंबर|Contact No. : 0129-2840600-
-ईमेल आईडी|Email ID : buyer10.dmer.hr@gembuyer.in
-जीएसट`आईएन|GSTIN : 06RTKS33354G1DS
-पता|Address :
-VPO CHHAINSA, Shri Atal Bihari Vajpayee Government
-Medical College, Tehsil - Ballabgarh,
-Faridabad, HARYANA-121004, India
- 
-!वgीय!वgीय  hवीकृ !तhवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम!त|IFD Concurrence : No
-Bशास!नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: Director
-!वgीय अनुमोदन का पदनाम|
-Designation of Financial Approval : Director
-भुगतानभुगतान  Bा!धकरणBा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
-Role: CONSIGNEE
- 
- 
-!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
-जेम !वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकP नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं3या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसट`आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-एमएसई सामा!जक tेणी|MSE Social Category : General
-एमएसई !लंग tेणी|MSE Gender : Male
-*!जसके  नाम के  पQ मv GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-!वतरण !नदyश | Delivery Instructions : Delivery Address Incharge Central Store, VPO CHHAINSA, Shri Atal Bihari Vajpayee
-Government Medical College, Tehsil -Ballabgarh, Faridabad, HARYANA 121004 Delivery will be accepted on Working
-Hours only from 09 Am to 04 Pm, on Monday to Saturday excluding Gazatted Holidays.
-उ~पादउ~पाद  !ववरण!ववरण|Product Details|Product Details
-## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
-आइटमआइटम
-!ववरण!ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  !वभाजन!वभाजन (INR)| (INR)|
-Tax BifurcationTax Bifurcation
-(INR)(INR)
-मूयमूय  
-(INR (INR मvमv  सभीसभी
-शुकशुक  औरऔर  करकर
-स!हतस!हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उ~पादउ~पाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX Vertical Autoclave, Capacity Approx. 80-120 Liters
-ांडांड|Brand : |Brand : ZENOTREX
-ांडांड  BकारBकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (FSSAI) (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-2 pieces 89,500 NA 179,000
-कु ल ऑडPर मूय |Total Order Value (in INR) 179,000179,000
- 
-परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माIामाIा|Quantity|Quantity
-!दनांक!दनांक  केके   बादबाद
-!डलीवरी!डलीवरी  शुCशुC
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-!वतरण!वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-1
-पद| Designation : -
-ईमेल आईडी|Email ID : con4.dmer.hr@gembuyer.in
-संपकP|Contact : 0129-2840600-
-जीएसट`आईएन|GSTIN : 06RTKS33354G1DS
-ZENOTREX Vertical
-Autoclave, Capacity - 2 16-Apr-2025 01-May-2025
-
---- PAGE 73 ---
-
---- PAGE 74 ---
-
---- PAGE 75 ---
- 
-अनुबंधअनुबंध|Contract|Contract
-अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687793334050
-अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 22-Sep-2025
-बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2025/B/6411778
-संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
-EFप|Type : Central Government
-मंKालय|Ministry : Ministry of Railways
-#वभाग|Department : Indian Railways
-संगठन का नाम|Organisation Name : Southern Railway
-कायाRलय SेK|Oﬃce Zone: Southern Railway
-खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
-पद|Designation : Sr.DMM/TVC/SR
-संपकR नंबर|Contact No. : 471-2339830-
-ईमेल आईडी|Email ID : srdmm@tvc.railnet.gov.in
-जीएसट_आईएन|GSTIN : 32AAAGM0289C1ZS
-पता|Address :
-Office of the Senior Divisional Material Manager Divisional
-Railway Manager Office Trivandrum Division , Thycaud,
-Thiruvananthapuram-695014,
-THIRUVANANTHAPURAM CITY, KERALA-695014, India
- 
-#वfीय#वfीय  gवीकृ #तgवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
-आईएफडी सहम#त|IFD Concurrence : No
-Eशास#नक अनुमोदन का पदनाम|
-Designation of Administrative Approval: CMS/TVC
-#वfीय अनुमोदन का पदनाम|
-Designation of Financial Approval : SR.DFM/TVC
-भुगतानभुगतान  Eा#धकरणEा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
-Role: CONSIGNEE
- 
- 
-#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
-जेम #वे ता आईडी|GeM Seller ID : 3F3E200001234314
-कं पनी का नाम|Company Name : ZENOTREX MEDICO PRIVATE LIMITED
-संपकR नंबर|Contact No. : 07206099599
-ईमेल आईडी|Email ID : zenotrexmedico@gmail.com
-पता| Address : PLOT NO-375,SECTOR-2,HSIIDC, IGC,SAHA,
-Ambala, HARYANA-133104, -
-एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-HR-01-0000220
-जीएसट_आईएन|GSTIN: 06AABCZ5449G1Z5 (R) , (M)
-खरीदार sारा सtया#पत एमएसएमई #u#त |MSME Status as
-verified by buyer : Verified
-एमएसई सामा#जक vेणी|MSE Social Category : General
-एमएसई #लंग vेणी|MSE Gender : Male
-*#जसके  नाम के  पS मx GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
-#वतरण #नद{श | Delivery Instructions : NA
-उtपादउtपाद  #ववरण#ववरण|Product Details|Product Details
-## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
-आइटमआइटम
-#ववरण#ववरण||
-OrderedOrdered
-QuantityQuantity
-इकाईइकाई | |
-UnitUnit
-इकाईइकाई  मूयमूय
-(INR)|(INR)|
-Unit PriceUnit Price
-(INR)(INR)
-करकर  #वभाजन#वभाजन (INR)| (INR)|
-Tax Bifurcation (INR)Tax Bifurcation (INR)
-मूयमूय  
-(INR (INR मxमx  सभीसभी
-शुकशुक  औरऔर  करकर
-स#हतस#हत)|)|
-PricePrice
-(Inclusive of(Inclusive of
-all Duties andall Duties and
-Taxes in INR)Taxes in INR)
-1
-उtपादउtपाद  काका  नामनाम |Product Name :  |Product Name : ZENOTREX MEDICO Vertical Autoclave
-ांडांड|Brand : |Brand : ZENOTREX MEDICO
-ांडांड  EकारEकार|Brand Type : |Brand Type : Registered Brand
-कै टलॉगकै टलॉग  कक  #u#त#u#त|Catalogue Status: |Catalogue Status: OEM verified catalogue
-कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
-vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
-मॉडलमॉडल|Model:|Model: ZPL-A22R 
-एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
-1 pieces 198,000 NA 198,000
-कु ल ऑडRर मूय |Total Order Value (in INR) 198,000198,000
- 
-परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
-.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वgतुवgतु|Item|Item लॉटलॉट  नंबरनंबर||
-Lot No.Lot No. माKामाKा|Quantity|Quantity
-#दनांक#दनांक  केके   बादबाद
-#डलीवरी#डलीवरी  शुFशुF
-करनाकरना  हैहै||
-Delivery StartDelivery Start
-AfterAfter
-#वतरण#वतरण  पूरापूरा  कबकब
-तकतक  करनाकरना  हैहै||
-Delivery ToDelivery To
-BeBe
-CompletedCompleted
-ByBy
-पद| Designation : -
-ईमेल आईडी|Email ID : dr.nasreemv@gov.in
-संपकR|Contact : -
-जीएसट_आईएन|GSTIN : - ZENOTREX MEDICO
