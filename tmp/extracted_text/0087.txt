@@ -1,0 +1,372 @@
+
+--- PAGE 1 ---
+
+--- PAGE 2 ---
+
+--- PAGE 3 ---
+
+--- PAGE 4 ---
+
+--- PAGE 5 ---
+
+--- PAGE 6 ---
+
+--- PAGE 7 ---
+
+--- PAGE 8 ---
+
+--- PAGE 9 ---
+
+--- PAGE 10 ---
+
+--- PAGE 11 ---
+
+--- PAGE 12 ---
+
+--- PAGE 13 ---
+
+--- PAGE 14 ---
+
+--- PAGE 15 ---
+
+--- PAGE 16 ---
+
+--- PAGE 17 ---
+
+--- PAGE 18 ---
+
+--- PAGE 19 ---
+
+--- PAGE 20 ---
+
+--- PAGE 21 ---
+
+--- PAGE 22 ---
+VENDOR ASSESSMENT REPORT
+Vendor Assessment ID VA-885415422816492
+Name of the Vendor M/S HI TECH INSTRUMENTS
+Address cabin no 204,sco-623-624 ,2 floor,sector-45c,chandigarh,chandigarh,160047
+Date of Report 21 Jun 2025
+Date of Expiry 20 Jun 2028
+Contents:
+Section Description
+A Desktop Assessment Details
+B Video Assessment Details
+C Final Remarks
+D Disclaimer
+Section-ADesktop Assessment
+(A-1) Vendor Profile:
+Criteria Parameters Observations/Details
+Company Details Name of the Company/Firm M/S HI TECH INSTRUMENTS
+Registered Address cabin no 204,sco-623-624 ,2 floor,sector-45c,chandigarh,chandigarh,160047
+Primary Contact Number 9779772707
+Primary Email ID sale.hitechinstrument@gmail.com
+Additional Contact Number 9779772707
+Additional Email ID sale.hitechinstrument@gmail.com
+Constitution Type proprietorship
+Company Identification Number Not Available
+GSTIN Number 04DODPR0652M1ZS
+PAN/TAN/TIN of the Company DODPR0652M
+Company debarred/blacklisted by any Govt.organization (Yes/No) No
+Certificates &Licenses Quality Certification (Yes/No) Yes
+Any License (Yes/No) No
+Firm Category OEM/Deemed OEM/Re-seller OEM
+Page 1 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 23 ---
+BeneficiaryDeclaration (Yes/No) Yes
+Transfer ofTechnology (Yes/No) No
+(A-2) Experience:
+Details of Orders (Top Three Value- wise) received in last three financial years:
+S.No. Department Name
+Work Order/Completion LetterNumber Item Supplied QuantitySupplied Order Value(Rs.)
+1 DEPARTMENT OFHEALTH AND FAMILYWELFARE
+GEMC-511687707983083 htico--M/S HI TECH INSTRUMENTS SwingOut Rotor and Angle Rotor MedicalCentrifuge Size 24x15ml
+5 ₹87,277.00
+2 Department of AgriculturalResearch and Education(DARE)
+GEMC-511687793031145 -86 Refrigerator 1 ₹6,60,000.00
+3 Department of Scientificand Industrial Research(DSIR)
+GEMC-511687767632749 htico--M/S HI TECH INSTRUMENTS LCDMicro weighing Balance with licensedsoftware, Capacity 220g
+2 ₹1,00,000.00
+(A-3) Turnover of the Vendor (Last 3 years)
+S.No. Assessment Year Turnover (Rs)
+1 2023 ₹1,39,89,103.00
+2 2022 ₹59,41,801.00
+3 2021 ₹19,00,000.00
+(A-4) Items for which assessment is requested & carried out.
+S. No Category Name Description RemarksValid/Invalid
+1 Vacuum Oven(FSSAI) A vacuum oven is a specialized oven that creates a low-pressureenvironment to facilitate drying or heat treatment of materials,especially those sensitive to heat or oxygen
+valid
+2 Hot Air Oven(FSSAI) Hot air ovens are electrical devices which use dry heat to sterilize valid
+3 Vacuum Oven A vacuum oven is a specialized oven that creates a low-pressureenvironment to facilitate drying or heat treatment of materials,especially those sensitive to heat or oxygen
+valid
+4 Medical Centrifuge One of the most common applications of centrifuges is in theseparation of red blood cells, white blood cells, and platelets fromwhole blood. They are also used to purify cells, organelles, andviruses, making centrifuges indispensable in molecular biolo
+valid
+5 CO2 Incubator A carbon dioxide (CO2) incubator is a specialized laboratoryequipment used for cell culture, which helps to maintain the optimalconditions required for the growth and survival of cells
+valid
+6 LaboratoryRefrigerator (V2) A laboratory refrigerator is a specialized cooling unit designed forstoring temperature-sensitive materials, such as biological samples,chemicals, and reagents, in research, medical, and scientificlaboratories
+valid
+Page 2 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 24 ---
+7 Deep freezer The term deep freezer refers more to the appliance's capacity ratherthan its freezing temperatures valid
+8 Ice LinedRefrigerator Ice lined refrigerator is a kind of refrigerator, comprises of high qualityice packs, which help in maintaining 0C to 8C temperature withoutpower supply.
+valid
+9 Orbital Shaker(FSSAI) An orbital shaker is ideal for a variety of general-purpose shakingapplications in cell culture, bacterial growth and suspension, stainingand washing procedures
+valid
+10 Deep FreezerMarked to IS 7872(Under BISScheme 1) (V2)
+Industrial Deep Freezer valid
+11 Laboratory DeepFreezer (V2) The term deep freezer refers more to the appliance's capacity ratherthan its freezing temperatures valid
+12 Platelet Agitatorand Incubator (V2) This incubator includes an integrated platelet agitator and is designedto create the optimal storage environment of platelets after collection valid
+13 Deep Freezer ForUniversalImmunizationProgram
+Industrial Deep Freezer valid
+14 BOD Incubator A BOD (Biochemical Oxygen Demand) incubator is a specializedlaboratory instrument used to maintain controlled conditions forincubating samples, primarily for measuring the oxygen demand ofmicroorganisms in water or wastewater
+valid
+15 LaboratoryIncubators A BOD (Biochemical Oxygen Demand) incubator is a specializedlaboratory instrument used to maintain controlled conditions forincubating samples, primarily for measuring the oxygen demand ofmicroorganisms in water or wastewater
+valid
+16 Industrial InfraredOven An industrial oven is a heated chamber that is used for a range ofdifferent heat treatment processes valid
+17 Non RefrigeratedCentrifuge forGeneral Purposeand research
+One of the most common applications of centrifuges is in theseparation of red blood cells, white blood cells, and platelets fromwhole blood. They are also used to purify cells, organelles, andviruses, making centrifuges indispensable in molecular biolo
+valid
+18 Ultra lowtemperaturelaboratory deepfreezer
+The term deep freezer refers more to the appliance's capacity ratherthan its freezing temperatures valid
+19 Mortuary Cabinet(V2) Mortuary cabinets are low temperature refrigerated cabinets that areused to keep dead bodies for short or long time valid
+20 Shaker Incubator A shaker incubator is a laboratory instrument that combines thefunctions of an incubator and a shaker, providing a controlledenvironment for incubating samples while also providing mechanicalagitation
+valid
+21 Industrial Oven An industrial oven is a heated chamber that is used for a range ofdifferent heat treatment processes valid
+22 Rotary Shaker Rotary shakers are laboratory instruments used for mixing andagitating samples in various applications, particularly in cell culture,microbiology, and other life science fields
+valid
+23 Incubator (FSSAI) A BOD (Biochemical Oxygen Demand) incubator is a specializedlaboratory instrument used to maintain controlled conditions forincubating samples, primarily for measuring the oxygen demand ofmicroorganisms in water or wastewater
+valid
+Page 3 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 25 ---
+24 Muffle Furnace A muffle furnace is a laboratory instrument used to heat materials toextremely high temperatures whilst isolating them from fuel and thebyproducts of combustion from the heat source
+valid
+25 InoculationChamber An inoculation chamber is a specialized laboratory tool designed toprovide a controlled, sterile environment for handling and transferringmicroorganisms, particularly during inoculation procedures
+valid
+26 Dental Autoclave An autoclave is a sterilizer that uses high pressure and steam toeliminate microorganisms from dental instruments valid
+27 Fume Hood(FSSAI) A fume hood, as specified by FSSAI, is a ventilated, enclosedworkspace designed to capture, contain, and exhaust harmful ordangerous fumes, vapors, and particulate matter generated duringlaboratory procedures, particularly those involving chemicals or
+valid
+28 Biosafety Cabinet A biological safety cabinet (BSC) is a primary engineering controlused to protect personnel against biohazardous or infectious agentsand to help maintain quality control of the material being worked withas it filters both the inflow and exhaust air.
+valid
+29 Vertical Autoclave A vertical autoclave, also known as a top-loading sterilizer, is acylindrical machine used to sterilize materials via high-pressure steam.It's commonly used in hospitals, laboratories, and other healthcaresettings for sterilizing equipment like surgica
+valid
+30 Vertical Autoclave(FSSAI) A vertical autoclave, also known as a top-loading sterilizer, is acylindrical machine used to sterilize materials via high-pressure steam.It's commonly used in hospitals, laboratories, and other healthcaresettings for sterilizing equipment like surgica
+valid
+31 HorizontalAutoclave Horizontal autoclaves are a type of steam sterilizer that has ahorizontally oriented chamber. This makes them an ideal sterilizationsolution for large loads and irregularly shaped items. The wideraccess point also enables easier loading and unloading
+valid
+32 Table TopAutoclave (V2) A vertical autoclave, also known as a top-loading sterilizer, is acylindrical machine used to sterilize materials via high-pressure steam.It's commonly used in hospitals, laboratories, and other healthcaresettings for sterilizing equipment like surgica
+valid
+33 EnvironmentalChamber An environmental chamber, also known as a climatic chamber, is acontrolled laboratory space used to test how products and materialsbehave under various simulated environmental conditions
+valid
+34 Laminar air flowcabinets orstations
+s their name indicates, horizontal laminar flow hoods direct airhorizontally. Air is pushed through a HEPA or ULPA filter positioned onthe back wall and moves forward across the work surface until it exitsthe enclosure
+valid
+35 Tubular Furnace Tubular furnaces are electric heating devices mainly used to carry outsynthesis and purification of compounds/products with an inorganicmatrix, such as ceramics
+valid
+36 Laminar Air Flow(Horizontal)(FSSAI)
+s their name indicates, horizontal laminar flow hoods direct airhorizontally. Air is pushed through a HEPA or ULPA filter positioned onthe back wall and moves forward across the work surface until it exitsthe enclosure
+valid
+37 Circulating/ShakingWater Baths(FSSAI)
+A Water Bath is a piece of equipment commonly used in microbiologylaboratories for various applications like incubating cultures orpreparing samples
+valid
+38 Stability Chamber A stability chamber is a controlled environment used for testing thestability and shelf life of various products like pharmaceuticals, food,and electrical components under different environmental conditions
+valid
+39 water baths A Water Bath is a piece of equipment commonly used in microbiologylaboratories for various applications like incubating cultures orpreparing samples
+valid
+Page 4 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 26 ---
+40 Bio Safety Level -III Cabinet Bio Safety Level - III Cabinet valid
+41 Steam Sterlizer(V2) A vertical autoclave, also known as a top-loading sterilizer, is acylindrical machine used to sterilize materials via high-pressure steam.It's commonly used in hospitals, laboratories, and other healthcaresettings for sterilizing equipment
+valid
+42 Humidity Chamber A humidity chamber is a mechanism that creates differentenvironments to allow manufacturers to test their products to theharshest of conditions
+valid
+43 Serological WaterBath (FSSAI) A Serological Water Bath is a piece of equipment commonly used inmicrobiology laboratories for various applications like incubatingcultures or preparing samples
+valid
+44 ETO Sterilizer Ethylene oxide (EtO) sterilization is a low-temperature gas sterilizationprocess that uses ethylene oxide gas to destroy microorganisms valid
+45 Laboratory ColdRoom Cold rooms are insulated rooms designed to maintain a specific lowtemperature, typically between 0C and 5C valid
+46 Blood FluidWarming Cabinet(V2)
+A Blood Fluid Warming Cabinet (V2) is a specialized medical deviceused to safely warm blood, intravenous fluids, and other medicalsolutions to body temperature
+valid
+47 Bi DoubleDistillation WaterUnit (V2)
+A double distillation unit in a laboratory is equipment designed toperform the double distillation process, producing extremely puredistilled water
+valid
+48 Air Curtain The primary purpose of an air curtain is to create an invisible barrierof air across an opening, like a doorway, to separate two differentenvironments without obstructing passage
+valid
+49 Modular ColdRooms Cold rooms are insulated rooms designed to maintain a specific lowtemperature, typically between 0C and 5C valid
+50 Cabinet Dryer (V2) Tray dryers are used for batch drying of solid foods at small tomoderate scale (say, 2000 to 20 000 kg per day). They areinexpensive and simple to construct. Tray dryers consist of a closedcompartment in which are placed trays containing the food to be
+valid
+51 Lyophilizer Lyophilizer and freeze dryer are synonymous names for the sameequipment. A lyophilizer executes a water removal process typicallyused to preserve perishable materials, to extend shelf life or make thematerial more convenient for transport
+valid
+(A-5) Desktop Assessment Remarks:
+1. Vendor has submitted all the required documents and replied to the raised NCs with proper remarks along with the supporting documents.
+Page 5 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 27 ---
+Section-B
+(Applicable for OEM/Deemed OEM Only)
+(B-1) Vendor Capability:
+Criteria Parameters Details
+Basic Information Number of production/service sites 1
+Manufacturing Sites Address of Manufacturing Site(s) VlLL-DHULKOT, AMBALA, AMBALA,Ambala, Haryana, 134003
+Country Country of parent OEM (Applicable for Deemed OEM Only)
+Quality/ Processcontrol Availability of 'Quality Assurance Plan' document /'Stage/component -Wise Inspection Plan' (Yes/No) Yes
+Safety Availability of 'Safety Standard and operating procedures' manual(Yes/No) Yes
+Suppliers Component,Raw material List of the approved suppliers along with quantity supplied (Yes/No) Yes
+(B-2) Video Assessment:
+Parameter Information Response (verified/notverified)
+Seller's address Whether the physical location of the vendor is as per address proof providedin desktop assessment. Verified
+Manufacturing processFlow details Whether manufacturing process is as per 'process flow diagram provided' indesktop assessment. Verified
+Manufacturing processEquipment Whether the machinery is available with vendor as per list provided in desktopassessment. Verified
+Infrastructure Whether the vendor has sufficient resources like manpower, buildings etc. forits activities. Verified
+B-3: Photographs
+Page 6 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 28 ---
+Page 7 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 29 ---
+Page 8 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 30 ---
+Page 9 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 31 ---
+Page 10 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 32 ---
+Page 11 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 33 ---
+Page 12 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 34 ---
+Page 13 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 35 ---
+Page 14 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 36 ---
+Page 15 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 37 ---
+Page 16 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 38 ---
+Page 17 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 39 ---
+Page 18 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 40 ---
+Page 19 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 41 ---
+Page 20 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 42 ---
+Page 21 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 43 ---
+Page 22 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 44 ---
+Page 23 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 45 ---
+Page 24 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 46 ---
+Page 25 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 47 ---
+Page 26 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 48 ---
+Page 27 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 49 ---
+Page 28 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 50 ---
+Page 29 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 51 ---
+Page 30 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 52 ---
+Page 31 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 53 ---
+Page 32 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 54 ---
+Page 33 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 55 ---
+Page 34 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 56 ---
+Page 35 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 57 ---
+Page 36 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 58 ---
+Page 37 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 59 ---
+Page 38 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 60 ---
+Page 39 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 61 ---
+Page 40 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 62 ---
+Page 41 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 63 ---
+Page 42 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 64 ---
+Page 43 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 65 ---
+Page 44 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 66 ---
+Page 45 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 67 ---
+Page 46 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 68 ---
+Page 47 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 69 ---
+Page 48 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 70 ---
+Section-C
+Video Assessment Remarks (Applicable for OEM/Deemed OEM)
+Page 49 of 50 16 Jul 2025 VA-885415422816492
+
+--- PAGE 71 ---
+➢   This report is valid for 36 months from the date of report.
+➢   This vendor assessment report is confidential and is addressed only to the intended recipient.
+➢   This information shall not be made available to third parties or any other person, entity or organization without the permission of the GeM orthe verification agency.
+➢   The vendor assessment report is based on the information provided by the vendor on GeM Portal and to the verification agency portal whichare considered to be truthful, precise and accurate.
+➢   GeM reserves the rights for any surveillance/Physical assessment of the vendor.
+➢   The responsibility for the accuracy, completeness or adequacy of any information on which report is based, lies with the vendor.
+➢   RITES accept no liability for the contents of this report or for the consequences of any actions taken on the basis of information provided inthe report. Vendor Assessment is not an audit and this report is not in any way a recommendation for entering into any kind oftransaction/commitment/agreement etc. with entity.
+➢   RITES accepts no responsibility, whatsoever, for any loss or damage from the use of any information given in the report and nothingcontained in the report is liable or intended to create any legally binding obligations, financial or any other liability whatsoever on RITES, it'sleadership or persons/organizations involved in vendor assessment .
+1. Video Assessment has been conducted with Sh. Sagar Bola, (Proprietor) of the Vendor.2. Video, pictorial evidence and geo-tagged location have been recorded successfully during video assessment.3. Firm’s address, manufacturing process, machine/equipment & infrastructure have been verified. 4. Video Assessment has been conducted successfully.
+Recommendation- Based on the Vendor Assessment, Vendor has been assessed as an “OEM” satisfactorily.
+Section-D
+Disclaimer
+***End of Report***
+Page 50 of 50 16 Jul 2025 VA-885415422816492

@@ -1203,10 +1203,121 @@ function DepartmentGrantBalances({ rows }) {
     );
 }
 
+const defaultBidVerificationItems = [
+    "Hard copy received", "ITR - 3 years", "Bidder turnover", "EMD / exemption",
+    "Experience - 3 years", "Past performance", "Escalation matrix", "PAN", "GST",
+    "MSME / Udyam", "ISO", "OEM authorization certificate", "Undertaking",
+    "Establishment certificate", "ATC compliance certificate",
+];
+
+function BidEvaluationPanel({ bid, onClose }) {
+    const [data, setData] = useState(null);
+    const [seller, setSeller] = useState({ seller_name: "", gem_seller_id: "" });
+    const [criterion, setCriterion] = useState({ label: "", required: true });
+    const [message, setMessage] = useState("");
+    async function load() {
+        setData(await api(`/api/buyer/bids/${bid.id}/evaluation`));
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, [bid.id]);
+    async function addSeller(e) {
+        e.preventDefault();
+        setData(await api(`/api/buyer/bids/${bid.id}/sellers`, { method: "POST", body: JSON.stringify(seller) }));
+        setSeller({ seller_name: "", gem_seller_id: "" });
+    }
+    async function addCriterion(e) {
+        e.preventDefault();
+        setData(await api(`/api/buyer/bids/${bid.id}/criteria`, { method: "POST", body: JSON.stringify(criterion) }));
+        setCriterion({ label: "", required: true });
+    }
+    async function updateCell(sellerId, criterionId, current, status) {
+        setData(await api(`/api/buyer/bids/${bid.id}/verification/${sellerId}/${criterionId}`, {
+            method: "PUT",
+            body: JSON.stringify({ ...current, status }),
+        }));
+    }
+    async function updateSeller(sellerId, patch) {
+        setData(await api(`/api/buyer/bids/${bid.id}/sellers/${sellerId}`, { method: "PUT", body: JSON.stringify(patch) }));
+    }
+    async function removeSeller(sellerId) {
+        setData(await api(`/api/buyer/bids/${bid.id}/sellers/${sellerId}`, { method: "DELETE" }));
+    }
+    async function removeCriterion(criterionId) {
+        setData(await api(`/api/buyer/bids/${bid.id}/criteria/${criterionId}`, { method: "DELETE" }));
+    }
+    const statusLabel = value => ({ verified: "Verified", unverified: "Unverified", unavailable: "Unavailable", not_required: "N/A" }[value] || value);
+    return h("section", { className: "card bid-evaluation-panel" },
+        h("div", { className: "buyer-form-head" },
+            h("div", null,
+                h("h3", null, `Document verification - ${bid.title}`),
+                h("p", { className: "desc" }, `${bid.reference_no || "No bid number"} · Add GeM applicants and verify every required document.`)
+            ),
+            h("div", { className: "mini-links" }, h("button", { onClick: load }, "Refresh"), h("button", { onClick: onClose }, "Close"))
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("div", { className: "evaluation-setup-grid" },
+            h("form", { onSubmit: addSeller, className: "evaluation-inline-form" },
+                h("strong", null, "Add GeM seller"),
+                h("input", { required: true, value: seller.seller_name, onChange: e => setSeller({ ...seller, seller_name: e.target.value }), placeholder: "Seller / agency name" }),
+                h("input", { value: seller.gem_seller_id, onChange: e => setSeller({ ...seller, gem_seller_id: e.target.value }), placeholder: "GeM seller ID (optional)" }),
+                h("button", { className: "primary" }, "Add Seller")
+            ),
+            h("form", { onSubmit: addCriterion, className: "evaluation-inline-form" },
+                h("strong", null, "Add document to verify"),
+                h("input", { required: true, value: criterion.label, onChange: e => setCriterion({ ...criterion, label: e.target.value }), placeholder: "Document / eligibility criterion" }),
+                h("label", { className: "evaluation-required" }, h("input", { type: "checkbox", checked: criterion.required, onChange: e => setCriterion({ ...criterion, required: e.target.checked }) }), "Mandatory"),
+                h("button", { className: "primary" }, "Add Requirement")
+            )
+        ),
+        data ? h("div", { className: "buyer-process-metrics evaluation-summary" },
+            h("div", null, h("span", null, "Sellers"), h("strong", null, data.summary.seller_count)),
+            h("div", null, h("span", null, "Requirements"), h("strong", null, data.summary.criteria_count)),
+            h("div", null, h("span", null, "Qualified"), h("strong", null, data.summary.qualified)),
+            h("div", null, h("span", null, "Disqualified"), h("strong", null, data.summary.disqualified))
+        ) : null,
+        data?.criteria?.length ? h("div", { className: "evaluation-criteria-list" },
+            h("span", null, "Verification columns:"),
+            data.criteria.map(item => h("button", { key: item.id, title: "Remove this column", onClick: () => removeCriterion(item.id) }, `${item.label}${item.required ? " *" : ""} ×`))
+        ) : null,
+        data?.criteria?.length && data?.sellers?.length ? h("div", { className: "table-wrap verification-matrix-wrap" },
+            h("table", { className: "verification-matrix" },
+                h("thead", null, h("tr", null,
+                    h("th", null, "Sr."),
+                    h("th", { className: "seller-column" }, "Name of Agency"),
+                    data.criteria.map(item => h("th", { key: item.id, title: item.notes || "" }, item.label, item.required ? h("sup", null, "*") : null)),
+                    h("th", null, "Remarks / Result")
+                )),
+                h("tbody", null, data.sellers.map((row, rowIndex) => h("tr", { key: row.id },
+                    h("td", null, rowIndex + 1),
+                    h("td", { className: "seller-column" },
+                        h("strong", null, row.seller_name),
+                        row.gem_seller_id ? h("small", null, row.gem_seller_id) : null,
+                        h("button", { className: "link-danger", onClick: () => removeSeller(row.id) }, "Remove")
+                    ),
+                    data.criteria.map(item => {
+                        const cell = row.verifications.find(value => value.criterion_id === item.id) || { status: "unverified" };
+                        return h("td", { key: item.id, className: `verification-cell ${cell.status}` },
+                            h("select", { value: cell.status, title: cell.remarks || cell.evidence_reference || "", onChange: e => updateCell(row.id, item.id, cell, e.target.value) },
+                                data.verification_statuses.map(value => h("option", { value, key: value }, statusLabel(value)))
+                            )
+                        );
+                    }),
+                    h("td", { className: "result-column" },
+                        h("select", { value: row.qualification_status, onChange: e => updateSeller(row.id, { qualification_status: e.target.value }) },
+                            data.qualification_statuses.map(value => h("option", { value, key: value }, value.replaceAll("_", " ")))
+                        ),
+                        h("textarea", { defaultValue: row.remarks, placeholder: row.blocking_count ? `${row.blocking_count} mandatory item(s) need action` : "Buyer remarks", onBlur: e => updateSeller(row.id, { remarks: e.target.value }) })
+                    )
+                )))
+            )
+        ) : h("div", { className: "notice" }, "Add at least one seller and one verification requirement to generate the evaluation table.")
+    );
+}
+
 function BuyerModulePage({ moduleKey }) {
     const meta = buyerModules[moduleKey] || buyerModules.bids;
     const [data, setData] = useState(null);
-    const [form, setForm] = useState({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+    const [form, setForm] = useState({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), evaluation_criteria: defaultBidVerificationItems.join("\n"), notes: "" });
+    const [evaluationBid, setEvaluationBid] = useState(null);
     const [message, setMessage] = useState("");
     async function load() {
         const result = await api(`/api/buyer/workspace?module=${encodeURIComponent(moduleKey)}`);
@@ -1222,7 +1333,7 @@ function BuyerModulePage({ moduleKey }) {
         e.preventDefault();
         setMessage("Saving buyer tracker item...");
         await api("/api/buyer/workspace", { method: "POST", body: JSON.stringify({ ...form, module: moduleKey }) });
-        setForm({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), notes: "" });
+        setForm({ module: moduleKey, title: "", reference_no: "", status: "pending", priority: "normal", procurement_mode: "", department: "", state: "", city: "", category: "", vendor_name: "", estimated_value: "", due_date: "", checklist: (meta.checklist || []).join("\n"), evaluation_criteria: defaultBidVerificationItems.join("\n"), notes: "" });
         setMessage("Buyer tracker item saved.");
         await load();
     }
@@ -1308,11 +1419,13 @@ function BuyerModulePage({ moduleKey }) {
                 h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant allocated (Rs.)" : "Final price (Rs.)"), h("input", { required: true, type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
                 h("label", { className: "field-block" }, h("span", null, "Date"), h("input", { required: true, type: "date", value: form.due_date, onChange: e => update("due_date", e.target.value) })),
                 h("label", { className: "field-block span-2" }, h("span", null, "Checklist"), h("textarea", { value: form.checklist, onChange: e => update("checklist", e.target.value), placeholder: "One checklist item per line" })),
+                moduleKey === "bids" ? h("label", { className: "field-block span-2" }, h("span", null, "Required seller documents / verification columns"), h("textarea", { value: form.evaluation_criteria, onChange: e => update("evaluation_criteria", e.target.value), placeholder: "One document or criterion per line" })) : null,
                 h("label", { className: "field-block span-2" }, h("span", null, "Notes"), h("textarea", { value: form.notes, onChange: e => update("notes", e.target.value), placeholder: "Remarks, evidence, next action, risks" })),
                 h("button", { className: "primary span-2" }, "Save Item")
             )
         ),
         moduleKey === "grants" ? h(DepartmentGrantBalances, { rows: data?.summary?.department_balances || [] }) : null,
+        moduleKey === "bids" && evaluationBid ? h(BidEvaluationPanel, { bid: evaluationBid, onClose: () => setEvaluationBid(null) }) : null,
         h("section", { className: "buyer-item-list" },
             items.length ? items.map(item => h("article", { className: `buyer-item-card ${item.priority}`, key: item.id },
                 h("div", { className: "buyer-item-head" },
@@ -1328,6 +1441,7 @@ function BuyerModulePage({ moduleKey }) {
                 item.checklist?.length ? h("div", { className: "tag-list buyer-checklist" }, item.checklist.map(check => h("span", { key: check }, check))) : null,
                 item.notes ? h("p", { className: "desc" }, item.notes) : null,
                 h("div", { className: "mini-links" },
+                    moduleKey === "bids" ? h("button", { className: "primary", onClick: () => setEvaluationBid(item) }, "Verify Seller Documents") : null,
                     h("button", { onClick: () => updateItem(item, { completed: !item.completed }) }, item.completed ? "Reopen" : "Mark Complete"),
                     h("button", { onClick: () => updateItem(item, { priority: item.priority === "urgent" ? "normal" : "urgent" }) }, item.priority === "urgent" ? "Normal Priority" : "Urgent"),
                     h("button", { onClick: () => deleteItem(item) }, "Delete")

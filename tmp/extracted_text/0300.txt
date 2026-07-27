@@ -1,0 +1,1791 @@
+
+--- PAGE 1 ---
+ 
+Contract
+Contract No: GEMC-511687744806211
+Generated Date: 10-Jun-2022
+Bid/RA/PR No:GEM/2022/B/2040110
+Organisation Details
+Type: State Government
+Ministry: -
+Department: Health & Family Welfare Department Gujarat
+Organisation Name:National Rural Health Mission (NRHM) State Health Society
+Office Zone: Health Branch Jilla Panchayat Valsad
+Buyer Details
+Designation: ADHO
+Contact No.: 02632-253080-
+Email ID: adho-val@gujarat.gov.in
+GSTIN: -
+Address: 4th Floor Health Branch District Panchayat Valsad,
+VALSAD, GUJARAT-396001, India
+ 
+Financial Approval Detail
+IFD Concurrence: Yes
+Designation of Administrative Approval: Chief District Health Officer Valsad
+Designation of Financial Approval: Chief District Health Officer Valsad
+Paying Authority Details
+Payment Mode: Internet Banking
+Designation: DUFA
+Email ID: duhu.health.valsad@gmail.com
+GSTIN: -
+Address: 4th Floor Health Branch District Panchayat Valsad,
+Valsad, GUJARAT-396001, India
+ 
+ 
+Seller Details
+GeM Seller ID: 7587190000962163
+Company Name: SATYAM DISTRIBUTORS
+Contact No.: 07600010944
+Email ID: hemantpatel3700@gmail.com
+Address: WARD 2 AT PO CHHAPAR,PATEL FALIYA AMALSAD,STATION ROAD,GANDEVI,
+Navsari, GUJARAT-396321, -
+MSME verified: Yes
+MSME Registration number: UDYAM-GJ-16-0004567
+MSE Social Category: OBC
+MSE Gender: Male
+GSTIN: 24AUFPP6602E1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : VISION High frequency Portable X Ray Machine
+Brand : VISION
+Brand Type : Registered Brand
+Catalogue Status : Catalogue not verified by OEM
+Selling As : Reseller not verified by OEM
+Category Name & Quadrant : Portable X Ray Machine (Q2)
+VISION 100 Portable X Ray Machine 
+HSN not specified by seller
+4 pieces 238,990
+GST (18%) : 135,485.291 
+GST Cess 1 (9%) : 67,742.646 
+GST Cess 2 (9 per accounting unit) : 36 
+Input Tax Credit (ITC) on GST : - 
+ITC on GST Cess 1 : - 
+ITC on GST Cess 2 : - 
+955,960
+Total Order Value (in INR) 955,960
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery Start
+After
+Delivery To Be
+Completed By
+1
+Designation: -
+Email ID: ao-health-val@gujarat.gov.in
+Contact: 02332-244880-
+GSTIN: -
+Address: 4th Floor Health Branch District
+Panchayat Valsad,
+VALSAD, GUJARAT-396001, India
+VISION High frequency Portable X
+Ray Machine - 4 10-Jun-2022 25-Jun-2022
+Product Specification for VISION High frequency Portable X Ray Machine
+Specification Sub-Spec Value
+Certification CDSCO/AERB
+Certification number and date 99-TA-771, 21/09/2017
+--- PAGE 2 ---
+Standards Type test approval from AREB required Yes
+AREB approval certificate number of Particular
+Model 17/07/2017 99-TA-763
+Confirmity to manufacturing standards ISO 13485
+Performance
+Parameters
+Purpose
+Mobile radiographic units (Portable X ray Machines) are used for radiographic imaging of patients
+who cannot be moved to the radiology department and who are in areas, such as intensive and
+critical care units or operating and emergency rooms. These devices are used mainly for general
+adult two-dimensional (2-D) radiographic studies (predominantly for chest x-rays) as well as
+pediatric, neonatal, and orthopedic imaging
+UMDNS Name and Code Radiographic Unit, Mobile - 13-272
+Type of frequency Generator High frequency
+Frequency generator output in kW 4
+Voltage Output range in kV 40 to 100
+Tube Current in mA 100
+Maximum Exposure time in milli sec upto 10
+mAs Range 0.5 to 250
+Nominal focal spot size in mm 1 to 2
+Inherent Filtration of x-ray Yes
+Collimator provided Yes
+Type of Collimator Manual
+Focal Spot size in mm 1-2
+Heat storage capacity in kHU 0
+Automatic exposure control device provided Yes
+Digital display for kV & mAs supplied Yes
+Electronic timer supplied Yes
+Provision of Anatomical programming
+radiography(APR) Yes
+X-ray tube system Stationary Anode
+Anode speed in rpm ( Hint: for rotating anode
+the speed should be 2500 or more and for
+stationary anode 0)
+0
+The unit should be easily positioned (from
+either side of the bed) for imaging in all
+possible projections
+Yes
+Portable X-ray machine shall be easily
+transportable and steering on caster wheel Yes
+Provision of effective braking system for
+parking,transport and emergency braking Yes
+Lead Aprons - Full body and Skirt type 4 No each (0.5pb)
+No of Thyroid shield and Gonald Shield 4 No each
+X-ray exposure command control Hand switch
+Power Cable length in meter 3
+X- ray film Cassette holder available No
+X-ray film cassette holder size in mm x mm NA (if no cassette holder is provided)
+Power supply Single Phase AC ( 220-240 V,50 Hz)
+Power plug (16 amp) compatible to standard
+wall outlet shall be supplied Yes
+Tube protection against overload provided Yes
+Portable X ray machine should be made in
+small footprint and hidden cable design for
+easy and efficient cleaning
+Yes
+Operating temperature and humidity 10 - 28 deg C and relative humidity of 15-90%
+Number of installations of the Portable X- ray
+machines in Central /State/PSU Govt Hospitals(
+Hint: Seller should furnish a performance >3
+--- PAGE 3 ---
+certificate of the device to the buyer if
+demanded after placement of the order)
+OEM and Reseller (if supplier is re-seller) shall
+ensure uninterrupted availability of all spares
+for 10 years
+Yes
+Availability of toll free facility for technical
+support maintened by OEM or authorized
+agencies
+Yes
+User/Technical/Maintenance manuals to be
+supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be
+provided after completing supplies before
+acceptance
+Yes
+Warranty (Option of comprehensive warranty is
+available through bidding only, which if opted
+will supersede normal warranty in the
+catalogue)
+3
+Reports
+The Principal Manufacturer must have direct
+Presence/approved service center In India Yes
+Copies of reports and certifications to be
+furnished to buyer on demand at time of
+supplies
+Yes
+QA, QC and other tests as per NABH shall be
+carried out by OEM or authorized agency of
+OEM
+Yes
+Copies of all calibration and test reports to be
+submitted at the time of Supply of Machine Yes
+ 
+Note: Seller has given an undertaking that it has made arrangements for getting the stores from an authorized distributor / dealer / channel partner of the OEM of
+the offered product. At the time of delivery of goods, Seller will provide necessary chain documents (in the form of GST Invoice) to prove that the supplied goods are
+genuine and are being sourced from an authorized distributor / dealer / channel partner of the OEM. In case of any complaint about genuineness of the supplied
+products, Seller shall be responsible for providing genuine replacement supplies.
+ 
+ 
+ 
+ 
+General Clauses w.r.t RCM/FCM
+1. Where ever RCM is applicable, for sellers (Regular GST registered seller who opted out of FCM as per notifications of GST like GTA , unregistered seller), Buyer
+have liability of paying the GST and GST cess to the government on the specified rate mentioned by them in this contract. Seller will invoice buyer with Zero GST and
+GST cess. 
+2. For Registered sellers as per FCM, rates will be inclusive of prescribed rate of GST and GST cess. ITC available to buyer as shown in the bid document have been
+applied while evaluating the bids. Seller has liability of paying the GST and GST cess to the govt and same will be charged from buyer while invoice. 
+3. For Registered sellers who opted for RCM while quoting for specified category under section 9(3) like GTA rates will be exclusive of GST and GST cess. GST and
+GST cess as indicated by the buyer in the bid document payment of GST and GST Cess will be the liability of buyer.
+4. For Unregistered sellers Liability of payment of GST and GST cess is in Buyers scope. GST and GST cess as indicated by the buyer in the bid document will be the
+liability of buyer . Unregistered seller will invoice buyer with zero GST and Zero GST cess.
+5. For sellers under Composition Scheme: There is no liability of payment of GST and GST cess in Buyers cope. Seller will invoice Zero GST and GST cess in the
+invoice to buyer.
+Terms and Conditions
+1. General Terms and Conditions-
+1.1 This contract is governed by the General Terms and Conditions, conditions stipulated to this Product/Service as provided in the Marketplace.
+2. Buyer Added Bid Specific Terms and Conditions-
+2.1 Turnover: 
+Bidder Turn Over Criteria: The minimum average annual financial turnover of the bidder during the last three years, ending on 31st March of the
+previous financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of
+relevant periods or a certificate from the Chartered Accountant / Cost Accountant indicating the turnover details for the relevant period shall be
+uploaded with the bid. In case the date of constitution / incorporation of the bidder is less than 3 year old, the average turnover in respect of the
+completed financial years after the date of constitution shall be taken into account for this criteria.
+--- PAGE 4 ---
+2.2 Turnover: 
+OEM Turn Over Criteria: The minimum average annual financial turnover of the OEM of the offered product during the last three years, ending on
+31st March of the previous financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited
+Balance Sheets of relevant periods or a certificate from the Chartered Accountant / Cost Accountant indicating the turnover details for the
+relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of the OEM is less than 3 year old, the average
+turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria. In case of bunch
+bids, the OEM of CATEGORY RELATED TO primary product having highest bid value should meet this criterion.
+2.3 Service & Support: 
+Availability of Service Centres: Bidder/OEM must have a Functional Service Centre in the State of each Consignee's Location in case of carry-in
+warranty. (Not applicable in case of goods having on-site warranty). If service center is not already there at the time of bidding, successful bidder
+/ OEM shall have to establish one within 30 days of award of contract. Payment shall be released only after submission of documentary evidence
+of having Functional Service Centre.
+2.4 Service & Support: 
+Dedicated /toll Free Telephone No. for Service Support : BIDDER/OEM  must have  Dedicated/toll Free Telephone No. for Service Support.
+2.5 Service & Support: 
+Escalation Matrix For Service Support : Bidder/OEM must provide  Escalation Matrix of Telephone Numbers for Service Support.
+2.6 Certificates: 
+ISO 9001: The bidder or the OEM of the offered products must have ISO 9001 certification.
+2.7 Certificates: 
+The bidder is required to upload, along with the bid, all relevant certificates such as BIS licence, type test certificate, approval certificates and
+other certificates as prescribed in the Product Specification given in the bid document.
+2.8 OEM: 
+IMPORTED PRODUCTS: In case of imported products, OEM or Authorized Seller of OEM should have a registered office in India to provide after
+sales service support in India. The certificate to this effect should be submitted.
+2.9 Past Project Experience: 
+For fulfilling the experience criteria any one of the following documents may be considered as valid proof for meeting the experience criteria:
+a. Purchase Order copy along with Invoice(s) with self-certification by the bidder that supplies against the invoices have been executed.
+b. Execution certificate by client with order value.
+c. Any other document in support of order execution like Third Party Inspection release note, etc.
+2.10 Buyer Added Bid Specific ATC: 
+Buyer Added text based ATC clauses
+The L1 Bidder Will have to deliver the goods at the place provided by the buyer.
+.
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 5 ---
+Specification Sub-Spec Value
+Standards
+Conformity to Certification CDSCO/AERB
+Certification number and date UP-21498-MF-XRE-001 dt. 24-04-2017
+Type test approval from AREB required Yes
+AREB approval certificate number of Particular Model 99-TA-810
+Confirmity to manufacturing standards Both ISO 13485 and ICMED 13485
+Product Specification for AMX X Ray Machine (300 mA) with High frequency generator
+S.No Consignee Item Quantity Expected
+Delivery Date
+1
+Alok Kumar
+-
+Landline--
+kul.b0478@nic.in
+Depot Officer, Central Store, Ekra, BCCL, Post Office- BANSJORA,
+Dhanbad, Jharkhand-828101.,
+DHANBAD, JHARKHAND-828101, India
+AMX X Ray Machine (300 mA) with High
+frequency generator 1 27-Feb-2020
+Consignee Detail
+# Item Description Category Name Model Ordered
+Quantity Unit
+Price
+(Inclusive of all Duties and Taxes
+in INR)
+1 AMX X Ray Machine (300 mA) with High frequency
+generator
+X Ray Machine (300
+mA)
+DIGITONE
+300 1 pieces 874,900
+Total Order Value (in INR) 874,900
+Product Details
+Seller Details
+Company Name: AMX Medical Systems
+Contact No.: 9990655044
+Email ID: praveengupta_2727@yahoo.co.in
+Address: 106 C,Gulmohar Green,Mohan Nagar,
+Ghaziabad, UTTAR PRADESH-201007, -
+MSME verified: Yes
+MSE Social Category: General
+MSE Gender: Female
+Financial Approval Detail
+IFD Concurrence : Yes
+Designation of Administrative Approval : D(T)PP,BCCL.
+Designation of Financial Approval : D(T)PP,BCCL.
+Buyer Details
+Name: Ashok Kumar Pandey
+Designation:Senior Manager(MM)
+Contact
+No.: -
+Email ID: ak.pandey4576@nic.in
+GSTIN: N
+Address:
+MM Department, level 3, Commercial Building, Koyla Bhawan,
+Koyla Nagar,
+DHANBAD, JHARKHAND-826005, India
+Organisation Details
+Type: Central PSU
+Ministry: Ministry of Coal
+Department: Materials Management
+Organisation Name: Bharat Coking Coal Limited
+Office Zone: Bccl Dhanbad
+GEM/2019/B/435247Bid/RA/PR No:
+28-Jan-2020Generated Date:
+ GEMC-511687771243910Contract No:Contract
+
+--- PAGE 6 ---
+Conformity to safety standards IEC 60601-2-54 or BIS equivalents
+Performance
+Parameters
+Purpose For Radiographic examinations
+Type of frequency generator High frequency generator
+Frequency generator output in kW 40
+KVP range in KV 40 -125
+Current output 300 mA or more at 100 kV
+Provision of Anatomical programming radiography Yes
+Over loading protection Yes
+X-ray tube positioning Floor Mount Tube stand
+X ray tube should be high speed rotating anode and must have dual focus Yes
+Tube rotation in degree 120
+Size of large focal spot in mm Upto 2 mm
+Size of small focal spot in mm Upto 1 mm
+Anode Rotation Speed (minimal) per minute 3200
+Permanent Filtration 0.9 mm Al / 75 kV
+Anode heat storage capacity (min) 140 kHU or more
+Heat dissipation rate in HU/Sec 670
+Automatic exposure control device provided Yes
+Maximum Exposure time in milli second upto 15
+Digital display for KVP & mAs provided Yes
+Range of tube movements in vertical planes in cm 250
+Range of tube movements in longitudinal in cm 250
+Range of tube movements in lateral planes in cm 250
+Electromagnetic brakes with fully counter balanced mechanism for tube movement Yes
+Facility to display tube angulation Yes
+Centering devices to be provided Yes
+Maximum source to image distance (SID) in vertical position in cm 150
+Maximum source to image distance (SID) in horizontal position in cm 110
+Collimeter rotation in degree ±180
+Multileaf collimator having halogen lamp/bright light source, with auto shut off provision of the
+light, should be available Yes
+Minimum intensity of light field lamp ?150 lux
+Full coverage size at a 100 cm SID(collimeter size) with ± 5 percent tolerances 430 x 430
+Type of table provided Floating table top
+Table top material with low attenuation and scratch resistant surface Carbon fiber
+Table Length in mm with ± 1 percent tolerances 2360
+Table Width in mm with ± 1 percent tolerances 760
+Table Height in mm with ± 1 percent tolerances 750
+System should have longitudinal and horizontal table top movements Yes
+Table should have provision for lateral imaging, without patient movement Yes
+Range of movements for the table
+Transverse movements of + 10cm or more &
+Longitudinal movements+ 40 cm with
+--- PAGE 7 ---
+Terms and Conditions
+1. Special terms and conditions
+1.  
+Corrigendum
+ 2019-12-09 17:00:00Extended Upto :
+electromagnetic brakes
+Facilities of height adjustments Yes
+Maximum Patient weight supported by table in kg 300
+Foot switches for adjusting longitudinal/side to side movements, locking, and light adjustment Yes
+Movable Grid with grid ratio 10:1 or more
+Anti-collision and safety devices provided Yes
+Counterbalanced, adjustable height, wall and floor mounted, vertical Bucky Yes
+SID range of radiographic application including chest radiography in mm 1000 to 1800
+Provision of doing chest radiography without grid Yes
+Power supply Three Phase AC ( 380-440 V,50/60 Hz)
+Lead lining for doors Yes
+Number of installations of the X- ray machines in Central /State/PSU Govt Hospitals (Note:
+Seller should furnish a performance certificate of the device to the buyer if demanded after
+placement of order)
+<3
+OEM and Reseller (if supplier is re-seller) shall ensure uninterrupted availability of all spares for
+10 years Yes
+Availability of toll free facility for technical support maintened by OEM or authorized agencies Yes
+User/Technical/Maintenance manuals to be supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be provided after completing supplies before
+acceptance Yes
+Comprehensive Warranty in Years 5
+Additional
+Parameters
+Patient fixing belts and compression device (for performing excretory urography, etc) Yes
+Voltage stabilizer servo controlled in KVA 50
+Light weight 'zero lead' radiation protection aprons provided Yes
+Lead Aprons - Full body and Skirt type 2 No each (0.5pb)
+Thyroid shields supplied 4
+Gonad sheet Male supplied 2
+Gonad sheet Female supplied 2
+Wall mounted stand for radiation protection aprons supplied Yes
+Lead glass window Supplied Yes
+Footsteps for the table supplied Yes
+Lateral cassette holder provided Yes
+Reports
+The Principal Manufacturer must have direct Presence/approved service center In India Yes
+Copies of reports and certifications to be furnished to buyer on demand at time of supplies Yes
+QA, QC and other tests as per NABH shall be carried out by OEM or authorized agency of
+OEM Yes
+Copies of all calibration and test reports to be submitted at the time of Supply of Machine Yes
+--- PAGE 8 ---
+1.1
+Comprehensive warranty
+Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the manufacturer,
+service charges and spares,. During the warranty period commencing from date of the successful completion of warranty period, Service personnel shall visit
+each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables .Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to
+extend warranty period by double the downtime period.
+Service centres
+Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address ,telephone numbers, e mails
+etc at time of making the supplies .It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled .Details of toll free numbers for service call and online registration
+of service requests also to be provided buyer/consignee at the time of supplies.
+Source of supply
+It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents to
+establish that the products supplied are manufactured by OEM indicated and sourced from them.
+Packing and Marking
+Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit including transhipment
+(if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases, remoteness of the
+final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,. Quality of packing,
+the manner of marking within & outside the packages and provision of accompanying documentation shall take in to consideration the type of medical
+equipments being supplied. The accessories shall be suitably labelled and packed .Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date , brief description of goods including quantity ,. Packing list reference number , country of origin of goods
+and any other relevant details.
+Spare Parts
+Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM . It shall be ensured that the required spares
+are available for purchase at least for 10 years from date of supplies .In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc.
+Further, OEM and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so
+that the same are available.
+OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most competitive price for spares and
+consumables of its machines/equipments supplied.
+Installation, Training, Manuals
+Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide required jigs and tools
+for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and maintaining the equipment
+and Supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any requirements
+regarding the installations , training and manuals the same shall also be applicable.
+Electrical safety checking
+Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to buyer/consignee. They
+should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have required equipment
+for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during every
+preventive maintenance call.
+Software All software updates should be provided free of cost during warranty period.
+2. General Terms and Conditions
+ This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General2.1
+Terms and Conditions (GTC) as available on the GeM portal (unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or
+BID/Reverse Auction Additional Terms and Conditions (ATC), as applicable
+  Free Delivery at Site including loading/unloading. In respect of items requiring installation and / or commissioning and other services in the2.2 Terms of delivery:
+scope of supply (as indicated in respective product category specification / STC / ATC), and the cost of the same is also included in the Contract price.
+  The Delivery Period/Time shall be essence of the Contract and delivery must be completed not later than such date(s). Any modification thereto2.3 Delivery period:
+shall be mutually agreed and incorporated in the Contract as per the provisions of the GTC.
+  If the Seller fails or neglects to observe or perform any of his obligations under the contract it shall be lawful for the Buyer to forfeit either2.4 Performance Security:
+in whole or in part, the Performance Security furnished by the Seller.
+  Contract Prices are all inclusive i.e. including all taxes, duties, local levies / transportation / loading-unloading charges etc. Break up of GST2.5 Taxes and Duties:
+shall be indicated by the Seller while raising invoice / bill on GeM. While submitting the bill / invoice Seller shall undertake that the Goods and Services Tax (GST)
+charged on this bill is not more than what is payable under the provision on the relevant Act or the Rules made there under and that the Goods on which GST has
+been charged have not been exempted under the GST Act or the Rules made there under and the charges on account of GST on these goods are correct under the
+provision of that Act or the rules made there under.
+  Contract Prices are all inclusive hence no reimbursement over and above the contract price(s) shall be allowed to seller2.6 Octroi Duty and / or other local taxes:
+towards payment of local taxes (such as levy of town duty, Octroi Duty, Terminal Tax and other levies of local bodies etc).
+--- PAGE 9 ---
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.
+  The provisions of limitation of liability between Buyer and Seller as given in the GTC shall be applicable here.2.7 Limitation of Liability:
+  The provisions of DISPUTE RESOLUTION BETWEEN BUYER AND SELLER as given in the GTC shall be applicable here.2.8 Resolution of disputes:
+  If the Seller fails to deliver any or all of the Goods/Services within the original/re-fixed delivery period(s) specified in the contract, the Buyer2.9 Liquidated Damages:
+will be entitled to deduct/recover the Liquidated Damages for the delay, unless covered under Force Majeure conditions aforesaid, @ 0.5% per week or part of the
+week of delayed period as pre-estimated damages not exceeding 10% of the contract value without any controversy/dispute of any sort whatsoever. In case, Service
+Level Agreement (SLA) is applicable the same shall be applicable for the Contract.
+ 2.10 Financial Certificate:
+ The expenditure involved for this purpose has received the Sanction of the competent financial authority.2.10.1
+ The funds are available under the proper head in the sanction budget allotment for the concern financial year.2.10.2
+ I have been fully authorized by the department to sign the supply order or incur the liability of the Goods being ordered.2.10.3
+ The bidder should submit a self declaration to the effect in bidder's official letter head that their agency have not been black listed by any Agency whatsoever till2.11
+date.
+3. Additional Terms and conditions
+ Scope of supply (Bid price to include all cost components) : Supply Installation Testing Commissioning of Goods and Training of operators and providing Statutory3.1
+Clearances required (if any)
+--- PAGE 10 ---
+ 
+Contract
+Contract No: GEMC-511687765590851
+Generated Date: 27-Oct-2021
+Bid/RA/PR No:GEM/2021/B/1229253
+Organisation Details
+Type: State Government
+Ministry: -
+Department: Health and Family Welfare Department Delhi
+Organisation Name: N/A
+Office Zone: North Zone
+Buyer Details
+Designation: BUYER
+Contact No.: 011-27034535-3140
+Email ID: buyer1.bmh.dl@gembuyer.in
+GSTIN: 07DELB07565F1DP
+Address:
+BHAGWAN MAHAVIR HOSPITAL , GNCT OF DELHI, H-4/5,
+GURU HARKISHAN MARG, PITAMPURA, DELHI-110034,
+NORTH WEST DELHI, DELHI-110034, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: MEDICAL SUPERINTENDENT
+Designation of Financial Approval: MEDICAL SUPERINTENDENT
+Paying Authority Details
+Payment Mode: Offline
+Designation: accounts officer
+Email ID: ddo1.bmh.dl@gembuyer.in
+GSTIN: -
+Address:
+BHAGWAN MAHAVIR HOSPIATAL GNCT OF DELHI, H-4/5,
+GURU HARKISHAN MARG, PITAMPURA, DELHI-110034,
+NORTH WEST DELHI, DELHI-110034, India
+ 
+ 
+Seller Details
+GeM Seller ID: 9A2D190000803515
+Company Name: AMX Medical Systems
+Contact No.: 09313299920
+Email ID: amxcare@gmail.com
+Address: 106 C,Gulmohar Green,Mohan Nagar,
+Ghaziabad, UTTAR PRADESH-201007, -
+MSME verified: Yes
+MSME Registration number: UP29A0015459
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 09AGQPS7444G1ZP , 09AGQPS7444G1ZP
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Category
+Name Model HSN
+Code
+Ordered
+Quantity Unit Lead
+Time(Days)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : AMX Medical Systems 5 Positioning manual table
+300 mA X Ray Machine with High frequency generator
+Brand : AMX Medical Systems
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+X Ray
+Machine (300
+mA)
+AMX
+DIGITONE-
+32
+9022 1 pieces - 899,100
+Total Order Value (in INR) 899,100
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity
+Delivery
+Start
+After
+Delivery
+To Be
+Completed
+By
+1
+Designation: -
+Email ID: con1.bmh.delhi@gembuyer.in
+Contact: 011-27033946-
+GSTIN: -
+Address: BHAGWAN MAHAVIR HOSPITAL GNCT OF DELHI
+H-4/5, GURU HARKISHAN MARG, PITAMPURA, DELHI-
+110034,
+NORTH WEST DELHI, DELHI-110034, India
+AMX Medical Systems 5 Positioning manual table
+300 mA X Ray Machine with High frequency
+generator
+- 1 27-Oct-
+2021 11-Dec-2021
+ 
+Product Specification for AMX Medical Systems 5 Positioning manual table 300 mA X Ray Machine with High
+--- PAGE 11 ---
+frequency generator
+Specification Sub-Spec Value
+Standards
+Conformity to Certification CDSCO/AERB
+Certification number and date UP-21498-MF-XRE-001
+Dated 16.04.2020
+Type test approval from AREB required Yes
+AREB approval certificate number of Particular Model 20-TA-497284
+Confirmity to manufacturing standards ISO 13485
+Conformity to safety standards IEC 60601-2-54 or BIS
+equivalents
+Performance
+Parameters
+Purpose For Radiographic
+examinations
+Type of frequency generator High frequency
+generator
+Frequency generator output in kW 32
+KVP range in KV 40 -125
+Current output 300 mA or more at 100
+kV
+Provision of Anatomical programming radiography Yes
+Over loading protection Yes
+X-ray tube positioning Floor Mount Tube stand
+X ray tube should be high speed rotating anode and must have dual focus Yes
+Tube rotation in degree 120
+Size of large focal spot in mm Upto 2 mm
+Size of small focal spot in mm Upto 1 mm
+Anode Rotation Speed (minimal) per minute 2800
+Permanent Filtration 0.9 mm Al / 75 kV
+Anode heat storage capacity (min) 140 kHU or more
+Heat dissipation rate in HU/Sec 667
+Automatic exposure control device provided Yes
+Maximum Exposure time in milli second upto 20
+Digital display for KVP & mAs provided Yes
+Range of tube movements in vertical planes in cm 155
+Range of tube movements in longitudinal in cm 155
+Range of tube movements in lateral planes in cm 155
+Electromagnetic brakes with fully counter balanced mechanism for tube movement Yes
+Facility to display tube angulation Yes
+Centering devices to be provided Yes
+Maximum source to image distance (SID) in vertical position in cm 155
+Maximum source to image distance (SID) in horizontal position in cm 110
+Collimeter rotation in degree ±180
+Multileaf collimator having halogen lamp/bright light source, with auto shut off provision of the light, should be available Yes
+Minimum intensity of light field lamp ≥100 lux
+Full coverage size at a 100 cm SID(collimeter size) with ± 5 percent tolerances 430 x 430
+Type of table provided 5 Positioning manual
+table
+Table top material with low attenuation and scratch resistant surface Carbon fiber
+Table Length in mm with ± 1 percent tolerances 1810
+Table Width in mm with ± 1 percent tolerances 600
+Table Height in mm with ± 1 percent tolerances 650
+System should have longitudinal and horizontal table top movements Not applicable
+--- PAGE 12 ---
+Table should have provision for lateral imaging, without patient movement No
+Range of movements for the table Not applicable
+Facilities of height adjustments No
+Maximum Patient weight supported by table in kg 220
+Foot switches for adjusting longitudinal/side to side movements, locking, and light adjustment Yes
+Movable Grid with grid ratio 10:1 or more
+Anti-collision and safety devices provided No
+Counterbalanced, adjustable height, wall and floor mounted, vertical Bucky Yes
+SID range of radiographic application including chest radiography in mm 1000 to 1800
+Provision of doing chest radiography without grid No
+Power supply Three Phase AC ( 380-
+440 V,50/60 Hz)
+Lead lining for doors Yes
+Number of installations of the X- ray machines in Central /State/PSU Govt Hospitals (Note: Seller should furnish a
+performance certificate of the device to the buyer if demanded after placement of order) >3
+OEM and Reseller (if supplier is re-seller) shall ensure uninterrupted availability of all spares for 10 years Yes
+Availability of toll free facility for technical support maintened by OEM or authorized agencies Yes
+User/Technical/Maintenance manuals to be supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be provided after completing supplies before acceptance Yes
+Warranty (Option of comprehensive warranty is available through bidding only, which if opted will supersede normal
+warranty in the catalogue) 5
+Additional
+Parameters
+Patient fixing belts and compression device (for performing excretory urography, etc) Yes
+Voltage stabilizer servo controlled in KVA 50
+Light weight ‘zero lead’ radiation protection aprons provided No
+Lead Aprons - Full body and Skirt type 2 No each (0.5pb)
+Thyroid shields supplied 4
+Gonad sheet Male supplied 2
+Gonad sheet Female supplied 2
+Wall mounted stand for radiation protection aprons supplied Yes
+Lead glass window Supplied Yes
+Footsteps for the table supplied Yes
+Lateral cassette holder provided No
+Reports
+The Principal Manufacturer must have direct Presence/approved service center In India Yes
+Copies of reports and certifications to be furnished to buyer on demand at time of supplies Yes
+QA, QC and other tests as per NABH shall be carried out by OEM or authorized agency of OEM Yes
+Copies of all calibration and test reports to be submitted at the time of Supply of Machine Yes
+ 
+Comprehensive maintenance charges for AMX Medical Systems 5 Positioning manual table 300 mA X Ray
+Machine with High frequency generator
+Service Year CMC Percentage
+CMC charges for 1st year after warranty period in % of cost of equipment 5%
+CMC charges for 2nd year after warranty period in % of cost of equipment 5%
+CMC charges for 3rd year after warranty period in % of cost of equipment 5%
+ 
+Corrigendum
+1. Extended Upto : 2021-06-30 09:00:00
+2. Extended Upto : 2021-07-10 09:00:00
+3. Extended Upto : 2021-07-20 09:00:00
+--- PAGE 13 ---
+ 
+ 
+Terms and Conditions
+1. Special terms and conditions- Version:1 effective from 04-05-2020 to 10-09-2021
+1.1
+Comprehensive warranty
+Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares,. During the warranty period commencing from date of the successful completion of warranty
+period, Service personnel shall visit each consignee site as recommended in the manufacturer’s technical/ service /operational manual, at
+least once in six months. warranty shall not be including the consumables .Further there will be 98% uptime warranty during warranty
+period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend warranty period by double the downtime period.
+Service centres
+Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address ,telephone
+numbers, e mails etc at time of making the supplies .It shall be the responsibility of seller to ensure that authorized service centres are
+available to cater to the areas where supplies are made within reasonable distance from where the service calls can be handled .Details of
+toll free numbers for service call and online registration of service requests also to be provided buyer/consignee at the time of supplies.
+Source of supply
+It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other
+documents to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+Packing and Marking
+Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes
+of the packing cases, remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all
+points during transit up to final destination,. Quality of packing, the manner of marking within & outside the packages and provision of
+accompanying documentation shall take in to consideration the type of medical equipments being supplied. The accessories shall be
+suitably labelled and packed .Each of the package shall be marked on three sides with indelible paint of proper quality: indicating contract
+number and date , brief description of goods including quantity ,. Packing list reference number , country of origin of goods and any other
+relevant details.
+Spare Parts
+Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM . It shall be ensured that
+the required spares are available for purchase at least for 10 years from date of supplies .In case due to any reasons the production of the
+spare parts is discontinued sufficient advance notice should be given to the buyer/consignee before such discontinuation to provide
+adequate time to purchase the required spare parts etc. Further, OEM and their service centres/dealers shall carry sufficient inventories to
+assure ex-stock supply of consumables and spares for the equipments so that the same are available.
+OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most competitive price for spares
+and consumables of its machines/equipments supplied.
+Installation, Training, Manuals
+Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee’s representatives for
+operating and maintaining the equipment and Supplying required number of operation & maintenance manual for the goods. In case the
+category parameters are specifying any requirements regarding the installations , training and manuals the same shall also be applicable.
+Electrical safety checking
+Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee. They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In
+case they do not have required equipment for such testing should ensure that the equipments checked for electrical safety compliance
+through labs with facilities for such checking during every preventive maintenance call.
+Software All software updates should be provided free of cost during warranty period.
+2. General Terms and Conditions-
+2.1 This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance
+with the General Terms and Conditions (GTC) as available on the GeM portal (unless otherwise superseded by Goods / Services specific Special
+Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions (ATC), as applicable
+2.2 Terms of delivery: Free Delivery at Site including loading/unloading. In respect of items requiring installation and / or commissioning and other
+services in the scope of supply (as indicated in respective product category specification / STC / ATC), and the cost of the same is also included in
+the Contract price.
+2.2.1 Contracted goods should be delivered at the consignee or designated delivery location as per the working time of the buying organisation.
+Seller may get the same confirmed from consignee before scheduling delivery.
+2.2.2 A copy of the contract should be available with the messenger / dispatching agency that delivers the Goods at consignee / delivery location
+(preferably pasted / attached outside the consignment / package) for easy reference and ease in delivery acceptance.
+2.3 Delivery period: The Delivery Period/Time shall be essence of the Contract and delivery must be completed not later than such date(s). Any
+modification thereto shall be mutually agreed and incorporated in the Contract as per the provisions of the GTC.
+2.4 Performance Security: If the Seller fails or neglects to observe or perform any of his obligations under the contract it shall be lawful for the
+Buyer to forfeit either in whole or in part, the Performance Security furnished by the Seller.
+2.5 Taxes and Duties: Contract Prices are all inclusive i.e. including all taxes, duties, local levies / transportation / loading-unloading charges etc.
+Break up of GST shall be indicated by the Seller while raising invoice / bill on GeM. While submitting the bill / invoice Seller shall undertake that
+the Goods and Services Tax (GST) charged on this bill is not more than what is payable under the provision on the relevant Act or the Rules made
+there under and that the Goods on which GST has been charged have not been exempted under the GST Act or the Rules made there under and
+the charges on account of GST on these goods are correct under the provision of that Act or the rules made there under.
+2.6 Octroi Duty and / or other local taxes: Contract Prices are all inclusive hence no reimbursement over and above the contract price(s) shall be
+allowed to seller towards payment of local taxes (such as levy of town duty, Octroi Duty, Terminal Tax and other levies of local bodies etc).
+2.7 Limitation of Liability: The provisions of limitation of liability between Buyer and Seller as given in the GTC shall be applicable here.
+--- PAGE 14 ---
+2.8 Resolution of disputes: The provisions of DISPUTE RESOLUTION BETWEEN BUYER AND SELLER as given in the GTC shall be applicable here.
+2.9 Liquidated Damages: If the Seller fails to deliver any or all of the Goods/Services within the original/re-fixed delivery period(s) specified in the
+contract, the Buyer will be entitled to deduct/recover the Liquidated Damages for the delay, unless covered under Force Majeure conditions
+aforesaid, @ 0.5% per week or part of the week of delayed period as pre-estimated damages not exceeding 10% of the contract value without any
+controversy/dispute of any sort whatsoever. In case, Service Level Agreement (SLA) is applicable the same shall be applicable for the Contract.
+2.10 Financial Certificate:
+2.10.1 The expenditure involved for this purpose has received the Sanction of the competent financial authority.
+2.10.2 The funds are available under the proper head in the sanction budget allotment for the concern financial year.
+2.10.3 I have been fully authorized by the department to sign the supply order or incur the liability of the Goods being ordered.
+2.11 The bidder should submit a self declaration to the effect in bidder's official letter head that their agency have not been black listed by any
+Agency whatsoever till date.
+3. Additional Terms and conditions-
+3.1 Provisions for workmen compensation, insurance, public liability, property damage, insurance etc. to be ensured by the contractor. Also,
+safety measures prescribed for working in Extra High Voltage & use of personnel protective equipment must be adhered to.
+3.2 Bidder financial standing: The bidder should not be under liquidation, court receivership or similar proceedings, should not be bankrupt.
+Bidder to upload undertaking to this effect with bid.
+3.3 Bidders shall quote only those products in the bid which are not obsolete in the market and has at least 5 years residual market life i.e. the
+offered product shall not be declared end-of-life by the OEM before this period.
+3.4 Data Sheet of the product(s) offered in the bid, are to be uploaded along with the bid documents. Buyers can match and verify the Data Sheet
+with the product specifications offered. In case of any unexplained mismatch of technical parameters, the bid is liable for rejection.
+3.5 End User Certificate: Wherever Bidders are insisting for End User Certificate from the Buyer, same shall be provided in Buyer’s standard
+format only.
+3.6 Experience Criteria: The Bidder or its OEM {themselves or through reseller(s)} should have regularly, manufactured and supplied same or
+similar Category Products to any Central / State Govt Organization / PSU / Public Listed Company for 3 years before the bid opening date. Copies
+of relevant contracts to be submitted along with bid in support of having supplied some quantity during each of the year. In case of bunch bids,
+the primary product having highest value should meet this criterion.
+3.7 Installation, Commissioning, Testing, Configuration, Training (if any - which ever is applicable as per scope of supply) is to be carried out by
+OEM / OEM Certified resource or OEM authorised Reseller.
+3.8 Scope of supply includes Training: Number of employees to be trained 10 , Place for Training hospital and Duration of training 7 days.
+3.9 The successful bidder has to supply all essential accessories required for the successful installation and commissioning of the goods supplied.
+Besides standard accessories as per normal industry practice, following accessories must be part of supply and cost should be included in bid
+price: UPS of the required rating .
+3.10 Upload Manufacturer authorization: Wherever Authorised Distributors are submitting the bid, Manufacturers Authorisation Form
+(MAF)/Certificate with OEM details such as name, designation, address, e-mail Id and Phone No. required to be furnished along with the bid.
+3.11 Without prejudice to Buyer’s right to price adjustment by way of discount or any other right or remedy available to Buyer, Buyer may
+terminate the Contract or any part thereof by a written notice to the Seller, if:
+i) The Seller fails to comply with any material term of the Contract.
+ii) The Seller informs Buyer of its inability to deliver the Material(s) or any part thereof within the stipulated Delivery Period or such inability
+otherwise becomes apparent.
+iii) The Seller fails to deliver the Material(s) or any part thereof within the stipulated Delivery Period and/or to replace/rectify any rejected or
+defective Material(s) promptly.
+iv) The Seller becomes bankrupt or goes into liquidation.
+v) The Seller makes a general assignment for the benefit of creditors.
+vi) A receiver is appointed for any substantial property owned by the Seller.
+vii) The Seller has misrepresented to Buyer, acting on which misrepresentation Buyer has placed the Purchase Order on the Seller.
+3.12 Scope of supply (Bid price to include all cost components) : Supply Installation Testing Commissioning of Goods and Training of operators and
+providing Statutory Clearances required (if any)
+3.13 Bidder Turn Over Criteria: The minimum average annual financial turnover of the bidder during the last three years, ending on 31st March of
+the previous financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of
+relevant periods or a certificate from the Chartered Accountant / Cost Accountant indicating the turnover details for the relevant period shall be
+uploaded with the bid. In case the date of constitution / incorporation of the bidder is less than 3 year old, the average turnover in respect of the
+completed financial years after the date of constitution shall be taken into account for this criteria.
+3.14 OEM Turn Over Criteria: The minimum average annual financial turnover of the OEM of the offered product during the last three years, ending
+on 31st March of the previous financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited
+Balance Sheets of relevant periods or a certificate from the Chartered Accountant / Cost Accountant indicating the turnover details for the
+relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of the OEM is less than 3 year old, the average
+turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria. In case of bunch
+bids, the OEM of CATEGORY RELATED TO primary product having highest bid value should meet this criterion.
+3.15 IMPORTED PRODUCTS: In case of imported products, OEM or Authorized Seller of OEM should have a registered office in India to provide after
+sales service support in India. The certificate to this effect should be submitted.
+3.16 Availability of Service Centres: Bidder/OEM must have a Functional Service Centre in the State of each Consignee's Location in case of carry-
+in warranty. (Not applicable in case of goods having on-site warranty). If service center is not already there at the time of bidding, successful
+bidder / OEM shall have to establish one within 30 days of award of contract. Payment shall be released only after submission of documentary
+evidence of having Functional Service Centre.
+3.17 Dedicated /toll Free Telephone No. for Service Support : BIDDER/OEM  must have  Dedicated/toll Free Telephone No. for Service Support.
+3.18 Escalation Matrix For Service Support : Bidder/OEM must provide  Escalation Matrix of Telephone Numbers for Service Support.
+--- PAGE 15 ---
+3.19 The bidder is required to upload, along with the bid, all relevant certificates such as BIS licence, type test certificate, approval certificates
+and other certificates as prescribed in the Product Specification given in the bid document.
+3.20 Warranty period of the supplied products shall be as given in specifications from the date of final acceptance of goods or after completion of
+installation, commissioning & testing of goods (if included in the scope of supply), at consignee location. OEM Warranty certificates must be
+submitted by Successful Bidder at the time of delivery of Goods. The seller should guarantee the rectification of goods in case of any break down
+during the guarantee period. Seller should have well established Installation, Commissioning, Training, Troubleshooting and Maintenance Service
+group in INDIA for attending the after sales service. Details of Service Centres near consignee destinations are to be uploaded along with the bid.
+3.21 Over and above the normal Warranty terms as per GeM GTC, the successful bidder / OEM shall have to provide Comprehensive Warranty
+during the entire Standard warranty period as per contract. : The comprehensive warranty shall be covering the following scope calibration as per
+technical /sevice/operational manual of the manufacturer ,service charges and spares (Upload an undertaking with the bid confirming compliance
+by the bidder if Bidder is taking onus of this compliance. In case OEM is taking onus of this compliance, OEM undertaking is to be uploaded along
+with Bidder undertaking)
+3.22 Successful bidder will have to ensure that adequate number of dedicated technical service personals / engineers are designated / deployed
+for attending to the Service Request in a time bound manner and for ensuring Timely Servicing / rectification of defects during warranty period, as
+per Service level agreement indicated in the relevant clause of the bid.
+3.23 Timely Servicing / rectification of defects during warranty period: After having been notified of the defects / service requirement during
+warranty period, Seller has to complete the required Service / Rectification within 5 days time limit. If the Seller fails to complete service /
+rectification with defined time limit, a penalty of 0.5% of Unit Price of the product shall be charged as penalty for each week of delay from the
+seller. Seller can deposit the penalty with the Buyer directly else the Buyer shall have a right to recover all such penalty amount from the
+Performance Security (PBG).Cumulative Penalty cannot exceed more than 10% of the total contract value after which the Buyer shall have the
+right to get the service / rectification done from alternate sources at the risk and cost of the Seller besides forfeiture of PBG. Seller shall be liable
+to re-imberse the cost of such service / rectification to the Buyer.
+3.24 For fulfilling the experience criteria any one of the following documents may be considered as valid proof for meeting the experience criteria:
+a. Purchase Order copy along with Invoice(s) with self-certification by the bidder that supplies against the invoices have been executed.
+b. Execution certificate by client with order value.
+c. Any other document in support of order execution like Third Party Inspection release note, etc.
+3.25 The Bidder / OEM {themselves or through reseller(s)}, should have executed project for supply and installation / commissioning of same or
+similar Category Products during preceding 3 financial years (i.e. current year and three previous financial years) as on opening of bid, as per
+following criteria:
+ 
+(i) Single order of at least 35% of estimated bid value; or
+(ii) Two orders of at least 20% each of estimated bid value; or
+(iii) Three orders of at least 15% each of estimated bid value.
+Satisfactory Performance certificate issued by respective Buyer Organization for the above Orders should be uploaded with bid. In case of bunch
+bids, the Category related to primary product having highest bid value should meet this criterion
+3.26 Bidders can also submit the EMD with Fixed Deposit Receipt made out or pledged in the name of Medical superintendent bhagwan mahavir
+hospital GNCT of delhi pitam pura delhi -34 A/C (Name of the Seller). The bank should certify on it that the deposit can be withdrawn only on the
+demand or with the sanction of the pledgee. For release of EMD, the FDR will be released in favour of bidder by the Buyer after making
+endorsement on the back of the FDR duly signed and stamped along with covering letter.
+Bidder has to upload scanned copy / proof of the FDR along with bid and has to ensure delivery of hardcopy to the Buyer within 5 days of Bid End
+date / Bid Opening date.
+3.27 Successful Bidder can submit the Performance Security in the form of Fixed Deposit Receipt also (besides PBG which is allowed as per GeM
+GTC). FDR should be made out or pledged in the name of Medical superintendent Bhagwan mahavir hospital GNCT of delhi pitam pura Delhi -34 A/C
+(Name of the Seller). The bank should certify on it that the deposit can be withdrawn only on the demand or with the sanction of the pledgee. For
+release of Security Deposit, the FDR will be released in favour of bidder by the Buyer after making endorsement on the back of the FDR duly
+signed and stamped along with covering letter. Successful Bidder has to upload scanned copy of the FDR document in place of PBG and has to
+ensure delivery of hard copy of Original FDR to the Buyer within 15 days of award of contract.
+3.28 NET WORTH: Net Worth of the OEM should be positive as per the last audited financial statement.
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 16 ---
+ 
+Contract
+Contract No: GEMC-511687704001371
+Generated Date: 01-Jan-2022
+Bid/RA/PR No:GEM/2021/B/1495270
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Defence
+Department: Department of Military Affairs
+Organisation Name: Indian Army
+Office Zone: Base Hospital Delhi Cantt-10
+Buyer Details
+Designation: Col
+Contact No.: 011-23337209-
+Email ID: dvashisth.152a@gov.in
+GSTIN: -
+Address: Commandant Base Hospial Delhi Cantt-10,
+NEW DELHI, DELHI-110010, India
+ 
+Type of Inspection:  Stage-wise Inspection
+For Quality Assurance Plan please refer to the bid GEM/2021/B/1495270
+Inspection Agency/ Authority:  Board of Officers
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative
+Approval:
+COMMANDANT BASE HOSPITAL DELHI
+CANTT
+Designation of Financial Approval: COMMANDANT BASE HOSPITAL DELHI
+CANTT
+Paying Authority Details
+Payment Mode: CGDA-CDA
+Designation: Col
+Email ID: dvashisth.152a@gov.in
+GSTIN: -
+Address: Commandant Base Hospial Delhi Cantt-10,
+SOUTH WEST DELHI, DELHI-110010, India
+ 
+ 
+Seller Details
+GeM Seller ID: 9A2D190000803515
+Company Name: M/S AMX MEDICAL SYSTEMS
+Contact No.: 09313299920
+Email ID: amxcare@gmail.com
+Address: 106 C,Gulmohar Green,Mohan Nagar,
+Ghaziabad, UTTAR PRADESH-201007, -
+MSME verified: Yes
+MSME Registration number: UP29A0015459
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 09AGQPS7444G1ZP , 09AGQPS7444G1ZP , 09AGQPS7444G1ZP
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Category Name
+& Quadrant Model HSN
+Code
+Ordered
+Quantity Unit Lead
+Time(Days)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : AMX Medical Systems Floating table top 300
+mA X Ray Machine with High frequency generator
+Brand : AMX Medical Systems
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+X Ray Machine (300
+mA) (Q3)
+AMX
+DIGITONE-
+32
+9022 2 pieces - 1,950,000
+Total Order Value (in INR) 1,950,000
+Inspection Officer:
+Name: Board of Officers as nominated by the Buying Authority
+E-mail: notapplicable@boardofofficers.in
+Phone: Not applicable
+Place of Inspection:
+Address: Ghaziabad
+person name: Anuj Sharma
+contact number: 9718265567
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+--- PAGE 17 ---
+1
+Designation: -
+Email ID:
+goenkaranjit.693n@gov.in
+Contact: -
+GSTIN: -
+Address: Commandant Base
+Hospial Delhi Cantt-10,
+NEW DELHI, DELHI-110010, India
+AMX Medical Systems Floating table top 300 mA X Ray
+Machine with High frequency generator - 2 01-Jan-2022 31-Jan-2022
+ 
+Product Specification for AMX Medical Systems Floating table top 300 mA X Ray Machine with High frequency
+generator
+Specification Sub-Spec Value
+Standards
+Conformity to Certification CDSCO/AERB
+Certification number and date UP-21498-MF-XRE-001 Dated 16.04.2020
+Type test approval from AREB required Yes
+AREB approval certificate number of Particular Model 20-TA-497284
+Confirmity to manufacturing standards ISO 13485
+Conformity to safety standards IEC 60601-2-54 or BIS equivalents
+Performance
+Parameters
+Purpose For Radiographic examinations
+Type of frequency generator High frequency generator
+Frequency generator output in kW 32
+KVP range in KV 40 -125
+Current output 300 mA or more at 100 kV
+Provision of Anatomical programming radiography Yes
+Over loading protection Yes
+X-ray tube positioning Floor Mount Tube stand
+X ray tube should be high speed rotating anode and must have dual focus Yes
+Tube rotation in degree 120
+Size of large focal spot in mm Upto 2 mm
+Size of small focal spot in mm Upto 1 mm
+Anode Rotation Speed (minimal) per minute 2800
+Permanent Filtration 0.9 mm Al / 75 kV
+Anode heat storage capacity (min) 140 kHU or more
+Heat dissipation rate in HU/Sec 667
+Automatic exposure control device provided Yes
+Maximum Exposure time in milli second upto 20
+Digital display for KVP & mAs provided Yes
+Range of tube movements in vertical planes in cm 155
+Range of tube movements in longitudinal in cm 155
+Range of tube movements in lateral planes in cm 155
+Electromagnetic brakes with fully counter balanced mechanism for tube movement Yes
+Facility to display tube angulation Yes
+Centering devices to be provided Yes
+Maximum source to image distance (SID) in vertical position in cm 155
+Maximum source to image distance (SID) in horizontal position in cm 110
+Collimeter rotation in degree ±180
+Multileaf collimator having halogen lamp/bright light source, with auto shut off provision of the
+light, should be available Yes
+Minimum intensity of light field lamp ≥150 lux
+Full coverage size at a 100 cm SID(collimeter size) with ± 5 percent tolerances 430 x 430
+Type of table provided Floating table top
+Table top material with low attenuation and scratch resistant surface Carbon fiber
+--- PAGE 18 ---
+Table Length in mm with ± 1 percent tolerances 1810
+Table Width in mm with ± 1 percent tolerances 610
+Table Height in mm with ± 1 percent tolerances 655
+System should have longitudinal and horizontal table top movements Yes
+Table should have provision for lateral imaging, without patient movement Yes
+Range of movements for the table
+Transverse movements of + 10cm or more &
+Longitudinal movements+ 40 cm with
+electromagnetic brakes
+Facilities of height adjustments Yes
+Maximum Patient weight supported by table in kg 210
+Foot switches for adjusting longitudinal/side to side movements, locking, and light adjustment Yes
+Movable Grid with grid ratio 10:1 or more
+Anti-collision and safety devices provided Yes
+Counterbalanced, adjustable height, wall and floor mounted, vertical Bucky Yes
+SID range of radiographic application including chest radiography in mm 1000 to 1800
+Provision of doing chest radiography without grid Yes
+Power supply Three Phase AC ( 380-440 V,50/60 Hz)
+Lead lining for doors Yes
+Number of installations of the X- ray machines in Central /State/PSU Govt Hospitals (Note:
+Seller should furnish a performance certificate of the device to the buyer if demanded after
+placement of order)
+>3
+OEM and Reseller (if supplier is re-seller) shall ensure uninterrupted availability of all spares for
+10 years Yes
+Availability of toll free facility for technical support maintened by OEM or authorized agencies Yes
+User/Technical/Maintenance manuals to be supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be provided after completing supplies before
+acceptance Yes
+Warranty (Option of comprehensive warranty is available through bidding only, which if opted
+will supersede normal warranty in the catalogue) 5
+Additional
+Parameters
+Patient fixing belts and compression device (for performing excretory urography, etc) Yes
+Voltage stabilizer servo controlled in KVA 50
+Light weight ‘zero lead’ radiation protection aprons provided Yes
+Lead Aprons - Full body and Skirt type 2 No each (0.5pb)
+Thyroid shields supplied 4
+Gonad sheet Male supplied 2
+Gonad sheet Female supplied 2
+Wall mounted stand for radiation protection aprons supplied Yes
+Lead glass window Supplied Yes
+Footsteps for the table supplied Yes
+Lateral cassette holder provided Yes
+Reports
+The Principal Manufacturer must have direct Presence/approved service center In India Yes
+Copies of reports and certifications to be furnished to buyer on demand at time of supplies Yes
+QA, QC and other tests as per NABH shall be carried out by OEM or authorized agency of OEM Yes
+Copies of all calibration and test reports to be submitted at the time of Supply of Machine Yes
+ 
+Buyer Defined Additional Specification for AMX Medical Systems Floating table top 300 mA X Ray Machine with
+High frequency generator
+Specification Value
+NUMBER OF LEAD APRON 2 NOS OF LEAD APRON SHOULD BE PROVIDED
+LEAD PROTECTION SCREEN SINGLE PANEL 2 NOS OF LEAD PROTECTION SCREEN SINGLE PANELSHOULD BE PROVIDED
+LED VIEW BOX WITH FILM PANEL 02 NO LED VIEW BOX WITH 03 FILM PANEL SHOULD BE PROVIDED.
+--- PAGE 19 ---
+VOLTAGE STABILIZER 01 NO. SUITABLE VOLTAGE STABILIZER
+COMPREHENSIVE GUARANTEE 05 YEARS FOR COMPREHENSIVE GUARANTEE FOR COMPLETE SYSTEM INCLUDING X RAY TUBES.
+ 
+ 
+Corrigendum
+1. Extended Upto : 2021-09-21 12:00:00
+2. Extended Upto : 2021-09-22 12:00:00
+ 
+ 
+Terms and Conditions
+1. Special terms and conditions- Version:1 effective from 04-05-2020 to 10-09-2021
+1.1
+Comprehensive warranty
+Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares,. During the warranty period commencing from date of the successful completion of warranty
+period, Service personnel shall visit each consignee site as recommended in the manufacturer’s technical/ service /operational manual, at
+least once in six months. warranty shall not be including the consumables .Further there will be 98% uptime warranty during warranty
+period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend warranty period by double the downtime period.
+Service centres
+Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address ,telephone
+numbers, e mails etc at time of making the supplies .It shall be the responsibility of seller to ensure that authorized service centres are
+available to cater to the areas where supplies are made within reasonable distance from where the service calls can be handled .Details of
+toll free numbers for service call and online registration of service requests also to be provided buyer/consignee at the time of supplies.
+Source of supply
+It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other
+documents to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+Packing and Marking
+Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes
+of the packing cases, remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all
+points during transit up to final destination,. Quality of packing, the manner of marking within & outside the packages and provision of
+accompanying documentation shall take in to consideration the type of medical equipments being supplied. The accessories shall be
+suitably labelled and packed .Each of the package shall be marked on three sides with indelible paint of proper quality: indicating contract
+number and date , brief description of goods including quantity ,. Packing list reference number , country of origin of goods and any other
+relevant details.
+Spare Parts
+Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM . It shall be ensured that
+the required spares are available for purchase at least for 10 years from date of supplies .In case due to any reasons the production of the
+spare parts is discontinued sufficient advance notice should be given to the buyer/consignee before such discontinuation to provide
+adequate time to purchase the required spare parts etc. Further, OEM and their service centres/dealers shall carry sufficient inventories to
+assure ex-stock supply of consumables and spares for the equipments so that the same are available.
+OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most competitive price for spares
+and consumables of its machines/equipments supplied.
+Installation, Training, Manuals
+Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee’s representatives for
+operating and maintaining the equipment and Supplying required number of operation & maintenance manual for the goods. In case the
+category parameters are specifying any requirements regarding the installations , training and manuals the same shall also be applicable.
+Electrical safety checking
+Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee. They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In
+case they do not have required equipment for such testing should ensure that the equipments checked for electrical safety compliance
+through labs with facilities for such checking during every preventive maintenance call.
+Software All software updates should be provided free of cost during warranty period.
+2. General Terms and Conditions-
+2.1 This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance
+with the General Terms and Conditions (GTC) as available on the GeM portal (unless otherwise superseded by Goods / Services specific Special
+Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions (ATC), as applicable
+2.2 Terms of delivery: Free Delivery at Site including loading/unloading. In respect of items requiring installation and / or commissioning and other
+services in the scope of supply (as indicated in respective product category specification / STC / ATC), and the cost of the same is also included in
+the Contract price.
+2.2.1 Contracted goods should be delivered at the consignee or designated delivery location as per the working time of the buying organisation.
+Seller may get the same confirmed from consignee before scheduling delivery.
+2.2.2 A copy of the contract should be available with the messenger / dispatching agency that delivers the Goods at consignee / delivery location
+(preferably pasted / attached outside the consignment / package) for easy reference and ease in delivery acceptance.
+--- PAGE 20 ---
+2.3 Delivery period: The Delivery Period/Time shall be essence of the Contract and delivery must be completed not later than such date(s). Any
+modification thereto shall be mutually agreed and incorporated in the Contract as per the provisions of the GTC.
+2.4 Performance Security: If the Seller fails or neglects to observe or perform any of his obligations under the contract it shall be lawful for the
+Buyer to forfeit either in whole or in part, the Performance Security furnished by the Seller.
+2.5 Taxes and Duties: Contract Prices are all inclusive i.e. including all taxes, duties, local levies / transportation / loading-unloading charges etc.
+Break up of GST shall be indicated by the Seller while raising invoice / bill on GeM. While submitting the bill / invoice Seller shall undertake that
+the Goods and Services Tax (GST) charged on this bill is not more than what is payable under the provision on the relevant Act or the Rules made
+there under and that the Goods on which GST has been charged have not been exempted under the GST Act or the Rules made there under and
+the charges on account of GST on these goods are correct under the provision of that Act or the rules made there under.
+2.6 Octroi Duty and / or other local taxes: Contract Prices are all inclusive hence no reimbursement over and above the contract price(s) shall be
+allowed to seller towards payment of local taxes (such as levy of town duty, Octroi Duty, Terminal Tax and other levies of local bodies etc).
+2.7 Limitation of Liability: The provisions of limitation of liability between Buyer and Seller as given in the GTC shall be applicable here.
+2.8 Resolution of disputes: The provisions of DISPUTE RESOLUTION BETWEEN BUYER AND SELLER as given in the GTC shall be applicable here.
+2.9 Liquidated Damages: If the Seller fails to deliver any or all of the Goods/Services within the original/re-fixed delivery period(s) specified in the
+contract, the Buyer will be entitled to deduct/recover the Liquidated Damages for the delay, unless covered under Force Majeure conditions
+aforesaid, @ 0.5% per week or part of the week of delayed period as pre-estimated damages not exceeding 10% of the contract value without any
+controversy/dispute of any sort whatsoever. In case, Service Level Agreement (SLA) is applicable the same shall be applicable for the Contract.
+2.10 Financial Certificate:
+2.10.1 The expenditure involved for this purpose has received the Sanction of the competent financial authority.
+2.10.2 The funds are available under the proper head in the sanction budget allotment for the concern financial year.
+2.10.3 I have been fully authorized by the department to sign the supply order or incur the liability of the Goods being ordered.
+2.11 The bidder should submit a self declaration to the effect in bidder's official letter head that their agency have not been black listed by any
+Agency whatsoever till date.
+3. Buyer Added Bid Specific Terms and Conditions-
+3.1 Packing Material The items will be supplied by the successful bidder in its original packing material and the packing material will not be
+returned. Weight of packing material will not be included in quantity supplied and only net weight of the items will be counted. The packing
+should be of standardized weights of appropriate size. Item will not be accepted in non-standardized weights.Packing Material. The items will be
+supplied by the successful bidder in its original packing material and the packing material will not be returned. Weight of packing material will
+not be included in quantity supplied and only net weight of the items will be counted. The packing should be of standardized weights of
+appropriate size. Item will not be accepted in non-standardized weights.
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 21 ---
+Specification Sub-Spec Value
+Standards
+Conformity to Certification CDSCO/AERB
+Certification number and date UP-21498-MF-XRE-001 dt. 24-04-2017
+Type test approval from AREB required Yes
+AREB approval certificate number of Particular Model 99-TA-810
+Confirmity to manufacturing standards ISO 13485
+Conformity to safety standards IEC 60601-2-54 or BIS equivalents
+Purpose For Radiographic examinations
+Product Specification for AMX X Ray Machine (300 mA) with High frequency generator
+S.No Consignee Item Quantity Expected
+Delivery Date
+1
+Dashrathbhai Girdharbhai Patel
+-
+Landline-02697-252658-
+vetdis-petlad-and@gujarat.gov.in
+Veterinary Dispensary, Petlad Near College chowkdi, Petlad At & Po:
+Petlad Dist: Anand,
+ANAND, GUJARAT-388450, India
+AMX X Ray Machine (300 mA) with High
+frequency generator 1 25-Apr-2020
+Consignee Detail
+# Item Description Category Name Model HSN
+Code
+Ordered
+Quantity Unit
+Price
+(Inclusive of all Duties and
+Taxes in INR)
+1 AMX X Ray Machine (300 mA) with High
+frequency generator
+X Ray Machine
+(300 mA)
+AMX
+DIGITONE 300 9022 1 pieces 879,500
+Total Order Value (in INR) 879,500
+Product Details
+Seller Details
+Company Name: AMX Medical Systems
+Contact No.: 09990655044
+Email ID: praveengupta_2727@yahoo.co.in
+Address: 106 C,Gulmohar Green,Mohan Nagar,
+Ghaziabad, UTTAR PRADESH-201007, -
+MSME verified: Yes
+MSE Social Category: General
+MSE Gender: Female
+Financial Approval Detail
+IFD Concurrence : No
+Designation of Administrative Approval : DISTRICT DEVELOPMENT OFFICER
+Designation of Financial Approval : DEPUTY DIRECTOR OF ANIMAL HUSBANDRY
+Buyer Details
+Name: Patel Snehal
+Designation: DEPUTY DIRECTOR OF AH
+Contact No.: -
+Email ID: dydir-ah-and@gujarat.gov.in
+GSTIN: -
+Address: District Panchayat Office Near Borsad Chowkadi Anand,
+ANAND, GUJARAT-388001, India
+Organisation Details
+Type: State Government
+Ministry: -
+Department: Panchayats and Rural Housing Department Gujarat
+Organisation Name: DISTRICT PANCHAYAT ANAND
+Office Zone: 380001
+GEM/2020/B/537496Bid/RA/PR No:
+11-Mar-2020Generated Date:
+ GEMC-511687713335295Contract No:Contract
+
+--- PAGE 22 ---
+Performance
+Parameters
+Type of frequency generator High frequency generator
+Frequency generator output in kW 40
+KVP range in KV 40 -125
+Current output 300 mA or more at 100 kV
+Provision of Anatomical programming radiography Yes
+Over loading protection Yes
+X-ray tube positioning Floor Mount Tube stand
+X ray tube should be high speed rotating anode and must have dual focus Yes
+Tube rotation in degree 120
+Size of large focal spot in mm Upto 2 mm
+Size of small focal spot in mm Upto 1 mm
+Anode Rotation Speed (minimal) per minute 3350
+Permanent Filtration 0.9 mm Al / 75 kV
+Anode heat storage capacity (min) 140 kHU or more
+Heat dissipation rate in HU/Sec 670
+Automatic exposure control device provided Yes
+Maximum Exposure time in milli second upto 15
+Digital display for KVP & mAs provided Yes
+Range of tube movements in vertical planes in cm 250
+Range of tube movements in longitudinal in cm 250
+Range of tube movements in lateral planes in cm 250
+Electromagnetic brakes with fully counter balanced mechanism for tube movement Yes
+Facility to display tube angulation Yes
+Centering devices to be provided Yes
+Maximum source to image distance (SID) in vertical position in cm 150
+Maximum source to image distance (SID) in horizontal position in cm 110
+Collimeter rotation in degree ±180
+Multileaf collimator having halogen lamp/bright light source, with auto shut off provision of the
+light, should be available Yes
+Minimum intensity of light field lamp ?150 lux
+Full coverage size at a 100 cm SID(collimeter size) with ± 5 percent tolerances 430 x 430
+Type of table provided Floating table top
+Table top material with low attenuation and scratch resistant surface Carbon fiber
+Table Length in mm with ± 1 percent tolerances 1800
+Table Width in mm with ± 1 percent tolerances 600
+Table Height in mm with ± 1 percent tolerances 650
+System should have longitudinal and horizontal table top movements Yes
+Table should have provision for lateral imaging, without patient movement No
+Range of movements for the table
+Transverse movements of + 10cm or more &
+Longitudinal movements+ 40 cm with
+electromagnetic brakes
+Facilities of height adjustments Yes
+--- PAGE 23 ---
+Terms and Conditions
+1. Special terms and conditions
+1.1
+Comprehensive warranty
+1.  
+Corrigendum
+ 2020-02-24 11:00:00Extended Upto :
+Maximum Patient weight supported by table in kg 200
+Foot switches for adjusting longitudinal/side to side movements, locking, and light adjustment Yes
+Movable Grid with grid ratio 10:1 or more
+Anti-collision and safety devices provided Yes
+Counterbalanced, adjustable height, wall and floor mounted, vertical Bucky Yes
+SID range of radiographic application including chest radiography in mm 1000 to 1800
+Provision of doing chest radiography without grid Yes
+Power supply Three Phase AC ( 380-440 V,50/60 Hz)
+Lead lining for doors Yes
+Number of installations of the X- ray machines in Central /State/PSU Govt Hospitals (Note:
+Seller should furnish a performance certificate of the device to the buyer if demanded after
+placement of order)
+>3
+OEM and Reseller (if supplier is re-seller) shall ensure uninterrupted availability of all spares for
+10 years Yes
+Availability of toll free facility for technical support maintened by OEM or authorized agencies Yes
+User/Technical/Maintenance manuals to be supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be provided after completing supplies before
+acceptance Yes
+Comprehensive Warranty in Years 5
+Additional
+Parameters
+Patient fixing belts and compression device (for performing excretory urography, etc) Yes
+Voltage stabilizer servo controlled in KVA 50
+Light weight 'zero lead' radiation protection aprons provided Yes
+Lead Aprons - Full body and Skirt type 2 No each (0.5pb)
+Thyroid shields supplied 4
+Gonad sheet Male supplied 2
+Gonad sheet Female supplied 2
+Wall mounted stand for radiation protection aprons supplied Yes
+Lead glass window Supplied Yes
+Footsteps for the table supplied Yes
+Lateral cassette holder provided No
+Reports
+The Principal Manufacturer must have direct Presence/approved service center In India Yes
+Copies of reports and certifications to be furnished to buyer on demand at time of supplies Yes
+QA, QC and other tests as per NABH shall be carried out by OEM or authorized agency of
+OEM Yes
+Copies of all calibration and test reports to be submitted at the time of Supply of Machine Yes
+--- PAGE 24 ---
+Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the manufacturer,
+service charges and spares,. During the warranty period commencing from date of the successful completion of warranty period, Service personnel shall visit
+each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables .Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to
+extend warranty period by double the downtime period.
+Service centres
+Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address ,telephone numbers, e mails
+etc at time of making the supplies .It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled .Details of toll free numbers for service call and online registration
+of service requests also to be provided buyer/consignee at the time of supplies.
+Source of supply
+It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents to
+establish that the products supplied are manufactured by OEM indicated and sourced from them.
+Packing and Marking
+Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit including transhipment
+(if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases, remoteness of the
+final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,. Quality of packing,
+the manner of marking within & outside the packages and provision of accompanying documentation shall take in to consideration the type of medical
+equipments being supplied. The accessories shall be suitably labelled and packed .Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date , brief description of goods including quantity ,. Packing list reference number , country of origin of goods
+and any other relevant details.
+Spare Parts
+Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM . It shall be ensured that the required spares
+are available for purchase at least for 10 years from date of supplies .In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc.
+Further, OEM and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so
+that the same are available.
+OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most competitive price for spares and
+consumables of its machines/equipments supplied.
+Installation, Training, Manuals
+Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide required jigs and tools
+for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and maintaining the equipment
+and Supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any requirements
+regarding the installations , training and manuals the same shall also be applicable.
+Electrical safety checking
+Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to buyer/consignee. They
+should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have required equipment
+for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during every
+preventive maintenance call.
+Software All software updates should be provided free of cost during warranty period.
+2. General Terms and Conditions
+ This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General2.1
+Terms and Conditions (GTC) as available on the GeM portal (unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or
+BID/Reverse Auction Additional Terms and Conditions (ATC), as applicable
+  Free Delivery at Site including loading/unloading. In respect of items requiring installation and / or commissioning and other services in the2.2 Terms of delivery:
+scope of supply (as indicated in respective product category specification / STC / ATC), and the cost of the same is also included in the Contract price.
+  The Delivery Period/Time shall be essence of the Contract and delivery must be completed not later than such date(s). Any modification thereto2.3 Delivery period:
+shall be mutually agreed and incorporated in the Contract as per the provisions of the GTC.
+  If the Seller fails or neglects to observe or perform any of his obligations under the contract it shall be lawful for the Buyer to forfeit either2.4 Performance Security:
+in whole or in part, the Performance Security furnished by the Seller.
+  Contract Prices are all inclusive i.e. including all taxes, duties, local levies / transportation / loading-unloading charges etc. Break up of GST2.5 Taxes and Duties:
+shall be indicated by the Seller while raising invoice / bill on GeM. While submitting the bill / invoice Seller shall undertake that the Goods and Services Tax (GST)
+charged on this bill is not more than what is payable under the provision on the relevant Act or the Rules made there under and that the Goods on which GST has
+been charged have not been exempted under the GST Act or the Rules made there under and the charges on account of GST on these goods are correct under the
+provision of that Act or the rules made there under.
+  Contract Prices are all inclusive hence no reimbursement over and above the contract price(s) shall be allowed to seller2.6 Octroi Duty and / or other local taxes:
+towards payment of local taxes (such as levy of town duty, Octroi Duty, Terminal Tax and other levies of local bodies etc).
+  The provisions of limitation of liability between Buyer and Seller as given in the GTC shall be applicable here.2.7 Limitation of Liability:
+  The provisions of DISPUTE RESOLUTION BETWEEN BUYER AND SELLER as given in the GTC shall be applicable here.2.8 Resolution of disputes:
+--- PAGE 25 ---
+  If the Seller fails to deliver any or all of the Goods/Services within the original/re-fixed delivery period(s) specified in the contract, the Buyer2.9 Liquidated Damages:
+will be entitled to deduct/recover the Liquidated Damages for the delay, unless covered under Force Majeure conditions aforesaid, @ 0.5% per week or part of the
+week of delayed period as pre-estimated damages not exceeding 10% of the contract value without any controversy/dispute of any sort whatsoever. In case, Service
+Level Agreement (SLA) is applicable the same shall be applicable for the Contract.
+ 2.10 Financial Certificate:
+ The expenditure involved for this purpose has received the Sanction of the competent financial authority.2.10.1
+ The funds are available under the proper head in the sanction budget allotment for the concern financial year.2.10.2
+ I have been fully authorized by the department to sign the supply order or incur the liability of the Goods being ordered.2.10.3
+ The bidder should submit a self declaration to the effect in bidder's official letter head that their agency have not been black listed by any Agency whatsoever till2.11
+date.
+3. Additional Terms and conditions
+ Experience Criteria: The Bidder or its OEM {themselves or through reseller(s)} should have regularly, manufactured and supplied same or similar Category3.1
+Products to any Central / State Govt Organization / PSU / Public Listed Company for 3 years before the bid opening date. Copies of relevant contracts to be submitted
+along with bid in support of having supplied some quantity during each of the year. In case of bunch bids, the primary product having highest value should meet this
+criterion.
+3.2
+Malicious Code Certificate:
+The seller should upload following certificate in the bid:-
+(a) This is to certify that the Hardware and the Software being offered, as part of the contract, does not contain Embedded Malicious code that would activate
+procedures to :-
+(i) Inhibit the desires and designed function of the equipment.
+(ii) Cause physical damage to the user or equipment during the exploitation.
+(iii) Tap information resident or transient in the equipment/network.
+(b) The firm will be considered to be in breach of the procurement contract, in case physical damage, loss of information or infringements related to copyright and
+Intellectual Property Right (IPRs) are caused due to activation of any such malicious code in embedded software.
+ OPTION CLAUSE: The Purchaser reserves the right to increase or decrease the quantity to be ordered up to 25 percent at the time of placement of contract. The3.3
+purchaser also reserves the right to increase the ordered quantity by up to 25% of the contracted quantity during the currency of the contract at the contracted rates.
+Bidders are bound to accept the orders accordingly.
+ Scope of supply (Bid price to include all cost components) : Supply Installation Testing Commissioning of Goods and Training of operators and providing Statutory3.4
+Clearances required (if any)
+ Bidder Turn Over Criteria: The minimum average annual financial turnover of the bidder during the last three years, ending on 31st March of the previous financial3.5
+year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of relevant periods or a certificate from the
+Chartered Accountant / Cost Accountant indicating the turnover details for the relevant period shall be uploaded with the bid. In case the date of constitution /
+incorporation of the bidder is less than 3 year old, the average turnover in respect of the completed financial years after the date of constitution shall be taken into
+account for this criteria.
+ IMPORTED PRODUCTS: In case of imported products, OEM or Authorized Seller of OEM should have a registered office in India to provide after sales service3.6
+support in India. The certificate to this effect should be submitted.
+ Bid reserved for Make In India products: Procurement under this bid is reserved for purchase from local supplier as defined in public procurement (Preference to3.7
+Make in India), Order 2017 as amended from time to time and its subsequent Orders/Notifications issued by concerned Nodal Ministry for specific Goods/Products.
+The minimum local content to qualify as a local supplier, should be as per relevant notification / order issued by the nodal ministry as available on the website of
+Department of Promotion of Industries and Internal Trade (DPIIT). All bidders must upload a certificate from the OEM regarding the percentage of the local content
+and the details of locations at which the local value addition is made along with their bid, failing which the bid is liable to be rejected. In case the bid value is more than
+Rs 10 Crore, the declaration relating to percentage of local content shall be certified by the statutory auditor or cost auditor, if the OEM is a company and by a
+practicing cost accountant or a chartered accountant for OEMs other than companies as per the Public Procurement (preference to Make-in -India) order 2017 dated
+29.5.2019. In case Buyer has selected Purchase preference to Micro and Small Enterprises clause in the bid, the same will get precedence over this clause.
+ Availability of Service Centres: Bidder/OEM must have a Functional Service Centre in the State of each Consignee's Location in case of carry-in warranty. (Not3.8
+applicable in case of goods having on-site warranty). If service center is not already there at the time of bidding, successful bidder / OEM shall have to establish one
+within 30 days of award of contract. Payment shall be released only after submission of documentary evidence of having Functional Service Centre.
+ Dedicated /toll Free Telephone No. for Service Support : BIDDER/OEM must have Dedicated/toll Free Telephone No. for Service Support.3.9
+ Escalation Matrix For Service Support : Bidder/OEM must provide Escalation Matrix of Telephone Numbers for Service Support.3.10
+ ISO 9001: The bidder must have ISO 9001 certification.3.11
+ Timely Servicing / rectification of defects during warranty period: After having been notified of the defects / service requirement during warranty period, Seller has3.12
+to complete the required Service / Rectification within 15 days time limit. If the Seller fails to complete service / rectification with defined time limit, a penalty of 0.5% of
+Unit Price of the product shall be charged as penalty for each week of delay from the seller. Seller can deposit the penalty with the Buyer directly else the Buyer shall
+--- PAGE 26 ---
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.
+have a right to recover all such penalty amount from the Performance Security (PBG).Cumulative Penalty cannot exceed more than 10% of the total contract value
+after which the Buyer shall have the right to get the service / rectification done from alternate sources at the risk and cost of the Seller besides forfeiture of PBG. Seller
+shall be liable to re-imberse the cost of such service / rectification to the Buyer.
+ Purchase preference to Micro and Small Enterprises (MSEs) from the State of Bid Inviting Authority : Purchase preference will be given to MSEs as Micro and3.13
+Small Enterprises from the State of Bid inviting Authority whose credentials are validated online through Udyog Aadhaar for that product category. If the bidder wants
+to avail the Purchase preference, the bidder must be the manufacturer of the offered product in case of bid for supply of goods. Traders are excluded from the purview
+of Public Procurement Policy for Micro and Small Enterprises. In respect of bid for Services, the bidder must be the Service provider of the offered Service. Relevant
+documentary evidence in this regard shall be uploaded along with the bid in respect of the offered product or service. If L-1 is not an MSE and MSE Seller (s)
+has/have quoted price within L-1+ 15 % of margin of purchase preference /price band defined in relevant policy, such Seller shall be given opportunity to match L-1
+price and contract will be awarded for percentage of 100% of total value as defined/ decided in relevant policy.
+ The Bidder / OEM {themselves or through reseller(s)}, should have executed project for supply and installation / commissioning of same or similar Category3.14
+Products during preceding 3 financial years (i.e. current year and three previous financial years) as on opening of bid, as per following criteria:
+(i) Single order of at least 35% of estimated bid value; or
+(ii) Two orders of at least 20% each of estimated bid value; or
+(iii) Three orders of at least 15% each of estimated bid value.
+Satisfactory Performance certificate issued by respective Buyer Organization for the above Orders should be uploaded with bid. In case of bunch bids, the Category
+related to primary product having highest bid value should meet this criterion
+--- PAGE 27 ---
+ 
+Contract
+Contract No: GEMC-511687761506432
+Generated Date: 07-Apr-2022
+Bid/RA/PR No:GEM/2022/B/1964542
+Organisation Details
+Type: Central PSU
+Ministry: Ministry of Power
+Department: POWER GRID Corporation OF INDIA Limited
+Organisation Name: POWER GRID Corporation OF INDIA Limited
+Office Zone: Corporate Office Gurgaon
+Buyer Details
+Designation: DY Manager
+Contact No.: 88947-01214-
+Email ID: buyer33.pgcil.har@gembuyer.in
+GSTIN: 04AAACP0252G1Z1
+Address:
+POWER GRID CORPORATION OF INDIA LTD. Hallo Majra
+220KV GIS SS, Hallo Majra Chandigarh-160002,
+CHANDIGARH, CHANDIGARH-160002, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: CGM
+Designation of Financial Approval: CGM
+Paying Authority Details
+Payment Mode: PGCIL
+Designation: DGM
+Email ID: pao15.pgcil.jk@gembuyer.in
+GSTIN: -
+Address:
+POWERGRID CORPORATION OF INDIA LIMITED, GRID
+BHAWAN, OB-26, RAIL HEAD COMPLEX, NEAR BAHU
+PLAZA, Jammu - 180012,
+JAMMU, JAMMU & KASHMIR-180012, India
+ 
+ 
+Seller Details
+GeM Seller ID: 9A2D190000803515
+Company Name: M/S AMX MEDICAL SYSTEMS
+Contact No.: 09313299920
+Email ID: amxcare@gmail.com
+Address: 106 C,Gulmohar Green,Mohan Nagar,
+Ghaziabad, UTTAR PRADESH-201007, -
+MSME verified: Yes
+MSME Registration number: UP29A0015459
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 09AGQPS7444G1ZP , 09AGQPS7444G1ZP , 09AGQPS7444G1ZP
+*GST / Tax invoice to be raised in the name of - Consignee
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR)
+Tax
+Bifurcation
+(INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : AMX Medical Systems Floating table top 300 mA X Ray Machine with
+High frequency generator
+Brand : AMX Medical Systems
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : X Ray Machine (300 mA) (Q3)
+AMX DIGITONE-32 
+9022
+1 pieces 899,990 NA 899,990
+Total Order Value (in INR) 899,990
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity
+Delivery
+Start
+After
+Delivery
+To Be
+Completed
+By
+1
+Designation: -
+Email ID: con200.pgcil.jk@gembuyer.in
+Contact: 07006-674390-
+GSTIN: 01AAACP0252G1Z7
+Address: POWER GRID CORPORATION OF INDIA LIMITED, 400/220
+kV Sub Station , Village Wagoora , Tehsil B.K.Pora , Distt. Budgam,
+J&K - 192121,
+PULWAMA, JAMMU & KASHMIR-192121, India
+AMX Medical Systems Floating table top
+300 mA X Ray Machine with High
+frequency generator
+- 1 07-Apr-
+2022 07-May-2022
+--- PAGE 28 ---
+ 
+Product Specification for AMX Medical Systems Floating table top 300 mA X Ray Machine with High frequency
+generator
+Specification Sub-Spec Value
+Standards
+Conformity to Certification CDSCO/AERB
+Certification number and date UP-21498-MF-XRE-001 Dated 16.04.2020
+Type test approval from AREB required Yes
+AREB approval certificate number of Particular Model 20-TA-497284
+Confirmity to manufacturing standards ISO 13485
+Conformity to safety standards IEC 60601-2-54 or BIS equivalents
+Performance
+Parameters
+Purpose For Radiographic examinations
+Type of frequency generator High frequency generator
+Frequency generator output in kW 32
+KVP range in KV 40 -125
+Current output 300 mA or more at 100 kV
+Provision of Anatomical programming radiography Yes
+Over loading protection Yes
+X-ray tube positioning Floor Mount Tube stand
+X ray tube should be high speed rotating anode and must have dual focus Yes
+Tube rotation in degree 120
+Size of large focal spot in mm Upto 2 mm
+Size of small focal spot in mm Upto 1 mm
+Anode Rotation Speed (minimal) per minute 2800
+Permanent Filtration 0.9 mm Al / 75 kV
+Anode heat storage capacity (min) 140 kHU or more
+Heat dissipation rate in HU/Sec 667
+Automatic exposure control device provided Yes
+Maximum Exposure time in milli second upto 4
+Digital display for KVP & mAs provided Yes
+Range of tube movements in vertical planes in cm 155
+Range of tube movements in longitudinal in cm 155
+Range of tube movements in lateral planes in cm 155
+Electromagnetic brakes with fully counter balanced mechanism for tube movement Yes
+Facility to display tube angulation Yes
+Centering devices to be provided Yes
+Maximum source to image distance (SID) in vertical position in cm 155
+Maximum source to image distance (SID) in horizontal position in cm 110
+Collimeter rotation in degree ±180
+Multileaf collimator having halogen lamp/bright light source, with auto shut off provision of the
+light, should be available Yes
+Minimum intensity of light field lamp ≥100 lux
+Full coverage size at a 100 cm SID(collimeter size) with ± 5 percent tolerances 430 x 430
+Type of table provided Floating table top
+Table top material with low attenuation and scratch resistant surface Carbon fiber
+Table Length in mm with ± 1 percent tolerances 1800
+Table Width in mm with ± 1 percent tolerances 600
+Table Height in mm with ± 1 percent tolerances 650
+System should have longitudinal and horizontal table top movements Yes
+--- PAGE 29 ---
+Table should have provision for lateral imaging, without patient movement Yes
+Range of movements for the table
+Transverse movements of + 10cm or more &
+Longitudinal movements+ 40 cm with
+electromagnetic brakes
+Facilities of height adjustments Yes
+Maximum Patient weight supported by table in kg 210
+Foot switches for adjusting longitudinal/side to side movements, locking, and light adjustment Yes
+Movable Grid with grid ratio 10:1 or more
+Anti-collision and safety devices provided Yes
+Counterbalanced, adjustable height, wall and floor mounted, vertical Bucky Yes
+SID range of radiographic application including chest radiography in mm 1000 to 1800
+Provision of doing chest radiography without grid Yes
+Power supply Three Phase AC ( 380-440 V,50/60 Hz)
+Lead lining for doors Yes
+Number of installations of the X- ray machines in Central /State/PSU Govt Hospitals (Note:
+Seller should furnish a performance certificate of the device to the buyer if demanded after
+placement of order)
+>3
+OEM and Reseller (if supplier is re-seller) shall ensure uninterrupted availability of all spares for
+10 years Yes
+Availability of toll free facility for technical support maintened by OEM or authorized agencies Yes
+User/Technical/Maintenance manuals to be supplied in English in hard and soft copy Yes
+Demonstration of equipment and training to be provided after completing supplies before
+acceptance Yes
+Warranty (Option of comprehensive warranty is available through bidding only, which if opted
+will supersede normal warranty in the catalogue) 5
+Additional
+Parameters
+Patient fixing belts and compression device (for performing excretory urography, etc) Yes
+Voltage stabilizer servo controlled in KVA 50
+Light weight ‘zero lead’ radiation protection aprons provided Yes
+Lead Aprons - Full body and Skirt type 2 No each (0.5pb)
+Thyroid shields supplied 4
+Gonad sheet Male supplied 2
+Gonad sheet Female supplied 2
+Wall mounted stand for radiation protection aprons supplied Yes
+Lead glass window Supplied Yes
+Footsteps for the table supplied Yes
+Lateral cassette holder provided Yes
+Reports
+The Principal Manufacturer must have direct Presence/approved service center In India Yes
+Copies of reports and certifications to be furnished to buyer on demand at time of supplies Yes
+QA, QC and other tests as per NABH shall be carried out by OEM or authorized agency of OEM Yes
+Copies of all calibration and test reports to be submitted at the time of Supply of Machine Yes
+ 
+Buyer Defined Additional Specification for AMX Medical Systems Floating table top 300 mA X Ray Machine with
+High frequency generator
+Specification Value
+Lateral cassette holder provided Yes
+Light weight ‘zero lead’ radiation protection aprons provided Yes
+Anti-collision and safety devices provided Yes
+ 
+ 
+--- PAGE 30 ---
+Corrigendum
+1. Extended Upto : 2022-03-03 15:00:00
+ 
+ 
+Terms and Conditions
+1. General Terms and Conditions-
+1.1 This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance
+with the General Terms and Conditions (GTC) as available on the GeM portal (unless otherwise superseded by Goods / Services specific Special
+Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions (ATC), as applicable
+1.2 Terms of delivery: Free Delivery at Site including loading/unloading. In respect of items requiring installation and / or commissioning and other
+services in the scope of supply (as indicated in respective product category specification / STC / ATC), and the cost of the same is also included in
+the Contract price.
+1.2.1 Contracted goods should be delivered at the consignee or designated delivery location as per the working time of the buying organisation.
+Seller may get the same confirmed from consignee before scheduling delivery.
+1.2.2 A copy of the contract should be available with the messenger / dispatching agency that delivers the Goods at consignee / delivery location
+(preferably pasted / attached outside the consignment / package) for easy reference and ease in delivery acceptance.
+1.3 Delivery period: The Delivery Period/Time shall be essence of the Contract and delivery must be completed not later than such date(s). Any
+modification thereto shall be mutually agreed and incorporated in the Contract as per the provisions of the GTC.
+1.4 Performance Security: If the Seller fails or neglects to observe or perform any of his obligations under the contract it shall be lawful for the
+Buyer to forfeit either in whole or in part, the Performance Security furnished by the Seller.
+1.5 Taxes and Duties: Contract Prices are all inclusive i.e. including all taxes, duties, local levies / transportation / loading-unloading charges etc.
+Break up of GST shall be indicated by the Seller while raising invoice / bill on GeM. While submitting the bill / invoice Seller shall undertake that
+the Goods and Services Tax (GST) charged on this bill is not more than what is payable under the provision on the relevant Act or the Rules made
+there under and that the Goods on which GST has been charged have not been exempted under the GST Act or the Rules made there under and
+the charges on account of GST on these goods are correct under the provision of that Act or the rules made there under.
+1.6 Octroi Duty and / or other local taxes: Contract Prices are all inclusive hence no reimbursement over and above the contract price(s) shall be
+allowed to seller towards payment of local taxes (such as levy of town duty, Octroi Duty, Terminal Tax and other levies of local bodies etc).
+1.7 Limitation of Liability: The provisions of limitation of liability between Buyer and Seller as given in the GTC shall be applicable here.
+1.8 Resolution of disputes: The provisions of DISPUTE RESOLUTION BETWEEN BUYER AND SELLER as given in the GTC shall be applicable here.
+1.9 Liquidated Damages: If the Seller fails to deliver any or all of the Goods/Services within the original/re-fixed delivery period(s) specified in the
+contract, the Buyer will be entitled to deduct/recover the Liquidated Damages for the delay, unless covered under Force Majeure conditions
+aforesaid, @ 0.5% per week or part of the week of delayed period as pre-estimated damages not exceeding 10% of the contract value without any
+controversy/dispute of any sort whatsoever. In case, Service Level Agreement (SLA) is applicable the same shall be applicable for the Contract.
+1.10 Financial Certificate:
+1.10.1 The expenditure involved for this purpose has received the Sanction of the competent financial authority.
+1.10.2 The funds are available under the proper head in the sanction budget allotment for the concern financial year.
+1.10.3 I have been fully authorized by the department to sign the supply order or incur the liability of the Goods being ordered.
+1.11 The bidder should submit a self declaration to the effect in bidder's official letter head that their agency have not been black listed by any
+Agency whatsoever till date.
+2. Buyer Added Bid Specific Terms and Conditions-
+2.1 Generic: 
+Bidders are advised to check applicable GST on their own before quoting. Buyer will not take any responsibility in this regards. GST
+reimbursement will be as per actuals or as per applicable rates (whichever is lower), subject to the maximum of quoted GST %.
+2.2 Generic: 
+Bidder shall submit the following documents along with their bid for Vendor Code Creation:
+ a. Copy of PAN Card.
+ b. Copy of GSTIN.
+ c. Copy of Cancelled Cheque.
+ d. Copy of EFT Mandate duly certified by Bank.
+2.3 Generic: 
+OPTION CLAUSE: The Purchaser reserves the right to increase or decrease the quantity to be ordered up to 25 percent of bid quantity at the time
+of placement of contract. The purchaser also reserves the right to increase the ordered quantity by up to 25% of the contracted  quantity during
+the currency of the contract at the contracted rates. Bidders are bound to accept the orders accordingly.
+2.4 Generic: 
+While generating invoice in GeM portal, the seller must upload scanned copy of GST invoice and the screenshot of GST portal confirming payment
+of GST.
+2.5 Generic: 
+Supplier shall ensure that the Invoice is raised in the name of Consignee with GSTIN of Consignee only.
+2.6 Forms of EMD and PBG: 
+Bidders can also submit the EMD with Account Payee Demand Draft in favour of Power Grid Corporation of India Limited payable at Jammu.
+--- PAGE 31 ---
+Bidder has to upload scanned copy / proof of the DD along with bid and has to ensure delivery of hardcopy to the Buyer within 5 days of Bid End
+date / Bid Opening date.
+2.7 Forms of EMD and PBG: 
+Bidders can also submit the EMD with Payment online through RTGS / internet banking in Beneficiary name Power Grid Corporation of India
+Limited Account No. 10315031267 IFSC Code SBIN0003132 Bank Name State Bank of India Branch address State Bank of India, Gandhi Nagar,
+Jammu.
+Bidder to indicate bid number and name of bidding entity in the transaction details field at the time of on-line transfer. Bidder has to upload
+scanned copy / proof of the Online Payment Transfer along with bid.
+2.8 Forms of EMD and PBG: 
+Successful Bidder can submit the Performance Security in the form of Payment online through RTGS / internet banking also (besides PBG which is
+allowed as per GeM GTC). On-line payment shall be in Beneficiary name Power Grid Corporation of India Limited Account No. 10315031267 IFSC
+Code SBIN0003132 Bank Name State Bank of India Branch address State Bank of India, Gandhi Nagar, Jammu. Successful Bidder to indicate
+Contract number and name of Seller entity in the transaction details field at the time of on-line transfer. Bidder has to upload scanned copy /
+proof of the Online Payment Transfer in place of PBG within 15 days of award of contract.
+2.9 Buyer Added Bid Specific ATC: 
+Buyer uploaded ATC document Click here to view the file.
+Note: This is system generated file. No signature is required. Print out of this document is not valid for payment/ transaction purpose.

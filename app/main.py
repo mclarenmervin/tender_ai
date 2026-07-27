@@ -27,7 +27,7 @@ from jose import jwt,JWTError
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from app.database.db_connection import Base,engine,get_db,SessionLocal
-from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,BuyerWorkspaceItem,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,ProcurementVendor,ProcurementBuyer,ProcurementCategory,ProcurementBid,ProcurementBidParticipant,ProcurementRiskFlag,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
+from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKeyword,AppSetting,ScoringCriterion,NotificationLog,TenderDocument,ScrapeRun,ScrapeJob,KeywordPerformance,NotificationPreference,MarketingLead,CompanyProfile,BuyerWorkspaceItem,BuyerBidCriterion,BuyerBidSeller,BuyerBidVerification,TenderEligibility,BidDecision,SellerProfile,SellerDocument,SellerCatalogueItem,SellerBidParticipation,SellerOrderFulfillment,ProcurementVendor,ProcurementBuyer,ProcurementCategory,ProcurementBid,ProcurementBidParticipant,ProcurementRiskFlag,GemPortalCredential,GemParticipatedBid,GemBidStatusLog
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
@@ -2141,6 +2141,13 @@ def api_create_buyer_workspace(payload:dict,db:Session=Depends(get_db),user:User
     item=BuyerWorkspaceItem(user_id=user.id,module=module,title=title)
     apply_buyer_workspace_payload(item,payload)
     db.add(item)
+    db.flush()
+    if module=='bids':
+        labels=payload.get('evaluation_criteria') or []
+        if isinstance(labels,str):
+            labels=[part.strip() for part in re.split(r'[\n,;]+',labels) if part.strip()]
+        for index,label in enumerate(dict.fromkeys(labels[:40])):
+            db.add(BuyerBidCriterion(user_id=user.id,bid_item_id=item.id,label=str(label)[:255],sort_order=index))
     db.commit()
     db.refresh(item)
     return {'item':buyer_workspace_to_dict(item)}
@@ -2162,9 +2169,186 @@ def api_delete_buyer_workspace(item_id:int,db:Session=Depends(get_db),user:User=
     item=db.query(BuyerWorkspaceItem).filter(BuyerWorkspaceItem.id==item_id,BuyerWorkspaceItem.user_id==user.id).first()
     if not item:
         raise HTTPException(404,'Buyer item not found')
+    if item.module=='bids':
+        seller_ids=[row[0] for row in db.query(BuyerBidSeller.id).filter(BuyerBidSeller.bid_item_id==item.id).all()]
+        criterion_ids=[row[0] for row in db.query(BuyerBidCriterion.id).filter(BuyerBidCriterion.bid_item_id==item.id).all()]
+        if seller_ids or criterion_ids:
+            db.query(BuyerBidVerification).filter(BuyerBidVerification.bid_item_id==item.id).delete(synchronize_session=False)
+        db.query(BuyerBidSeller).filter(BuyerBidSeller.bid_item_id==item.id).delete(synchronize_session=False)
+        db.query(BuyerBidCriterion).filter(BuyerBidCriterion.bid_item_id==item.id).delete(synchronize_session=False)
     db.delete(item)
     db.commit()
     return {'ok':True}
+
+BUYER_VERIFICATION_STATUSES=['unverified','verified','unavailable','not_required']
+BUYER_QUALIFICATION_STATUSES=['pending','qualified','disqualified','clarification_required']
+
+def buyer_bid_item(db,user,item_id):
+    item=db.query(BuyerWorkspaceItem).filter(
+        BuyerWorkspaceItem.id==item_id,
+        BuyerWorkspaceItem.user_id==user.id,
+        BuyerWorkspaceItem.module=='bids',
+    ).first()
+    if not item:
+        raise HTTPException(404,'Buyer bid not found')
+    return item
+
+def buyer_evaluation_payload(db,user,item):
+    criteria=db.query(BuyerBidCriterion).filter(
+        BuyerBidCriterion.user_id==user.id,
+        BuyerBidCriterion.bid_item_id==item.id,
+    ).order_by(BuyerBidCriterion.sort_order,BuyerBidCriterion.id).all()
+    sellers=db.query(BuyerBidSeller).filter(
+        BuyerBidSeller.user_id==user.id,
+        BuyerBidSeller.bid_item_id==item.id,
+    ).order_by(BuyerBidSeller.seller_name).all()
+    cells=db.query(BuyerBidVerification).filter(
+        BuyerBidVerification.user_id==user.id,
+        BuyerBidVerification.bid_item_id==item.id,
+    ).all()
+    by_cell={(cell.seller_id,cell.criterion_id):cell for cell in cells}
+    seller_rows=[]
+    for seller in sellers:
+        verifications=[]
+        counts={status:0 for status in BUYER_VERIFICATION_STATUSES}
+        blocking=0
+        for criterion in criteria:
+            cell=by_cell.get((seller.id,criterion.id))
+            status=cell.status if cell else 'unverified'
+            counts[status]=counts.get(status,0)+1
+            if criterion.required and status in {'unverified','unavailable'}:
+                blocking+=1
+            verifications.append({
+                'criterion_id':criterion.id,
+                'status':status,
+                'evidence_reference':cell.evidence_reference if cell else '',
+                'remarks':cell.remarks if cell else '',
+                'verified_at':iso(cell.verified_at) if cell else None,
+            })
+        seller_rows.append({
+            'id':seller.id,
+            'seller_name':seller.seller_name,
+            'gem_seller_id':seller.gem_seller_id or '',
+            'qualification_status':seller.qualification_status or 'pending',
+            'remarks':seller.remarks or '',
+            'blocking_count':blocking,
+            'counts':counts,
+            'verifications':verifications,
+        })
+    return {
+        'bid':buyer_workspace_to_dict(item),
+        'criteria':[{
+            'id':criterion.id,'label':criterion.label,'required':bool(criterion.required),
+            'sort_order':criterion.sort_order,'notes':criterion.notes or '',
+        } for criterion in criteria],
+        'sellers':seller_rows,
+        'verification_statuses':BUYER_VERIFICATION_STATUSES,
+        'qualification_statuses':BUYER_QUALIFICATION_STATUSES,
+        'summary':{
+            'seller_count':len(sellers),
+            'criteria_count':len(criteria),
+            'qualified':sum(s.qualification_status=='qualified' for s in sellers),
+            'disqualified':sum(s.qualification_status=='disqualified' for s in sellers),
+            'pending':sum((s.qualification_status or 'pending')=='pending' for s in sellers),
+        },
+    }
+
+@app.get('/api/buyer/bids/{item_id}/evaluation')
+def api_buyer_bid_evaluation(item_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    return buyer_evaluation_payload(db,user,buyer_bid_item(db,user,item_id))
+
+@app.post('/api/buyer/bids/{item_id}/criteria')
+def api_add_buyer_bid_criterion(item_id:int,payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    label=(payload.get('label') or '').strip()[:255]
+    if not label:
+        raise HTTPException(400,'Document / criterion name is required')
+    exists=db.query(BuyerBidCriterion).filter(BuyerBidCriterion.bid_item_id==item.id,BuyerBidCriterion.label==label).first()
+    if exists:
+        raise HTTPException(400,'This verification item already exists')
+    order=db.query(BuyerBidCriterion).filter(BuyerBidCriterion.bid_item_id==item.id).count()
+    db.add(BuyerBidCriterion(user_id=user.id,bid_item_id=item.id,label=label,required=payload.get('required') is not False,sort_order=order,notes=(payload.get('notes') or '').strip()[:2000] or None))
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
+
+@app.delete('/api/buyer/bids/{item_id}/criteria/{criterion_id}')
+def api_delete_buyer_bid_criterion(item_id:int,criterion_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    criterion=db.query(BuyerBidCriterion).filter(BuyerBidCriterion.id==criterion_id,BuyerBidCriterion.bid_item_id==item.id,BuyerBidCriterion.user_id==user.id).first()
+    if not criterion:
+        raise HTTPException(404,'Verification item not found')
+    db.query(BuyerBidVerification).filter(BuyerBidVerification.criterion_id==criterion.id).delete()
+    db.delete(criterion)
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
+
+@app.post('/api/buyer/bids/{item_id}/sellers')
+def api_add_buyer_bid_seller(item_id:int,payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    name=(payload.get('seller_name') or '').strip()[:255]
+    if not name:
+        raise HTTPException(400,'Seller name is required')
+    exists=db.query(BuyerBidSeller).filter(BuyerBidSeller.bid_item_id==item.id,BuyerBidSeller.seller_name==name).first()
+    if exists:
+        raise HTTPException(400,'This seller is already listed')
+    db.add(BuyerBidSeller(user_id=user.id,bid_item_id=item.id,seller_name=name,gem_seller_id=(payload.get('gem_seller_id') or '').strip()[:120] or None))
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
+
+@app.put('/api/buyer/bids/{item_id}/sellers/{seller_id}')
+def api_update_buyer_bid_seller(item_id:int,seller_id:int,payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    seller=db.query(BuyerBidSeller).filter(BuyerBidSeller.id==seller_id,BuyerBidSeller.bid_item_id==item.id,BuyerBidSeller.user_id==user.id).first()
+    if not seller:
+        raise HTTPException(404,'Seller not found')
+    if 'qualification_status' in payload:
+        value=(payload.get('qualification_status') or 'pending').strip()
+        if value not in BUYER_QUALIFICATION_STATUSES:
+            raise HTTPException(400,'Invalid qualification status')
+        seller.qualification_status=value
+    if 'remarks' in payload:
+        seller.remarks=(payload.get('remarks') or '').strip()[:5000] or None
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
+
+@app.delete('/api/buyer/bids/{item_id}/sellers/{seller_id}')
+def api_delete_buyer_bid_seller(item_id:int,seller_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    seller=db.query(BuyerBidSeller).filter(BuyerBidSeller.id==seller_id,BuyerBidSeller.bid_item_id==item.id,BuyerBidSeller.user_id==user.id).first()
+    if not seller:
+        raise HTTPException(404,'Seller not found')
+    db.query(BuyerBidVerification).filter(BuyerBidVerification.seller_id==seller.id).delete()
+    db.delete(seller)
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
+
+@app.put('/api/buyer/bids/{item_id}/verification/{seller_id}/{criterion_id}')
+def api_update_buyer_bid_verification(item_id:int,seller_id:int,criterion_id:int,payload:dict,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    item=buyer_bid_item(db,user,item_id)
+    seller=db.query(BuyerBidSeller).filter(BuyerBidSeller.id==seller_id,BuyerBidSeller.bid_item_id==item.id,BuyerBidSeller.user_id==user.id).first()
+    criterion=db.query(BuyerBidCriterion).filter(BuyerBidCriterion.id==criterion_id,BuyerBidCriterion.bid_item_id==item.id,BuyerBidCriterion.user_id==user.id).first()
+    if not seller or not criterion:
+        raise HTTPException(404,'Seller or verification item not found')
+    status=(payload.get('status') or 'unverified').strip()
+    if status not in BUYER_VERIFICATION_STATUSES:
+        raise HTTPException(400,'Invalid verification status')
+    cell=db.query(BuyerBidVerification).filter(BuyerBidVerification.seller_id==seller.id,BuyerBidVerification.criterion_id==criterion.id).first()
+    if not cell:
+        cell=BuyerBidVerification(user_id=user.id,bid_item_id=item.id,seller_id=seller.id,criterion_id=criterion.id)
+        db.add(cell)
+    cell.status=status
+    cell.evidence_reference=(payload.get('evidence_reference') or '').strip()[:2000] or None
+    cell.remarks=(payload.get('remarks') or '').strip()[:5000] or None
+    cell.verified_at=datetime.now().astimezone() if status=='verified' else None
+    db.commit()
+    return buyer_evaluation_payload(db,user,item)
 
 def apply_buyer_workspace_payload(item,payload):
     for field,limit in [('title',255),('reference_no',120),('department',255),('state',100),('city',150),('category',255),('vendor_name',255),('notes',5000)]:

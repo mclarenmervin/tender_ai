@@ -1,0 +1,96 @@
+
+--- PAGE 1 ---
+ 
+ 
+ 
+___________________________________________________________________________________________________ 
+Registered Office & Works:   Plot No. 27, Radha Nikunj B, At 200 Feet Kharbas Circle, Mansarovar, near to Hotel Hayat, Jaipur, Rajasthan 302020 
+Web: www.starnuke.net , info@starnukemail.net , sales@starnukemail.net  
+ Ph: +91-9950041555, 7073577706  
+ 
+Star Nuke Consulting Engineering Services Private Limited 
+AERB (Govt. of India) Authorized - ISO 9001-2015 Certified company 
+         Portable X - Ray Machine (V2) (Q2)  
+COMPLIANCE SHEET 
+GEM/2025/B/7007849                                                                              Dated: 03-02-2026 
+Sr. No. Specification Compliance 
+1.  General Description:*  
+  A high-frequency mobile X-ray system designed for bedside and 
+emergency imaging, equipped with a spring-balanced arm and 
+compact maneuverable design for indoor mobility. 
+YES 
+  The unit shall be available in 3.5 kW, 4.2 kW, or 5.2 kW generator 
+configurations. 
+YES 
+2.  X-Ray Generator:*  
+  Type: High-frequency X-ray generator YES 
+  Output Power Options: 3.5 kW / 4.2 kW / 5.2 kW YES 
+  X-ray Ripple Frequency: 100 kHz YES 
+  Input Power: Single phase, 220V, 50 Hz ±10%, 15A YES 
+  Output Voltage Range: 40 – 125 kV YES 
+  mA Range: 40 – 100 mA YES 
+  Maximum mAs: 200 mAs YES 
+3. . X-Ray Tube Assembly:*  
+  Tube Type: Stationary or Rotating anode (as per configuration) YES 
+  Focal Spot Size: 1.5 mm YES 
+  Tube Mount: Spring-balanced arm with folding feature for compact 
+storage and easy mobility 
+YES 
+  Tube Head Movement: 360° rotation with locking mechanism for 
+precise positioning 
+YES 
+4. . Mobile Stand & Movement:*  
+  Design: Compact, lightweight with spring-balanced arm YES 
+  Hand Braking System for safe parking YES 
+  Easy movement on slopes, inclines, and ramps YES 
+  Big rear wheels and ergonomic handles YES 
+  Folding arm for space-saving and secure transport YES 
+5. Control Panel:*  
+  Type: Microprocessor-based digital feather-touch control panel YES 
+  Display: Integrated 14"/15" touchscreen LCD mounted on mobile 
+stand 
+YES 
+  APR (Anatomical Programmed Radiography): Yes, with body part 
+and patient type presets 
+YES 
+  Programmable Anatomical Technique: Adjustable by operator YES 
+6.  Optional DR Upgrade:*  
+  Flat Panel Detector Compatibility: Upgradeable to Digital 
+Radiography 
+YES 
+  Panel Sizes Supported: 14" x 17" and 17" x 17" YES 
+  Wireless Transmission to Laptop YES 
+  Detector Type: Konica Minolta AeroDR or equivalent YES 
+  Pixel Size: 150 microns (NS or GS type) YES 
+--- PAGE 2 ---
+ 
+ 
+ 
+___________________________________________________________________________________________________ 
+Registered Office & Works:   Plot No. 27, Radha Nikunj B, At 200 Feet Kharbas Circle, Mansarovar, near to Hotel Hayat, Jaipur, Rajasthan 302020 
+Web: www.starnuke.net , info@starnukemail.net , sales@starnukemail.net  
+ Ph: +91-9950041555, 7073577706  
+ 
+Star Nuke Consulting Engineering Services Private Limited 
+AERB (Govt. of India) Authorized - ISO 9001-2015 Certified company 
+7.  Safety & Compliance:*  
+  Radiation safety with collimator light and exposure controls YES 
+  Compliance: IEC and BIS/CE certification (as applicable) YES 
+  AERB type approval (mandatory in India) YES 
+  Emergency stop button and overload protection circuit YES 
+8.  Accessories (Mandatory):*  
+  Cassette storage compartment YES 
+  Power cord and charger YES 
+  Collimator with light source YES 
+  Operator and service manuals YES 
+  Optional wireless detector and laptop for DR use YES 
+ 
+ 
+ 
+ 
+Balram Singh Rajora 
+Director & CEO 
+ceo@starnukemail.net 
+ 
+ 
+ 

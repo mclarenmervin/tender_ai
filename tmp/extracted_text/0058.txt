@@ -1,0 +1,4987 @@
+
+--- PAGE 1 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687782516680
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 10-Mar-2025
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+23प|Type : State Government
+मं;ालय|Ministry : -
+!वभाग|Department : Animal husbandry and Fisheries Department Andhra
+Pradesh
+संगठन का नाम|Organisation
+Name : N/A
+कायाFलय Gे;|Oﬃce Zone: APLDA GUNTUR
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : DEPUTY DIRECTOR
+संपकF नंबर|Contact No. : -
+ईमेल आईडी|Email ID : chandrasekhar.avula@ap.gov.in
+जीएसट]आईएन|GSTIN : -
+पता|Address : Banavasi farm, Yemmiganur, Kurnool Dt,
+Kurnool, ANDHRA PRADESH-518360, India
+ 
+!वcीय!वcीय  dवीकृ !तdवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+2शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Chief Executive Officer
+!वcीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Chief Executive Officer
+भुगतानभुगतान  2ा!धकरण2ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Accounts
+ईमेल आईडी|Email ID : balakrishna.bolla@ap.gov.in
+जीएसट]आईएन|GSTIN : -
+पता|Address: Veterinary Polyclinic Campus Kothapeta Guntur - 522001,
+GUNTUR, ANDHRA PRADESH-522001, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकF नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संoया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट]आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पG मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदyश | Delivery Instructions : deliver at banavasi
+उ{पादउ{पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ{पादउ{पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Horizontal Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  2कार2कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Horizontal Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-150HRA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडFर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वdतुवdतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा;ामा;ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु3शु3
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : DEPUTY DIRECTOR
+ईमेल आईडी|Email ID : chandrasekhar.avula@ap.gov.in
+संपकF|Contact : -
+जीएसट]आईएन|GSTIN : -
+iGene Labserve
+Horizontal Autoclave - 1 10-Mar-2025 25-Mar-2025
+--- PAGE 2 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687775985218
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 07-Mar-2025
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+34प|Type : Central Autonomous
+मं<ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+!वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाHलय Iे<|Oﬃce Zone: Hyderabad
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : ASSISTANT ADMINISTRATIVE OFFICER
+संपकH नंबर|Contact No. : 994-9012307-
+ईमेल आईडी|Email ID : rakesh.geeda@icar.gov.in
+जीएसटaआईएन|GSTIN : 36AAAAI1830P4ZH
+पता|Address : ICAR-Indian Institute of Oilseeds Research Rajendranagar,
+HYDERABAD, TELANGANA-500030, India
+ 
+!वgीय!वgीय  hवीकृ !तhवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+3शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: diretor iior
+!वgीय अनुमोदन का पदनाम|
+Designation of Financial Approval : director iior
+भुगतानभुगतान  3ा!धकरण3ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Finance and Accounts Officer
+ईमेल आईडी|Email ID : fao.iior@icar.gov.in
+जीएसटaआईएन|GSTIN : N
+पता|Address: ICAR-Indian Institute of Oilseeds Research Rajendranagar,
+HYDERABAD, TELANGANA-500030, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकH नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसटaआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पI मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Vertical Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  3कार3कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-75VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+2 pieces NA
+कु ल ऑडHर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा<ामा<ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु4शु4
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : ASSISTANT ADMINISTRATIVE OFFICER
+ईमेल आईडी|Email ID : rakesh.geeda@icar.gov.in
+संपकH|Contact : 994-9012307-
+जीएसटaआईएन|GSTIN : 36AAAAI1830P4ZH iGene Labserve Vertical - 2 07-Mar-2025 22-Mar-2025
+--- PAGE 3 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687746707031
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 05-Mar-2025
+बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं2यासं2या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2025/B/5848800
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+BCप|Type : State Government
+मंJालय|Ministry : -
+"वभाग|Department : Agriculture and Co-operation Department Gujarat
+संगठन का नाम|Organisation Name : Junagadh Agricultural University
+कायाQलय RेJ|Oﬃce Zone: Junagadh Agricultural University
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : SU2 AP COAM
+संपकQ नंबर|Contact No. : -
+ईमेल आईडी|Email ID : buycon2.coag.amreli@gembuyer.in
+जीएसट_आईएन|GSTIN : -
+पता|Address :
+COLLEGE OF AGRICULTURE(COA-M), JAU,
+MOTABHANDARIYA, AMRELI,
+Amreli, GUJARAT-365601, India
+ 
+"वgीय"वgीय  hवीकृ "तhवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : No
+Bशास"नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Principal, COA, JAU,Mota bhandariya
+"वgीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Comptroller, JAU, Junagadh
+भुगतानभुगतान  Bा"धकरणBा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : DDO COAM
+ईमेल आईडी|Email ID : ddo1.coag.amreli@gembuyer.in
+जीएसट_आईएन|GSTIN : -
+पता|Address:
+COLLEGE OF AGRICULTURE(COA-M), JAU,
+MOTABHANDARIYA, AMRELI,
+Amreli, GUJARAT-365601, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकQ नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण सं2या|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट_आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा"जक sेणी|MSE Social Category : General
+एमएसई "लंग sेणी|MSE Gender : Female
+*"जसके  नाम के  पR मu GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+"वतरण "नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Keyboard Interface Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  BकारBकार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-75VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडQर मूय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. माJामाJा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शुCशुC
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : -
+ईमेल आईडी|Email ID : buycon2.coag.amreli@gembuyer.in
+--- PAGE 4 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687751421630
+अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 04-Mar-2025
+संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
+45प|Type : Central Government
+मं<ालय|Ministry : Ministry of Defence
+#वभाग|Department : Department of Defence Production
+संगठन का नाम|Organisation Name : Directorate General of Quality Assurance ( DGQA)
+कायाGलय Hे<|Oﬃce Zone: New Delhi
+खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
+पद|Designation : QAO ADM
+संपकG नंबर|Contact No. : 011-25721502-
+ईमेल आईडी|Email ID : kps.nagar@gov.in
+जीएसट\आईएन|GSTIN : 07AAALS1909A1ZF
+पता|Address :
+SENIOR QUALITY ASSURANCE ESTABLISHMENT (GENERAL
+STORES), ANAND PARBAT, NORTH INDIA, MILITARY ROAD,
+NEW DELHI,
+CENTRAL DELHI, DELHI-110005, India
+ 
+#वgीय#वgीय  hवीकृ #तhवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम#त|IFD Concurrence : No
+4शास#नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: SQAO
+#वgीय अनुमोदन का पदनाम|
+Designation of Financial Approval : SQAO
+भुगतानभुगतान  4ा#धकरण4ा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
+Role: BUYER
+भुगतान का तरीका|
+Payment Mode: CGDA-CDA
+पद|Designation : QAO ADM
+ईमेल आईडी|Email ID : kps.nagar@gov.in
+जीएसट\आईएन|GSTIN : 07AAALS1909A1ZF
+पता|Address:
+SENIOR QUALITY ASSURANCE ESTABLISHMENT (GENERAL
+STORES), ANAND PARBAT, NORTH INDIA, MILITARY ROAD,
+NEW DELHI,
+CENTRAL DELHI, DELHI-110005, India
+ 
+ 
+#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
+जेम #वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकG नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट\आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा#जक tेणी|MSE Social Category : General
+एमएसई #लंग tेणी|MSE Gender : Female
+*#जसके  नाम के  पH मv GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+#वतरण #नद{श | Delivery Instructions : NA
+उ}पादउ}पाद  #ववरण#ववरण|Product Details|Product Details
+## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
+आइटमआइटम
+#ववरण#ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  #वभाजन#वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मvमv  सभीसभी
+शुकशुक  औरऔर  करकर
+स#हतस#हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ}पादउ}पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Vertical Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  4कार4कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ##त##त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-50VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडGर मूय |Total Order Value (in INR)
+ 
+परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा<ामा<ा|Quantity|Quantity
+#दनांक#दनांक  केके   बादबाद
+#डलीवरी#डलीवरी  शु5शु5
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+#वतरण#वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : QAO ADM
+--- PAGE 5 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687713854835
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 28-Feb-2025
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+67प|Type : Central Government
+मं>ालय|Ministry : Ministry of Health and Family Welfare
+!वभाग|Department : Department of Health Research
+संगठन का नाम|Organisation Name : Indian Council of Medical Research (ICMR)
+कायाKलय Lे>|Oﬃce Zone: Bhubaneswar
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : Scientist D
+संपकK नंबर|Contact No. : -
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+जीएसट^आईएन|GSTIN : N
+पता|Address :
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+!वdीय!वdीय  eवीकृ !तeवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+6शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+!वdीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Accounts Officer
+भुगतानभुगतान  6ा!धकरण6ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Accounts Officer
+ईमेल आईडी|Email ID : aco.rmrc-od@nic.in
+जीएसट^आईएन|GSTIN : -
+पता|Address:
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकK नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट^आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पL मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Vertical Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-100VRA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडKर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वeतुवeतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Scientist D
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+संपकK|Contact : -
+--- PAGE 6 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687777329246
+अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 28-Feb-2025
+संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
+78प|Type : Central Government
+मं?ालय|Ministry : Ministry of Health and Family Welfare
+#वभाग|Department : Department of Health Research
+संगठन का नाम|Organisation Name : Indian Council of Medical Research (ICMR)
+कायाLलय Mे?|Oﬃce Zone: Bhubaneswar
+खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
+पद|Designation : Scientist D
+संपकL नंबर|Contact No. : -
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+जीएसट_आईएन|GSTIN : N
+पता|Address :
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+#वeीय#वeीय  fवीकृ #तfवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम#त|IFD Concurrence : No
+7शास#नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+#वeीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Accounts Officer
+भुगतानभुगतान  7ा#धकरण7ा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Accounts Officer
+ईमेल आईडी|Email ID : aco.rmrc-od@nic.in
+जीएसट_आईएन|GSTIN : -
+पता|Address:
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+ 
+#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
+जेम #वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकL नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट_आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा#जक sेणी|MSE Social Category : General
+एमएसई #लंग sेणी|MSE Gender : Female
+*#जसके  नाम के  पM मu GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+#वतरण #नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  #ववरण#ववरण|Product Details|Product Details
+## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
+आइटमआइटम
+#ववरण#ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  #वभाजन#वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स#हतस#हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  7कार7कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ##त##त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-150VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडLर मूय |Total Order Value (in INR)
+ 
+परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा?ामा?ा|Quantity|Quantity
+#दनांक#दनांक  केके   बादबाद
+#डलीवरी#डलीवरी  शु8शु8
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+#वतरण#वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Scientist D
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+संपकL|Contact : -
+--- PAGE 7 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687761158545
+अनुबंधअनुबंध   त थ त थ|Generated Date :|Generated Date : 27-Feb-2025
+संगठनसंगठन   ववरण ववरण|Organisation Details|Organisation Details
+56प|Type : Central Autonomous
+मं>ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+ वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाIलय J े>|Oﬃce Zone: Indian Agricultural Research Institute, New Delhi
+खरीदारखरीदार   ववरण ववरण|Buyer Details|Buyer Details
+पद|Designation : AAO and DDO Fruit and Horticulture Technology
+संपकI नंबर|Contact No. : -
+ईमेल आईडी|Email ID : pao51.icari.dl@gembuyer.in
+जीएसट]आईएन|GSTIN : -
+पता|Address : IARI Pusa Campus IARI New Delhi 110012,
+NEW DELHI, DELHI-110012, India
+ 
+ वaीय वaीय  bवीकृ  तbवीकृ  त   ववरण ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम त|IFD Concurrence : Yes
+5शास नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director IARI
+ वaीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Director IARI
+भुगतानभुगतान  5ा धकरण5ा धकरण   ववरण ववरण|Paying Authority Details|Paying Authority Details
+Role: BUYER
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : AAO and DDO Fruit and Horticulture Technology
+ईमेल आईडी|Email ID : pao51.icari.dl@gembuyer.in
+जीएसट]आईएन|GSTIN : -
+पता|Address: IARI Pusa Campus IARI New Delhi 110012,
+NEW DELHI, DELHI-110012, India
+ 
+ 
+ वे ता वे ता   ववरण ववरण|Seller Details|Seller Details
+जेम  वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकI नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट]आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा जक sेणी|MSE Social Category : General
+एमएसई  लंग sेणी|MSE Gender : Female
+* जसके  नाम के  पJ  मu GST/TAX इनवॉइस पेश  कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+ वतरण  नदzश | Delivery Instructions : NA
+उ|पादउ|पाद   ववरण ववरण|Product Details|Product Details
+## आइटमआइटम   ववरण ववरण|Item Description|Item Description
+आइटमआइटम
+ ववरण ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर   वभाजन वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स हतस हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Vertical Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  5कार5कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक    त  त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-25VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडIर मूय |Total Order Value (in INR)
+ 
+परे षतीपरे षती   ववरण ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे षतीपरे षती|Consignee|Consignee वbतुवbतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+ दनांक दनांक  केके   बादबाद
+ डलीवरी डलीवरी  शु6शु6
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+ वतरण वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : Sanjay Kumar
+ईमेल आईडी|Email ID : con210.icari.dl@gembuyer.in
+संपकI|Contact : -
+जीएसट]आईएन|GSTIN : -
+iGene Labserve Vertical
+Autoclave - 1 27-Feb-2025 14-Mar-2025
+--- PAGE 8 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687732326903
+अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 27-Feb-2025
+संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
+67प|Type : Central Autonomous
+मं?ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+#वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाJलय Kे?|Oﬃce Zone: Indian Agricultural Research Institute, New Delhi
+खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
+पद|Designation : Assistant Administrative Officer
+संपकJ नंबर|Contact No. : -
+ईमेल आईडी|Email ID : buyer113.icari.dl@gembuyer.in
+जीएसट^आईएन|GSTIN : -
+पता|Address : IARI Pusa Campus New Delhi 110012,
+NEW DELHI, DELHI-110012, India
+ 
+#वcीय#वcीय  dवीकृ #तdवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम#त|IFD Concurrence : Yes
+6शास#नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director, IARI, New Delhi
+#वcीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Director
+भुगतानभुगतान  6ा#धकरण6ा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
+Role: BUYER
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Assistant Administrative Officer
+ईमेल आईडी|Email ID : buyer113.icari.dl@gembuyer.in
+जीएसट^आईएन|GSTIN : -
+पता|Address: IARI Pusa Campus New Delhi 110012,
+NEW DELHI, DELHI-110012, India
+ 
+ 
+#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
+जेम #वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकJ नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट^आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा#जक sेणी|MSE Social Category : General
+एमएसई #लंग sेणी|MSE Gender : Female
+*#जसके  नाम के  पK मu GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+#वतरण #नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  #ववरण#ववरण|Product Details|Product Details
+## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
+आइटमआइटम
+#ववरण#ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  #वभाजन#वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स#हतस#हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Vertical Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ##त##त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Vertical Autoclave (Q2)
+मॉडलमॉडल|Model:|Model: IG-30VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडJर मूय |Total Order Value (in INR)
+ 
+परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वdतुवdतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा?ामा?ा|Quantity|Quantity
+#दनांक#दनांक  केके   बादबाद
+#डलीवरी#डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+#वतरण#वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : Assistant
+ईमेल आईडी|Email ID : con96.icari.dl@gembuyer.in
+संपकJ|Contact : -
+जीएसट^आईएन|GSTIN : -
+iGene Labserve Vertical
+Autoclave - 1 27-Feb-2025 14-Mar-2025
+--- PAGE 9 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687712710068
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 10-Jan-2025
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+34प|Type : Central Autonomous
+मं<ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+!वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाHलय Iे<|Oﬃce Zone: Hyderabad
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : ASSISTANT ADMINISTRATIVE OFFICER
+संपकH नंबर|Contact No. : 994-9012307-
+ईमेल आईडी|Email ID : rakesh.geeda@icar.gov.in
+जीएसटbआईएन|GSTIN : 36AAALP0297N1ZJ
+पता|Address : ICAR-Indian Institute of Oilseeds Research Rajendranagar,
+HYDERABAD, TELANGANA-500030, India
+ 
+!वhीय!वhीय  iवीकृ !तiवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+3शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: director iior
+!वhीय अनुमोदन का पदनाम|
+Designation of Financial Approval : director iior
+भुगतानभुगतान  3ा!धकरण3ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Finance and Accounts Officer
+ईमेल आईडी|Email ID : fao.iior@icar.gov.in
+जीएसटbआईएन|GSTIN : N
+पता|Address: ICAR-Indian Institute of Oilseeds Research Rajendranagar,
+HYDERABAD, TELANGANA-500030, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकH नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसटbआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पI मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Keyboard Interface Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  3कार3कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-95VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडHर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वiतुवiतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा<ामा<ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु4शु4
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : ASSISTANT ADMINISTRATIVE OFFICER
+ईमेल आईडी|Email ID : rakesh.geeda@icar.gov.in
+संपकH|Contact : 994-9012307-
+जीएसटbआईएन|GSTIN : 36AAALP0297N1ZJ
+iGene Labserve
+Keyboard Interface - 1 10-Jan-2025 25-Jan-2025
+--- PAGE 10 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687732168023
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 20-Dec-2024
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+45प|Type : Statutory bodies
+मं=ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+"वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: N/A
+कायाKलय Lे=|Oﬃce Zone: Dr Rajendra Pd Central Agril University Bihar
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : Store Keeper Central Store
+संपकK नंबर|Contact No. : 06274-240234-
+ईमेल आईडी|Email ID : con1.agri.spj@gembuyer.in
+जीएसटbआईएन|GSTIN : 10AAAGD0863K1ZU
+पता|Address :
+Dr. Rajendra Prasad Central Agricultural University, Pusa,
+Samastipur, Bihar,
+Samastipur, BIHAR-848125, India
+ 
+"वeीय"वeीय  fवीकृ "तfवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : Yes
+4शास"नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Vice-Chancellor
+"वeीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Comptroller
+भुगतानभुगतान  4ा"धकरण4ा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Subham Kumar
+ईमेल आईडी|Email ID : pao12.dared.bh@gembuyer.in
+जीएसटbआईएन|GSTIN : 10AAAGD0863K1ZU
+पता|Address:
+Dr. Rajendra Prasad Central Agricultural University, Pusa,
+Samastipur, Bihar,
+Samastipur, BIHAR-848125, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकK नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसटbआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा"जक sेणी|MSE Social Category : General
+एमएसई "लंग sेणी|MSE Gender : Female
+*"जसके  नाम के  पL मu GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+"वतरण "नदzश | Delivery Instructions : Delivery as soon as possible
+उ|पादउ|पाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  4कार4कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-80VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडKर मूय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा=ामा=ा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शु5शु5
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Store Keeper Central Store
+ईमेल आईडी|Email ID : con1.agri.spj@gembuyer.in
+संपकK|Contact : 06274-240234-
+--- PAGE 11 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687779680786
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 25-Nov-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+56प|Type : Central Autonomous
+मं>ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+!वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Institute of Horticultural Research (IIHR)
+कायाKलय Lे>|Oﬃce Zone: Hesaraghatta, Bangalore, Karnataka, India
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : Assistant Administrative Officer
+संपकK नंबर|Contact No. : 080-23086100-218
+ईमेल आईडी|Email ID : buycon6.iihri.ka@gembuyer.in
+जीएसटaआईएन|GSTIN : 29AAAAI1830P1ZF
+पता|Address :
+ICAR-INDIAN INSTITUTE OF HORTICULTURAL RESEARCH
+HESSARAGHATTA LAKE POST, BANGALORE-560 089,
+BANGALORE, KARNATAKA-560089, India
+ 
+!वfीय!वfीय  gवीकृ !तgवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : Yes
+5शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+!वfीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Sr. Finance & Accounts Officer
+भुगतानभुगतान  5ा!धकरण5ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: CONSIGNEE
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकK नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसटaआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पL मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
+!वतरण !नदzश | Delivery Instructions : good
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  5कार5कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-23VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडKर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वgतुवgतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु6शु6
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : ASSISTANT ADMINISTRATIVE OFFICER
+ईमेल आईडी|Email ID : lokanth.b@icar.gov.in
+संपकK|Contact : 080-23086100-391
+जीएसटaआईएन|GSTIN : 29AAAAI1830P1ZF
+पता|Address : ICAR-INDIAN INSTITUTE OF HORTICULTURAL RESEARCH
+HESSARAGHATTA LAKE POST, BANGALORE-560 089,
+BANGALORE, KARNATAKA-560089, India
+iGene Labserve
+Autoclave - 1 25-Nov-2024 10-Dec-2024
+--- PAGE 12 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687732102280
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 23-Nov-2024
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+56प|Type : State Government
+मं=ालय|Ministry : -
+"वभाग|Department : Agriculture and Co-operation Department Gujarat
+संगठन का नाम|Organisation Name : Anand Agricultural University
+कायाEलय Fे=|Oﬃce Zone: Anand
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : HODPlantbrBACA
+संपकE नंबर|Contact No. : 02692-261342-
+ईमेल आईडी|Email ID : buycon40.aau.gj@gembuyer.in
+जीएसट[आईएन|GSTIN : 24AAALA1389A1D0
+पता|Address : Anand Agricultural University, Anand,
+Anand, GUJARAT-388110, India
+ 
+"व`ीय"व`ीय  aवीकृ "तaवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : No
+5शास"नक अनुमोदन का पदनाम|
+Designation of Administrative
+Approval:
+The Principal and Dean - Agriculture, BACA, AAU, 
+Anand
+"व`ीय अनुमोदन का पदनाम|
+Designation of Financial Approval :
+The Principal and Dean - Agriculture, BACA, AAU, 
+Anand
+भुगतानभुगतान  5ा"धकरण5ा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: BUYER
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : HODPlantbrBACA
+ईमेल आईडी|Email ID : buycon40.aau.gj@gembuyer.in
+जीएसट[आईएन|GSTIN : 24AAALA1389A1D0
+पता|Address: Anand Agricultural University, Anand,
+Anand, GUJARAT-388110, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकE नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट[आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा"जक sेणी|MSE Social Category : General
+एमएसई "लंग sेणी|MSE Gender : Female
+*"जसके  नाम के  पF मu GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+"वतरण "नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  5कार5कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-23VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडEर मूय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वaतुवaतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा=ामा=ा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शु6शु6
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : HODPlantbrBACA
+ईमेल आईडी|Email ID : buycon40.aau.gj@gembuyer.in
+संपकE|Contact : 02692-261342-
+जीएसट[आईएन|GSTIN : 24AAALA1389A1D0
+पता|Address : Anand Agricultural University, Anand,
+iGene Labserve
+Autoclave - 1 23-Nov-2024 08-Dec-2024
+--- PAGE 13 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687793283317
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 18-Oct-2024
+बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं4यासं4या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/5123709
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+CDप|Type : Central Government
+मंJालय|Ministry : Ministry of Science and Technology
+"वभाग|Department : Department of Biotechnology (DBT)
+संगठन का नाम|Organisation Name : Rajiv Gandhi Centre for Biotechnology (RGCB)
+कायाRलय SेJ|Oﬃce Zone: Thiruvananthapuram
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : Sujitha S
+संपकR नंबर|Contact No. : 0471-2529400-542
+ईमेल आईडी|Email ID : buyer1.rgcbr.kl@gembuyer.in
+जीएसटbआईएन|GSTIN : 32AAAAR6003P1ZK
+पता|Address : RGCB,JAGATHY THYCAUD PO KERALA,
+Thiruvananthapuram, KERALA-695014, India
+ 
+"वj ीय"वj ीय  kवीकृ "तkवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : No
+Cशास"नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Chief Controller
+"वj ीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Finance Officer
+भुगतानभुगतान  Cा"धकरणCा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : CONTROLLER OF ADMINISTRATION
+ईमेल आईडी|Email ID : hod1.rgcb.kerala@gembuyer.in
+जीएसटbआईएन|GSTIN : 32AAAAR6003P1ZK
+पता|Address: RGCB,JAGATHY THYCAUD PO KERALA,
+Thiruvananthapuram, KERALA-695014, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकR नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण सं4या|MSME Registration number : UDYAM-DL-05-0005536
+जीएसटbआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+खरीदार sारा मूuयां"कत एमआईआई "v"त | MII Status as
+evaluated by buyer : Not Verified
+खरीदार sारा सwया"पत एमएसएमई "v"त |MSME Status as
+verified by buyer : Not Verified
+एमएसई सामा"जक xेणी|MSE Social Category : General
+एमएसई "लंग xेणी|MSE Gender : Female
+*"जसके  नाम के  पS मz GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
+"वतरण "नदश | Delivery Instructions : NA
+उwपादउwपाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूuयमूuय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन
+(INR)|(INR)|
+Tax BifurcationTax Bifurcation
+(INR)(INR)
+मूuयमूuय  
+(INR (INR मzमz  सभीसभी
+शुuकशुuक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उwपादउwपाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve SS 304 Rectangular Autoclave (Horizontal),
+Working pressure 30 (PSI)
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  CकारCकार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  "v"त"v"त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+xेणीxेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (Horizontal) (Q3)
+मॉडलमॉडल|Model:|Model: IG-R432D 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडRर मूuय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वkतुवkतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. माJामाJा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शुDशुD
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+--- PAGE 14 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687757583748
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 27-Sep-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+67प|Type : Central Autonomous
+मं>ालय|Ministry : Ministry of Petroleum and Natural Gas
+!वभाग|Department : NA
+संगठन का नाम|Organisation Name : N/A
+कायाEलय Fे>|Oﬃce Zone: VISAKHAPATNAM
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : RAMAKRISHNA KORATANA
+संपकE नंबर|Contact No. : 0891-2856012-
+ईमेल आईडी|Email ID : buycon38.mpng.ap@gembuyer.in
+जीएसट]आईएन|GSTIN : 37AABAI0046C1ZA
+पता|Address :
+Indian Institute of Petroleum & Energy, 2nd Floor, Main
+Building, Andhra University College of Engineering (A),
+Visakhapatnam, ANDHRA PRADESH-530003, India
+ 
+!वgीय!वgीय  hवीकृ !तhवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+6शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Dean(R&D)
+!वgीय अनुमोदन का पदनाम|
+Designation of Financial Approval : The Dean(R&D)
+भुगतानभुगतान  6ा!धकरण6ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Internet Banking
+पद|Designation : FINANCE OFFICER
+ईमेल आईडी|Email ID : pay2.mpng.ap@gembuyer.in
+जीएसट]आईएन|GSTIN : -
+पता|Address:
+Indian Institute of Petroleum & Energy, 2nd Floor, Main
+Building, Andhra University College of Engineering (A),
+Visakhapatnam, ANDHRA PRADESH-530003, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकE नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+जीएसट]आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+*!जसके  नाम के  पF मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-95VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडEर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : RAMAKRISHNA KORATANA
+ईमेल आईडी|Email ID : buycon38.mpng.ap@gembuyer.in
+संपकE|Contact : 0891-2856012-
+--- PAGE 15 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687704173962
+अनुबंधअनुबंध  $त$थ$त$थ|Generated Date :|Generated Date : 23-Sep-2024
+बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं5यासं5या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2024/B/4808673
+संगठनसंगठन  $ववरण$ववरण|Organisation Details|Organisation Details
+EFप|Type : Central Autonomous
+मंKालय|Ministry : Ministry of Science and Technology
+$वभाग|Department : Department of Scientific and Industrial Research (DSIR)
+संगठन का नाम|Organisation Name : Council of Scientific and Industrial Research (CSIR)
+कायाRलय SेK|Oﬃce Zone: CSIR CSMCRI
+खरीदारखरीदार  $ववरण$ववरण|Buyer Details|Buyer Details
+पद|Designation : ASO
+संपकR नंबर|Contact No. : 0278-2563805-8510
+ईमेल आईडी|Email ID : nripendrac.csmcri@nic.in
+जीएसट^आईएन|GSTIN : 24AAATC2716R2ZK
+पता|Address :
+CSIR-Central Salt & Marine Chemicals Research Institute
+Gijubhai Badheka Marg Bhavnagar 364001,
+BHAVNAGAR, GUJARAT-364001, India
+ 
+$वj ीय$वj ीय  kवीकृ $तkवीकृ $त  $ववरण$ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम$त|IFD Concurrence : No
+Eशास$नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: DIRECTOR CSMCRI
+$वj ीय अनुमोदन का पदनाम|
+Designation of Financial Approval : DIRECTOR CSMCRI
+भुगतानभुगतान  Eा$धकरणEा$धकरण  $ववरण$ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Finance And Accounts Officer
+ईमेल आईडी|Email ID : fao@csmcri.res.in
+जीएसट^आईएन|GSTIN : 24AAATC2716R2ZK
+पता|Address:
+CSIR - Central Salt & Marine Chemicals Research Institute
+Giju Bhai Badheka Marg Bhavnagar - 364001 (GUJRAT),
+BHAVNAGAR, GUJARAT-364001, India
+ 
+ 
+$वे ता$वे ता  $ववरण$ववरण|Seller Details|Seller Details
+जेम $वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकR नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमआईआई $s $त| MII Status : True
+एमएसएमई सtया$पत|MSME veriﬁed : Yes
+एमएसएमई पंजीकरण सं5या|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा$जक wेणी|MSE Social Category : General
+एमएसई $लंग wेणी|MSE Gender : Female
+जीएसट^आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*$जसके  नाम के  पS मy GST/TAX इनवॉइस पेश $कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+$वतरण $नद~श | Delivery Instructions : Kindly deliver the item between 10 to 5 during monday to friday except holiday
+उtपादउtपाद  $ववरण$ववरण|Product Details|Product Details
+## आइटमआइटम  $ववरण$ववरण|Item Description|Item Description
+आइटमआइटम
+$ववरण$ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  $वभाजन$वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मyमy  सभीसभी
+शुकशुक  औरऔर  करकर
+स$हतस$हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उtपादउtपाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  EकारEकार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  $s $त$s $त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+wेणीwेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-50VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडRर मूय |Total Order Value (in INR)
+ 
+परे$षतीपरे$षती  $ववरण$ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे$षतीपरे$षती|Consignee|Consignee वkतुवkतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. माKामाKा|Quantity|Quantity
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शुFशुF
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+--- PAGE 16 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687769267690
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 05-Aug-2024
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+67प|Type : Central Autonomous
+मं=ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+"वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाIलय J े=|Oﬃce Zone: Indian Veterinary Research Institute
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : AAO PURCHASE 1
+संपकI नंबर|Contact No. : -
+ईमेल आईडी|Email ID : buyer107.icari.up@gembuyer.in
+जीएसट`आईएन|GSTIN : -
+पता|Address :
+ICAR-Indian Veterinary Research Institute,
+Izatnagar,Bareilly.,
+BAREILLY, UTTAR PRADESH-243122, India
+ 
+"वfीय"वfीय  gवीकृ "तgवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : Yes
+6शास"नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: (JOINT DIRECTOR(CADRAD))
+"वfीय अनुमोदन का पदनाम|
+Designation of Financial Approval : (JOINT DIRECTOR(CADRAD))
+भुगतानभुगतान  6ा"धकरण6ा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Asstt Admn Officer
+ईमेल आईडी|Email ID : pay13.icari.up@gembuyer.in
+जीएसट`आईएन|GSTIN : -
+पता|Address:
+ICAR-Indian Veterinary Research Institute,
+Izatnagar,Bareilly.,
+BAREILLY, UTTAR PRADESH-243122, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकI नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संrया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा"जक sेणी|MSE Social Category : General
+एमएसई "लंग sेणी|MSE Gender : Female
+जीएसट`आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*"जसके  नाम के  पJ  मu GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+"वतरण "नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-75VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडIर मूय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वgतुवgतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा=ामा=ा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : AAO IVRI STORE
+ईमेल आईडी|Email ID : con127.icari.up@gembuyer.in
+संपकI|Contact : -
+--- PAGE 17 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687794675651
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 31-Jul-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+78प|Type : Central Government
+मं?ालय|Ministry : Ministry of Health and Family Welfare
+!वभाग|Department : Department of Health Research
+संगठन का नाम|Organisation Name : Indian Council of Medical Research (ICMR)
+कायाLलय Mे?|Oﬃce Zone: Bhubaneswar
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : Scientist D
+संपकL नंबर|Contact No. : -
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+जीएसट`आईएन|GSTIN : N
+पता|Address :
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHORDA, ODISHA-751023, India
+ 
+!वeीय!वeीय  fवीकृ !तfवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+7शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+!वeीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Account Officer
+भुगतानभुगतान  7ा!धकरण7ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Accounts Officer
+ईमेल आईडी|Email ID : aco.rmrc-od@nic.in
+जीएसट`आईएन|GSTIN : -
+पता|Address:
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकL नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+जीएसट`आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*!जसके  नाम के  पM मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : Field office of MRHRU Sheragada, In the campus of Rural Health Training Center
+(R.H.T.C), Digapahandi, Dist -Ganjam, Pin-761012 Contact Person: Dr. Shakti Ranjan Barik Mob. 7008243161
+उ}पादउ}पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ}पादउ}पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  7कार7कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-50VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडLर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा?ामा?ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु8शु8
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Scientist D
+--- PAGE 18 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687775955900
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 30-Jul-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+78प|Type : Central Government
+मं?ालय|Ministry : Ministry of Health and Family Welfare
+!वभाग|Department : Department of Health Research
+संगठन का नाम|Organisation Name : Indian Council of Medical Research (ICMR)
+कायाLलय Mे?|Oﬃce Zone: Bhubaneswar
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : Scientist D
+संपकL नंबर|Contact No. : -
+ईमेल आईडी|Email ID : drdebduttab.rmrc-od@gov.in
+जीएसट`आईएन|GSTIN : N
+पता|Address :
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHORDA, ODISHA-751023, India
+ 
+!वeीय!वeीय  fवीकृ !तfवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+7शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+!वeीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Account Officer
+भुगतानभुगतान  7ा!धकरण7ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Accounts Officer
+ईमेल आईडी|Email ID : aco.rmrc-od@nic.in
+जीएसट`आईएन|GSTIN : -
+पता|Address:
+ICMR-Regional Medical Research Centre, Chandrasekharpur,
+Bhubaneswar,
+KHURDA, ODISHA-751023, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकL नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+जीएसट`आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*!जसके  नाम के  पM मu GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदzश | Delivery Instructions : ICMR MRHRU, Institute of Public Health and Convention Center (IPH) building, -
+Jamshedpur Rd, Namkum, Ranchi, Jharkhand, 834010, Contact Number-8336922482
+उ|पादउ|पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  7कार7कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-50VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडLर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा?ामा?ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु8शु8
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Scientist D
+--- PAGE 19 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687782168461
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 18-Jul-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+56प|Type : Central Autonomous
+मं=ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+!वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Institute of Horticultural Research (IIHR)
+कायाJलय Kे=|Oﬃce Zone: Hesaraghatta, Bangalore, Karnataka, India
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : ASSISTANT ADMINISTRATIVE OFFICER
+संपकJ नंबर|Contact No. : 080-23086100-218
+ईमेल आईडी|Email ID : buycon2.iihri.ka@gembuyer.in
+जीएसटbआईएन|GSTIN : 29AAAAI1830P1ZF
+पता|Address :
+ICAR-INDIAN INSTITUTE OF HORTICULTURAL RESEARCH
+HESSARAGHATTA LAKE POST, BANGALORE-560 089,
+BANGALORE, KARNATAKA-560089, India
+ 
+!वgीय!वgीय  hवीकृ !तhवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+5शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Senior Administrative Officer
+!वgीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Finance and accounts officer
+भुगतानभुगतान  5ा!धकरण5ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: BUYER
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : ASSISTANT ADMINISTRATIVE OFFICER
+ईमेल आईडी|Email ID : buycon2.iihri.ka@gembuyer.in
+जीएसटbआईएन|GSTIN : 29AAAAI1830P1ZF
+पता|Address:
+ICAR-INDIAN INSTITUTE OF HORTICULTURAL RESEARCH
+HESSARAGHATTA LAKE POST, BANGALORE-560 089,
+BANGALORE, KARNATAKA-560089, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकJ नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा!जक rेणी|MSE Social Category : General
+एमएसई !लंग rेणी|MSE Gender : Female
+जीएसटbआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*!जसके  नाम के  पK मt GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नदyश | Delivery Instructions : NA
+उ{पादउ{पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मtमt  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ{पादउ{पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  5कार5कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-95VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडJर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वhतुवhतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा=ामा=ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु6शु6
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : UPPER DIVISION CLERK
+ईमेल आईडी|Email ID : jagadeesh.tc@icar.gov.in
+संपकJ|Contact : 08276-266635-
+--- PAGE 20 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687721497702
+अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 06-Jun-2024
+संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
+67प|Type : Central Autonomous
+मं>ालय|Ministry : Ministry of Education
+#वभाग|Department : Department of Higher Education
+संगठन का नाम|Organisation Name : University Grants Commission
+कायाGलय Hे>|Oﬃce Zone: Central University Of Rajasthan
+खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
+पद|Designation : DEAN RESEARCH
+संपकG नंबर|Contact No. : 01463-257504-101
+ईमेल आईडी|Email ID : buycon3.cuor.ajmer@gembuyer.in
+जीएसट^आईएन|GSTIN : -
+पता|Address :
+REGISTRAR CENTRAL UNIVERSITY OF RAJASTHAN NH-8,
+BANDARSINDRI, TEHSIL KISHANGARH DISTRICT AJMER,
+RAJASTHAN,
+Ajmer, RAJASTHAN-305817, India
+ 
+#वeीय#वeीय  fवीकृ #तfवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम#त|IFD Concurrence : No
+6शास#नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Vice Chancellor
+#वeीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Vice Chancellor
+भुगतानभुगतान  6ा#धकरण6ा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : SECTION OFFICER
+ईमेल आईडी|Email ID : shyam@curaj.ac.in
+जीएसट^आईएन|GSTIN : N
+पता|Address:
+REGISTRAR CENTRAL UNIVERSITY OF RAJASTHAN NH-8,
+BANDARSINDRI, TEHSIL KISHANGARH DISTRICT AJMER,
+RAJASTHAN,
+AJMER, RAJASTHAN-305817, India
+ 
+ 
+#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
+जेम #वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकG नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा#जक qेणी|MSE Social Category : General
+एमएसई #लंग qेणी|MSE Gender : Female
+जीएसट^आईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*#जसके  नाम के  पH मu GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
+#वतरण #नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  #ववरण#ववरण|Product Details|Product Details
+## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
+आइटमआइटम
+#ववरण#ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  #वभाजन#वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स#हतस#हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve NA Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ##त##त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+qेणीqेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-50VRA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडGर मूय |Total Order Value (in INR)
+ 
+परे#षतीपरे#षती  #ववरण#ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे#षतीपरे#षती|Consignee|Consignee वfतुवfतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+#दनांक#दनांक  केके   बादबाद
+#डलीवरी#डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+#वतरण#वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : DEAN RESEARCH
+--- PAGE 21 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687730564642
+अनुबंधअनुबंध  #त#थ#त#थ|Generated Date :|Generated Date : 31-May-2024
+बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं3यासं3या|Bid/RA/PBP No.:|Bid/RA/PBP No.:  GEM/2023/B/4208127
+अनुसूचीअनुसूची  नामनाम|Schedule Name:|Schedule Name:Schedule 4
+संगठनसंगठन  #ववरण#ववरण|Organisation Details|Organisation Details
+IJ प|Type : Central Autonomous
+मंMालय|Ministry : Ministry of Agriculture and Farmers Welfare
+#वभाग|Department : Department of Agricultural Research and Education (DARE)
+संगठन का
+नाम|Organisation
+Name :
+Indian Council of Agricultural Research (ICAR)
+कायाUलय VेM|Oﬃce
+Zone:
+Icar-central Institute Of Temperate Horticulture, Kd Farm, Old Air
+Field, Po Rangreth, Srinagar 191132
+खरीदारखरीदार  #ववरण#ववरण|Buyer Details|Buyer Details
+पद|Designation : Assistant administrative Officer
+संपकU नंबर|Contact No. : 0194-2305045-
+ईमेल आईडी|Email ID : buycon60.icari.jk@gembuyer.in
+जीएसटiआईएन|GSTIN : 01AAAGI0180E1Z7
+पता|Address :
+ICAR-Central Institute of Temperate Horticulture, K.D.Farm,
+Old air field, P.O. Rangreth, Srinagar,
+SRINAGAR, JAMMU & KASHMIR-191132, India
+ 
+#वmीय#वmीय  nवीकृ #तnवीकृ #त  #ववरण#ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम#त|IFD Concurrence : No
+Iशास#नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director, ICAR-CITH, Srinagar
+#वmीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Finance and Accounts Officer
+भुगतानभुगतान  Iा#धकरणIा#धकरण  #ववरण#ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : AFAO
+ईमेल आईडी|Email ID : fadar@icar.org.in
+जीएसटiआईएन|GSTIN : N
+पता|Address:
+ICAR-Central Institute of Temperate Horticulture, K.D.Farm,
+Old air field, P.O. Rangreth, Srinagar,
+SRINAGAR, JAMMU & KASHMIR-191132, India
+ 
+ 
+#वे ता#वे ता  #ववरण#ववरण|Seller Details|Seller Details
+जेम #वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकU नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमआईआई #u#त| MII Status : True
+एमएसएमई सvया#पत|MSME veriﬁed : Yes
+एमएसएमई पंजीकरण सं3या|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा#जक yेणी|MSE Social Category : General
+एमएसई #लंग yेणी|MSE Gender : Female
+जीएसटiआईएन|GSTIN: 06AAECI7879J1ZY (B) , 07AAECI7879J1ZW (R) , 06AAECI7879J1ZY (M)
+*#जसके  नाम के  पV म{ GST/TAX इनवॉइस पेश #कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
+#वतरण #नदश | Delivery Instructions : The agency has to ensure safe delivery of the product at the consignee location i.e.
+ICAR-CITH, Regional Station, Dirang, AP. The contact details of the head of the Centre is 09448309954. Installation
+required be made immeateily after delivery. No extention in time will be granted.
+उvपादउvपाद  #ववरण#ववरण|Product Details|Product Details
+## आइटमआइटम  #ववरण#ववरण|Item Description|Item Description
+आइटमआइटम
+#ववरण#ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  #वभाजन#वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR म{म{  सभीसभी
+शुकशुक  औरऔर  करकर
+स#हतस#हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उvपादउvपाद  काका  नामनाम |Product Name :  |Product Name : Autoclave
+ांडांड|Brand : |Brand : iGene Labserve 
+ांडांड  IकारIकार|Brand Type : |Brand Type : Unbranded
+कै टलॉगकै टलॉग  कक  #u#त#u#त|Catalogue Status: |Catalogue Status: Catalogue not
+verified by OEM
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : Reseller not verified by
+OEM
+yेणीyेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant :|Category Name & Quadrant :
+BOQ (Q3)
+मॉडलमॉडल|Model:|Model: IG-95VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: 8419
+1 Number
+जीएसटiजीएसटi  उपकरउपकर 1|GST Cess 1  1|GST Cess 1 (0%) : 0 
+जीएसटiजीएसटi  उपकरउपकर 2|GST Cess 2  2|GST Cess 2 (0 per accounting unit) : 0 
+जीएसटiजीएसटi  परपर  इनपुटइनपुट  टैसटैस  े #डटे #डट ( (आईटiसीआईटiसी)|Input Tax Credit)|Input Tax Credit
+(ITC) on GST। (ITC) on GST। : - 
+जीएसटiजीएसटi  उपकरउपकर  परपर  आईटiसीआईटiसी 1|ITC on GST Cess 1  1|ITC on GST Cess 1 : - 
+जीएसटiजीएसटi  उपकरउपकर  परपर  आईटiसीआईटiसी 2|ITC on GST Cess 2  2|ITC on GST Cess 2 : - 
+कु ल ऑडUर मूय |Total Order Value (in INR)
+ 
+जीएसटi|GST|GST (18%) :
+--- PAGE 22 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687798505363
+अनुबंधअनुबंध  "त"थ"त"थ|Generated Date :|Generated Date : 16-May-2024
+संगठनसंगठन  "ववरण"ववरण|Organisation Details|Organisation Details
+67प|Type : Central Autonomous
+मं>ालय|Ministry : Ministry of Science and Technology
+"वभाग|Department : Department of Biotechnology (DBT)
+संगठन का नाम|Organisation Name : National Institute of Biomedical Genomics
+कायाIलय J े>|Oﬃce Zone: Kalyani
+खरीदारखरीदार  "ववरण"ववरण|Buyer Details|Buyer Details
+पद|Designation : Junior Management Assistant
+संपकI नंबर|Contact No. : -
+ईमेल आईडी|Email ID : sayontany.nibmg@bric.nic.in
+जीएसट\आईएन|GSTIN : -
+पता|Address : PO NSS Kalyani,
+NADIA, WEST BENGAL-741251, India
+ 
+"वaीय"वaीय  bवीकृ "तbवीकृ "त  "ववरण"ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम"त|IFD Concurrence : No
+6शास"नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director, NIBMG
+"वaीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Director, NIBMG
+भुगतानभुगतान  6ा"धकरण6ा"धकरण  "ववरण"ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Manager Finance
+ईमेल आईडी|Email ID : pay1.nibg.wb@gembuyer.in
+जीएसट\आईएन|GSTIN : -
+पता|Address: PO NSS Kalyani,
+NADIA, WEST BENGAL-741251, India
+ 
+ 
+"वे ता"वे ता  "ववरण"ववरण|Seller Details|Seller Details
+जेम "वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकI नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा"जक sेणी|MSE Social Category : General
+एमएसई "लंग sेणी|MSE Gender : Female
+जीएसट\आईएन|GSTIN: 07AAECI7879J1ZW (B) , (M) , (R) , (B)
+*"जसके  नाम के  पJ  मu GST/TAX इनवॉइस पेश "कया जाएगा|GST / Tax invoice to be raised in the name of - Consignee
+"वतरण "नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  "ववरण"ववरण|Product Details|Product Details
+## आइटमआइटम  "ववरण"ववरण|Item Description|Item Description
+आइटमआइटम
+"ववरण"ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  "वभाजन"वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+स"हतस"हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  6कार6कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  ""त""त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-80VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडIर मूय |Total Order Value (in INR)
+ 
+परे"षतीपरे"षती  "ववरण"ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे"षतीपरे"षती|Consignee|Consignee वbतुवbतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा>ामा>ा|Quantity|Quantity
+"दनांक"दनांक  केके   बादबाद
+"डलीवरी"डलीवरी  शु7शु7
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+"वतरण"वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+1
+पद| Designation : OFFICE ASSISTANT STORE
+ईमेल आईडी|Email ID : con2.nibg.wb@gembuyer.in
+संपकI|Contact : 033-66422111-220
+जीएसट\आईएन|GSTIN : 19AAAAN8062E1ZK
+पता|Address : PO NSS Kalyani,
+iGene Labserve
+Autoclave - 1 16-May-2024 31-May-2024
+--- PAGE 23 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687752691157
+अनुबंधअनुबंध  !त!थ!त!थ|Generated Date :|Generated Date : 14-Mar-2024
+संगठनसंगठन  !ववरण!ववरण|Organisation Details|Organisation Details
+45प|Type : Central Autonomous
+मं=ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+!वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाIलय J े=|Oﬃce Zone: Central Institute For Research On Cotton Technology
+खरीदारखरीदार  !ववरण!ववरण|Buyer Details|Buyer Details
+पद|Designation : Assistant Administrative Officer
+संपकI नंबर|Contact No. : -
+ईमेल आईडी|Email ID : tp.mokal@icar.gov.in
+जीएसट\आईएन|GSTIN : N
+पता|Address :
+ICAR-Central Institute for Research on Cotton Technology,
+Adenwala Road, Matunga(East), Mumbai-400 019.,
+MUMBAI, MAHARASHTRA-400019, India
+ 
+!वcीय!वcीय  dवीकृ !तdवीकृ !त  !ववरण!ववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहम!त|IFD Concurrence : No
+4शास!नक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Officer
+!वcीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Director
+भुगतानभुगतान  4ा!धकरण4ा!धकरण  !ववरण!ववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Technical Officer
+ईमेल आईडी|Email ID : sachin_np@rediffmail.com
+जीएसट\आईएन|GSTIN : N
+पता|Address:
+ICAR-Central Institute for Research on Cotton Technology,
+Adenwala Road, Matunga(East), Mumbai-400 019.,
+Mumbai - City, MAHARASHTRA-400019, India
+ 
+ 
+!वे ता!वे ता  !ववरण!ववरण|Seller Details|Seller Details
+जेम !वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकI नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संqया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामा!जक sेणी|MSE Social Category : General
+एमएसई !लंग sेणी|MSE Gender : Female
+जीएसट\आईएन|GSTIN: 07AAECI7879J1ZW
+*!जसके  नाम के  पJ  मv GST/TAX इनवॉइस पेश !कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+!वतरण !नद{श | Delivery Instructions : NA
+उ}पादउ}पाद  !ववरण!ववरण|Product Details|Product Details
+## आइटमआइटम  !ववरण!ववरण|Item Description|Item Description
+आइटमआइटम
+!ववरण!ववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  !वभाजन!वभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मvमv  सभीसभी
+शुकशुक  औरऔर  करकर
+स!हतस!हत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ}पादउ}पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Keyboard Interface Radial Type
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  4कार4कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  !!त!!त|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Steam Sterlizer (V2) (Q2)
+मॉडलमॉडल|Model:|Model: IG-95VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडIर मूय |Total Order Value (in INR)
+ 
+परे!षतीपरे!षती  !ववरण!ववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परे!षतीपरे!षती|Consignee|Consignee वdतुवdतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा=ामा=ा|Quantity|Quantity
+!दनांक!दनांक  केके   बादबाद
+!डलीवरी!डलीवरी  शु5शु5
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+!वतरण!वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Assistant Administrative Officer
+ईमेल आईडी|Email ID : tp.mokal@icar.gov.in
+संपकI|Contact : - iGene Labserve
+--- PAGE 24 ---
+ 
+अनुबंधअनुबंध|Contract|Contract
+अनुबंधअनुबंध  मांकमांक|Contract No: |Contract No: GEMC-511687776811665
+अनुबंधअनुबंध  तथतथ|Generated Date :|Generated Date : 14-Mar-2024
+संगठनसंगठन  ववरणववरण|Organisation Details|Organisation Details
+34प|Type : Central Autonomous
+मं<ालय|Ministry : Ministry of Agriculture and Farmers Welfare
+वभाग|Department : Department of Agricultural Research and Education
+(DARE)
+संगठन का नाम|Organisation Name
+: Indian Council of Agricultural Research (ICAR)
+कायाHलय Iे<|Oﬃce Zone: National Research Centre on Equines Hisar
+खरीदारखरीदार  ववरणववरण|Buyer Details|Buyer Details
+पद|Designation : Assistant Administrative Officer
+संपकH नंबर|Contact No. : 01662-275787-282522
+ईमेल आईडी|Email ID : buycon264.icari.hr@gembuyer.in
+जीएसट]आईएन|GSTIN : 06AAAAI1830P4ZK
+पता|Address :
+ICAR-National Research Centre on Equines, Sirsa Road,
+Hisar,
+HISAR, HARYANA-125001, India
+ 
+वdीयवdीय  eवीकृ तeवीकृ त  ववरणववरण|Financial Approval Detail|Financial Approval Detail
+आईएफडी सहमत|IFD Concurrence : No
+3शासनक अनुमोदन का पदनाम|
+Designation of Administrative Approval: Director
+वdीय अनुमोदन का पदनाम|
+Designation of Financial Approval : Director
+भुगतानभुगतान  3ाधकरण3ाधकरण  ववरणववरण|Paying Authority Details|Paying Authority Details
+Role: PAO
+भुगतान का तरीका|
+Payment Mode: Offline
+पद|Designation : Senior Finance Accounts Officer
+ईमेल आईडी|Email ID : pao63.icari.hr@gembuyer.in
+जीएसट]आईएन|GSTIN : -
+पता|Address:
+ICAR-National Research Centre on Equines, Sirsa Road,
+Hisar,
+Hisar, HARYANA-125001, India
+ 
+ 
+वे तावे ता  ववरणववरण|Seller Details|Seller Details
+जेम वे ता आईडी|GeM Seller ID : 5230180000533945
+कं पनी का नाम|Company Name : IGENE LABSERVE PRIVATE LIMITED
+संपकH नंबर|Contact No. : 09971039507
+ईमेल आईडी|Email ID : info@igenels.com
+पता| Address : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+एमएसएमई पंजीकरण संpया|MSME Registration number : UDYAM-DL-05-0005536
+एमएसई सामाजक rेणी|MSE Social Category : General
+एमएसई लंग rेणी|MSE Gender : Female
+जीएसट]आईएन|GSTIN: 07AAECI7879J1ZW
+*जसके  नाम के  पI मu GST/TAX इनवॉइस पेश कया जाएगा|GST / Tax invoice to be raised in the name of - Buyer
+वतरण नदzश | Delivery Instructions : NA
+उ|पादउ|पाद  ववरणववरण|Product Details|Product Details
+## आइटमआइटम  ववरणववरण|Item Description|Item Description
+आइटमआइटम
+ववरणववरण||
+OrderedOrdered
+QuantityQuantity
+इकाईइकाई | |
+UnitUnit
+इकाईइकाई  मूयमूय
+(INR)|(INR)|
+Unit PriceUnit Price
+(INR)(INR)
+करकर  वभाजनवभाजन (INR)| (INR)|
+Tax Bifurcation (INR)Tax Bifurcation (INR)
+मूयमूय  
+(INR (INR मuमu  सभीसभी
+शुकशुक  औरऔर  करकर
+सहतसहत)|)|
+PricePrice
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes in INR)Taxes in INR)
+1
+उ|पादउ|पाद  काका  नामनाम |Product Name :  |Product Name : iGene Labserve Autoclave
+ांडांड|Brand : |Brand : iGene Labserve
+ांडांड  3कार3कार|Brand Type : |Brand Type : Registered Brand
+कै टलॉगकै टलॉग  कक  तत|Catalogue Status: |Catalogue Status: OEM verified catalogue
+कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै|Selling As : |Selling As : OEM
+rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश|Category Name & Quadrant : |Category Name & Quadrant : Autoclave (ICMR Specs) (Q3)
+मॉडलमॉडल|Model:|Model: IG-35VA 
+एचएसएनएचएसएन  कोडकोड|HSN Code: |HSN Code: HSN not specified by seller
+1 pieces NA
+कु ल ऑडHर मूय |Total Order Value (in INR)
+ 
+परेषतीपरेषती  ववरणववरण|Consignee Detail|Consignee Detail
+.सं..सं.|S.No|S.No परेषतीपरेषती|Consignee|Consignee वeतुवeतु|Item|Item लॉटलॉट  नंबरनंबर||
+Lot No.Lot No. मा<ामा<ा|Quantity|Quantity
+दनांकदनांक  केके   बादबाद
+डलीवरीडलीवरी  शु4शु4
+करनाकरना  हैहै||
+Delivery StartDelivery Start
+AfterAfter
+वतरणवतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै||
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+ByBy
+पद| Designation : Assistant Administrative Officer
+ईमेल आईडी|Email ID : buycon264.icari.hr@gembuyer.in
+संपकH|Contact : 01662-275787-282522
+--- PAGE 25 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687722228967
+Generated Date|Generated Date|अनुबंधअनुबंध  $त$थ$त$थ : : 04-Jan-2024
+Bid/RA/PBP No.|Bid/RA/PBP No.|बोलीबोली//आरएआरए//पीबीपीपीबीपी  सं9यासं9या::  GEM/2023/B/3260120
+Organisation Details|Organisation Details|संगठनसंगठन  $ववरण$ववरण
+Type|GHप : Central Autonomous
+Ministry|मंKालय : Ministry of Health and Family Welfare
+Department|$वभाग : Department of Health and Family Welfare
+Organisation Name|संगठन का नाम : All India Institute of Medical Sciences (AIIMS)
+Oﬃce Zone|कायाXलय YेK: Aiims, New Delhi
+Buyer Details|Buyer Details|खरीदारखरीदार  $ववरण$ववरण
+Designation|पद : Store keeper
+Contact No.|संपकX नंबर : 011-29575320-5320
+Email ID|ईमेल आईडी : hridya.v@aiims.gov.in
+GSTIN|जीएसटfआईएन : -
+Address|पता :
+1st Floor , New Pvt. Ward, Store Section (CN Centre) , AIIMS,
+Ansari Nagar, New Delhi,,
+NEW DELHI, DELHI-110029, India
+ 
+Financial Approval Detail|Financial Approval Detail|$वhीय$वhीय  iवीकृ $तiवीकृ $त  $ववरण$ववरण
+IFD Concurrence|आईएफडी सहम$त : No
+Designation of Administrative Approval|
+Gशास$नक अनुमोदन का पदनाम: Prof.Balram Bhargava
+Designation of Financial Approval|
+$वhीय अनुमोदन का पदनाम : Chief, CTC
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  Gा$धकरणGा$धकरण  $ववरण$ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : F and CAO
+Email ID|ईमेल आईडी : vijay.singh@aiims.gov.in
+GSTIN|जीएसटfआईएन : N
+Address|पता:
+Stores Account Main AIIMS, Admin Block, AIIMS ,New Delhi,
+Ansari Nagar,
+South West delhi, DELHI-110029, India
+ 
+ 
+Seller Details|Seller Details|$वे ता$वे ता  $ववरण$ववरण
+GeM Seller ID|जेम $वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकX नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सrया$पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण सं9या : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा$जक vेणी : General
+MSE Gender|एमएसई $लंग vेणी : Female
+GSTIN|जीएसटfआईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|$जसके  नाम के  पY मy GST/TAX इनवॉइस पेश $कया जाएगा - Buyer
+Delivery Instructions|$वतरण $नद}श : NA
+Product Details|Product Details|उrपादउrपाद  $ववरण$ववरण
+## Item Description|Item Description|आइटमआइटम  $ववरण$ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+$ववरण$ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  $वभाजन$वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मyमy
+सभीसभी  शुकशुक  औरऔर
+करकर  स$हतस$हत))
+1
+Product Name|Product Name|उrपादउrपाद  काका  नामनाम :  : iGene Labserve Autoclave
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  GकारGकार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  $$त$$त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Autoclave (ICMR Specs) (Q3)
+Model|Model|मॉडलमॉडल:: IG-95VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडXर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे$षतीपरे$षती  $ववरण$ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे$षतीपरे$षती Item|Item|वiतुवiतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+माKामाKा
+Delivery StartDelivery Start
+After|After|
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शुHशुH
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+Designation|पद : -
+--- PAGE 26 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687729868230
+Generated Date|Generated Date|अनुबंधअनुबंध  &त&थ&त&थ : : 30-Dec-2023
+Organisation Details|Organisation Details|संगठनसंगठन  &ववरण&ववरण
+Type|78प : State Autonomous
+Ministry|मं>ालय : -
+Department|&वभाग : SKUAST Kashmir
+Organisation Name|संगठन का नाम : SKUASTKashmir
+Oﬃce Zone|कायाGलय Hे>: Jammu and Kashmir
+Buyer Details|Buyer Details|खरीदारखरीदार  &ववरण&ववरण
+Designation|पद : Saquib Farooq
+Contact No.|संपकG नंबर : 0194-9797938-081
+Email ID|ईमेल आईडी : buyer13.skuas.jk@gembuyer.in
+GSTIN|जीएसट^आईएन : -
+Address|पता : Wadura, Sopore,
+BARAMULLA, JAMMU & KASHMIR-193201, India
+ 
+Financial Approval Detail|Financial Approval Detail|&वfीय&वfीय  gवीकृ &तgवीकृ &त  &ववरण&ववरण
+IFD Concurrence|आईएफडी सहम&त : No
+Designation of Administrative Approval|
+7शास&नक अनुमोदन का पदनाम: Director Research
+Designation of Financial Approval|
+&वfीय अनुमोदन का पदनाम : Comptroller
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  7ा&धकरण7ा&धकरण  &ववरण&ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : Surjeel
+Email ID|ईमेल आईडी : pao7.skuas.jk@gembuyer.in
+GSTIN|जीएसट^आईएन : 01AMRD13381E1DO
+Address|पता: SKUAST-K, Shalimar, Srinagar.,
+Srinagar, JAMMU & KASHMIR-191121, India
+ 
+ 
+Seller Details|Seller Details|&वे ता&वे ता  &ववरण&ववरण
+GeM Seller ID|जेम &वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकG नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME Registration number|एमएसएमई पंजीकरण संqया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा&जक sेणी : General
+MSE Gender|एमएसई &लंग sेणी : Female
+GSTIN|जीएसट^आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|&जसके  नाम के  पH मv GST/TAX इनवॉइस पेश &कया जाएगा - Buyer
+Delivery Instructions|&वतरण &नदzश : NA
+Product Details|Product Details|उ|पादउ|पाद  &ववरण&ववरण
+## Item Description|Item Description|आइटमआइटम  &ववरण&ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+&ववरण&ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  &वभाजन&वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मvमv
+सभीसभी  शुकशुक  औरऔर
+करकर  स&हतस&हत))
+1
+Product Name|Product Name|उ|पादउ|पाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  7कार7कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  &&त&&त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer (V2) (Q2)
+Model|Model|मॉडलमॉडल:: IG-95VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडGर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे&षतीपरे&षती  &ववरण&ववरण
+S.No|S.No|.सं..सं. Consignee|Consignee|परे&षतीपरे&षती Item|Item|वgतुवgतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर Quantity|Quantity|मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+&दनांक&दनांक  केके   बादबाद
+&डलीवरी&डलीवरी  शु8शु8
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+&वतरण&वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : Zahoor Ahmad Baba
+Email ID|ईमेल आईडी : con1.skuas.jk@gembuyer.in
+Contact|संपकG : -9906493444-
+GSTIN|जीएसट^आईएन : -
+Address|पता : Wadura, Sopore,
+iGene Labserve
+Keyboard Interface
+Radial Type
+- 1 30-Dec-2023 14-Jan-2024
+--- PAGE 27 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687709482805
+Generated Date|Generated Date|अनुबंधअनुबंध  &त&थ&त&थ : : 18-Sep-2023
+Organisation Details|Organisation Details|संगठनसंगठन  &ववरण&ववरण
+Type|9: प : State Autonomous
+Ministry|मं?ालय : -
+Department|&वभाग : SKUAST Kashmir
+Organisation Name|संगठन का नाम : SKUASTKashmir
+Oﬃce Zone|कायाHलय Iे?: Jammu and Kashmir
+Buyer Details|Buyer Details|खरीदारखरीदार  &ववरण&ववरण
+Designation|पद : Buyer
+Contact No.|संपकH नंबर : -9906521140-
+Email ID|ईमेल आईडी : harif.skuast@jk.gov.in
+GSTIN|जीएसट]आईएन : 01AMRD13381E1DO
+Address|पता : SKUAST-K, Shalimar, Srinagar.,
+SRINAGAR, JAMMU & KASHMIR-191121, India
+ 
+Financial Approval Detail|Financial Approval Detail|&वcीय&वcीय  dवीकृ &तdवीकृ &त  &ववरण&ववरण
+IFD Concurrence|आईएफडी सहम&त : No
+Designation of Administrative Approval|
+9शास&नक अनुमोदन का पदनाम: DR
+Designation of Financial Approval|
+&वcीय अनुमोदन का पदनाम : Comptroller
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  9ा&धकरण9ा&धकरण  &ववरण&ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : Surjeel
+Email ID|ईमेल आईडी : pao7.skuas.jk@gembuyer.in
+GSTIN|जीएसट]आईएन : 01AMRD13381E1DO
+Address|पता: SKUAST-K, Shalimar, Srinagar.,
+Srinagar, JAMMU & KASHMIR-191121, India
+ 
+ 
+Seller Details|Seller Details|&वे ता&वे ता  &ववरण&ववरण
+GeM Seller ID|जेम &वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकH नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME Registration number|एमएसएमई पंजीकरण संpया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा&जक rेणी : General
+MSE Gender|एमएसई &लंग rेणी : Female
+GSTIN|जीएसट]आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|&जसके  नाम के  पI मu GST/TAX इनवॉइस पेश &कया जाएगा - Buyer
+Delivery Instructions|&वतरण &नदyश : MRCFC, Khudwani, SKUAST-K, Anantnag
+Product Details|Product Details|उ|पादउ|पाद  &ववरण&ववरण
+## Item Description|Item Description|आइटमआइटम  &ववरण&ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+&ववरण&ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  &वभाजन&वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मuमu
+सभीसभी  शुकशुक  औरऔर
+करकर  स&हतस&हत))
+1
+Product Name|Product Name|उ|पादउ|पाद  काका  नामनाम :  : iGene Labserve NA Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  9कार9कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  &&त&&त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer (V2) (Q2)
+Model|Model|मॉडलमॉडल:: IG-50VA ( Warranty: 1 year) 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडHर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे&षतीपरे&षती  &ववरण&ववरण
+S.No|S.No|.सं..सं. Consignee|Consignee|परे&षतीपरे&षती Item|Item|वdतुवdतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर Quantity|Quantity|मा?ामा?ा
+Delivery StartDelivery Start
+After|After|
+&दनांक&दनांक  केके   बादबाद
+&डलीवरी&डलीवरी  शु:शु:
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+&वतरण&वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : Showkat Waza
+Email ID|ईमेल आईडी : con4.skuas.jk@gembuyer.in
+Contact|संपकH : -
+GSTIN|जीएसट]आईएन : -
+Address|पता : Khudwani, SKUAST-K, Near Jamia Masjid,
+iGene Labserve NA
+Radial Type - 1 18-Sep-2023 03-Oct-2023
+--- PAGE 28 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687735023671
+Generated Date|Generated Date|अनुबंधअनुबंध  %त%थ%त%थ : : 27-Jun-2023
+Organisation Details|Organisation Details|संगठनसंगठन  %ववरण%ववरण
+Type|89प : State Autonomous
+Ministry|मं>ालय : -
+Department|%वभाग : Agriculture and Co-operation Department Gujarat
+Organisation Name|संगठन का नाम : Kamdhenu University
+Oﬃce Zone|कायाIलय J े>: Himmatnagar
+Buyer Details|Buyer Details|खरीदारखरीदार  %ववरण%ववरण
+Designation|पद : Assistant Professor Biotechnology
+Contact No.|संपकI नंबर : -
+Email ID|ईमेल आईडी : ap3-pgifer-ku@gujarat.gov.in
+GSTIN|जीएसट]आईएन : -
+Address|पता :
+Polytechnic in Animal Husbandry, Nava Rajpura, Kamdhenu
+University,
+SABARKANTHA, GUJARAT-383010, India
+ 
+Financial Approval Detail|Financial Approval Detail|%वbीय%वbीय  cवीकृ %तcवीकृ %त  %ववरण%ववरण
+IFD Concurrence|आईएफडी सहम%त : No
+Designation of Administrative Approval|
+8शास%नक अनुमोदन का पदनाम: Dean
+Designation of Financial Approval|
+%वbीय अनुमोदन का पदनाम : Dean
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  8ा%धकरण8ा%धकरण  %ववरण%ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : DDO
+Email ID|ईमेल आईडी : ddo16.nau.nvs@gembuyer.in
+GSTIN|जीएसट]आईएन : -
+Address|पता:
+Polytechnic in Animal Husbandry, Nava Rajpura, Kamdhenu
+University,
+Sabarkantha, GUJARAT-383010, India
+ 
+ 
+Seller Details|Seller Details|%वे ता%वे ता  %ववरण%ववरण
+GeM Seller ID|जेम %वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकI नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME Registration number|एमएसएमई पंजीकरण संoया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा%जक qेणी : General
+MSE Gender|एमएसई %लंग qेणी : Female
+GSTIN|जीएसट]आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|%जसके  नाम के  पJ  मt GST/TAX इनवॉइस पेश %कया जाएगा - Buyer
+Delivery Instructions|%वतरण %नदxश : NA
+Product Details|Product Details|उzपादउzपाद  %ववरण%ववरण
+## Item Description|Item Description|आइटमआइटम  %ववरण%ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+%ववरण%ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  %वभाजन%वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मtमt
+सभीसभी  शुकशुक  औरऔर
+करकर  स%हतस%हत))
+1
+Product Name|Product Name|उzपादउzपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  %%त%%त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|qेणीqेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer (V2) (Q2)
+Model|Model|मॉडलमॉडल:: IG-20VA (20 lit. Autoclave) 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडIर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे%षतीपरे%षती  %ववरण%ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे%षतीपरे%षती Item|Item|वcतुवcतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+%दनांक%दनांक  केके   बादबाद
+%डलीवरी%डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+%वतरण%वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+Designation|पद : Assistant Professor Biotechnology
+Email ID|ईमेल आईडी : ap3-pgifer-ku@gujarat.gov.in
+Contact|संपकI : - iGene Labserve
+--- PAGE 29 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687715896344
+Generated Date|Generated Date|अनुबंधअनुबंध  %त%थ%त%थ : : 24-May-2023
+Organisation Details|Organisation Details|संगठनसंगठन  %ववरण%ववरण
+Type|89प : State Government
+Ministry|मं>ालय : -
+Department|%वभाग : Agriculture and Co-operation Department Gujarat
+Organisation Name|संगठन का नाम : Directorate of Animal Husbandry
+Oﬃce Zone|कायाJलय Kे>: Office of Deputy Director of Animal Husbandry
+Buyer Details|Buyer Details|खरीदारखरीदार  %ववरण%ववरण
+Designation|पद : veterinary officer
+Contact No.|संपकJ नंबर : 079-26304423-
+Email ID|ईमेल आईडी : vo2-anml-ahd@gujarat.gov.in
+GSTIN|जीएसट[आईएन : -
+Address|पता :
+Office of Deputy Director of Animal Husbandry, FMD typing
+Scheme, "Pashupalan Shankul" Opposite, Krupal Haritage,
+Near Sanidhya Param Makarba Poultry Farm Campus,
+Makarba, Ahmedabad, Gujarat - 380051,
+AHMEDABAD, GUJARAT-380051, India
+ 
+Financial Approval Detail|Financial Approval Detail|%वeीय%वeीय  fवीकृ %तfवीकृ %त  %ववरण%ववरण
+IFD Concurrence|आईएफडी सहम%त : No
+Designation of Administrative Approval|
+8शास%नक अनुमोदन का पदनाम: Deputy Director of A.H.
+Designation of Financial Approval|
+%वeीय अनुमोदन का पदनाम : Deputy Director of A.H.
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  8ा%धकरण8ा%धकरण  %ववरण%ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : Account Officer
+Email ID|ईमेल आईडी : aacao-ahad-abd@gujarat.gov.in
+GSTIN|जीएसट[आईएन : -
+Address|पता:
+Office of Deputy Director of Animal Husbandry, FMD typing
+Scheme, "Pashupalan Shankul" Opposite, Krupal Haritage,
+Near Sanidhya Param Makarba Poultry Farm Campus,
+Makarba, Ahmedabad, Gujarat - 380051,
+Ahmedabad, GUJARAT-380051, India
+ 
+ 
+Seller Details|Seller Details|%वे ता%वे ता  %ववरण%ववरण
+GeM Seller ID|जेम %वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकJ नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME Registration number|एमएसएमई पंजीकरण संpया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा%जक rेणी : General
+MSE Gender|एमएसई %लंग rेणी : Female
+GSTIN|जीएसट[आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|%जसके  नाम के  पK मu GST/TAX इनवॉइस पेश %कया जाएगा - Consignee
+Delivery Instructions|%वतरण %नदyश : NA
+Product Details|Product Details|उ{पादउ{पाद  %ववरण%ववरण
+## Item Description|Item Description|आइटमआइटम  %ववरण%ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+%ववरण%ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  %वभाजन%वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मuमu
+सभीसभी  शुकशुक  औरऔर
+करकर  स%हतस%हत))
+1
+Product Name|Product Name|उ{पादउ{पाद  काका  नामनाम :  : iGene Labserve NA Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  %%त%%त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-75VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडJर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे%षतीपरे%षती  %ववरण%ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे%षतीपरे%षती Item|Item|वfतुवfतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+%दनांक%दनांक  केके   बादबाद
+%डलीवरी%डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+%वतरण%वतरण  पूरापूरा  कबकब
+--- PAGE 30 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687711944590
+Generated Date|Generated Date|अनुबंधअनुबंध  %त%थ%त%थ : : 31-Mar-2023
+Organisation Details|Organisation Details|संगठनसंगठन  %ववरण%ववरण
+Type|89प : Central Autonomous
+Ministry|मं>ालय : Ministry of Education
+Department|%वभाग : Department of Higher Education
+Organisation Name|संगठन का
+नाम :
+Central Universities Ministry of Human Resource
+Development
+Oﬃce Zone|कायाJलय Kे>: Vizianagaram
+Buyer Details|Buyer Details|खरीदारखरीदार  %ववरण%ववरण
+Designation|पद : OSDSP
+Contact No.|संपकJ नंबर : 08922-296033-
+Email ID|ईमेल आईडी : buyer15.cumhrd.ap@gembuyer.in
+GSTIN|जीएसट_आईएन : -
+Address|पता :
+Kondakarakam, Cantonment, Vizianagaram, Andhra
+Pradesh,
+VIZIANAGARAM, ANDHRA PRADESH-535001, India
+ 
+Financial Approval Detail|Financial Approval Detail|%वdीय%वdीय  eवीकृ %तeवीकृ %त  %ववरण%ववरण
+IFD Concurrence|आईएफडी सहम%त : No
+Designation of Administrative Approval|
+8शास%नक अनुमोदन का पदनाम: Vice Chancellor
+Designation of Financial Approval|
+%वdीय अनुमोदन का पदनाम : Vice Chancellor
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  8ा%धकरण8ा%धकरण  %ववरण%ववरण
+Role: PAO
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : PAODDO
+Email ID|ईमेल आईडी : pay2.cumhrd.ap@gembuyer.in
+GSTIN|जीएसट_आईएन : -
+Address|पता:
+Kondakarakam, Cantonment, Vizianagaram, Andhra
+Pradesh,
+Vizianagaram, ANDHRA PRADESH-535001, India
+ 
+ 
+Seller Details|Seller Details|%वे ता%वे ता  %ववरण%ववरण
+GeM Seller ID|जेम %वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकJ नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सoया%पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संqया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा%जक rेणी : General
+MSE Gender|एमएसई %लंग rेणी : Female
+GSTIN|जीएसट_आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|%जसके  नाम के  पK मv GST/TAX इनवॉइस पेश %कया जाएगा - Buyer
+Product Details|Product Details|उoपादउoपाद  %ववरण%ववरण
+## Item Description|Item Description|आइटमआइटम  %ववरण%ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+%ववरण%ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  %वभाजन%वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मvमv
+सभीसभी  शुकशुक  औरऔर
+करकर  स%हतस%हत))
+1
+Product Name|Product Name|उoपादउoपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  %%त%%त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-95VRA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडJर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे%षतीपरे%षती  %ववरण%ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे%षतीपरे%षती Item|Item|वeतुवeतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+%दनांक%दनांक  केके   बादबाद
+%डलीवरी%डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+%वतरण%वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : OSDSP
+Email ID|ईमेल आईडी : buyer15.cumhrd.ap@gembuyer.in
+Contact|संपकJ : 08922-296033-
+GSTIN|जीएसट_आईएन : -
+iGene Labserve
+Keyboard Interface - 1 31-Mar-2023 15-Apr-2023
+--- PAGE 31 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687756085872
+Generated Date|Generated Date|अनुबंधअनुबंध  $त$थ$त$थ : : 23-Mar-2023
+Organisation Details|Organisation Details|संगठनसंगठन  $ववरण$ववरण
+Type|67प : Central Autonomous
+Ministry|मं<ालय : Ministry of Agriculture and Farmers Welfare
+Department|$वभाग : Department of Agricultural Research and Education
+(DARE)
+Organisation Name|संगठन का नाम
+: Indian Council of Agricultural Research (ICAR)
+Oﬃce Zone|कायाJलय Kे<: South
+Buyer Details|Buyer Details|खरीदारखरीदार  $ववरण$ववरण
+Designation|पद : ASSISTANT ADMINISTRATIVE OFFICER
+Contact No.|संपकJ नंबर : 94486-89409-
+Email ID|ईमेल आईडी : prabu.j@icar.gov.in
+GSTIN|जीएसट`आईएन : 37AAAAI1830P1ZI
+Address|पता :
+Indian Institute of Oil Palm Research, Near 7th Mile,
+Pedavegi, Eluru,
+WEST GODAVARI, ANDHRA PRADESH-534450, India
+ 
+Financial Approval Detail|Financial Approval Detail|$वdीय$वdीय  eवीकृ $तeवीकृ $त  $ववरण$ववरण
+IFD Concurrence|आईएफडी सहम$त : No
+Designation of Administrative Approval|
+6शास$नक अनुमोदन का पदनाम: Director
+Designation of Financial Approval|
+$वdीय अनुमोदन का पदनाम : FAO I/c
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  6ा$धकरण6ा$धकरण  $ववरण$ववरण
+Role: BUYER
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : ASSISTANT ADMINISTRATIVE OFFICER
+Email ID|ईमेल आईडी : prabu.j@icar.gov.in
+GSTIN|जीएसट`आईएन : 37AAAAI1830P1ZI
+Address|पता:
+Indian Institute of Oil Palm Research, Near 7th Mile,
+Pedavegi, Eluru,
+GODAVARI WEST, ANDHRA PRADESH-534450, India
+ 
+ 
+Seller Details|Seller Details|$वे ता$वे ता  $ववरण$ववरण
+GeM Seller ID|जेम $वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकJ नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सrया$पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संsया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा$जक tेणी : General
+MSE Gender|एमएसई $लंग tेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|$जसके  नाम के  पK मx GST/TAX इनवॉइस पेश $कया जाएगा - Buyer
+Product Details|Product Details|उrपादउrपाद  $ववरण$ववरण
+## Item Description|Item Description|आइटमआइटम  $ववरण$ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+$ववरण$ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  $वभाजन$वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मxमx
+सभीसभी  शुकशुक  औरऔर
+करकर  स$हतस$हत))
+1
+Product Name|Product Name|उrपादउrपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  6कार6कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  $$त$$त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-75VRA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडJर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे$षतीपरे$षती  $ववरण$ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे$षतीपरे$षती Item|Item|वeतुवeतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा<ामा<ा
+Delivery StartDelivery Start
+After|After|
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शु7शु7
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : ASSISTANT ADMINISTRATIVE OFFICER
+Email ID|ईमेल आईडी : prabu.j@icar.gov.in
+Contact|संपकJ : 94486-89409-
+GSTIN|जीएसट`आईएन : 37AAAAI1830P1ZI
+iGene Labserve
+Keyboard Interface - 1 23-Mar-2023 07-Apr-2023
+--- PAGE 32 ---
+ 
+Contract
+Contract No: GEMC-511687792193048
+Generated Date: 16-Nov-2022
+Organisation Details
+Type: State Government
+Ministry: -
+Department: Agriculture and Co-operation Department Gujarat
+Organisation Name: Anand Agricultural University
+Office Zone: Anand
+Buyer Details
+Designation: HODAGMICRO
+Contact No.: 02692-260211-
+Email ID: agmicro-agri-and@gujarat.gov.in
+GSTIN: 24AAALA1389A1D0
+Address: Anand Agricultural University, Anand,
+ANAND, GUJARAT-388110, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative
+Approval:
+Vice-chancellor, Anand Agricultural
+University
+Designation of Financial Approval: Registrar, Anand Agricultural University,
+Anand
+Paying Authority Details
+Payment Mode: Offline
+Designation: HODAGMICRO
+Email ID: agmicro-agri-and@gujarat.gov.in
+GSTIN: 24AAALA1389A1D0
+Address: Anand Agricultural University, Anand,
+Anand, GUJARAT-388110, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Consignee
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve NA Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+Model: IG-250HRA 
+HSN Code: HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery Start
+After
+Delivery To Be Completed
+By
+1
+Designation: HODAGMICRO
+Email ID: agmicro-agri-and@gujarat.gov.in
+Contact: 02692-260211-
+GSTIN: 24AAALA1389A1D0
+Address: Anand Agricultural University,
+Anand,
+ANAND, GUJARAT-388110, India
+iGene Labserve NA Radial
+Type - 1 16-Nov-2022 01-Dec-2022
+Product Specification for iGene Labserve NA Radial Type
+Specification Sub-Spec Value
+Type of Sterilizer
+Horizontal Rectangular/Square- Steam Steriliser Pressure type for Hospital and Pharmaceutical use,
+conforming to IS: 3829(part 1)/1999, fitted with Silicon door gasket( expansion type). Steriliser Chamber
+--- PAGE 33 ---
+ 
+Contract
+Contract No: GEMC-511687717306291
+Generated Date: 09-Apr-2022
+Bid/RA/PR No:GEM/2021/B/1661732
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Health and Family Welfare
+Department: Department of Health and Family Welfare
+Organisation Name: N/A
+Office Zone: Kasauli
+Buyer Details
+Designation: Store Officer
+Contact No.: 01792-272995-
+Email ID: singh.uttam28@nic.in
+GSTIN: -
+Address: Central Research Institute, Kasauli,
+SOLAN, HIMACHAL PRADESH-173204, India
+ 
+Financial Approval Detail
+IFD Concurrence: Yes
+Designation of Administrative Approval: Director CRI Kasauli
+Designation of Financial Approval: Director CRI Kasauli
+Paying Authority Details
+Payment Mode: PFMS
+Designation: Accounts Officer
+Email ID: amit.kumar77@gov.in
+GSTIN: -
+Address: Central Research Institute, Kasauli,
+SOLAN, HIMACHAL PRADESH-173204, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Consignee
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : VERTICAL AUTOCLAVE
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : Catalogue not verified by OEM
+Selling As : Reseller not verified by OEM
+Category Name & Quadrant : VERTICAL AUTOCLAVE (Q3)
+IG-175VA 
+HSN not specified by seller
+2 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery Start
+After
+Delivery To Be Completed
+By
+1
+Designation: -
+Email ID: prakash.tej@gov.in
+Contact: 01792-273207-
+GSTIN: -
+Address: Central Research Institute,
+Kasauli,
+SOLAN, HIMACHAL PRADESH-173204, India
+VERTICAL
+AUTOCLAVE - 2 09-Apr-2022 24-Apr-2022
+ 
+Product Specification for VERTICAL AUTOCLAVE
+Specification Sub-Spec Value
+Custom Specification Custom Specification Yes
+--- PAGE 34 ---
+ 
+Contract
+Contract No: GEMC-511687704265756
+Generated Date: 07-Oct-2021
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Agriculture and Farmers Welfare
+Department: Department of Agricultural Research and Education (DARE)
+Organisation Name:N/A
+Office Zone: Rajendra Prasad Central Agril University Bihar
+Buyer Details
+Designation: Officer in charge central Store
+Contact No.: 06274-240234-
+Email ID: buyer1.agri.spj@gembuyer.in
+GSTIN: 10AAAGD0863K1ZU
+Address:
+Dr. Rajendra Prasad Central Agricultural University,
+Pusa, Samastipur, Bihar,
+SAMASTIPUR, BIHAR-848125, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: VC
+Designation of Financial Approval: Comptroller
+Paying Authority Details
+Payment Mode: Offline
+Designation: AC Hqr
+Email ID: pay1.dared.bh@gembuyer.in
+GSTIN: 10AAAGD0863K1ZU
+Address:
+Dr. Rajendra Prasad Central Agricultural University,
+Pusa, Samastipur, Bihar,
+Samastipur, BIHAR-848125, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Category
+Name Model HSN Code Ordered
+Quantity Unit Lead
+Time(Days)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve Keyboard Interface
+Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Steam Sterlizer
+Rev 1
+IG-
+50VRA
+HSN not specified by
+seller 1 pieces -
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+1
+Designation: Store Keeper Central Store
+Email ID: con1.agri.spj@gembuyer.in
+Contact: 06274-240234-
+GSTIN: 10AAAGD0863K1ZU
+Address: Dr. Rajendra Prasad Central Agricultural
+University, Pusa, Samastipur, Bihar,
+SAMASTIPUR, BIHAR-848125, India
+iGene Labserve Keyboard
+Interface Radial Type - 1 07-Oct-2021 22-Oct-2021
+ 
+Product Specification for iGene Labserve Keyboard Interface Radial Type
+Specification Sub-Spec Value
+Vertical Cylindrical Steam Steriliser Pressure type, Steriliser Chamber size: 300 mm (Diameter) x 500 mm
+--- PAGE 35 ---
+ 
+Contract
+Contract No: GEMC-511687716562567
+Generated Date: 21-Apr-2022
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Agriculture and Farmers Welfare
+Department: Department of Agricultural Research and Education (DARE)
+Organisation Name:N/A
+Office Zone: Rajendra Prasad Central Agril University Bihar
+Buyer Details
+Designation: Officer in charge central Store
+Contact No.: 06274-240234-
+Email ID: buyer1.agri.spj@gembuyer.in
+GSTIN: 10AAAGD0863K1ZU
+Address:
+Dr. Rajendra Prasad Central Agricultural University,
+Pusa, Samastipur, Bihar,
+SAMASTIPUR, BIHAR-848125, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: VC
+Designation of Financial Approval: Comptroller
+Paying Authority Details
+Payment Mode: Offline
+Designation: AC Hqr
+Email ID: pay1.dared.bh@gembuyer.in
+GSTIN: 10AAAGD0863K1ZU
+Address:
+Dr. Rajendra Prasad Central Agricultural University,
+Pusa, Samastipur, Bihar,
+Samastipur, BIHAR-848125, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve NA Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+IG-35VA 
+HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+1
+Designation: Store Keeper Central Store
+Email ID: con1.agri.spj@gembuyer.in
+Contact: 06274-240234-
+GSTIN: 10AAAGD0863K1ZU
+Address: Dr. Rajendra Prasad Central Agricultural University,
+Pusa, Samastipur, Bihar,
+SAMASTIPUR, BIHAR-848125, India
+iGene Labserve NA
+Radial Type - 1 21-Apr-2022 06-May-2022
+ 
+Product Specification for iGene Labserve NA Radial Type
+--- PAGE 36 ---
+ 
+Contract
+Contract No: GEMC-511687711834035
+Generated Date: 11-May-2022
+Bid/RA/PR No:GEM/2022/B/1862935
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Water Resources River Development and Ganga
+Rejuvenation
+Department: NA
+Organisation
+Name: Central Water Commission (CWC)
+Office Zone: GUJARAT
+Buyer Details
+Designation: JE HQ Tapi Division
+Contact No.: 0261-2478569-
+Email ID: vinit.sharma-cwc@gov.in
+GSTIN: 24SRTT00708B1D7
+Address:
+EXECUTIVE ENGINEER TAPI DIVISION, CWC, OPP.
+KSHETRAPAL HEALTH CENTRE, SANGRAM PURA, SURAT-
+395002,
+SURAT, GUJARAT-395002, India
+ 
+Financial Approval Detail
+IFD Concurrence: Yes
+Designation of Administrative Approval: Executive Engineer
+Designation of Financial Approval: Executive Engineer
+Paying Authority Details
+Payment Mode: PFMS
+Designation: EXECUTIVE ENGINEER
+Email ID: ee.tapi-cwc@gov.in
+GSTIN: -
+Address:
+EXECUTIVE ENGINEER TAPI DIVISION, CWC, OPP.
+KSHETRAPAL HEALTH CENTRE, SANGRAM PURA, SURAT-
+395002,
+Surat, GUJARAT-395002, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW , 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : AUTO CLAVE VERTICAL CYLINDRICAL 
+Brand : iGene Labserve
+Brand Type : Unbranded
+Catalogue Status : Catalogue not verified by OEM
+Selling As : Reseller not verified by OEM
+Category Name & Quadrant : BOQ (Q3)
+IG-95VA 
+8419
+1 no. NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+1
+Designation: -
+Email ID: vinit.sharma-cwc@gov.in
+Contact: 0261-2478569-
+GSTIN: 24SRTT00708B1D7
+Address: EXECUTIVE ENGINEER TAPI DIVISION, CWC, OPP. KSHETRAPAL
+HEALTH CENTRE, SANGRAM PURA, SURAT-395002,
+SURAT, GUJARAT-395002, India
+AUTO CLAVE
+VERTICAL
+CYLINDRICAL
+- 1 11-May-2022 26-May-2022
+ 
+--- PAGE 37 ---
+ 
+Contract
+Contract No: GEMC-511687787842330
+Generated Date: 26-Jul-2022
+Organisation Details
+Type: Central Government
+Ministry: Ministry of Agriculture and Farmers Welfare
+Department: Department of Agriculture Cooperation and Farmers Welfare
+Organisation
+Name:
+Directorate of Plant Protection Quarantine and Storage Ministry
+of Agriculture
+Office Zone: PLANT QUARANTINE STATION KANDLA
+Buyer Details
+Name: Ravi Kant Singh
+Designation: APPO
+Contact No.: 02836-228286-
+Email ID: ravikant.singh15@gov.in
+GSTIN: -
+Address:
+NU-10, B-80-, SHAKTI NAGAR, GANDHIDHAM (KANDLA),
+GUJARAT,
+KACHCHH, GUJARAT-370201, India
+ 
+Financial Approval Detail
+IFD Concurrence: Yes
+Designation of Administrative Approval: Deputy Director
+Designation of Financial Approval: Deputy Director
+Paying Authority Details
+Payment Mode: PFMS
+Designation: DDO
+Email ID: cs.naik66@gov.in
+GSTIN: -
+Address:
+NU-10, B-80-, SHAKTI NAGAR, GANDHIDHAM (KANDLA),
+GUJARAT,
+Kachchh, GUJARAT-370201, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Consignee
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve Keyboard Interface Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+Model: IG-40VA 
+HSN Code: HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+1
+Designation: APPO
+Email ID: ravikant.singh15@gov.in
+Contact: 02836-228286-
+GSTIN: -
+Address: NU-10, B-80-, SHAKTI NAGAR, GANDHIDHAM
+(KANDLA), GUJARAT,
+KACHCHH, GUJARAT-370201, India
+iGene Labserve Keyboard
+Interface Radial Type - 1 26-Jul-2022 10-Aug-2022
+Product Specification for iGene Labserve Keyboard Interface Radial Type
+Specification Sub-Spec Value
+--- PAGE 38 ---
+ 
+Contract
+Contract No: GEMC-511687766507974
+Generated Date: 21-Oct-2022
+Organisation Details
+Type: Central Autonomous
+Ministry: Ministry of Education
+Department: Department of Higher Education
+Organisation Name: Indian Institute of Technology (IIT)
+Office Zone: Iit Jodhpur
+Buyer Details
+Designation: Assistant Professor 16
+Contact No.: 0291-2801221-1221
+Email ID: buycon3267.iiti.rj@gembuyer.in
+GSTIN: -
+Address:
+Office of Bioscience and Bioengineering, Indian Institute
+of Technology Jodhpur, Institute Building (East), NH 65
+Nagaur Road, Karwar, Jodhpur GST No:
+08AAAJI0320F1ZU,
+JODHPUR, RAJASTHAN-342037, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: PI
+Designation of Financial Approval: Associate Dean, R&D
+Paying Authority Details
+Payment Mode: Offline
+Designation: Senior Superintendent
+Email ID: pao6.iiti.rj@gembuyer.in
+GSTIN: N
+Address:
+Office of Accounts, Indian Institute of Technology
+Jodhpur, Admin (East), NH-62, Nagaur Road, Karwad -
+342037,
+Jodhpur, RAJASTHAN-342037, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve NA Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+Model: IG-50VA 
+HSN Code: HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity
+Delivery
+Start
+After
+Delivery
+To Be
+Completed
+By
+1
+Designation: Assistant Professor 16
+Email ID: buycon3267.iiti.rj@gembuyer.in
+Contact: 0291-2801221-1221
+GSTIN: -
+Address: Office of Bioscience and Bioengineering, Indian Institute of Technology Jodhpur,
+Institute Building (East), NH 65 Nagaur Road, Karwar, Jodhpur GST No: 08AAAJI0320F1ZU,
+JODHPUR, RAJASTHAN-342037, India
+iGene
+Labserve NA
+Radial Type
+- 1 21-Oct-
+2022 05-Nov-2022
+--- PAGE 39 ---
+ 
+Contract
+Contract No: GEMC-511687745169540
+Generated Date: 22-Nov-2022
+Organisation Details
+Type: Central Autonomous
+Ministry: Ministry of Agriculture and Farmers Welfare
+Department: Department of Agricultural Research and Education (DARE)
+Organisation Name:Indian Council of Agricultural Research (ICAR)
+Office Zone: veraval 362269
+Buyer Details
+Designation: scientist
+Contact No.: 02876-231865-
+Email ID: buycon207.icari.gj@gembuyer.in
+GSTIN: 24AAAGC1724Q1ZG
+Address:
+ICAR- CENTRAL MARINE FISHERIES RESEARCH
+INSTITUTE, VERAVAL CENTRE, MATSYA BHAVAN ,
+BHIDIA, VERAVAL,
+JUNAGADH, GUJARAT-362269, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: Scientist-in-Charge
+Designation of Financial Approval: Scientist-In-Charge
+Paying Authority Details
+Payment Mode: Offline
+Designation: tarachand kumawat
+Email ID: tarachand.kumawat@icar.gov.in
+GSTIN: -
+Address:
+ICAR- CENTRAL MARINE FISHERIES RESEARCH
+INSTITUTE, VERAVAL CENTRE, MATSYA BHAVAN ,
+BHIDIA, VERAVAL,
+Junagadh, GUJARAT-362269, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Consignee
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve Keyboard Interface Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+Model: IG-50VA 
+HSN Code: HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity
+Delivery
+Start
+After
+Delivery To Be
+Completed By
+1
+Designation: scientist
+Email ID: buycon207.icari.gj@gembuyer.in
+Contact: 02876-231865-
+GSTIN: 24AAAGC1724Q1ZG
+Address: ICAR- CENTRAL MARINE FISHERIES RESEARCH INSTITUTE,
+VERAVAL CENTRE, MATSYA BHAVAN , BHIDIA, VERAVAL,
+JUNAGADH, GUJARAT-362269, India
+iGene Labserve Keyboard
+Interface Radial Type - 1 22-Nov-
+2022 07-Dec-2022
+Product Specification for iGene Labserve Keyboard Interface Radial Type
+--- PAGE 40 ---
+ 
+Contract
+Contract No: GEMC-511687783304673
+Generated Date: 29-Dec-2022
+Organisation Details
+Type: Central Autonomous
+Ministry: Ministry of Agriculture and Farmers Welfare
+Department: Department of Agricultural Research and Education (DARE)
+Organisation Name:Indian Council of Agricultural Research (ICAR)
+Office Zone: Central Institute For Cotton Reserarch
+Buyer Details
+Designation: Stenographer
+Contact No.: -
+Email ID: buycon129.icari.mh@gembuyer.in
+GSTIN: -
+Address:
+ICAR-Central Institute for Cotton Research Near Khapri
+Phata, Panjari, Wardha Road, Nagpur,
+NAGPUR, MAHARASHTRA-441108, India
+ 
+Financial Approval Detail
+IFD Concurrence: No
+Designation of Administrative Approval: Director
+Designation of Financial Approval: Director
+Paying Authority Details
+Role: PAO
+Payment Mode: Offline
+Designation: FACO
+Email ID: pao10.icari.mh@gembuyer.in
+GSTIN: -
+Address:
+ICAR-Central Institute for Cotton Research, Near Khapri
+Phata, Panjari, Wardha Road, Nagpur,
+NAGPUR CITY, MAHARASHTRA-441108, India
+ 
+ 
+Seller Details
+GeM Seller ID: 5230180000533945
+Company Name: IGENE LABSERVE PRIVATE LIMITED
+Contact No.: 09971039507
+Email ID: info@igenels.com
+Address: 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME verified: Yes
+MSME Registration number: UDYAM-DL-05-0005536
+MSE Social Category: General
+MSE Gender: Female
+GSTIN: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of - Buyer
+Product Details
+# Item Description Ordered
+Quantity Unit Unit Price
+(INR) Tax Bifurcation (INR)
+Price 
+(Inclusive
+of all
+Duties and
+Taxes in
+INR)
+1
+Product Name : iGene Labserve NA Radial Type
+Brand : iGene Labserve
+Brand Type : Registered Brand
+Catalogue Status : OEM verified catalogue
+Selling As : OEM
+Category Name & Quadrant : Steam Sterlizer Rev 1 (Q2)
+Model: IG-95VA 
+HSN Code: HSN not specified by seller
+1 pieces NA
+Total Order Value (in INR)
+ 
+Consignee Detail
+S.No Consignee Item Lot
+No. Quantity Delivery
+Start After
+Delivery To Be
+Completed By
+1
+Designation: Stenographer
+Email ID: buycon129.icari.mh@gembuyer.in
+Contact: -
+GSTIN: -
+Address: ICAR-Central Institute for Cotton Research Near Khapri
+Phata, Panjari, Wardha Road, Nagpur,
+NAGPUR, MAHARASHTRA-441108, India
+iGene Labserve NA
+Radial Type - 1 29-Dec-2022 13-Jan-2023
+Product Specification for iGene Labserve NA Radial Type
+Specification Sub-Spec Value
+--- PAGE 41 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687729299282
+Generated Date|Generated Date|अनुबंधअनुबंध  $त$थ$त$थ : : 30-Dec-2022
+Organisation Details|Organisation Details|संगठनसंगठन  $ववरण$ववरण
+Type|78प : Central Government
+Ministry|मं<ालय : Ministry of Agriculture and Farmers Welfare
+Department|$वभाग : Department of Agriculture Cooperation and Farmers
+Welfare
+Organisation Name|संगठन का
+नाम : National Institute of Plant Health Management (NIPHM)
+Oﬃce Zone|कायाMलय Nे<: Hyderabad
+Buyer Details|Buyer Details|खरीदारखरीदार  $ववरण$ववरण
+Designation|पद : udcstores
+Contact No.|संपकM नंबर : 040-24002052-252
+Email ID|ईमेल आईडी : ramya.kota@gov.in
+GSTIN|जीएसट`आईएन : 36AAAAN9355N1ZZ
+Address|पता :
+National Institute of Plant Health Management,
+Rajendranagar, Hyderabad,
+K.V.RANGAREDDY, TELANGANA-500030, India
+ 
+Financial Approval Detail|Financial Approval Detail|$वhीय$वhीय  iवीकृ $तiवीकृ $त  $ववरण$ववरण
+IFD Concurrence|आईएफडी सहम$त : No
+Designation of Administrative Approval|
+7शास$नक अनुमोदन का पदनाम: Director General
+Designation of Financial Approval|
+$वhीय अनुमोदन का पदनाम : Director General
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  7ा$धकरण7ा$धकरण  $ववरण$ववरण
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : Administrative Officer
+Email ID|ईमेल आईडी : afaoniphm-ap@nic.in
+GSTIN|जीएसट`आईएन : -
+Address|पता:
+National Institute of Plant Health Management,
+Rajendranagar, Hyderabad,
+RANGAREDDY, TELANGANA-500030, India
+ 
+ 
+Seller Details|Seller Details|$वे ता$वे ता  $ववरण$ववरण
+GeM Seller ID|जेम $वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकM नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सqया$पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संrया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा$जक tेणी : General
+MSE Gender|एमएसई $लंग tेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|$जसके  नाम के  पN मx GST/TAX इनवॉइस पेश $कया जाएगा - Consignee
+Product Details|Product Details|उqपादउqपाद  $ववरण$ववरण
+## Item Description|Item Description|आइटमआइटम  $ववरण$ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+$ववरण$ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  $वभाजन$वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मxमx
+सभीसभी  शुकशुक  औरऔर
+करकर  स$हतस$हत))
+1
+Product Name|Product Name|उqपादउqपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  7कार7कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  $$त$$त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-95VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडMर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे$षतीपरे$षती  $ववरण$ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे$षतीपरे$षती Item|Item|वiतुवiतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा<ामा<ा
+Delivery StartDelivery Start
+After|After|
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शु8शु8
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : BUYER-CONSIGNEE
+Email ID|ईमेल आईडी : ramarao.thota@gov.in
+Contact|संपकM : 040-24002051-2051
+GSTIN|जीएसट`आईएन : 36AAAAN9355N1ZZ
+iGene Labserve
+Keyboard Interface - 1 30-Dec-2022 14-Jan-2023
+--- PAGE 42 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687703765831
+Generated Date|Generated Date|अनुबंधअनुबंध  $त$थ$त$थ : : 05-Jan-2023
+Organisation Details|Organisation Details|संगठनसंगठन  $ववरण$ववरण
+Type|78प : Central Government
+Ministry|मं<ालय : Ministry of Education
+Department|$वभाग : Department of Higher Education
+Organisation Name|संगठन का नाम : National Institute of Technology (NIT)
+Oﬃce Zone|कायाIलय J े<: Srinagar Kashmir (north)
+Buyer Details|Buyer Details|खरीदारखरीदार  $ववरण$ववरण
+Designation|पद : Associate Professor
+Contact No.|संपकI नंबर : 0979-7705044-
+Email ID|ईमेल आईडी : consignee1.nit.sk@gembuyer.in
+GSTIN|जीएसट`आईएन : 01AMRR10314D1DE
+Address|पता :
+National Institute of Technology Srinagar Hazratbal Srinagar
+Kashmir,
+SRINAGAR, JAMMU & KASHMIR-190006, India
+ 
+Financial Approval Detail|Financial Approval Detail|$वgीय$वgीय  hवीकृ $तhवीकृ $त  $ववरण$ववरण
+IFD Concurrence|आईएफडी सहम$त : No
+Designation of Administrative Approval|
+7शास$नक अनुमोदन का पदनाम: Director
+Designation of Financial Approval|
+$वgीय अनुमोदन का पदनाम : Director
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  7ा$धकरण7ा$धकरण  $ववरण$ववरण
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : DIRECTOR
+Email ID|ईमेल आईडी : buyer.ncb.srk@gembuyer.in
+GSTIN|जीएसट`आईएन : -
+Address|पता:
+National Institute of Technology Srinagar Hazratbal Srinagar
+Kashmir,
+SRINAGAR, JAMMU & KASHMIR-190006, India
+ 
+ 
+Seller Details|Seller Details|$वे ता$वे ता  $ववरण$ववरण
+GeM Seller ID|जेम $वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकI नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सsया$पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संuया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा$जक vेणी : General
+MSE Gender|एमएसई $लंग vेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|$जसके  नाम के  पJ  मy GST/TAX इनवॉइस पेश $कया जाएगा - Consignee
+Product Details|Product Details|उsपादउsपाद  $ववरण$ववरण
+## Item Description|Item Description|आइटमआइटम  $ववरण$ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+$ववरण$ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  $वभाजन$वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मyमy
+सभीसभी  शुकशुक  औरऔर
+करकर  स$हतस$हत))
+1
+Product Name|Product Name|उsपादउsपाद  काका  नामनाम :  : iGene Labserve NA Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  7कार7कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  $$त$$त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|vेणीvेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-22VA (Capacity- 22lit) 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडIर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे$षतीपरे$षती  $ववरण$ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे$षतीपरे$षती Item|Item|वhतुवhतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा<ामा<ा
+Delivery StartDelivery Start
+After|After|
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शु8शु8
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : GeM Office
+Email ID|ईमेल आईडी : con74.nitn.jk@gembuyer.in
+Contact|संपकI : 09797-705044-
+GSTIN|जीएसट`आईएन : 01AMRR10314D1DE iGene Labserve NA - 1 05-Jan-2023 20-Jan-2023
+--- PAGE 43 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687704706351
+Generated Date|Generated Date|अनुबंधअनुबंध  %त%थ%त%थ : : 25-Jan-2023
+Organisation Details|Organisation Details|संगठनसंगठन  %ववरण%ववरण
+Type|89प : Central Autonomous
+Ministry|मं>ालय : Ministry of AYUSH
+Department|%वभाग : NA
+Organisation Name|संगठन का नाम : N/A
+Oﬃce Zone|कायाJलय Kे>: All India Institute Of Ayurveda (aiia), New Delhi
+Buyer Details|Buyer Details|खरीदारखरीदार  %ववरण%ववरण
+Designation|पद : Store officer
+Contact No.|संपकJ नंबर : -
+Email ID|ईमेल आईडी : central-store@gov.in
+GSTIN|जीएसट`आईएन : -
+Address|पता :
+Academic Building , C -Block All India Institute of Ayurveda
+Mathura Road, Gautampuri, Sarita Vihar, Gautampuri Awas,
+Badarpur, New Delhi,
+SOUTH EAST DELHI, DELHI-110076, India
+ 
+Financial Approval Detail|Financial Approval Detail|%वfीय%वfीय  gवीकृ %तgवीकृ %त  %ववरण%ववरण
+IFD Concurrence|आईएफडी सहम%त : No
+Designation of Administrative Approval|
+8शास%नक अनुमोदन का पदनाम: Director
+Designation of Financial Approval|
+%वfीय अनुमोदन का पदनाम : Director
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  8ा%धकरण8ा%धकरण  %ववरण%ववरण
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : Accounts officer
+Email ID|ईमेल आईडी : accountsao-officer@aiia.gov.in
+GSTIN|जीएसट`आईएन : -
+Address|पता:
+All India Institute of Ayurveda Mathura Road, Gautampuri,
+Sarita Vihar, Gautampuri Awas, Badarpur, New Delhi,
+SOUTH DELHI, DELHI-110076, India
+ 
+ 
+Seller Details|Seller Details|%वे ता%वे ता  %ववरण%ववरण
+GeM Seller ID|जेम %वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकJ नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सrया%पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संtया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा%जक uेणी : General
+MSE Gender|एमएसई %लंग uेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|%जसके  नाम के  पK मx GST/TAX इनवॉइस पेश %कया जाएगा - Buyer
+Product Details|Product Details|उrपादउrपाद  %ववरण%ववरण
+## Item Description|Item Description|आइटमआइटम  %ववरण%ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+%ववरण%ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  %वभाजन%वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मxमx
+सभीसभी  शुकशुक  औरऔर
+करकर  स%हतस%हत))
+1
+Product Name|Product Name|उrपादउrपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  %%त%%त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|uेणीuेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-75VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडJर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे%षतीपरे%षती  %ववरण%ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे%षतीपरे%षती Item|Item|वgतुवgतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+%दनांक%दनांक  केके   बादबाद
+%डलीवरी%डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+%वतरण%वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+Designation|पद : Store Keeper
+Email ID|ईमेल आईडी : consignee-store@supportgov.in
+Contact|संपकJ : 011-26950402-2206
+--- PAGE 44 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687787746344
+Generated Date|Generated Date|अनुबंधअनुबंध  $त$थ$त$थ : : 31-Jan-2023
+Organisation Details|Organisation Details|संगठनसंगठन  $ववरण$ववरण
+Type|89प : Central Autonomous
+Ministry|मं>ालय : Ministry of Agriculture and Farmers Welfare
+Department|$वभाग : Department of Agricultural Research and Education
+(DARE)
+Organisation Name|संगठन का
+नाम : Indian Council of Agricultural Research (ICAR)
+Oﬃce Zone|कायाLलय Mे>: Central Potato Research Institute
+Buyer Details|Buyer Details|खरीदारखरीदार  $ववरण$ववरण
+Designation|पद : Senior Technician
+Contact No.|संपकL नंबर : -
+Email ID|ईमेल आईडी : buycon114.icari.ml@gembuyer.in
+GSTIN|जीएसट^आईएन : -
+Address|पता : Central Potato Research Station, 5th Mile, Upper Shillong,
+EAST KHASI HILLS, MEGHALAYA-793009, India
+ 
+Financial Approval Detail|Financial Approval Detail|$वgीय$वgीय  hवीकृ $तhवीकृ $त  $ववरण$ववरण
+IFD Concurrence|आईएफडी सहम$त : No
+Designation of Administrative Approval|
+8शास$नक अनुमोदन का पदनाम: DIRECTOR ICAR-CPRI SHIMLA
+Designation of Financial Approval|
+$वgीय अनुमोदन का पदनाम : DIRECTOR ICAR-CPRI SHIMLA
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : AFAO
+Email ID|ईमेल आईडी : chander.prakash@icar.gov.in
+GSTIN|जीएसट^आईएन : -
+Address|पता: ICAR-CPRI, Shimla 171001,
+SHIMLA, HIMACHAL PRADESH-171001, India
+ 
+ 
+Seller Details|Seller Details|$वे ता$वे ता  $ववरण$ववरण
+GeM Seller ID|जेम $वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकL नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सrया$पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संsया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा$जक tेणी : General
+MSE Gender|एमएसई $लंग tेणी : Female
+GSTIN|जीएसट^आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|$जसके  नाम के  पM मw GST/TAX इनवॉइस पेश $कया जाएगा - Consignee
+Product Details|Product Details|उrपादउrपाद  $ववरण$ववरण
+## Item Description|Item Description|आइटमआइटम  $ववरण$ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+$ववरण$ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  $वभाजन$वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मwमw
+सभीसभी  शुकशुक  औरऔर
+करकर  स$हतस$हत))
+1
+Product Name|Product Name|उrपादउrपाद  काका  नामनाम :  : iGene Labserve NA Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  $$त$$त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-H339 SINGLE DOOR HORIZONTAL AUTOCLAVE 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडLर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे$षतीपरे$षती  $ववरण$ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे$षतीपरे$षती Item|Item|वhतुवhतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा>ामा>ा
+Delivery StartDelivery Start
+After|After|
+$दनांक$दनांक  केके   बादबाद
+$डलीवरी$डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+$वतरण$वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : Senior Technician
+Email ID|ईमेल आईडी : buycon114.icari.ml@gembuyer.in
+Contact|संपकL : -
+GSTIN|जीएसट^आईएन : -
+Address|पता : Central Potato Research Station, 5th Mile, Upper
+iGene Labserve NA
+Radial Type - 1 31-Jan-2023 15-Feb-2023
+--- PAGE 45 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687728381497
+Generated Date|Generated Date|अनुबंधअनुबंध  &त&थ&त&थ : : 21-Feb-2023
+Organisation Details|Organisation Details|संगठनसंगठन  &ववरण&ववरण
+Type|:; प : State Government
+Ministry|मं@ालय : -
+Department|&वभाग : Higher Education Department Kerala
+Organisation Name|संगठन का नाम : Directorate of Collegiate Education
+Oﬃce Zone|कायाKलय Lे@: Govt College for women
+Buyer Details|Buyer Details|खरीदारखरीदार  &ववरण&ववरण
+Designation|पद : ASSISTANT PROFESSOR BIO SCIENCE
+Contact No.|संपकK नंबर : -
+Email ID|ईमेल आईडी : buycon11.dce.kl@gembuyer.in
+GSTIN|जीएसट`आईएन : -
+Address|पता : Vazhuthacad,
+THIRUVANANTHAPURAM, KERALA-695014, India
+ 
+Financial Approval Detail|Financial Approval Detail|&वfीय&वfीय  gवीकृ &तgवीकृ &त  &ववरण&ववरण
+IFD Concurrence|आईएफडी सहम&त : No
+Designation of Administrative Approval|
+:शास&नक अनुमोदन का पदनाम: Principal
+Designation of Financial Approval|
+&वfीय अनुमोदन का पदनाम : Principal
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  :ा&धकरण:ा&धकरण  &ववरण&ववरण
+Role: DDO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : Principal Higher grade
+Email ID|ईमेल आईडी : ddo3.dce.kl@gembuyer.in
+GSTIN|जीएसट`आईएन : -
+Address|पता: Vazhuthacad,
+Thiruvananthapuram, KERALA-695014, India
+ 
+ 
+Seller Details|Seller Details|&वे ता&वे ता  &ववरण&ववरण
+GeM Seller ID|जेम &वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकK नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सpया&पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संrया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा&जक sेणी : General
+MSE Gender|एमएसई &लंग sेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|&जसके  नाम के  पL मw GST/TAX इनवॉइस पेश &कया जाएगा - Consignee
+Product Details|Product Details|उpपादउpपाद  &ववरण&ववरण
+## Item Description|Item Description|आइटमआइटम  &ववरण&ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+&ववरण&ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  &वभाजन&वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मwमw
+सभीसभी  शुकशुक  औरऔर
+करकर  स&हतस&हत))
+1
+Product Name|Product Name|उpपादउpपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  :कार:कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  &&त&&त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|sेणीsेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-35VA (capacity-35lit. Autoclave) 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडKर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे&षतीपरे&षती  &ववरण&ववरण
+S.No|S.No|.सं..सं. Consignee|Consignee|परे&षतीपरे&षती Item|Item|वgतुवgतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर Quantity|Quantity|मा@ामा@ा
+Delivery StartDelivery Start
+After|After|
+&दनांक&दनांक  केके   बादबाद
+&डलीवरी&डलीवरी  शु;शु;
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+&वतरण&वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : JUNIOUR SUPERENDENDED
+Email ID|ईमेल आईडी : con2.dce.kl@gembuyer.in
+Contact|संपकK : 0471-2324986-
+GSTIN|जीएसट`आईएन : -
+Address|पता : Vazhuthacad,
+THIRUVANANTHAPURAM, KERALA-695014, India
+iGene Labserve
+Keyboard Interface
+Radial Type
+- 1 21-Feb-2023 08-Mar-2023
+--- PAGE 46 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687752267930
+Generated Date|Generated Date|अनुबंधअनुबंध  &त&थ&त&थ : : 23-Feb-2023
+Organisation Details|Organisation Details|संगठनसंगठन  &ववरण&ववरण
+Type|9: प : State Autonomous
+Ministry|मं@ालय : -
+Department|&वभाग : Training and Technical Education Department Delhi
+Organisation Name|संगठन का नाम
+: N/A
+Oﬃce Zone|कायाHलय Iे@: Delhi Pharmaceutical Sciences And Research
+University
+Buyer Details|Buyer Details|खरीदारखरीदार  &ववरण&ववरण
+Designation|पद : FOIC Purchase
+Contact No.|संपकH नंबर : 011-29552039-
+Email ID|ईमेल आईडी : buycon12.ttedd.dl@gembuyer.in
+GSTIN|जीएसट\आईएन : 07AAAGD0279H1ZM
+Address|पता :
+Delhi Pharmaceutical Sciences and Research University,
+DIPSAR Campus, Mehrauli- Badarpur Road, Opposite to
+Sainik farm Gate no 1, Pushp Vihar, New Delhi,
+SOUTH DELHI, DELHI-110017, India
+ 
+Financial Approval Detail|Financial Approval Detail|&वdीय&वdीय  eवीकृ &तeवीकृ &त  &ववरण&ववरण
+IFD Concurrence|आईएफडी सहम&त : No
+Designation of Administrative Approval|
+9शास&नक अनुमोदन का पदनाम: Vice Chancellor
+Designation of Financial Approval|
+&वdीय अनुमोदन का पदनाम : Vice Chancellor
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  9ा&धकरण9ा&धकरण  &ववरण&ववरण
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Internet Banking
+Designation|पद : Sr. Accounts Officer
+Email ID|ईमेल आईडी : rk.bhalla62@gov.in
+GSTIN|जीएसट\आईएन : N
+Address|पता:
+Delhi Pharmaceutical Sciences and Research University,
+DIPSAR Campus, Mehrauli- Badarpur Road, Opposite to
+Sainik farm Gate no 1, Pushp Vihar, New Delhi,
+SOUTH DELHI, DELHI-110017, India
+ 
+ 
+Seller Details|Seller Details|&वे ता&वे ता  &ववरण&ववरण
+GeM Seller ID|जेम &वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकH नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सoया&पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संqया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा&जक rेणी : General
+MSE Gender|एमएसई &लंग rेणी : Female
+GSTIN|जीएसट\आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|&जसके  नाम के  पI मv GST/TAX इनवॉइस पेश &कया जाएगा - Consignee
+Product Details|Product Details|उoपादउoपाद  &ववरण&ववरण
+## Item Description|Item Description|आइटमआइटम  &ववरण&ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+&ववरण&ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  &वभाजन&वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मvमv
+सभीसभी  शुकशुक  औरऔर
+करकर  स&हतस&हत))
+1
+Product Name|Product Name|उoपादउoपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  9कार9कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  &&त&&त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|rेणीrेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-25VA (Capacity 25liter) 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडHर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे&षतीपरे&षती  &ववरण&ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे&षतीपरे&षती Item|Item|वeतुवeतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा@ामा@ा
+Delivery StartDelivery Start
+After|After|
+&दनांक&दनांक  केके   बादबाद
+&डलीवरी&डलीवरी  शु:शु:
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+&वतरण&वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+Designation|पद : FOIC Purchase
+Email ID|ईमेल आईडी : buycon12.ttedd.dl@gembuyer.in
+--- PAGE 47 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Contract No|Contract No|अनुबंधअनुबंध  मांकमांक: : GEMC-511687709074642
+Generated Date|Generated Date|अनुबंधअनुबंध  &त&थ&त&थ : : 06-Mar-2023
+Organisation Details|Organisation Details|संगठनसंगठन  &ववरण&ववरण
+Type|89प : Central Government
+Ministry|मं=ालय : Ministry of Agriculture and Farmers Welfare
+Department|&वभाग : Department of Agriculture Cooperation and Farmers
+Welfare
+Organisation Name|संगठन का
+नाम : National Institute of Plant Health Management (NIPHM)
+Oﬃce Zone|कायाNलय Oे=: Hyderabad
+Buyer Details|Buyer Details|खरीदारखरीदार  &ववरण&ववरण
+Designation|पद : udcstores
+Contact No.|संपकN नंबर : 040-24002052-252
+Email ID|ईमेल आईडी : ramya.kota@gov.in
+GSTIN|जीएसट`आईएन : 36AAAAN9355N1ZZ
+Address|पता :
+National Institute of Plant Health Management,
+Rajendranagar, Hyderabad,
+K.V.RANGAREDDY, TELANGANA-500030, India
+ 
+Financial Approval Detail|Financial Approval Detail|&वhीय&वhीय  iवीकृ &तiवीकृ &त  &ववरण&ववरण
+IFD Concurrence|आईएफडी सहम&त : No
+Designation of Administrative Approval|
+8शास&नक अनुमोदन का पदनाम: Director General
+Designation of Financial Approval|
+&वhीय अनुमोदन का पदनाम : Director General
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  8ा&धकरण8ा&धकरण  &ववरण&ववरण
+Role: PAO
+Payment Mode|भुगतान का
+तरीका: Offline
+Designation|पद : Administrative Officer
+Email ID|ईमेल आईडी : afaoniphm-ap@nic.in
+GSTIN|जीएसट`आईएन : -
+Address|पता:
+National Institute of Plant Health Management,
+Rajendranagar, Hyderabad,
+RANGAREDDY, TELANGANA-500030, India
+ 
+ 
+Seller Details|Seller Details|&वे ता&वे ता  &ववरण&ववरण
+GeM Seller ID|जेम &वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकN नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सqया&पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संrया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा&जक tेणी : General
+MSE Gender|एमएसई &लंग tेणी : Female
+GSTIN|जीएसट`आईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|&जसके  नाम के  पO मx GST/TAX इनवॉइस पेश &कया जाएगा - Consignee
+Product Details|Product Details|उqपादउqपाद  &ववरण&ववरण
+## Item Description|Item Description|आइटमआइटम  &ववरण&ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+&ववरण&ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  &वभाजन&वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मxमx
+सभीसभी  शुकशुक  औरऔर
+करकर  स&हतस&हत))
+1
+Product Name|Product Name|उqपादउqपाद  काका  नामनाम :  : iGene Labserve Keyboard Interface Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  8कार8कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  &&त&&त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|tेणीtेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-75VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडNर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे&षतीपरे&षती  &ववरण&ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे&षतीपरे&षती Item|Item|वiतुवiतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा=ामा=ा
+Delivery StartDelivery Start
+After|After|
+&दनांक&दनांक  केके   बादबाद
+&डलीवरी&डलीवरी  शु9शु9
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+&वतरण&वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : BUYER-CONSIGNEE
+Email ID|ईमेल आईडी : ramarao.thota@gov.in
+Contact|संपकN : 040-24002051-2051
+GSTIN|जीएसट`आईएन : 36AAAAN9355N1ZZ
+iGene Labserve
+Keyboard Interface - 1 06-Mar-2023 21-Mar-2023
+--- PAGE 48 ---
+ 
+Contract|Contract|अनुबंधअनुबंध
+Generated Date|Generated Date|अनुबंधअनुबंध  #त#थ#त#थ : : 10-Mar-2023
+Organisation Details|Organisation Details|संगठनसंगठन  #ववरण#ववरण
+Type|78प : Union Territories
+Ministry|मं;ालय : Ministry of Education
+Department|#वभाग : Department of Higher Education
+Organisation Name|संगठन का नाम : University Grants Commission (UGC)
+Oﬃce Zone|कायाIलय J े;: Govt College for Women M A Road
+Buyer Details|Buyer Details|खरीदारखरीदार  #ववरण#ववरण
+Designation|पद : Assistant Professor
+Contact No.|संपकI नंबर : 194-2479432-
+Email ID|ईमेल आईडी : buycon52.ugcu.jk@gembuyer.in
+GSTIN|जीएसटbआईएन : -
+Address|पता :
+Govt College for Women Maulana Azad Road, Srinagar,
+Jammu & Kashmir, 190001,
+Srinagar, JAMMU & KASHMIR-190001, India
+ 
+Financial Approval Detail|Financial Approval Detail|#वi ीय#वi ीय  jवीकृ #तjवीकृ #त  #ववरण#ववरण
+IFD Concurrence|आईएफडी सहम#त : No
+Designation of Administrative
+Approval|
+7शास#नक अनुमोदन का पदनाम:
+Principal Govt College for Women, M A Road Sri
+nagar
+Designation of Financial Approval|
+#वi ीय अनुमोदन का पदनाम :
+Principal Govt College for Women, M A Road Sri
+nagar
+Paying Authority Details|Paying Authority Details|भुगतानभुगतान  7ा#धकरण7ा#धकरण  #ववरण#ववरण
+Role: BUYER
+Payment Mode|
+भुगतान का तरीका: Offline
+Designation|पद : Assistant Professor
+Email ID|ईमेल आईडी : buycon52.ugcu.jk@gembuyer.in
+GSTIN|जीएसटbआईएन : -
+Address|पता:
+Govt College for Women Maulana Azad Road, Srinagar,
+Jammu & Kashmir, 190001,
+Srinagar, JAMMU & KASHMIR-190001, India
+ 
+ 
+Seller Details|Seller Details|#वे ता#वे ता  #ववरण#ववरण
+GeM Seller ID|जेम #वे ता आईडी : 5230180000533945
+Company Name|कं पनी का नाम : IGENE LABSERVE PRIVATE LIMITED
+Contact No.|संपकI नंबर : 09971039507
+Email ID|ईमेल आईडी : info@igenels.com
+Address|पता : 16/2,Ground Floor,Mukund Lal Katiyal Marg,Ashok Nagar,
+West Delhi, DELHI-110018, -
+MSME veriﬁed|एमएसएमई सuया#पत : Yes
+MSME Registration number|एमएसएमई पंजीकरण संvया : UDYAM-DL-05-0005536
+MSE Social Category|एमएसई सामा#जक wेणी : General
+MSE Gender|एमएसई #लंग wेणी : Female
+GSTIN|जीएसटbआईएन: 07AAECI7879J1ZW
+*GST / Tax invoice to be raised in the name of|#जसके  नाम के  पJ  मz GST/TAX इनवॉइस पेश #कया जाएगा - Buyer
+Product Details|Product Details|उuपादउuपाद  #ववरण#ववरण
+## Item Description|Item Description|आइटमआइटम  #ववरण#ववरण
+OrderedOrdered
+Quantity|Quantity|
+आइटमआइटम
+#ववरण#ववरण
+Unit |Unit |
+इकाईइकाई
+Unit PriceUnit Price
+(INR)|(INR)|
+इकाईइकाई  मूयमूय (INR) (INR)
+Tax Bifurcation (INR)|Tax Bifurcation (INR)|
+करकर  #वभाजन#वभाजन (INR) (INR)
+Price Price 
+(Inclusive of(Inclusive of
+all Duties andall Duties and
+Taxes inTaxes in
+INR)|INR)|
+मूयमूय (INR  (INR मzमz
+सभीसभी  शुकशुक  औरऔर
+करकर  स#हतस#हत))
+1
+Product Name|Product Name|उuपादउuपाद  काका  नामनाम :  : iGene Labserve NA Radial Type
+Brand|Brand|ांडांड :  : iGene Labserve
+Brand Type|Brand Type|ांडांड  7कार7कार :  : Registered Brand
+Catalogue Status|Catalogue Status|कै टलॉगकै टलॉग  कक  ##त##त: : OEM verified catalogue
+Selling As|Selling As|कै सेकै से  बेचाबेचा  जाजा  रहारहा  हैहै  : : OEM
+Category Name & Quadrant|Category Name & Quadrant|wेणीwेणी  काका  नामनाम  औरऔर  चतुथाशचतुथाश :  : Steam Sterlizer Rev 1 (Q2)
+Model|Model|मॉडलमॉडल:: IG-35VA 
+HSN Code|HSN Code|एचएसएनएचएसएन  कोडकोड: : HSN not specified by seller
+1 pieces NA
+Total Order Value |कु ल ऑडIर मूय (in INR)
+ 
+Consignee Detail|Consignee Detail|परे#षतीपरे#षती  #ववरण#ववरण
+S.No|S.No|
+.सं..सं. Consignee|Consignee|परे#षतीपरे#षती Item|Item|वjतुवjतु Lot No.|Lot No.|
+लॉटलॉट  नंबरनंबर
+Quantity|Quantity|
+मा;ामा;ा
+Delivery StartDelivery Start
+After|After|
+#दनांक#दनांक  केके   बादबाद
+#डलीवरी#डलीवरी  शु8शु8
+करनाकरना  हैहै
+Delivery ToDelivery To
+BeBe
+CompletedCompleted
+By|By|
+#वतरण#वतरण  पूरापूरा  कबकब
+तकतक  करनाकरना  हैहै
+1
+Designation|पद : Assisant Professor
+Email ID|ईमेल आईडी : buycon163.ugcu.jk@gembuyer.in
+Contact|संपकI : 0194-2479432-
+GSTIN|जीएसटbआईएन : 01AMRG11971B1DO iGene Labserve NA - 1 10-Mar-2023 25-Mar-2023
+Contract No|अनुबंधअनुबंध मांकमांक:: GEMC-511687715754486

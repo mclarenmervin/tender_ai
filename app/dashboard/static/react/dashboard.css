@@ -2911,6 +2911,132 @@ td {
 .buyer-checklist {
     margin: 10px 0;
 }
+.bid-evaluation-panel {
+    margin: 18px 0;
+    border-top: 4px solid #2563eb;
+}
+.evaluation-setup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 14px;
+}
+.evaluation-inline-form {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(150px, .7fr) auto;
+    gap: 8px;
+    align-items: end;
+    padding: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+.evaluation-inline-form strong {
+    grid-column: 1 / -1;
+}
+.evaluation-required {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 42px;
+    color: #334155;
+    font-weight: 700;
+}
+.evaluation-required input {
+    width: auto;
+}
+.evaluation-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.evaluation-criteria-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 12px 0;
+    color: #475569;
+}
+.evaluation-criteria-list button {
+    min-height: 30px;
+    padding: 5px 9px;
+    font-size: 12px;
+}
+.verification-matrix-wrap {
+    max-height: 70vh;
+    border: 1px solid #cbd5e1;
+}
+.verification-matrix {
+    min-width: max-content;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.verification-matrix th,
+.verification-matrix td {
+    min-width: 128px;
+    max-width: 190px;
+    padding: 9px;
+    border-right: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+    text-align: center;
+    white-space: normal;
+}
+.verification-matrix thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: #eaf2ff;
+    color: #0f172a;
+    font-size: 12px;
+}
+.verification-matrix .seller-column {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    min-width: 210px;
+    background: #fff;
+    text-align: left;
+}
+.verification-matrix thead .seller-column {
+    z-index: 4;
+    background: #dbeafe;
+}
+.verification-matrix .seller-column small,
+.verification-matrix .seller-column button {
+    display: block;
+    margin-top: 5px;
+}
+.verification-cell select,
+.result-column select,
+.result-column textarea {
+    width: 100%;
+    min-width: 115px;
+}
+.verification-cell.verified {
+    background: #dcfce7;
+}
+.verification-cell.unavailable {
+    background: #fee2e2;
+}
+.verification-cell.unverified {
+    background: #fef3c7;
+}
+.verification-cell.not_required {
+    background: #f1f5f9;
+}
+.result-column {
+    min-width: 220px !important;
+}
+.result-column textarea {
+    min-height: 58px;
+    margin-top: 7px;
+}
+.link-danger {
+    color: #b91c1c;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    min-height: auto;
+}
 .chart-box {
     height: 260px;
 }

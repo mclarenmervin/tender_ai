@@ -232,6 +232,44 @@ class BuyerWorkspaceItem(Base):
     notes=Column(Text)
     created_at=Column(DateTime(timezone=True),server_default=func.now())
     updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
+class BuyerBidCriterion(Base):
+    __tablename__='buyer_bid_criteria'
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey('users.id'),index=True,nullable=False)
+    bid_item_id=Column(Integer,ForeignKey('buyer_workspace_items.id',ondelete='CASCADE'),index=True,nullable=False)
+    label=Column(String(255),nullable=False)
+    required=Column(Boolean,default=True)
+    sort_order=Column(Integer,default=0)
+    notes=Column(Text)
+    created_at=Column(DateTime(timezone=True),server_default=func.now())
+    updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
+    __table_args__=(UniqueConstraint('bid_item_id','label',name='uq_buyer_bid_criterion_label'),)
+class BuyerBidSeller(Base):
+    __tablename__='buyer_bid_sellers'
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey('users.id'),index=True,nullable=False)
+    bid_item_id=Column(Integer,ForeignKey('buyer_workspace_items.id',ondelete='CASCADE'),index=True,nullable=False)
+    seller_name=Column(String(255),nullable=False)
+    gem_seller_id=Column(String(120))
+    qualification_status=Column(String(50),default='pending')
+    remarks=Column(Text)
+    created_at=Column(DateTime(timezone=True),server_default=func.now())
+    updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
+    __table_args__=(UniqueConstraint('bid_item_id','seller_name',name='uq_buyer_bid_seller_name'),)
+class BuyerBidVerification(Base):
+    __tablename__='buyer_bid_verifications'
+    id=Column(Integer,primary_key=True,index=True)
+    user_id=Column(Integer,ForeignKey('users.id'),index=True,nullable=False)
+    bid_item_id=Column(Integer,ForeignKey('buyer_workspace_items.id',ondelete='CASCADE'),index=True,nullable=False)
+    seller_id=Column(Integer,ForeignKey('buyer_bid_sellers.id',ondelete='CASCADE'),index=True,nullable=False)
+    criterion_id=Column(Integer,ForeignKey('buyer_bid_criteria.id',ondelete='CASCADE'),index=True,nullable=False)
+    status=Column(String(50),default='unverified')
+    evidence_reference=Column(Text)
+    remarks=Column(Text)
+    verified_at=Column(DateTime(timezone=True))
+    created_at=Column(DateTime(timezone=True),server_default=func.now())
+    updated_at=Column(DateTime(timezone=True),server_default=func.now(),onupdate=func.now())
+    __table_args__=(UniqueConstraint('seller_id','criterion_id',name='uq_buyer_bid_verification_cell'),)
 class SellerProfile(Base):
     __tablename__='seller_profiles'
     id=Column(Integer,primary_key=True,index=True)

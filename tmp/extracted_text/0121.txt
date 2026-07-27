@@ -1,0 +1,5444 @@
+
+--- PAGE 1 ---
+ 
+अनुबंध
+अनुबंध
+|Contract
+|Contract
+अनुबंध
+अनुबंध
+ 
+ 
+मांक
+मांक
+|Contract No: 
+|Contract No: 
+GEMC-511687790181237
+अनुबंध
+अनुबंध
+ 
+ 
+#त#थ
+#त#थ
+|Generated Date :
+|Generated Date :
+ 
+11-Feb-2025
+बोली
+बोली
+/
+/
+आरए
+आरए
+/
+/
+पीबीपी
+पीबीपी
+ 
+ 
+सं4या
+सं4या
+|Bid/RA/PBP No.:
+|Bid/RA/PBP No.:
+ 
+ GEM/2025/B/5794706
+संगठन
+संगठन
+ 
+ 
+#ववरण
+#ववरण
+|Organisation Details
+|Organisation Details
+EFप
+|Type :
+State Autonomous
+मंMालय
+|Ministry :
+-
+#वभाग
+|Department :
+Agriculture and Co-operation Department Gujarat
+संगठन
+ 
+का
+ 
+नाम
+|Organisation Name :
+Kamdhenu University
+कायाTलय
+ 
+UेM
+|Oﬃce Zone:
+Kamdhenu University Gandhinagar
+खरीदार
+खरीदार
+ 
+ 
+#ववरण
+#ववरण
+|Buyer Details
+|Buyer Details
+पद
+|Designation :
+Assistant Professor
+संपकT
+ 
+नंबर
+|Contact No. :
+-
+ईमेल
+ 
+आईडी
+|Email ID :
+buycon111.ku.gj@gembuyer.in
+जीएसटcआईएन
+|GSTIN :
+-
+पता
+|Address :
+College of Veterinary Science and AH Himatnagar,
+Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010, India
+ 
+#वj ीय
+#वj ीय
+ 
+ 
+kवीकृ #त
+kवीकृ #त
+ 
+ 
+#ववरण
+#ववरण
+|Financial Approval Detail
+|Financial Approval Detail
+आईएफडी
+ 
+सहम#त
+|IFD Concurrence :
+No
+Eशास#नक
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Administrative
+Approval:
+Principal
+#वj ीय
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Financial Approval
+:
+Principal, College of Vet Science & A.H, Himmatnag
+ar (Rajpur)
+भुगतान
+भुगतान
+ 
+ 
+Eा#धकरण
+Eा#धकरण
+ 
+ 
+#ववरण
+#ववरण
+|Paying Authority Details
+|Paying Authority Details
+Role:
+BUYER
+भुगतान
+ 
+का
+ 
+तरीका
+|
+Payment Mode:
+Offline
+पद
+|Designation :
+Assistant Professor
+ईमेल
+ 
+आईडी
+|Email ID :
+buycon111.ku.gj@gembuyer.in
+जीएसटcआईएन
+|GSTIN :
+24AHMP10712C1DQ
+पता
+|Address:
+College of Veterinary Science and AH Himatnagar,
+Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010, India
+ 
+ 
+#वे ता
+#वे ता
+ 
+ 
+#ववरण
+#ववरण
+|Seller Details
+|Seller Details
+जेम
+ 
+#वे ता
+ 
+आईडी
+|GeM Seller ID :
+9VZW210003624220
+कं पनी
+ 
+का
+ 
+नाम
+|Company Name :
+M/S HI TECH INSTRUMENTS
+संपकT
+ 
+नंबर
+|Contact No. :
+08146486828
+ईमेल
+ 
+आईडी
+|Email ID :
+sale.hitechinstrument@gmail.com
+पता
+| Address :
+cabin no 204,kesho ram complex,sco-623-624 ,2 floor,sector-45c,
+chandigarh, chandigarh-160047, -
+एमएसएमई
+ 
+पंजीकरण
+ 
+सं4या
+|MSME Registration number :
+UDYAM-CH-01-0009073
+जीएसटcआईएन
+|GSTIN:
+04DODPR0652M1ZS (R) 
+, (M)
+खरीदार
+ 
+uारा
+ 
+मूwयां#कत
+ 
+एमआईआई
+ 
+#x#त
+ | MII Status as
+evaluated by buyer :
+Verified
+खरीदार
+ 
+uारा
+ 
+सyया#पत
+ 
+एमएसएमई
+ 
+#x#त
+ |MSME Status as
+verified by buyer :
+Not Verified
+एमएसई
+ 
+सामा#जक
+ 
+zेणी
+|MSE Social Category :
+General
+एमएसई
+ 
+#लंग
+ 
+zेणी
+|MSE Gender :
+Male
+*
+#जसके
+ 
+नाम
+ 
+के
+ 
+पU
+ 
+म|
+ GST/TAX 
+इनवॉइस
+ 
+पेश
+ 
+#कया
+ 
+जाएगा
+|GST / Tax invoice to be raised in the name of - Consignee
+#वतरण
+ 
+#नदश
+ | Delivery Instructions : 
+NA
+उyपाद
+उyपाद
+ 
+ 
+#ववरण
+#ववरण
+|Product Details
+|Product Details
+#
+#
+आइटम
+आइटम
+ 
+ 
+#ववरण
+#ववरण
+|Item Description
+|Item Description
+आइटम
+आइटम
+#ववरण
+#ववरण
+|
+|
+Ordered
+Ordered
+Quantity
+Quantity
+इकाई
+इकाई
+ |
+ |
+Unit
+Unit
+इकाई
+इकाई
+ 
+ 
+मूwय
+मूwय
+(INR)|
+(INR)|
+Unit Price
+Unit Price
+(INR)
+(INR)
+कर
+कर
+ 
+ 
+#वभाजन
+#वभाजन
+ (INR)|
+ (INR)|
+Tax Bifurcation (INR)
+Tax Bifurcation (INR)
+मूwय
+मूwय
+ 
+ 
+(INR 
+(INR 
+म|
+म|
+ 
+ 
+सभी
+सभी
+शुwक
+शुwक
+ 
+ 
+और
+और
+ 
+ 
+कर
+कर
+स#हत
+स#हत
+)|
+)|
+Price
+Price
+(Inclusive of
+(Inclusive of
+all Duties and
+all Duties and
+Taxes in INR)
+Taxes in INR)
+1
+उyपाद
+उyपाद
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ |Product Name : 
+ |Product Name : 
+HTICO Autoclave
+ांड
+ांड
+|Brand : 
+|Brand : 
+HTICO
+ांड
+ांड
+ 
+ 
+Eकार
+Eकार
+|Brand Type : 
+|Brand Type : 
+Registered Brand
+कै टलॉग
+कै टलॉग
+ 
+ 
+क
+क
+ 
+ 
+#x#त
+#x#त
+|Catalogue Status: 
+|Catalogue Status: 
+Catalogue not verified by OEM
+कै से
+कै से
+ 
+ 
+बेचा
+बेचा
+ 
+ 
+जा
+जा
+ 
+ 
+रहा
+रहा
+ 
+ 
+है
+है
+|Selling As : 
+|Selling As : 
+Reseller not verified by OEM
+zेणी
+zेणी
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ 
+ 
+और
+और
+ 
+ 
+चतुथाश
+चतुथाश
+|Category Name & Quadrant : 
+|Category Name & Quadrant : 
+Autoclave (ICMR Specs) (Q3)
+मॉडल
+मॉडल
+|Model:
+|Model:
+ 
+HTI-AC-98 
+एचएसएन
+एचएसएन
+ 
+ 
+कोड
+कोड
+|HSN Code: 
+|HSN Code: 
+HSN not specified by seller
+2
+pieces
+68,000
+NA
+136,000
+कु ल
+ 
+ऑडTर
+ 
+मूwय
+ |Total Order Value 
+(in INR)
+136,000
+136,000
+ 
+परे#षती
+परे#षती
+ 
+ 
+#ववरण
+#ववरण
+|Consignee Detail
+|Consignee Detail
+.सं.
+.सं.
+|S.No
+|S.No
+परे#षती
+परे#षती
+|Consignee
+|Consignee
+वkतु
+वkतु
+|Item
+|Item
+लॉट
+लॉट
+ 
+ 
+नंबर
+नंबर
+|
+|
+Lot No.
+Lot No.
+माMा
+माMा
+|Quantity
+|Quantity
+#दनांक
+#दनांक
+ 
+ 
+के
+के
+ 
+ 
+बाद
+बाद
+#डलीवरी
+#डलीवरी
+ 
+ 
+शुF
+शुF
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery Start
+Delivery Start
+#वतरण
+#वतरण
+ 
+ 
+पूरा
+पूरा
+ 
+ 
+कब
+कब
+तक
+तक
+ 
+ 
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery To
+Delivery To
+Be
+Be
+Completed
+Completed
+--- PAGE 2 ---
+After
+After
+By
+By
+1
+पद
+| Designation : 
+-
+ईमेल
+ 
+आईडी
+|Email ID : 
+buycon108.ku.gj@gembuyer.in
+संपकT
+|Contact : 
+-
+जीएसटcआईएन
+|GSTIN : 
+-
+पता
+|Address : 
+College of Veterinary Science and AH Himatnagar,
+Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010, India
+HTICO Autoclave
+-
+1
+11-Feb-2025
+26-Feb-2025
+2
+पद
+| Designation : 
+-
+ईमेल
+ 
+आईडी
+|Email ID : 
+buycon111.ku.gj@gembuyer.in
+संपकT
+|Contact : 
+-
+जीएसटcआईएन
+|GSTIN : 
+-
+पता
+|Address : 
+College of Veterinary Science and AH Himatnagar,
+Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010, India
+HTICO Autoclave
+-
+1
+11-Feb-2025
+26-Feb-2025
+Product Specification for HTICO Autoclave
+Product Specification for HTICO Autoclave
+#व#नदश
+#व#नदश
+|Speciﬁcation
+|Speciﬁcation
+उप
+उप
+-
+-
+#व#नदश
+#व#नदश
+|Sub-Spec
+|Sub-Spec
+मूwय
+मूwय
+|Value
+|Value
+Configuration
+Type
+Vertical, Top loading cylindrical Autoclave machine for steam and pressure sterilization 
+ 
+Sterilizer chamber capacity in
+L (usable volume)
+80 - 100 liter 
+ 
+Sterilizer Chamber Type
+Circular 
+ 
+Steriliser chamber material
+Double walled SS 304 or higher grade steel 
+ 
+Working Pressure of
+Chamber
+15 
+ pound per sqare inch
+Type of Sterilizer Chamber
+Door
+Heavy duty SS 304, Hinged door 
+ 
+Steriliser Chamber door
+Locking facility
+Foot operated locking and unlocking radial system 
+ 
+Sterilizer Chamber door
+Operation:
+Manual 
+ 
+Door sealing:
+By elastomeric rubber gasket suitable to withstand temperature upto 140 
+degree C & pressure upto 20-30 psi 
+ 
+Type of control system
+available for Steriliser cycle
+operation:
+Microprocessor based temperature controller with control accuracy ±1.0°C 
+ 
+Power supply:
+230 ± 10 volt, 50 Hz 
+ 
+Audio- visual Alarm facility
+available for notifying:
+Temperature sensor with range 100°C to 300°C, unit should be provided with a low water alarm system as well as steam
+release valves and safety valves,Cut off automatically when the autoclave is dry 
+ 
+Working Temperature
+121 
+ degree Celsius
+Resolution
+0.1°C 
+ 
+Range of Pressure Gauge
+30 
+ pound per sqare inch
+Controller
+Auto set to 15psi & 121°C 
+ 
+Overall Size
+Overall Height:
+180 
+ millimeter
+Overall Diameter
+197 
+ millimeter
+Accessories,
+Consumables &
+Warranty
+Accessories
+Water level indicator,Water inlet & outlet valves,Automatic pressure control switch,Mechanical timer,Manual Water Filling
+& Removal,The unit having a wet heater fitted at the bottom and with capacity more than 4500 W with water capacity in
+litres more than 120 L,The unit have heater fitted at the bottom and with capacity of more than 3 KW,The unit have
+heater fitted at the bottom and with capacity of more than 4 KW,The unit have heater fitted at the bottom and with
+capacity of more than 6 KW,The unit have heater fitted at the bottom and with capacity of more than 9 KW,NA 
+ 
+Warranty (Option of
+comprehensive warranty is
+available through bidding
+only, which if opted will
+supersede normal warranty
+in the catalogue)
+5 
+ year
+Quality and
+Certifications
+Compliance of Chamber
+Chamber Pressure Equipment Directives (PED) 
+ 
+Quality Compliance available
+for quality systems
+ISO 9001:2000,EN ISO 13485:2003,ISO 14001:2004 
+ 
+Compliance to certification
+(US FDA/CE certification will
+be accepted only when the
+Indian standards/certification
+like BIS/CDSO/AERB are not
+available)
+CE 
+ 
+--- PAGE 3 ---
+ 
+#टपणी
+#टपणी
+|Note:: 
+|Note:: 
+Seller has given an undertaking that it has made arrangements for getting the stores from an authorized distributor / dealer / channel partner of the OEM of the
+offered product. At the time of delivery of goods, Seller will provide necessary chain documents (in the form of GST Invoice) to prove that the supplied goods are genuine and are
+being sourced from an authorized distributor / dealer / channel partner of the OEM. In case of any complaint about genuineness of the supplied products, Seller shall be
+responsible for providing genuine replacement supplies.
+ 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+#ववरण
+#ववरण
+ 
+ 
+| ePBG Detail
+| ePBG Detail
+#नयम
+#नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+|Terms and Conditions
+|Terms and Conditions
+1. Special terms and conditions- 
+1. Special terms and conditions- 
+Version:1 effective from 06-01-2023
+Version:1 effective from 06-01-2023
+1.1
+1.1
+1
+1
+. 
+. 
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+Central Drugs Standard Control Organisation
+Central Drugs Standard Control Organisation
+(
+(
+CDSCO
+CDSCO
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+Chemicals & Fertilizers time to time in this regard.
+Chemicals & Fertilizers time to time in this regard.
+2
+2
+. 
+. 
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+certification/licenses, test reports etc.
+certification/licenses, test reports etc.
+3
+3
+. 
+. 
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+4
+4
+. 
+. 
+Comprehensive warranty:
+Comprehensive warranty:
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+warranty period by double the downtime period.
+warranty period by double the downtime period.
+5
+5
+. 
+. 
+Service centres:
+Service centres:
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+service requests also to be provided buyer/consignee at the time of supplies.
+service requests also to be provided buyer/consignee at the time of supplies.
+6
+6
+. 
+. 
+Source of supply:
+Source of supply:
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+7
+7
+. 
+. 
+Packing and Marking:
+Packing and Marking:
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+other relevant details.
+other relevant details.
+8
+8
+. 
+. 
+Spare Parts:
+Spare Parts:
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+competitive price for spares and consumables of its machines/equipments supplied.
+competitive price for spares and consumables of its machines/equipments supplied.
+9
+9
+. 
+. 
+Installation, Training, Manuals:
+Installation, Training, Manuals:
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+requirements regarding the installations, training and manuals the same shall also be applicable.
+requirements regarding the installations, training and manuals the same shall also be applicable.
+10
+10
+. 
+. 
+Electrical safety checking:
+Electrical safety checking:
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+every preventive maintenance call.
+every preventive maintenance call.
+11
+11
+. 
+. 
+Software:
+Software:
+ All software updates should be provided free of cost during warranty period.
+ All software updates should be provided free of cost during warranty period.
+12
+12
+. 
+. 
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+provisions.
+provisions.
+2. General Terms and Conditions-
+2. General Terms and Conditions-
+2.1
+2.1
+This contract is governed by the 
+This contract is governed by the 
+General Terms and Conditions
+General Terms and Conditions
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+2.2
+2.2
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+(ATC), as applicable
+(ATC), as applicable
+2.3
+2.3
+All GeM Sellers / Service Providers are mandated to ensure compliance with all the applicable laws / acts / rules including but not limited to all Labour Laws such as The
+All GeM Sellers / Service Providers are mandated to ensure compliance with all the applicable laws / acts / rules including but not limited to all Labour Laws such as The
+Minimum Wages Act, 1948, The Payment of Wages Act, 1936, The Payment of Bonus Act, 1965, The Equal Remuneration Act, 1976, The Payment of Gratuity Act, 1972 etc. Any
+Minimum Wages Act, 1948, The Payment of Wages Act, 1936, The Payment of Bonus Act, 1965, The Equal Remuneration Act, 1976, The Payment of Gratuity Act, 1972 etc. Any
+non-compliance will be treated as breach of contract and Buyer may take suitable actions as per GeM Contract.
+non-compliance will be treated as breach of contract and Buyer may take suitable actions as per GeM Contract.
+3. Buyer Added Bid Specific Terms and Conditions-
+3. Buyer Added Bid Specific Terms and Conditions-
+सलाहकार
+सलाहकार
+ 
+ 
+बक
+बक
+ | 
+ | 
+Advisory Bank :
+Advisory Bank :
+HDFC Bank
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+E#तशत
+E#तशत
+ (%) 
+ (%) 
+| ePBG Percentage(%):
+| ePBG Percentage(%):
+5.00
+बोली
+बोली
+ 
+ 
+लगाने
+लगाने
+ 
+ 
+वाले
+वाले
+ 
+ 
+को
+को
+ 
+ 
+बोली
+बोली
+ 
+ 
+के
+के
+ 
+ 
+#नयम
+#नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+ 
+ 
+के
+के
+ 
+ 
+अनुसार
+अनुसार
+ 
+ 
+लागू
+लागू
+ 
+ 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+Ekतुत
+Ekतुत
+ 
+ 
+करना
+करना
+ 
+ 
+होगा
+होगा
+ 
+ 
+|The bidder shall furnish ePBG as applicable as per bid's terms and conditions
+|The bidder shall furnish ePBG as applicable as per bid's terms and conditions
+ 
+--- PAGE 4 ---
+3.1
+3.1
+ 
+ 
+Generic
+Generic
+: 
+: 
+OPTION CLAUSE: The Purchaser reserves the right to increase or decrease the quantity to be ordered up to 25 percent of bid quantity at the time of placement of contract. The
+OPTION CLAUSE: The Purchaser reserves the right to increase or decrease the quantity to be ordered up to 25 percent of bid quantity at the time of placement of contract. The
+purchaser also reserves the right to increase the ordered quantity by up to 25% of the contracted  quantity during the currency of the contract at the contracted rates. Bidders
+purchaser also reserves the right to increase the ordered quantity by up to 25% of the contracted  quantity during the currency of the contract at the contracted rates. Bidders
+are bound to accept the orders accordingly.
+are bound to accept the orders accordingly.
+3.2
+3.2
+ 
+ 
+Generic
+Generic
+: 
+: 
+Bidders are advised to check applicable GST on their own before quoting. Buyer will not take any responsibility in this regards. GST reimbursement will be as per actuals or as per
+Bidders are advised to check applicable GST on their own before quoting. Buyer will not take any responsibility in this regards. GST reimbursement will be as per actuals or as per
+applicable rates (whichever is lower), subject to the maximum of quoted GST %.
+applicable rates (whichever is lower), subject to the maximum of quoted GST %.
+3.3
+3.3
+ 
+ 
+Turnover
+Turnover
+: 
+: 
+Bidder Turn Over Criteria: The minimum average annual financial turnover of the bidder during the last three years, ending on 31st March of the previous financial year, should
+Bidder Turn Over Criteria: The minimum average annual financial turnover of the bidder during the last three years, ending on 31st March of the previous financial year, should
+be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of relevant periods or a certificate from the Chartered Accountant /
+be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of relevant periods or a certificate from the Chartered Accountant /
+Cost Accountant indicating the turnover details for the relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of the bidder is less than 3
+Cost Accountant indicating the turnover details for the relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of the bidder is less than 3
+year old, the average turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria.
+year old, the average turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria.
+3.4
+3.4
+ 
+ 
+Turnover
+Turnover
+: 
+: 
+OEM Turn Over Criteria: The minimum average annual financial turnover of the OEM of the offered product during the last three years, ending on 31st March of the previous
+OEM Turn Over Criteria: The minimum average annual financial turnover of the OEM of the offered product during the last three years, ending on 31st March of the previous
+financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of relevant periods or a certificate from the
+financial year, should be as indicated in the bid document. Documentary evidence in the form of certified Audited Balance Sheets of relevant periods or a certificate from the
+Chartered Accountant / Cost Accountant indicating the turnover details for the relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of
+Chartered Accountant / Cost Accountant indicating the turnover details for the relevant period shall be uploaded with the bid. In case the date of constitution / incorporation of
+the OEM is less than 3 year old, the average turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria. In case
+the OEM is less than 3 year old, the average turnover in respect of the completed financial years after the date of constitution shall be taken into account for this criteria. In case
+of bunch bids, the OEM of CATEGORY RELATED TO primary product having highest bid value should meet this criterion.
+of bunch bids, the OEM of CATEGORY RELATED TO primary product having highest bid value should meet this criterion.
+3.5
+3.5
+ 
+ 
+Forms of EMD and PBG
+Forms of EMD and PBG
+: 
+: 
+Bidders can also submit the EMD with Fixed Deposit Receipt made out or pledged in the name of A/C
+Bidders can also submit the EMD with Fixed Deposit Receipt made out or pledged in the name of A/C
+Kamdhenu University Fund Account
+Kamdhenu University Fund Account
+. The bank should certify on it that the deposit can be withdrawn only on the demand or with the sanction of the pledgee. For release of EMD, the FDR will be released in the
+. The bank should certify on it that the deposit can be withdrawn only on the demand or with the sanction of the pledgee. For release of EMD, the FDR will be released in the
+favour of the bidder by the Buyer after making endorsement on the back of the FDR duly signed and stamped along with covering letter. Bidder has to upload scanned copy/
+favour of the bidder by the Buyer after making endorsement on the back of the FDR duly signed and stamped along with covering letter. Bidder has to upload scanned copy/
+proof of the FDR along with bid and has to ensure delivery of hardcopy to the Buyer within 5 days of Bid End date/ Bid Opening date
+proof of the FDR along with bid and has to ensure delivery of hardcopy to the Buyer within 5 days of Bid End date/ Bid Opening date
+3.6
+3.6
+ 
+ 
+Forms of EMD and PBG
+Forms of EMD and PBG
+: 
+: 
+Successful Bidder can submit the Performance Security in the form of Fixed Deposit Receipt also (besides PBG which is allowed as per GeM GTC). FDR should be made out or
+Successful Bidder can submit the Performance Security in the form of Fixed Deposit Receipt also (besides PBG which is allowed as per GeM GTC). FDR should be made out or
+pledged in the name of
+pledged in the name of
+Kamdhenu University Fund Account
+Kamdhenu University Fund Account
+A/C (Name of the Seller). The bank should certify on it that the deposit can be withdrawn only on the demand or with the sanction of the pledgee. For release of Security Deposit,
+A/C (Name of the Seller). The bank should certify on it that the deposit can be withdrawn only on the demand or with the sanction of the pledgee. For release of Security Deposit,
+the FDR will be released in favour of bidder by the Buyer after making endorsement on the back of the FDR duly signed and stamped along with covering letter. Successful Bidder
+the FDR will be released in favour of bidder by the Buyer after making endorsement on the back of the FDR duly signed and stamped along with covering letter. Successful Bidder
+has to upload scanned copy of the FDR document in place of PBG and has to ensure delivery of hard copy of Original FDR to the Buyer within 15 days of award of contract.
+has to upload scanned copy of the FDR document in place of PBG and has to ensure delivery of hard copy of Original FDR to the Buyer within 15 days of award of contract.
+3.7
+3.7
+ 
+ 
+Buyer Added Bid Specific ATC
+Buyer Added Bid Specific ATC
+: 
+: 
+Buyer Added text based ATC clauses
+Buyer Added text based ATC clauses
+As per the Gujarat Purchase Policy 2024, all bidders must submit the EMD amount of Rs. 6300 (3% of purchase value).
+As per the Gujarat Purchase Policy 2024, all bidders must submit the EMD amount of Rs. 6300 (3% of purchase value).
+As per the Gujarat Purchase Policy 2024, all bidders must have an annual turnover of more than twice the bid value. So, bidders must submit the CA certificate of turnover for the 
+As per the Gujarat Purchase Policy 2024, all bidders must have an annual turnover of more than twice the bid value. So, bidders must submit the CA certificate of turnover for the 
+last three years.
+last three years.
+.
+.
+नोट
+नोट
+: 
+: 
+यह
+यह
+ 
+ 
+#सkटम
+#सkटम
+ 
+ 
+जनरेटेड
+जनरेटेड
+ 
+ 
+फाइल
+फाइल
+ 
+ 
+है
+है
+। 
+। 
+कोई
+कोई
+ 
+ 
+हkताUर
+हkताUर
+ 
+ 
+क
+क
+ 
+ 
+आवयकता
+आवयकता
+ 
+ 
+नह
+नह
+ 
+ 
+है
+है
+। 
+। 
+इस
+इस
+ 
+ 
+दkतावेज़
+दkतावेज़
+ 
+ 
+का
+का
+ 
+ 
+#Eंट
+#Eंट
+ 
+ 
+आउट
+आउट
+ 
+ 
+भुगतान
+भुगतान
+/
+/
+लेनदेन
+लेनदेन
+ 
+ 
+उेय
+उेय
+ 
+ 
+के
+के
+ 
+ 
+#लए
+#लए
+ 
+ 
+मा य
+मा य
+ 
+ 
+नह
+नह
+ 
+ 
+है
+है
+। 
+। 
+Note: This is system generated file. No signature is required. 
+Note: This is system generated file. No signature is required. 
+Print out of this document is not valid for payment/ transaction purpose.
+Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 5 ---
+Tejaskumar Purushottambhai Patel
+College of Veterinary Science and AH Himatnagar, Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010
+CRAC No:
+ 
+GEMCRAC-1-511687790181237-2
+CRAC Date:
+ 
+07-Mar-2025
+Contract No:
+ 
+GEMC-511687790181237
+Contract Date:
+ 
+11-Feb-2025
+PRC Date:
+ 
+07-Mar-2025
+GeM Invoice No:
+ 
+GEM-55210284
+GeM Invoice Date:
+ 
+25-Feb-2025
+Consignee Receipt & Acceptance Certificate
+Bill To
+Shipped By
+College of Veterinary Science and AH Himatnagar, Rajpur(Nava), Ta. Himatnagar,
+Sabarkantha, GUJARAT-383010
+Type: State Autonomous
+Ministry:
+Department: Agriculture and Co-operation Department
+Gujarat
+Organisation Name: Kamdhenu University
+Office Name: Kamdhenu University
+Gandhinagar
+M/S HI TECH INSTRUMENTS
+M/S HI TECH INSTRUMENTS, chandigarh, chandigarh - 160047
+Contract Item Details
+#
+Item Description
+Model
+Ordered Quantity
+Unit
+Price per Unit inclusive of all Duties and Taxes (in INR)
+1
+HTICO Autoclave
+HTI-AC-98
+2
+pieces
+68000.0
+Total Order Value (in INR)
+136000.0
+CONSIGNMENT DETAILS
+S.No
+Supplied
+Qty(Nos.)
+Item
+Description
+Received
+Qty
+Accepted
+Qty
+Rejected
+Qty
+Reason for rejected
+items
+Price per Unit inclusive of all Duties and
+Taxes (in INR)
+1
+1
+HTICO
+Autoclave
+1
+1
+0
+68000.0
+Total Received Order Value (in INR)
+68000.0
+Note: This is a computer generated statement to generate e-bill by the buyer for making payment.
+Ink Signed Signatures are not required in System Generated Documents.
+--- PAGE 6 ---
+ 
+अनुबंध
+अनुबंध
+|Contract
+|Contract
+अनुबंध
+अनुबंध
+ 
+ 
+मांक
+मांक
+|Contract No: 
+|Contract No: 
+GEMC-511687794188867
+अनुबंध
+अनुबंध
+ 
+ 
+!त!थ
+!त!थ
+|Generated Date :
+|Generated Date :
+ 
+20-Dec-2024
+संगठन
+संगठन
+ 
+ 
+!ववरण
+!ववरण
+|Organisation Details
+|Organisation Details
+45प
+|Type :
+Central Government
+मं<ालय
+|Ministry :
+Ministry of Defence
+!वभाग
+|Department :
+Department of Military Affairs
+संगठन
+ 
+का
+ 
+नाम
+|Organisation Name :
+Indian Army
+कायाCलय
+ 
+Dे<
+|Oﬃce Zone:
+200 Military Dental Centre
+खरीदार
+खरीदार
+ 
+ 
+!ववरण
+!ववरण
+|Buyer Details
+|Buyer Details
+पद
+|Designation :
+DO1
+संपकC
+ 
+नंबर
+|Contact No. :
+0186-2921047-
+ईमेल
+ 
+आईडी
+|Email ID :
+praneetrana.625m@gov.in
+जीएसटUआईएन
+|GSTIN :
+-
+पता
+|Address :
+200 Military Dental Centre Dhangu Military Complex
+Pathankot Pin- 145001,
+PATHANKOT, PUNJAB-145001, India
+ 
+!व`ीय
+!व`ीय
+ 
+ 
+aवीकृ !त
+aवीकृ !त
+ 
+ 
+!ववरण
+!ववरण
+|Financial Approval Detail
+|Financial Approval Detail
+आईएफडी
+ 
+सहम!त
+|IFD Concurrence :
+Yes
+4शास!नक
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Administrative Approval:
+COMMANDING OFFICER
+!व`ीय
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Financial Approval :
+COMMANDING OFFICER
+भुगतान
+भुगतान
+ 
+ 
+4ा!धकरण
+4ा!धकरण
+ 
+ 
+!ववरण
+!ववरण
+|Paying Authority Details
+|Paying Authority Details
+Role:
+BUYER
+भुगतान
+ 
+का
+ 
+तरीका
+|
+Payment Mode:
+CGDA-CDA
+पद
+|Designation :
+DO1
+ईमेल
+ 
+आईडी
+|Email ID :
+praneetrana.625m@gov.in
+जीएसटUआईएन
+|GSTIN :
+-
+पता
+|Address:
+200 Military Dental Centre 
+Dhangu Military Complex
+Pathankot 
+Pin- 145001,
+PATHANKOT, PUNJAB-145001, India
+ 
+ 
+!वे ता
+!वे ता
+ 
+ 
+!ववरण
+!ववरण
+|Seller Details
+|Seller Details
+जेम
+ 
+!वे ता
+ 
+आईडी
+|GeM Seller ID :
+9VZW210003624220
+कं पनी
+ 
+का
+ 
+नाम
+|Company Name :
+M/S HI TECH INSTRUMENTS
+संपकC
+ 
+नंबर
+|Contact No. :
+08146486828
+ईमेल
+ 
+आईडी
+|Email ID :
+sale.hitechinstrument@gmail.com
+पता
+| Address :
+cabin no 204,kesho ram complex,sco-623-624 ,2 floor,sector-45c,
+chandigarh, chandigarh-160047, -
+एमएसएमई
+ 
+पंजीकरण
+ 
+संoया
+|MSME Registration number :
+UDYAM-CH-01-0009073
+जीएसटUआईएन
+|GSTIN:
+04DODPR0652M1ZS (R) 
+, (M)
+एमएसई
+ 
+सामा!जक
+ 
+rेणी
+|MSE Social Category :
+General
+एमएसई
+ 
+!लंग
+ 
+rेणी
+|MSE Gender :
+Male
+*
+!जसके
+ 
+नाम
+ 
+के
+ 
+पD
+ 
+मt
+ GST/TAX 
+इनवॉइस
+ 
+पेश
+ 
+!कया
+ 
+जाएगा
+|GST / Tax invoice to be raised in the name of - Consignee
+!वतरण
+ 
+!नदxश
+ | Delivery Instructions : 
+NA
+उzपाद
+उzपाद
+ 
+ 
+!ववरण
+!ववरण
+|Product Details
+|Product Details
+#
+#
+आइटम
+आइटम
+ 
+ 
+!ववरण
+!ववरण
+|Item Description
+|Item Description
+आइटम
+आइटम
+!ववरण
+!ववरण
+|
+|
+Ordered
+Ordered
+Quantity
+Quantity
+इकाई
+इकाई
+ |
+ |
+Unit
+Unit
+इकाई
+इकाई
+ 
+ 
+मू~य
+मू~य
+(INR)|
+(INR)|
+Unit Price
+Unit Price
+(INR)
+(INR)
+कर
+कर
+ 
+ 
+!वभाजन
+!वभाजन
+ (INR)|
+ (INR)|
+Tax Bifurcation (INR)
+Tax Bifurcation (INR)
+मू~य
+मू~य
+ 
+ 
+(INR 
+(INR 
+मt
+मt
+ 
+ 
+सभी
+सभी
+शु~क
+शु~क
+ 
+ 
+और
+और
+ 
+ 
+कर
+कर
+स!हत
+स!हत
+)|
+)|
+Price
+Price
+(Inclusive of
+(Inclusive of
+all Duties and
+all Duties and
+Taxes in INR)
+Taxes in INR)
+1
+उzपाद
+उzपाद
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ |Product Name : 
+ |Product Name : 
+HTICO Autoclave
+ांड
+ांड
+|Brand : 
+|Brand : 
+HTICO
+ांड
+ांड
+ 
+ 
+4कार
+4कार
+|Brand Type : 
+|Brand Type : 
+Registered Brand
+कै टलॉग
+कै टलॉग
+ 
+ 
+क
+क
+ 
+ 
+!!त
+!!त
+|Catalogue Status: 
+|Catalogue Status: 
+Catalogue not verified by OEM
+कै से
+कै से
+ 
+ 
+बेचा
+बेचा
+ 
+ 
+जा
+जा
+ 
+ 
+रहा
+रहा
+ 
+ 
+है
+है
+|Selling As : 
+|Selling As : 
+Reseller not verified by OEM
+rेणी
+rेणी
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ 
+ 
+और
+और
+ 
+ 
+चतुथाश
+चतुथाश
+|Category Name & Quadrant : 
+|Category Name & Quadrant : 
+Autoclave (ICMR Specs) (Q3)
+मॉडल
+मॉडल
+|Model:
+|Model:
+ 
+HTI-AC-180 
+एचएसएन
+एचएसएन
+ 
+ 
+कोड
+कोड
+|HSN Code: 
+|HSN Code: 
+HSN not specified by seller
+1
+pieces
+98,989.98
+NA
+98,989.98
+कु ल
+ 
+ऑडCर
+ 
+मू~य
+ |Total Order Value 
+(in INR)
+98,989.98
+98,989.98
+ 
+परे!षती
+परे!षती
+ 
+ 
+!ववरण
+!ववरण
+|Consignee Detail
+|Consignee Detail
+.सं.
+.सं.
+|S.No
+|S.No
+परे!षती
+परे!षती
+|Consignee
+|Consignee
+वaतु
+वaतु
+|Item
+|Item
+लॉट
+लॉट
+ 
+ 
+नंबर
+नंबर
+|
+|
+Lot No.
+Lot No.
+मा<ा
+मा<ा
+|Quantity
+|Quantity
+!दनांक
+!दनांक
+ 
+ 
+के
+के
+ 
+ 
+बाद
+बाद
+!डलीवरी
+!डलीवरी
+ 
+ 
+शु5
+शु5
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery Start
+Delivery Start
+After
+After
+!वतरण
+!वतरण
+ 
+ 
+पूरा
+पूरा
+ 
+ 
+कब
+कब
+तक
+तक
+ 
+ 
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery To
+Delivery To
+Be
+Be
+Completed
+Completed
+By
+By
+पद
+| Designation : 
+Head Clerk
+ईमेल
+ 
+आईडी
+|Email ID : 
+buycon1.mdc.pb@gembuyer.in
+संपकC
+|Contact : 
+0186-2921047-
+--- PAGE 7 ---
+1
+जीएसटUआईएन
+|GSTIN : 
+-
+पता
+|Address : 
+200 Military Dental Centre Dhangu Military Complex
+Pathankot Pin- 145001,
+PATHANKOT, PUNJAB-145001, India
+HTICO Autoclave
+-
+1
+20-Dec-2024
+04-Jan-2025
+Product Specification for HTICO Autoclave
+Product Specification for HTICO Autoclave
+!व!नदxश
+!व!नदxश
+|Speciﬁcation
+|Speciﬁcation
+उप
+उप
+-
+-
+!व!नदxश
+!व!नदxश
+|Sub-Spec
+|Sub-Spec
+मू~य
+मू~य
+|Value
+|Value
+Configuration
+Type
+Vertical, Top loading cylindrical Autoclave machine for steam and pressure sterilization 
+ 
+Sterilizer chamber capacity in L (usable
+volume)
+>=180 
+ 
+Sterilizer Chamber Type
+Circular 
+ 
+Steriliser chamber material
+Double walled SS 304 or higher grade steel 
+ 
+Working Pressure of Chamber
+20 
+ pound per sqare inch
+Type of Sterilizer Chamber Door
+Heavy duty SS 304, Hinged door 
+ 
+Steriliser Chamber door Locking facility
+Foot operated locking and unlocking radial system 
+ 
+Sterilizer Chamber door Operation:
+Manual 
+ 
+Door sealing:
+By elastomeric rubber gasket suitable to withstand temperature upto 140 
+degree C & pressure upto 20-
+30 psi 
+ 
+Type of control system available for Steriliser
+cycle operation:
+Microprocessor based temperature controller with control accuracy ±1.0°C 
+ 
+Power supply:
+230 ± 10 volt, 50 Hz 
+ 
+Audio- visual Alarm facility available for
+notifying:
+Temperature sensor with range 100°C to 300°C, unit should be provided with a low water alarm system as
+well as steam release valves and safety valves,Cut off automatically when the autoclave is dry 
+ 
+Working Temperature
+125 
+ degree Celsius
+Resolution
+0.1°C 
+ 
+Range of Pressure Gauge
+30 
+ pound per sqare inch
+Controller
+Auto set to 15psi & 121°C 
+ 
+Overall Size
+Overall Height:
+550 
+ millimeter
+Overall Diameter
+750 
+ millimeter
+Accessories,
+Consumables &
+Warranty
+Accessories
+Water level indicator,Water inlet & outlet valves,Automatic pressure control switch,Mechanical
+timer,Manual Water Filling & Removal,The unit having a wet heater fitted at the bottom and with capacity
+more than 4500 W with water capacity in litres more than 120 L,The unit have heater fitted at the bottom
+and with capacity of more than 6 KW,NA 
+ 
+Warranty (Option of comprehensive
+warranty is available through bidding only,
+which if opted will supersede normal
+warranty in the catalogue)
+5 
+ year
+Quality and
+Certifications
+Compliance of Chamber
+Chamber Pressure Equipment Directives (PED) 
+ 
+Quality Compliance available for quality
+systems
+ISO 9001:2000 
+ 
+Compliance to certification (US FDA/CE
+certification will be accepted only when the
+Indian standards/certification like
+BIS/CDSO/AERB are not available)
+CE 
+ 
+ 
+!टपणी
+!टपणी
+|Note:: 
+|Note:: 
+Seller has given an undertaking that it has made arrangements for getting the stores from an authorized distributor / dealer / channel partner of the OEM of the
+offered product. At the time of delivery of goods, Seller will provide necessary chain documents (in the form of GST Invoice) to prove that the supplied goods are genuine and are
+being sourced from an authorized distributor / dealer / channel partner of the OEM. In case of any complaint about genuineness of the supplied products, Seller shall be
+responsible for providing genuine replacement supplies.
+ 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+!ववरण
+!ववरण
+ 
+ 
+| ePBG Detail
+| ePBG Detail
+NA
+NA
+!नयम
+!नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+|Terms and Conditions
+|Terms and Conditions
+1. Special terms and conditions- 
+1. Special terms and conditions- 
+Version:1 effective from 06-01-2023
+Version:1 effective from 06-01-2023
+1.1
+1.1
+1
+1
+. 
+. 
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+Central Drugs Standard Control Organisation
+Central Drugs Standard Control Organisation
+(
+(
+CDSCO
+CDSCO
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+--- PAGE 8 ---
+Chemicals & Fertilizers time to time in this regard.
+Chemicals & Fertilizers time to time in this regard.
+2
+2
+. 
+. 
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+certification/licenses, test reports etc.
+certification/licenses, test reports etc.
+3
+3
+. 
+. 
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+4
+4
+. 
+. 
+Comprehensive warranty:
+Comprehensive warranty:
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+warranty period by double the downtime period.
+warranty period by double the downtime period.
+5
+5
+. 
+. 
+Service centres:
+Service centres:
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+service requests also to be provided buyer/consignee at the time of supplies.
+service requests also to be provided buyer/consignee at the time of supplies.
+6
+6
+. 
+. 
+Source of supply:
+Source of supply:
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+7
+7
+. 
+. 
+Packing and Marking:
+Packing and Marking:
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+other relevant details.
+other relevant details.
+8
+8
+. 
+. 
+Spare Parts:
+Spare Parts:
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+competitive price for spares and consumables of its machines/equipments supplied.
+competitive price for spares and consumables of its machines/equipments supplied.
+9
+9
+. 
+. 
+Installation, Training, Manuals:
+Installation, Training, Manuals:
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+requirements regarding the installations, training and manuals the same shall also be applicable.
+requirements regarding the installations, training and manuals the same shall also be applicable.
+10
+10
+. 
+. 
+Electrical safety checking:
+Electrical safety checking:
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+every preventive maintenance call.
+every preventive maintenance call.
+11
+11
+. 
+. 
+Software:
+Software:
+ All software updates should be provided free of cost during warranty period.
+ All software updates should be provided free of cost during warranty period.
+12
+12
+. 
+. 
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+provisions.
+provisions.
+2. General Terms and Conditions-
+2. General Terms and Conditions-
+2.1
+2.1
+This contract is governed by the 
+This contract is governed by the 
+General Terms and Conditions
+General Terms and Conditions
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+2.2
+2.2
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+(ATC), as applicable
+(ATC), as applicable
+नोट
+: 
+यह
+ 
+!सaटम
+ 
+जनरेटेड
+ 
+फाइल
+ 
+है
+। 
+कोई
+ 
+हaताDर
+ 
+क
+ 
+आवयकता
+ 
+नह
+ 
+है
+। 
+इस
+ 
+दaतावेज़
+ 
+का
+ 
+!4ंट
+ 
+आउट
+ 
+भुगतान
+/
+लेनदेन
+ 
+उेय
+ 
+के
+ 
+!लए
+ 
+माय
+ 
+नह
+ 
+है
+। 
+Note: This is system generated file. No signature is required. 
+Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 9 ---
+Rahul Kumar
+200 Military Dental Centre Dhangu Military Complex Pathankot Pin- 145001,
+PATHANKOT, PUNJAB-145001
+CRAC No:
+ 
+GEMCRAC-1-511687794188867-1
+CRAC Date:
+ 
+16-Jan-2025
+Contract No:
+ 
+GEMC-511687794188867
+Contract Date:
+ 
+20-Dec-2024
+PRC Date:
+ 
+15-Jan-2025
+GeM Invoice No:
+ 
+GEM-52358871
+GeM Invoice Date:
+ 
+04-Jan-2025
+Consignee Receipt & Acceptance Certificate
+Bill To
+Shipped By
+200 Military Dental Centre Dhangu Military Complex Pathankot Pin- 145001, PATHANKOT,
+PUNJAB-145001
+Type: Central Government
+Ministry: Ministry of Defence
+Department: Department of Military Affairs
+Organisation Name: Indian Army
+Office Name: 200 Military Dental Centre
+M/S HI TECH INSTRUMENTS
+M/S HI TECH INSTRUMENTS, chandigarh, chandigarh - 160047
+Contract Item Details
+#
+Item Description
+Model
+Ordered Quantity
+Unit
+Price per Unit inclusive of all Duties and Taxes (in INR)
+1
+HTICO Autoclave
+HTI-AC-180
+1
+pieces
+98989.98
+Total Order Value (in INR)
+98989.98
+CONSIGNMENT DETAILS
+S.No
+Supplied
+Qty(Nos.)
+Item
+Description
+Received
+Qty
+Accepted
+Qty
+Rejected
+Qty
+Reason for rejected
+items
+Price per Unit inclusive of all Duties and
+Taxes (in INR)
+1
+1
+HTICO
+Autoclave
+1
+1
+0
+98989.98
+Total Received Order Value (in INR)
+98989.98
+Note: This is a computer generated statement to generate e-bill by the buyer for making payment.
+Ink Signed Signatures are not required in System Generated Documents.
+--- PAGE 10 ---
+ 
+Contract|
+Contract|
+अनुबंध
+अनुबंध
+Contract No|
+Contract No|
+अनुबंध
+अनुबंध
+ 
+ 
+मांक
+मांक
+: 
+: 
+GEMC-511687759511001
+Generated Date|
+Generated Date|
+अनुबंध
+अनुबंध
+ 
+ 
+$त$थ
+$त$थ
+ :
+ :
+ 
+06-Oct-2023
+Organisation Details|
+Organisation Details|
+संगठन
+संगठन
+ 
+ 
+$ववरण
+$ववरण
+Type|
+78प
+ :
+Central PSU
+Ministry|
+मं=ालय
+ :
+Ministry of Health and Family Welfare
+Department|
+$वभाग
+ :
+Department of Health and Family Welfare
+Organisation Name|
+संगठन
+ 
+का
+ 
+नाम
+ :
+HLL INFRA TECH SERVICES Limited
+Oﬃce Zone|
+कायाNलय
+ 
+Oे=
+:
+HITES
+Buyer Details|
+Buyer Details|
+खरीदार
+खरीदार
+ 
+ 
+$ववरण
+$ववरण
+Designation|
+पद
+ :
+Deputy Manager
+Contact No.|
+संपकN
+ 
+नंबर
+ :
+0120-4071500-
+Email ID|
+ईमेल
+ 
+आईडी
+ :
+buyer3.hitsl.up@gembuyer.in
+GSTIN|
+जीएसट`आईएन
+ :
+-
+Address|
+पता
+ :
+Mahanadi Coalfields Limited, Jagriti Vihar, Burla, Sambalpur,
+Odisha,
+SAMBALPUR, ODISHA-768020, India
+ 
+Financial Approval Detail|
+Financial Approval Detail|
+$वdीय
+$वdीय
+ 
+ 
+eवीकृ $त
+eवीकृ $त
+ 
+ 
+$ववरण
+$ववरण
+IFD Concurrence|
+आईएफडी
+ 
+सहम$त
+ :
+No
+Designation of Administrative Approval|
+7शास$नक
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+:
+Head PCD
+Designation of Financial Approval|
+$वdीय
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+ :
+AVP Finance
+Paying Authority Details|
+Paying Authority Details|
+भुगतान
+भुगतान
+ 
+ 
+7ा$धकरण
+7ा$धकरण
+ 
+ 
+$ववरण
+$ववरण
+Role:
+PAO
+Payment Mode|
+भुगतान
+ 
+का
+ 
+तरीका
+:
+Offline
+Designation|
+पद
+ :
+Manager
+Email ID|
+ईमेल
+ 
+आईडी
+ :
+pao1.hitsl.up@gembuyer.in
+GSTIN|
+जीएसट`आईएन
+ :
+-
+Address|
+पता
+:
+B 14A, Sector 62, Noida,
+Gautam Buddha nagar, UTTAR PRADESH-201307, India
+ 
+ 
+Seller Details|
+Seller Details|
+$वे ता
+$वे ता
+ 
+ 
+$ववरण
+$ववरण
+GeM Seller ID|
+जेम
+ 
+$वे ता
+ 
+आईडी
+ :
+9VZW210003624220
+Company Name|
+कं पनी
+ 
+का
+ 
+नाम
+ :
+M/S HI TECH INSTRUMENTS
+Contact No.|
+संपकN
+ 
+नंबर
+ :
+08146486828
+Email ID|
+ईमेल
+ 
+आईडी
+ :
+sale.hitechinstrument@gmail.com
+Address|
+पता
+ 
+:
+cabin no 204,kesho ram complex,sco-623-624 ,2 floor,sector-45c,
+chandigarh, chandigarh-160047, -
+MSME Registration number|
+एमएसएमई
+ 
+पंजीकरण
+ 
+संnया
+ :
+UDYAM-CH-01-0009073
+MSE Social Category|
+एमएसई
+ 
+सामा$जक
+ 
+pेणी
+ :
+General
+MSE Gender|
+एमएसई
+ 
+$लंग
+ 
+pेणी
+ :
+Male
+GSTIN|
+जीएसट`आईएन
+:
+04DODPR0652M1ZS
+*GST / Tax invoice to be raised in the name of|
+$जसके
+ 
+नाम
+ 
+के
+ 
+पO
+ 
+मr
+ GST/TAX 
+इनवॉइस
+ 
+पेश
+ 
+$कया
+ 
+जाएगा
+ - Consignee
+Delivery Instructions|
+$वतरण
+ 
+$नदvश
+ 
+: 
+Supplier should be submitted the final acceptance certificate from consignee after
+delivery installation to release the payment.
+Product Details|
+Product Details|
+उxपाद
+उxपाद
+ 
+ 
+$ववरण
+$ववरण
+#
+#
+Item Description|
+Item Description|
+आइटम
+आइटम
+ 
+ 
+$ववरण
+$ववरण
+Ordered
+Ordered
+Quantity|
+Quantity|
+आइटम
+आइटम
+$ववरण
+$ववरण
+Unit |
+Unit |
+इकाई
+इकाई
+Unit Price
+Unit Price
+(INR)|
+(INR)|
+इकाई
+इकाई
+ 
+ 
+मू~य
+मू~य
+ (INR)
+ (INR)
+Tax Bifurcation (INR)|
+Tax Bifurcation (INR)|
+कर
+कर
+ 
+ 
+$वभाजन
+$वभाजन
+ (INR)
+ (INR)
+Price 
+Price 
+(Inclusive of
+(Inclusive of
+all Duties and
+all Duties and
+Taxes in
+Taxes in
+INR)|
+INR)|
+मू~य
+मू~य
+ (INR 
+ (INR 
+मr
+मr
+सभी
+सभी
+ 
+ 
+शु~क
+शु~क
+ 
+ 
+और
+और
+कर
+कर
+ 
+ 
+स$हत
+स$हत
+)
+)
+1
+Product Name|
+Product Name|
+उxपाद
+उxपाद
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ : 
+ : 
+HTICO Autoclave
+Brand|
+Brand|
+ांड
+ांड
+ : 
+ : 
+HTICO
+Brand Type|
+Brand Type|
+ांड
+ांड
+ 
+ 
+7कार
+7कार
+ : 
+ : 
+Registered Brand
+Catalogue Status|
+Catalogue Status|
+कै टलॉग
+कै टलॉग
+ 
+ 
+क
+क
+ 
+ 
+$$त
+$$त
+: 
+: 
+Catalogue not verified by OEM
+Selling As|
+Selling As|
+कै से
+कै से
+ 
+ 
+बेचा
+बेचा
+ 
+ 
+जा
+जा
+ 
+ 
+रहा
+रहा
+ 
+ 
+है
+है
+ 
+ 
+: 
+: 
+Reseller not verified by OEM
+Category Name & Quadrant|
+Category Name & Quadrant|
+pेणी
+pेणी
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ 
+ 
+और
+और
+ 
+ 
+चतुथाश
+चतुथाश
+ : 
+ : 
+Autoclave (ICMR Specs) (Q3)
+Model|
+Model|
+मॉडल
+मॉडल
+:
+:
+ 
+HTI-AC-180 
+HSN Code|
+HSN Code|
+एचएसएन
+एचएसएन
+ 
+ 
+कोड
+कोड
+: 
+: 
+HSN not specified by seller
+2
+pieces
+97,980
+NA
+195,960
+Total Order Value 
+|
+कु ल
+ 
+ऑडNर
+ 
+मू~य
+ 
+(in INR)
+195,960
+195,960
+ 
+Consignee Detail|
+Consignee Detail|
+परे$षती
+परे$षती
+ 
+ 
+$ववरण
+$ववरण
+S.No|
+S.No|
+.सं.
+.सं.
+Consignee|
+Consignee|
+परे$षती
+परे$षती
+Item|
+Item|
+वeतु
+वeतु
+Lot No.|
+Lot No.|
+लॉट
+लॉट
+ 
+ 
+नंबर
+नंबर
+Quantity|
+Quantity|
+मा=ा
+मा=ा
+Delivery Start
+Delivery Start
+After|
+After|
+$दनांक
+$दनांक
+ 
+ 
+के
+के
+ 
+ 
+बाद
+बाद
+$डलीवरी
+$डलीवरी
+ 
+ 
+शु8
+शु8
+करना
+करना
+ 
+ 
+है
+है
+Delivery To
+Delivery To
+Be
+Be
+Completed
+Completed
+By|
+By|
+$वतरण
+$वतरण
+ 
+ 
+पूरा
+पूरा
+ 
+ 
+कब
+कब
+तक
+तक
+ 
+ 
+करना
+करना
+ 
+ 
+है
+है
+Designation|
+पद
+ : 
+Deputy Manager
+Email ID|
+ईमेल
+ 
+आईडी
+ : 
+buyer3.hitsl.up@gembuyer.in
+--- PAGE 11 ---
+1
+Contact|
+संपकN
+ : 
+0120-4071500-
+GSTIN|
+जीएसट`आईएन
+ : 
+-
+Address|
+पता
+ : 
+Mahanadi Coalfields Limited, Jagriti Vihar, Burla, Sambalpur,
+Odisha,
+SAMBALPUR, ODISHA-768020, India
+HTICO Autoclave
+-
+2
+06-Oct-2023
+21-Oct-2023
+Product Specification for HTICO Autoclave
+Product Specification for HTICO Autoclave
+Specification|
+Specification|
+$व$नदvश
+$व$नदvश
+Sub-Spec|
+Sub-Spec|
+उप
+उप
+-
+-
+$व$नदvश
+$व$नदvश
+Value|
+Value|
+मू~य
+मू~य
+Configuration
+Type
+Vertical, Top loading cylindrical Autoclave machine for steam and pressure sterilization 
+ 
+Sterilizer chamber capacity in L (usable volume)
+>=180 
+ 
+Sterilizer Chamber Type
+Circular 
+ 
+Steriliser chamber material
+Outer wall made of mild steel, inside & lid with SS 304 
+ 
+Working Pressure of Chamber
+19 
+ pound per sqare inch
+Type of Sterilizer Chamber Door
+Heavy duty SS 304, Hinged door 
+ 
+Steriliser Chamber door Locking facility
+Foot operated locking and unlocking radial system 
+ 
+Sterilizer Chamber door Operation:
+Manual 
+ 
+Door sealing:
+By elastomeric rubber gasket suitable to withstand temperature upto 140 
+degree C &
+pressure upto 20-30 psi 
+ 
+Type of control system available for Steriliser cycle operation:
+Microprocessor based temperature controller with control accuracy ±1.0°C 
+ 
+Power supply:
+230 ± 10 volt, 50 Hz 
+ 
+Audio- visual Alarm facility available for notifying:
+Temperature sensor with range 100°C to 300°C, unit should be provided with a low water
+alarm system as well as steam release valves and safety valves,Cut off automatically when
+the autoclave is dry 
+ 
+Working Temperature
+125 
+ degree Celsius
+Resolution
+0.1°C 
+ 
+Range of Pressure Gauge
+19 
+ pound per sqare inch
+Controller
+Auto set to 15psi & 121°C 
+ 
+Overall Size
+Overall Height:
+750 
+ millimeter
+Overall Diameter
+550 
+ millimeter
+Accessories,
+Consumables &
+Warranty
+Accessories
+Water level indicator,Water inlet & outlet valves,Automatic pressure control
+switch,Mechanical timer,Manual Water Filling & Removal 
+ 
+Warranty (Option of comprehensive warranty is available through
+bidding only, which if opted will supersede normal warranty in the
+catalogue)
+1 
+ year
+Quality and
+Certifications
+Compliance of Chamber
+Chamber Pressure Equipment Directives (PED),EN 13445 norms 
+ 
+Quality Compliance available for quality systems
+ISO 9001:2000,EN ISO 13485:2003,ISO 14001:2004 
+ 
+Compliance to certification (US FDA/CE certification will be accepted
+only when the Indian standards/certification like BIS/CDSO/AERB
+are not available)
+US FDA,CE 
+ 
+ 
+ePBG Detail | 
+ePBG Detail | 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+$ववरण
+$ववरण
+NA
+NA
+Terms and Conditions|
+Terms and Conditions|
+$नयम
+$नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+1. Special terms and conditions- 
+1. Special terms and conditions- 
+Version:1 effective from 06-01-2023
+Version:1 effective from 06-01-2023
+1.1
+1.1
+1
+1
+. 
+. 
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+Central Drugs Standard Control Organisation
+Central Drugs Standard Control Organisation
+(
+(
+CDSCO
+CDSCO
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+Chemicals & Fertilizers time to time in this regard.
+Chemicals & Fertilizers time to time in this regard.
+2
+2
+. 
+. 
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+certification/licenses, test reports etc.
+certification/licenses, test reports etc.
+3
+3
+. 
+. 
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+4
+4
+. 
+. 
+Comprehensive warranty:
+Comprehensive warranty:
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+--- PAGE 12 ---
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+warranty period by double the downtime period.
+warranty period by double the downtime period.
+5
+5
+. 
+. 
+Service centres:
+Service centres:
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+service requests also to be provided buyer/consignee at the time of supplies.
+service requests also to be provided buyer/consignee at the time of supplies.
+6
+6
+. 
+. 
+Source of supply:
+Source of supply:
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+7
+7
+. 
+. 
+Packing and Marking:
+Packing and Marking:
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+other relevant details.
+other relevant details.
+8
+8
+. 
+. 
+Spare Parts:
+Spare Parts:
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+competitive price for spares and consumables of its machines/equipments supplied.
+competitive price for spares and consumables of its machines/equipments supplied.
+9
+9
+. 
+. 
+Installation, Training, Manuals:
+Installation, Training, Manuals:
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+requirements regarding the installations, training and manuals the same shall also be applicable.
+requirements regarding the installations, training and manuals the same shall also be applicable.
+10
+10
+. 
+. 
+Electrical safety checking:
+Electrical safety checking:
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+every preventive maintenance call.
+every preventive maintenance call.
+11
+11
+. 
+. 
+Software:
+Software:
+ All software updates should be provided free of cost during warranty period.
+ All software updates should be provided free of cost during warranty period.
+12
+12
+. 
+. 
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+provisions.
+provisions.
+2. General Terms and Conditions-
+2. General Terms and Conditions-
+2.1
+2.1
+This contract is governed by the 
+This contract is governed by the 
+General Terms and Conditions
+General Terms and Conditions
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+2.2
+2.2
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+(ATC), as applicable
+(ATC), as applicable
+Note: This is system generated file. No signature is required. 
+Print out of this document is not valid for payment/ transaction purpose. 
+नोट
+: 
+यह
+ 
+$सeटम
+ 
+जनरेटेड
+ 
+फाइल
+ 
+है
+। 
+कोई
+ 
+हeताOर
+ 
+क
+ 
+आवयकता
+ 
+नह
+ 
+है
+। 
+इस
+ 
+दeतावेज़
+ 
+का
+ 
+$7ंट
+ 
+आउट
+ 
+भुगतान
+/
+लेनदेन
+ 
+उेय
+ 
+के
+ 
+$लए
+ 
+माय
+ 
+नह
+ 
+है
+।
+--- PAGE 13 ---
+Manjunarayanan .N.S
+Mahanadi Coalfields Limited, Jagriti Vihar, Burla, Sambalpur, Odisha, SAMBALPUR,
+ODISHA-768020
+CRAC No:
+ 
+GEMCRAC-1-511687759511001-1
+CRAC Date:
+ 
+02-Feb-2024
+Contract No:
+ 
+GEMC-511687759511001
+Contract Date:
+ 
+06-Oct-2023
+PRC Date:
+ 
+12-Dec-2023
+GeM Invoice No:
+ 
+GEM-35820206
+GeM Invoice Date:
+ 
+21-Oct-2023
+Consignee Receipt & Acceptance Certificate
+Bill To
+Shipped By
+Mahanadi Coalfields Limited, Jagriti Vihar, Burla, Sambalpur, Odisha, SAMBALPUR,
+ODISHA-768020
+Type: Central PSU
+Ministry: Ministry of Health and Family Welfare
+Department: Department of Health and Family
+Welfare
+Organisation Name: HLL INFRA TECH SERVICES Limited
+Office Name: HITES
+M/S HI TECH INSTRUMENTS
+M/S HI TECH INSTRUMENTS, chandigarh, chandigarh - 160047
+Contract Item Details
+#
+Item Description
+Model
+Ordered Quantity
+Unit
+Price per Unit inclusive of all Duties and Taxes (in INR)
+1
+HTICO Autoclave
+HTI-AC-180
+2
+pieces
+97980.0
+Total Order Value (in INR)
+195960.0
+CONSIGNMENT DETAILS
+S.No
+Supplied
+Qty(Nos.)
+Item
+Description
+Received
+Qty
+Accepted
+Qty
+Rejected
+Qty
+Reason for rejected
+items
+Price per Unit inclusive of all Duties and
+Taxes (in INR)
+1
+2
+HTICO
+Autoclave
+2
+2
+0
+97980.0
+Total Received Order Value (in INR)
+195960.0
+Note: This is a computer generated statement to generate e-bill by the buyer for making payment.
+Ink Signed Signatures are not required in System Generated Documents.
+--- PAGE 14 ---
+ 
+अनुबंध
+अनुबंध
+|Contract
+|Contract
+अनुबंध
+अनुबंध
+ 
+ 
+मांक
+मांक
+|Contract No: 
+|Contract No: 
+GEMC-511687739168506
+अनुबंध
+अनुबंध
+ 
+ 
+"त"थ
+"त"थ
+|Generated Date :
+|Generated Date :
+ 
+05-Feb-2025
+संगठन
+संगठन
+ 
+ 
+"ववरण
+"ववरण
+|Organisation Details
+|Organisation Details
+67प
+|Type :
+Central Autonomous
+मं?ालय
+|Ministry :
+Ministry of Education
+"वभाग
+|Department :
+Department of Higher Education
+संगठन
+ 
+का
+ 
+नाम
+|Organisation Name :
+Indian Institute of Technology (IIT)
+कायाIलय
+ 
+J े?
+|Oﬃce Zone:
+Indian Institute Of Technology Patna
+खरीदार
+खरीदार
+ 
+ 
+"ववरण
+"ववरण
+|Buyer Details
+|Buyer Details
+पद
+|Designation :
+Junior Superintendent SnP
+संपकI
+ 
+नंबर
+|Contact No. :
+06115-233744-
+ईमेल
+ 
+आईडी
+|Email ID :
+buyer18.iiti.bh@gembuyer.in
+जीएसट^आईएन
+|GSTIN :
+-
+पता
+|Address :
+IIT Patna, Kanpa Road, Bihta,
+PATNA, BIHAR-801106, India
+ 
+"वbीय
+"वbीय
+ 
+ 
+cवीकृ "त
+cवीकृ "त
+ 
+ 
+"ववरण
+"ववरण
+|Financial Approval Detail
+|Financial Approval Detail
+आईएफडी
+ 
+सहम"त
+|IFD Concurrence :
+No
+6शास"नक
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Administrative Approval:
+Dean Administration
+"वbीय
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Financial Approval :
+Dean Administration
+भुगतान
+भुगतान
+ 
+ 
+6ा"धकरण
+6ा"धकरण
+ 
+ 
+"ववरण
+"ववरण
+|Paying Authority Details
+|Paying Authority Details
+Role:
+PAO
+भुगतान
+ 
+का
+ 
+तरीका
+|
+Payment Mode:
+Offline
+पद
+|Designation :
+Assistant Registrar Finance Accounts
+ईमेल
+ 
+आईडी
+|Email ID :
+pao1.iit.patna@gembuyer.in
+जीएसट^आईएन
+|GSTIN :
+-
+पता
+|Address:
+IIT Patna, Kanpa Road, Bihta,
+PATNA, BIHAR-801106, India
+ 
+ 
+"वे ता
+"वे ता
+ 
+ 
+"ववरण
+"ववरण
+|Seller Details
+|Seller Details
+जेम
+ 
+"वे ता
+ 
+आईडी
+|GeM Seller ID :
+9VZW210003624220
+कं पनी
+ 
+का
+ 
+नाम
+|Company Name :
+M/S HI TECH INSTRUMENTS
+संपकI
+ 
+नंबर
+|Contact No. :
+08146486828
+ईमेल
+ 
+आईडी
+|Email ID :
+sale.hitechinstrument@gmail.com
+पता
+| Address :
+cabin no 204,kesho ram complex,sco-623-624 ,2 floor,sector-45c,
+chandigarh, chandigarh-160047, -
+एमएसएमई
+ 
+पंजीकरण
+ 
+संpया
+|MSME Registration number :
+UDYAM-CH-01-0009073
+जीएसट^आईएन
+|GSTIN:
+04DODPR0652M1ZS (R) 
+, (M)
+एमएसई
+ 
+सामा"जक
+ 
+rेणी
+|MSE Social Category :
+General
+एमएसई
+ 
+"लंग
+ 
+rेणी
+|MSE Gender :
+Male
+*
+"जसके
+ 
+नाम
+ 
+के
+ 
+पJ
+ 
+मt
+ GST/TAX 
+इनवॉइस
+ 
+पेश
+ 
+"कया
+ 
+जाएगा
+|GST / Tax invoice to be raised in the name of - Buyer
+"वतरण
+ 
+"नदxश
+ | Delivery Instructions : 
+Please contact Mr. Binayak on 8935962578
+उzपाद
+उzपाद
+ 
+ 
+"ववरण
+"ववरण
+|Product Details
+|Product Details
+#
+#
+आइटम
+आइटम
+ 
+ 
+"ववरण
+"ववरण
+|Item Description
+|Item Description
+आइटम
+आइटम
+"ववरण
+"ववरण
+|
+|
+Ordered
+Ordered
+Quantity
+Quantity
+इकाई
+इकाई
+ |
+ |
+Unit
+Unit
+इकाई
+इकाई
+ 
+ 
+मू~य
+मू~य
+(INR)|
+(INR)|
+Unit Price
+Unit Price
+(INR)
+(INR)
+कर
+कर
+ 
+ 
+"वभाजन
+"वभाजन
+ (INR)|
+ (INR)|
+Tax Bifurcation (INR)
+Tax Bifurcation (INR)
+मू~य
+मू~य
+ 
+ 
+(INR 
+(INR 
+मt
+मt
+ 
+ 
+सभी
+सभी
+शु~क
+शु~क
+ 
+ 
+और
+और
+ 
+ 
+कर
+कर
+स"हत
+स"हत
+)|
+)|
+Price
+Price
+(Inclusive of
+(Inclusive of
+all Duties and
+all Duties and
+Taxes in INR)
+Taxes in INR)
+1
+उzपाद
+उzपाद
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ |Product Name : 
+ |Product Name : 
+HTICO Autoclave
+ांड
+ांड
+|Brand : 
+|Brand : 
+HTICO
+ांड
+ांड
+ 
+ 
+6कार
+6कार
+|Brand Type : 
+|Brand Type : 
+Registered Brand
+कै टलॉग
+कै टलॉग
+ 
+ 
+क
+क
+ 
+ 
+""त
+""त
+|Catalogue Status: 
+|Catalogue Status: 
+Catalogue not verified by OEM
+कै से
+कै से
+ 
+ 
+बेचा
+बेचा
+ 
+ 
+जा
+जा
+ 
+ 
+रहा
+रहा
+ 
+ 
+है
+है
+|Selling As : 
+|Selling As : 
+Reseller not verified by OEM
+rेणी
+rेणी
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ 
+ 
+और
+और
+ 
+ 
+चतुथाश
+चतुथाश
+|Category Name & Quadrant : 
+|Category Name & Quadrant : 
+Autoclave (ICMR Specs) (Q3)
+मॉडल
+मॉडल
+|Model:
+|Model:
+ 
+HTI-AC-22 
+एचएसएन
+एचएसएन
+ 
+ 
+कोड
+कोड
+|HSN Code: 
+|HSN Code: 
+HSN not specified by seller
+1
+pieces
+43,411
+NA
+43,411
+कु ल
+ 
+ऑडIर
+ 
+मू~य
+ |Total Order Value 
+(in INR)
+43,411
+43,411
+ 
+परे"षती
+परे"षती
+ 
+ 
+"ववरण
+"ववरण
+|Consignee Detail
+|Consignee Detail
+.सं.
+.सं.
+|S.No
+|S.No
+परे"षती
+परे"षती
+|Consignee
+|Consignee
+वcतु
+वcतु
+|Item
+|Item
+लॉट
+लॉट
+ 
+ 
+नंबर
+नंबर
+|
+|
+Lot No.
+Lot No.
+मा?ा
+मा?ा
+|Quantity
+|Quantity
+"दनांक
+"दनांक
+ 
+ 
+के
+के
+ 
+ 
+बाद
+बाद
+"डलीवरी
+"डलीवरी
+ 
+ 
+शु7
+शु7
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery Start
+Delivery Start
+After
+After
+"वतरण
+"वतरण
+ 
+ 
+पूरा
+पूरा
+ 
+ 
+कब
+कब
+तक
+तक
+ 
+ 
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery To
+Delivery To
+Be
+Be
+Completed
+Completed
+By
+By
+1
+पद
+| Designation : 
+Assistant Registrar SA
+ईमेल
+ 
+आईडी
+|Email ID : 
+buyer30.iiti.bh@gembuyer.in
+संपकI
+|Contact : 
+06115-233646-
+जीएसट^आईएन
+|GSTIN : 
+10AAAAI2401A1Z0
+पता
+|Address : 
+IIT Patna, Kanpa Road, Bihta,
+HTICO Autoclave
+-
+1
+05-Feb-2025
+20-Feb-2025
+--- PAGE 15 ---
+PATNA, BIHAR-801106, India
+Product Specification for HTICO Autoclave
+Product Specification for HTICO Autoclave
+"व"नदxश
+"व"नदxश
+|Speciﬁcation
+|Speciﬁcation
+उप
+उप
+-
+-
+"व"नदxश
+"व"नदxश
+|Sub-Spec
+|Sub-Spec
+मू~य
+मू~य
+|Value
+|Value
+Configuration
+Type
+Vertical, Top loading cylindrical Autoclave machine for
+steam and pressure sterilization 
+ 
+Sterilizer chamber capacity in L (usable volume)
+20 - 25 liter 
+ 
+Sterilizer Chamber Type
+Circular 
+ 
+Steriliser chamber material
+Outer wall made of mild steel, inside & lid with SS 304 
+ 
+Working Pressure of Chamber
+15 
+ pound per sqare inch
+Type of Sterilizer Chamber Door
+Heavy duty SS 304, Hinged door 
+ 
+Steriliser Chamber door Locking facility
+Foot operated locking and unlocking radial system 
+ 
+Sterilizer Chamber door Operation:
+Manual 
+ 
+Door sealing:
+By neoprene Rubber Gasket 
+ 
+Type of control system available for Steriliser cycle operation:
+Microprocessor based temperature controller with
+control accuracy ±1.0°C 
+ 
+Power supply:
+230 ± 10 volt, 50 Hz 
+ 
+Audio- visual Alarm facility available for notifying:
+Cut off automatically when the autoclave is dry 
+ 
+Working Temperature
+121 
+ degree Celsius
+Resolution
+0.1°C 
+ 
+Range of Pressure Gauge
+15 
+ pound per sqare inch
+Controller
+Auto set to 15psi & 121°C 
+ 
+Overall Size
+Overall Height:
+450 
+ millimeter
+Overall Diameter
+250 
+ millimeter
+Accessories,
+Consumables &
+Warranty
+Accessories
+Manual Water Filling & Removal 
+ 
+Warranty (Option of comprehensive warranty is available through bidding only, which if opted
+will supersede normal warranty in the catalogue)
+5 
+ year
+Quality and
+Certifications
+Compliance of Chamber
+EN 13445 norms 
+ 
+Quality Compliance available for quality systems
+ISO 9001:2000,EN ISO 13485:2003,ISO 14001:2004 
+ 
+Compliance to certification (US FDA/CE certification will be accepted only when the Indian
+standards/certification like BIS/CDSO/AERB are not available)
+US FDA,CE 
+ 
+ 
+"टपणी
+"टपणी
+|Note:: 
+|Note:: 
+Seller has given an undertaking that it has made arrangements for getting the stores from an authorized distributor / dealer / channel partner of the OEM of the
+offered product. At the time of delivery of goods, Seller will provide necessary chain documents (in the form of GST Invoice) to prove that the supplied goods are genuine and are
+being sourced from an authorized distributor / dealer / channel partner of the OEM. In case of any complaint about genuineness of the supplied products, Seller shall be
+responsible for providing genuine replacement supplies.
+ 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+"ववरण
+"ववरण
+ 
+ 
+| ePBG Detail
+| ePBG Detail
+NA
+NA
+"नयम
+"नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+|Terms and Conditions
+|Terms and Conditions
+1. Special terms and conditions- 
+1. Special terms and conditions- 
+Version:1 effective from 06-01-2023
+Version:1 effective from 06-01-2023
+1.1
+1.1
+1
+1
+. 
+. 
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+Central Drugs Standard Control Organisation
+Central Drugs Standard Control Organisation
+(
+(
+CDSCO
+CDSCO
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+Chemicals & Fertilizers time to time in this regard.
+Chemicals & Fertilizers time to time in this regard.
+2
+2
+. 
+. 
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+certification/licenses, test reports etc.
+certification/licenses, test reports etc.
+3
+3
+. 
+. 
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+4
+4
+. 
+. 
+Comprehensive warranty:
+Comprehensive warranty:
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+warranty period by double the downtime period.
+warranty period by double the downtime period.
+5
+5
+. 
+. 
+Service centres:
+Service centres:
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+--- PAGE 16 ---
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+service requests also to be provided buyer/consignee at the time of supplies.
+service requests also to be provided buyer/consignee at the time of supplies.
+6
+6
+. 
+. 
+Source of supply:
+Source of supply:
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+7
+7
+. 
+. 
+Packing and Marking:
+Packing and Marking:
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+other relevant details.
+other relevant details.
+8
+8
+. 
+. 
+Spare Parts:
+Spare Parts:
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+competitive price for spares and consumables of its machines/equipments supplied.
+competitive price for spares and consumables of its machines/equipments supplied.
+9
+9
+. 
+. 
+Installation, Training, Manuals:
+Installation, Training, Manuals:
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+requirements regarding the installations, training and manuals the same shall also be applicable.
+requirements regarding the installations, training and manuals the same shall also be applicable.
+10
+10
+. 
+. 
+Electrical safety checking:
+Electrical safety checking:
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+every preventive maintenance call.
+every preventive maintenance call.
+11
+11
+. 
+. 
+Software:
+Software:
+ All software updates should be provided free of cost during warranty period.
+ All software updates should be provided free of cost during warranty period.
+12
+12
+. 
+. 
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+provisions.
+provisions.
+2. General Terms and Conditions-
+2. General Terms and Conditions-
+2.1
+2.1
+This contract is governed by the 
+This contract is governed by the 
+General Terms and Conditions
+General Terms and Conditions
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+2.2
+2.2
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+(ATC), as applicable
+(ATC), as applicable
+2.3
+2.3
+All GeM Sellers / Service Providers are mandated to ensure compliance with all the applicable laws / acts / rules including but not limited to all Labour Laws such as The
+All GeM Sellers / Service Providers are mandated to ensure compliance with all the applicable laws / acts / rules including but not limited to all Labour Laws such as The
+Minimum Wages Act, 1948, The Payment of Wages Act, 1936, The Payment of Bonus Act, 1965, The Equal Remuneration Act, 1976, The Payment of Gratuity Act, 1972 etc. Any
+Minimum Wages Act, 1948, The Payment of Wages Act, 1936, The Payment of Bonus Act, 1965, The Equal Remuneration Act, 1976, The Payment of Gratuity Act, 1972 etc. Any
+non-compliance will be treated as breach of contract and Buyer may take suitable actions as per GeM Contract.
+non-compliance will be treated as breach of contract and Buyer may take suitable actions as per GeM Contract.
+नोट
+: 
+यह
+ 
+"सcटम
+ 
+जनरेटेड
+ 
+फाइल
+ 
+है
+। 
+कोई
+ 
+हcताJ र
+ 
+क
+ 
+आवयकता
+ 
+नह
+ 
+है
+। 
+इस
+ 
+दcतावेज़
+ 
+का
+ 
+"6ंट
+ 
+आउट
+ 
+भुगतान
+/
+लेनदेन
+ 
+उेय
+ 
+के
+ 
+"लए
+ 
+माय
+ 
+नह
+ 
+है
+। 
+Note: This is system generated file. No signature is required. 
+Print out of this document is not valid for payment/ transaction purpose.
+--- PAGE 17 ---
+Maheshwar Tulsi
+IIT Patna, Kanpa Road, Bihta, PATNA, BIHAR-801106
+CRAC No:
+ 
+GEMCRAC-1-511687739168506-1
+CRAC Date:
+ 
+19-Mar-2025
+Contract No:
+ 
+GEMC-511687739168506
+Contract Date:
+ 
+05-Feb-2025
+PRC Date:
+ 
+18-Feb-2025
+GeM Invoice No:
+ 
+GEM-54270786
+GeM Invoice Date:
+ 
+10-Feb-2025
+Consignee Receipt & Acceptance Certificate
+Bill To
+Shipped By
+IIT Patna, Kanpa Road, Bihta, PATNA, BIHAR-801106
+Type: Central Autonomous
+Ministry: Ministry of Education
+Department: Department of Higher
+Education
+Organisation Name: Indian Institute of Technology
+(IIT)
+Office Name: Indian Institute Of Technology
+Patna
+M/S HI TECH INSTRUMENTS
+M/S HI TECH INSTRUMENTS, chandigarh, chandigarh - 160047
+Contract Item Details
+#
+Item Description
+Model
+Ordered Quantity
+Unit
+Price per Unit inclusive of all Duties and Taxes (in INR)
+1
+HTICO Autoclave
+HTI-AC-22
+1
+pieces
+43411.0
+Total Order Value (in INR)
+43411.0
+CONSIGNMENT DETAILS
+S.No
+Supplied
+Qty(Nos.)
+Item
+Description
+Received
+Qty
+Accepted
+Qty
+Rejected
+Qty
+Reason for rejected
+items
+Price per Unit inclusive of all Duties and
+Taxes (in INR)
+1
+1
+HTICO
+Autoclave
+1
+1
+0
+43411.0
+Total Received Order Value (in INR)
+43411.0
+Note: This is a computer generated statement to generate e-bill by the buyer for making payment.
+Ink Signed Signatures are not required in System Generated Documents.
+--- PAGE 18 ---
+ 
+अनुबंध
+अनुबंध
+|Contract
+|Contract
+अनुबंध
+अनुबंध
+ 
+ 
+मांक
+मांक
+|Contract No: 
+|Contract No: 
+GEMC-511687770549332
+अनुबंध
+अनुबंध
+ 
+ 
+$त$थ
+$त$थ
+|Generated Date :
+|Generated Date :
+ 
+25-Oct-2024
+संगठन
+संगठन
+ 
+ 
+$ववरण
+$ववरण
+|Organisation Details
+|Organisation Details
+56प
+|Type :
+Central Autonomous
+मं>ालय
+|Ministry :
+Ministry of Agriculture and Farmers Welfare
+$वभाग
+|Department :
+Department of Agricultural Research and Education
+(DARE)
+संगठन
+ 
+का
+ 
+नाम
+|Organisation Name
+:
+Indian Council of Agricultural Research (ICAR)
+कायाJलय
+ 
+Kे>
+|Oﬃce Zone:
+Indian Institute Of Millets Research
+खरीदार
+खरीदार
+ 
+ 
+$ववरण
+$ववरण
+|Buyer Details
+|Buyer Details
+पद
+|Designation :
+Assistant Administrative Officer
+संपकJ
+ 
+नंबर
+|Contact No. :
+040-24599300-308
+ईमेल
+ 
+आईडी
+|Email ID :
+buyer69.icari.ts@gembuyer.in
+जीएसट]आईएन
+|GSTIN :
+36AAAAI1830P3ZI
+पता
+|Address :
+Indian Institute of Millets Research, Rajendranagar,
+Hyderabad,
+Hyderabad, TELANGANA-500030, India
+ 
+$वdीय
+$वdीय
+ 
+ 
+eवीकृ $त
+eवीकृ $त
+ 
+ 
+$ववरण
+$ववरण
+|Financial Approval Detail
+|Financial Approval Detail
+आईएफडी
+ 
+सहम$त
+|IFD Concurrence :
+Yes
+5शास$नक
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Administrative Approval:
+Director, ICAR-IIMR
+$वdीय
+ 
+अनुमोदन
+ 
+का
+ 
+पदनाम
+|
+Designation of Financial Approval :
+FAO,ICAR-IIMR
+भुगतान
+भुगतान
+ 
+ 
+5ा$धकरण
+5ा$धकरण
+ 
+ 
+$ववरण
+$ववरण
+|Paying Authority Details
+|Paying Authority Details
+Role:
+PAO
+भुगतान
+ 
+का
+ 
+तरीका
+|
+Payment Mode:
+Offline
+पद
+|Designation :
+Assistant
+ईमेल
+ 
+आईडी
+|Email ID :
+buycon134.icari.ts@gembuyer.in
+जीएसट]आईएन
+|GSTIN :
+36AAAAI1830P3ZI
+पता
+|Address:
+INDIAN INSTITUTE OF MILLETS RESEARCH 
+RAJENDRANAGAR
+HYDERABAD,
+RANGAREDDY, TELANGANA-500030, India
+ 
+ 
+$वे ता
+$वे ता
+ 
+ 
+$ववरण
+$ववरण
+|Seller Details
+|Seller Details
+जेम
+ 
+$वे ता
+ 
+आईडी
+|GeM Seller ID :
+9VZW210003624220
+कं पनी
+ 
+का
+ 
+नाम
+|Company Name :
+M/S HI TECH INSTRUMENTS
+संपकJ
+ 
+नंबर
+|Contact No. :
+08146486828
+ईमेल
+ 
+आईडी
+|Email ID :
+sale.hitechinstrument@gmail.com
+पता
+| Address :
+cabin no 204,kesho ram complex,sco-623-624 ,2 floor,sector-45c,
+chandigarh, chandigarh-160047, -
+एमएसएमई
+ 
+पंजीकरण
+ 
+संrया
+|MSME Registration number :
+UDYAM-CH-01-0009073
+जीएसट]आईएन
+|GSTIN:
+04DODPR0652M1ZS (R) 
+, (M)
+एमएसई
+ 
+सामा$जक
+ 
+sेणी
+|MSE Social Category :
+General
+एमएसई
+ 
+$लंग
+ 
+sेणी
+|MSE Gender :
+Male
+*
+$जसके
+ 
+नाम
+ 
+के
+ 
+पK
+ 
+मu
+ GST/TAX 
+इनवॉइस
+ 
+पेश
+ 
+$कया
+ 
+जाएगा
+|GST / Tax invoice to be raised in the name of - Buyer
+$वतरण
+ 
+$नदyश
+ | Delivery Instructions : 
+NA
+उ{पाद
+उ{पाद
+ 
+ 
+$ववरण
+$ववरण
+|Product Details
+|Product Details
+#
+#
+आइटम
+आइटम
+ 
+ 
+$ववरण
+$ववरण
+|Item Description
+|Item Description
+आइटम
+आइटम
+$ववरण
+$ववरण
+|
+|
+Ordered
+Ordered
+Quantity
+Quantity
+इकाई
+इकाई
+ |
+ |
+Unit
+Unit
+इकाई
+इकाई
+ 
+ 
+मूय
+मूय
+(INR)|
+(INR)|
+Unit Price
+Unit Price
+(INR)
+(INR)
+कर
+कर
+ 
+ 
+$वभाजन
+$वभाजन
+ (INR)|
+ (INR)|
+Tax Bifurcation (INR)
+Tax Bifurcation (INR)
+मूय
+मूय
+ 
+ 
+(INR 
+(INR 
+मu
+मu
+ 
+ 
+सभी
+सभी
+शुक
+शुक
+ 
+ 
+और
+और
+ 
+ 
+कर
+कर
+स$हत
+स$हत
+)|
+)|
+Price
+Price
+(Inclusive of
+(Inclusive of
+all Duties and
+all Duties and
+Taxes in INR)
+Taxes in INR)
+1
+उ{पाद
+उ{पाद
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ |Product Name : 
+ |Product Name : 
+HTICO Autoclave
+ांड
+ांड
+|Brand : 
+|Brand : 
+HTICO
+ांड
+ांड
+ 
+ 
+5कार
+5कार
+|Brand Type : 
+|Brand Type : 
+Registered Brand
+कै टलॉग
+कै टलॉग
+ 
+ 
+क
+क
+ 
+ 
+$$त
+$$त
+|Catalogue Status: 
+|Catalogue Status: 
+Catalogue not verified by OEM
+कै से
+कै से
+ 
+ 
+बेचा
+बेचा
+ 
+ 
+जा
+जा
+ 
+ 
+रहा
+रहा
+ 
+ 
+है
+है
+|Selling As : 
+|Selling As : 
+Reseller not verified by OEM
+sेणी
+sेणी
+ 
+ 
+का
+का
+ 
+ 
+नाम
+नाम
+ 
+ 
+और
+और
+ 
+ 
+चतुथाश
+चतुथाश
+|Category Name & Quadrant : 
+|Category Name & Quadrant : 
+Autoclave (ICMR Specs) (Q3)
+मॉडल
+मॉडल
+|Model:
+|Model:
+ 
+HTI-AC-80 
+एचएसएन
+एचएसएन
+ 
+ 
+कोड
+कोड
+|HSN Code: 
+|HSN Code: 
+HSN not specified by seller
+4
+pieces
+58,175.373
+NA
+232,701.493
+कु ल
+ 
+ऑडJर
+ 
+मूय
+ |Total Order Value 
+(in INR)
+232,701.493
+232,701.493
+ 
+परे$षती
+परे$षती
+ 
+ 
+$ववरण
+$ववरण
+|Consignee Detail
+|Consignee Detail
+.सं.
+.सं.
+|S.No
+|S.No
+परे$षती
+परे$षती
+|Consignee
+|Consignee
+वeतु
+वeतु
+|Item
+|Item
+लॉट
+लॉट
+ 
+ 
+नंबर
+नंबर
+|
+|
+Lot No.
+Lot No.
+मा>ा
+मा>ा
+|Quantity
+|Quantity
+$दनांक
+$दनांक
+ 
+ 
+के
+के
+ 
+ 
+बाद
+बाद
+$डलीवरी
+$डलीवरी
+ 
+ 
+शु6
+शु6
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery Start
+Delivery Start
+After
+After
+$वतरण
+$वतरण
+ 
+ 
+पूरा
+पूरा
+ 
+ 
+कब
+कब
+तक
+तक
+ 
+ 
+करना
+करना
+ 
+ 
+है
+है
+|
+|
+Delivery To
+Delivery To
+Be
+Be
+Completed
+Completed
+By
+By
+पद
+| Designation : 
+Assistant Administrative Officer
+ईमेल
+ 
+आईडी
+|Email ID : 
+buyer69.icari.ts@gembuyer.in
+संपकJ
+|Contact : 
+040-24599300-308
+--- PAGE 19 ---
+1
+जीएसट]आईएन
+|GSTIN : 
+36AAAAI1830P3ZI
+पता
+|Address : 
+Indian Institute of Millets Research, Rajendranagar,
+Hyderabad,
+Hyderabad, TELANGANA-500030, India
+HTICO Autoclave
+-
+4
+25-Oct-2024
+09-Nov-2024
+Product Specification for HTICO Autoclave
+Product Specification for HTICO Autoclave
+$व$नदyश
+$व$नदyश
+|Speciﬁcation
+|Speciﬁcation
+उप
+उप
+-
+-
+$व$नदyश
+$व$नदyश
+|Sub-Spec
+|Sub-Spec
+मूय
+मूय
+|Value
+|Value
+Configuration
+Type
+Vertical, Top loading cylindrical Autoclave machine for steam and pressure sterilization 
+ 
+Sterilizer chamber capacity in
+L (usable volume)
+80 - 100 liter 
+ 
+Sterilizer Chamber Type
+Circular 
+ 
+Steriliser chamber material
+Double walled SS 304 or higher grade steel 
+ 
+Working Pressure of
+Chamber
+18 
+ pound per sqare inch
+Type of Sterilizer Chamber
+Door
+Heavy duty SS 304, Hinged door 
+ 
+Steriliser Chamber door
+Locking facility
+Foot operated locking and unlocking radial system 
+ 
+Sterilizer Chamber door
+Operation:
+Manual 
+ 
+Door sealing:
+By elastomeric rubber gasket suitable to withstand temperature upto 140 
+degree C & pressure upto 20-30 psi 
+ 
+Type of control system
+available for Steriliser cycle
+operation:
+Microprocessor based temperature controller with control accuracy ±1.0°C 
+ 
+Power supply:
+230 ± 10 volt, 50 Hz 
+ 
+Audio- visual Alarm facility
+available for notifying:
+Temperature sensor with range 100°C to 300°C, unit should be provided with a low water alarm system as well as steam
+release valves and safety valves,Cut off automatically when the autoclave is dry 
+ 
+Working Temperature
+121 
+ degree Celsius
+Resolution
+0.1°C 
+ 
+Range of Pressure Gauge
+20 
+ pound per sqare inch
+Controller
+Auto set to 15psi & 121°C 
+ 
+Overall Size
+Overall Height:
+300 
+ millimeter
+Overall Diameter
+600 
+ millimeter
+Accessories,
+Consumables &
+Warranty
+Accessories
+Water level indicator,Water inlet & outlet valves,Automatic pressure control switch,Mechanical timer,Manual Water Filling
+& Removal,The unit having a wet heater fitted at the bottom and with capacity more than 4500 W with water capacity in
+litres more than 120 L,The unit have heater fitted at the bottom and with capacity of more than 3 KW,The unit have
+heater fitted at the bottom and with capacity of more than 4 KW,The unit have heater fitted at the bottom and with
+capacity of more than 6 KW,The unit have heater fitted at the bottom and with capacity of more than 9 KW,NA 
+ 
+Warranty (Option of
+comprehensive warranty is
+available through bidding
+only, which if opted will
+supersede normal warranty
+in the catalogue)
+1 
+ year
+Quality and
+Certifications
+Compliance of Chamber
+Chamber Pressure Equipment Directives (PED),EN 13445 norms 
+ 
+Quality Compliance available
+for quality systems
+ISO 9001:2000 
+ 
+Compliance to certification
+(US FDA/CE certification will
+be accepted only when the
+Indian standards/certification
+like BIS/CDSO/AERB are not
+available)
+CE 
+ 
+ 
+$टपणी
+$टपणी
+|Note:: 
+|Note:: 
+Seller has given an undertaking that it has made arrangements for getting the stores from an authorized distributor / dealer / channel partner of the OEM of the
+offered product. At the time of delivery of goods, Seller will provide necessary chain documents (in the form of GST Invoice) to prove that the supplied goods are genuine and are
+being sourced from an authorized distributor / dealer / channel partner of the OEM. In case of any complaint about genuineness of the supplied products, Seller shall be
+responsible for providing genuine replacement supplies.
+ 
+ईपीबीजी
+ईपीबीजी
+ 
+ 
+$ववरण
+$ववरण
+ 
+ 
+| ePBG Detail
+| ePBG Detail
+--- PAGE 20 ---
+NA
+NA
+$नयम
+$नयम
+ 
+ 
+और
+और
+ 
+ 
+शत
+शत
+|Terms and Conditions
+|Terms and Conditions
+1. Special terms and conditions- 
+1. Special terms and conditions- 
+Version:1 effective from 06-01-2023
+Version:1 effective from 06-01-2023
+1.1
+1.1
+1
+1
+. 
+. 
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+All Provisions of Drugs and Cosmetics Act, 1940 and Rules made there under as amended till date will always be applicable. This will include all notifications issued by
+Central Drugs Standard Control Organisation
+Central Drugs Standard Control Organisation
+(
+(
+CDSCO
+CDSCO
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+), Ministry of Health & Family Welfare (MoHFW) and Department of Pharmaceuticals (DOP), Ministry of
+Chemicals & Fertilizers time to time in this regard.
+Chemicals & Fertilizers time to time in this regard.
+2
+2
+. 
+. 
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+The sellers are registered on GeM based on self-declaration of valid Drug License, product certification, test reports etc. However, buyers must check and validate
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+the details at their end for all applicable licenses and certifications e.g., validity and authenticity/genuineness of drug license, product certification, manufacturer
+certification/licenses, test reports etc.
+certification/licenses, test reports etc.
+3
+3
+. 
+. 
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+The price offered by the seller shall not, in any case exceed the DPCO controlled price, if any, fixed by the Central/State Government, the Maximum Retail Price (MRP)
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+and the selling price. The seller must reduce the prices if there is any reduction in DPCO ceiling price, if any.
+4
+4
+. 
+. 
+Comprehensive warranty:
+Comprehensive warranty:
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+ Comprehensive warranty shall include preventive maintenance including calibration as per technical/ service /operational manual of the
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+manufacturer, service charges and spares. During the warranty period commencing from date of the successful completion of warranty period, Service personnel
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+shall visit each consignee site as recommended in the manufacturer's technical/ service /operational manual, at least once in six months. warranty shall not be
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+including the consumables. Further there will be 98% uptime warranty during warranty period on 24 (hrs) X 7 (days) X 365 (days) basis, with penalty, to extend
+warranty period by double the downtime period.
+warranty period by double the downtime period.
+5
+5
+. 
+. 
+Service centres:
+Service centres:
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+ Details of Service outlets in India to render services for equipment to be furnished to buyer/consignees with complete address,telephone numbers, e
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+mails etc at time of making the supplies. It shall be the responsibility of seller to ensure that authorized service centres are available to cater to the areas where
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+supplies are made within reasonable distance from where the service calls can be handled.Details of toll-free numbers for service call and online registration of
+service requests also to be provided buyer/consignee at the time of supplies.
+service requests also to be provided buyer/consignee at the time of supplies.
+6
+6
+. 
+. 
+Source of supply:
+Source of supply:
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+ It shall be responsibility of seller to provide Documents regarding source of equipments such as copy of Performa invoice or any other documents
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+to establish that the products supplied are manufactured by OEM indicated and sourced from them.
+7
+7
+. 
+. 
+Packing and Marking:
+Packing and Marking:
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+ Medical equipments being very delicate and sensitive packing for the goods should be strong and durable enough to withstand transit
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+including transhipment (if any), rough handling, open storage etc. without any damage, deterioration etc. .The size, weights and volumes of the packing cases,
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+remoteness of the final destination of the goods, availability or otherwise of transport and handling facilities at all points during transit up to final destination,.
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+Quality of packing, the manner of marking within & outside the packages and provision of accompanying documentation shall take into consideration the type of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+medical equipments being supplied. The accessories shall be suitably labelled and packed. Each of the package shall be marked on three sides with indelible paint of
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+proper quality: indicating contract number and date, brief description of goods including quantity, Packing list reference number, country of origin of goods and any
+other relevant details.
+other relevant details.
+8
+8
+. 
+. 
+Spare Parts:
+Spare Parts:
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+ Seller shall provide materials, information etc. pertaining to spare parts manufactured and supplied by the OEM. It shall be ensured that the required
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+spares are available for purchase at least for 10 years from date of supplies. In case due to any reasons the production of the spare parts is discontinued sufficient
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+advance notice should be given to the buyer/consignee before such discontinuation to provide adequate time to purchase the required spare parts etc. Further, OEM
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+and their service centres/dealers shall carry sufficient inventories to assure ex-stock supply of consumables and spares for the equipments so that the same are
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+available.                                                                          OEM or reseller shall always accord most favoured client status to the buyer/consignee and shall give the most
+competitive price for spares and consumables of its machines/equipments supplied.
+competitive price for spares and consumables of its machines/equipments supplied.
+9
+9
+. 
+. 
+Installation, Training, Manuals:
+Installation, Training, Manuals:
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+ Seller shall be responsible to carry out Installation & commissioning, Supervision and Demonstration of the goods. They shall provide
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+required jigs and tools for assembly, minor civil works for the completion of the installation and Training of Consignee's representatives for operating and
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+maintaining the equipment and supplying required number of operation & maintenance manual for the goods. In case the category parameters are specifying any
+requirements regarding the installations, training and manuals the same shall also be applicable.
+requirements regarding the installations, training and manuals the same shall also be applicable.
+10
+10
+. 
+. 
+Electrical safety checking:
+Electrical safety checking:
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+ Sellers are required to make sure that they furnish the list of equipments for carrying out routine and preventive maintenance to
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+buyer/consignee .They should make sure to periodically check the electrical safety aspects as per BIS Safety Standards or equivalent .In case they do not have
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+required equipment for such testing should ensure that the equipments checked for electrical safety compliance through labs with facilities for such checking during
+every preventive maintenance call.
+every preventive maintenance call.
+11
+11
+. 
+. 
+Software:
+Software:
+ All software updates should be provided free of cost during warranty period.
+ All software updates should be provided free of cost during warranty period.
+12
+12
+. 
+. 
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+Any other Terms and Conditions which is not included or at variance with the conditions specified in STC/GTC, may be added by the buyer through Additional Terms
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+and Conditions in the bid to ensure items are procured from authentic/validated source with appropriate and applicable quality. The above terms and conditions are
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+in reverse order of precedence i.e. ATC shall supersede specific STC which shall supersede General Terms and Conditions (“GTC”), whenever there are any conflicting
+provisions.
+provisions.
+2. General Terms and Conditions-
+2. General Terms and Conditions-
+2.1
+2.1
+This contract is governed by the 
+This contract is governed by the 
+General Terms and Conditions
+General Terms and Conditions
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+, conditions stipulated to this Product/Service as provided in the Marketplace.
+2.2
+2.2
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+This Contract between the Seller and the Buyer, is for the supply of the Goods and/ or Services, detailed in the schedule above, in accordance with the General Terms and
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+Conditions (GTC) unless otherwise superseded by Goods / Services specific Special Terms and Conditions (STC) and/ or BID/Reverse Auction Additional Terms and Conditions
+(ATC), as applicable
+(ATC), as applicable
+नोट
+: 
+यह
+ 
+$सeटम
+ 
+जनरेटेड
+ 
+फाइल
+ 
+है
+। 
+कोई
+ 
+हeताKर
+ 
+क
+ 
+आवयकता
+ 
+नह
+ 
+है
+। 
+इस
+ 
+दeतावेज़
+ 
+का
+ 
+$5ंट
+ 
+आउट
+ 
+भुगतान
+/
+लेनदेन
+ 
+उेय
+ 
+के
+ 
+$लए
+ 
+माय
+ 
+नह
+ 
+है
+। 
+Note: This is system generated file. No signature is required. 
+Print out of this document is not valid for payment/ transaction purpose.
