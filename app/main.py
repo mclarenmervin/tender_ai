@@ -2395,6 +2395,10 @@ def buyer_planning_dashboard(request:Request,db:Session=Depends(get_db),user:Use
 def buyer_bids_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/buyer/bid-verification')
+def buyer_bid_verification_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/buyer/grants')
 def buyer_grants_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()

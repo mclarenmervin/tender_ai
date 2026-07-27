@@ -21,7 +21,7 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Buyer Modules", [["/dashboard/buyer/bids", "Add Bids"], ["/dashboard/buyer/grants", "Grants"]]],
+    ["Buyer Modules", [["/dashboard/buyer/bids", "Add Bid"], ["/dashboard/buyer/bid-verification", "Bids & Verification"], ["/dashboard/buyer/grants", "Grants"]]],
     ["Account", [["/dashboard/profile", "Profile"]]],
 ];
 
@@ -1310,6 +1310,110 @@ function BidEvaluationPanel({ bid, onClose }) {
                 )))
             )
         ) : h("div", { className: "notice" }, "Add at least one seller and one verification requirement to generate the evaluation table.")
+    );
+}
+
+function BuyerBidRegisterPage() {
+    const [data, setData] = useState(null);
+    const [evaluationBid, setEvaluationBid] = useState(null);
+    const [evaluationSummaries, setEvaluationSummaries] = useState({});
+    const [filters, setFilters] = useState({ q: "", status: "all", readiness: "all" });
+    const [message, setMessage] = useState("");
+    async function load() {
+        const result = await api("/api/buyer/workspace?module=bids");
+        setData(result);
+        const pairs = await Promise.all((result.items || []).map(async bid => {
+            try {
+                const evaluation = await api(`/api/buyer/bids/${bid.id}/evaluation`, { silent: true });
+                return [bid.id, evaluation.summary];
+            } catch {
+                return [bid.id, { seller_count: 0, criteria_count: 0, qualified: 0, disqualified: 0, pending: 0 }];
+            }
+        }));
+        setEvaluationSummaries(Object.fromEntries(pairs));
+    }
+    useEffect(() => { load().catch(err => setMessage(err.message)); }, []);
+    const bids = data?.items || [];
+    const visible = bids.filter(bid => {
+        const summary = evaluationSummaries[bid.id] || {};
+        const haystack = [bid.title, bid.reference_no, bid.department, bid.category, bid.city, bid.state].join(" ").toLowerCase();
+        if (filters.q && !haystack.includes(filters.q.toLowerCase())) return false;
+        if (filters.status !== "all" && bid.status !== filters.status) return false;
+        if (filters.readiness === "not_configured" && (summary.criteria_count || summary.seller_count)) return false;
+        if (filters.readiness === "pending" && !(summary.pending > 0 || (summary.seller_count > 0 && summary.qualified + summary.disqualified < summary.seller_count))) return false;
+        if (filters.readiness === "completed" && !(summary.seller_count > 0 && summary.pending === 0)) return false;
+        return true;
+    });
+    const totals = bids.reduce((acc, bid) => {
+        const summary = evaluationSummaries[bid.id] || {};
+        acc.sellers += summary.seller_count || 0;
+        acc.qualified += summary.qualified || 0;
+        acc.disqualified += summary.disqualified || 0;
+        return acc;
+    }, { sellers: 0, qualified: 0, disqualified: 0 });
+    return h(React.Fragment, null,
+        h("div", { className: "hero-panel buyer-module-hero" },
+            h("div", null, h("h2", null, "Bids & Document Verification"), h("p", null, "See every buyer bid, manage GeM applicants, and complete the seller document evaluation table.")),
+            h("div", { className: "hero-actions" },
+                h("button", { className: "primary", onClick: () => navigate("/dashboard/buyer/bids") }, "Add Bid"),
+                h("button", { onClick: load }, "Refresh")
+            )
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("section", { className: "buyer-process-metrics bid-register-summary" },
+            h("div", null, h("span", null, "Added Bids"), h("strong", null, bids.length)),
+            h("div", null, h("span", null, "Listed Sellers"), h("strong", null, totals.sellers)),
+            h("div", null, h("span", null, "Qualified"), h("strong", null, totals.qualified)),
+            h("div", null, h("span", null, "Disqualified"), h("strong", null, totals.disqualified))
+        ),
+        h("section", { className: "card bid-register-filters" },
+            h("input", { value: filters.q, onChange: e => setFilters({ ...filters, q: e.target.value }), placeholder: "Search bid number, title, department or category" }),
+            h("select", { value: filters.status, onChange: e => setFilters({ ...filters, status: e.target.value }) },
+                h("option", { value: "all" }, "All bid statuses"),
+                (data?.status_options || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")))
+            ),
+            h("select", { value: filters.readiness, onChange: e => setFilters({ ...filters, readiness: e.target.value }) },
+                h("option", { value: "all" }, "All verification stages"),
+                h("option", { value: "not_configured" }, "Not configured"),
+                h("option", { value: "pending" }, "Verification pending"),
+                h("option", { value: "completed" }, "Evaluation completed")
+            )
+        ),
+        evaluationBid ? h(BidEvaluationPanel, { bid: evaluationBid, onClose: () => { setEvaluationBid(null); load(); } }) : null,
+        h("section", { className: "bid-register-grid" },
+            visible.length ? visible.map(bid => {
+                const summary = evaluationSummaries[bid.id] || { seller_count: 0, criteria_count: 0, qualified: 0, disqualified: 0, pending: 0 };
+                const configured = summary.criteria_count > 0;
+                return h("article", { className: "buyer-item-card bid-register-card", key: bid.id },
+                    h("div", { className: "buyer-item-head" },
+                        h("div", null,
+                            h("h3", null, bid.title),
+                            h("p", null, bid.reference_no || "Bid number not entered")
+                        ),
+                        h("span", { className: "query-pill active" }, bid.status.replaceAll("_", " "))
+                    ),
+                    h("p", { className: "desc" }, [bid.department, bid.category, bid.city, bid.state].filter(Boolean).join(" · ") || "Bid details not completed"),
+                    h("div", { className: "buyer-process-metrics" },
+                        h("div", null, h("span", null, "Requirements"), h("strong", null, summary.criteria_count || 0)),
+                        h("div", null, h("span", null, "Sellers"), h("strong", null, summary.seller_count || 0)),
+                        h("div", null, h("span", null, "Qualified"), h("strong", null, summary.qualified || 0)),
+                        h("div", null, h("span", null, "Pending"), h("strong", null, summary.pending || 0))
+                    ),
+                    h("div", { className: configured ? "notice ok" : "notice" },
+                        configured ? `${summary.criteria_count} verification columns configured.` : "Document verification requirements are not configured."
+                    ),
+                    h("div", { className: "mini-links" },
+                        h("button", { className: "primary", onClick: () => setEvaluationBid(bid) }, configured ? "Open Verification Table" : "Configure Documents"),
+                        h("button", { onClick: () => navigate("/dashboard/buyer/bids") }, "Add Another Bid")
+                    )
+                );
+            }) : h(EmptyAction, {
+                title: data ? "No matching bids" : "Loading bids...",
+                text: data ? (bids.length ? "Change the filters to see other bids." : "Add the first buyer bid, then configure its document verification table.") : "Fetching the buyer bid register.",
+                action: data && !bids.length ? "Add Bid" : "",
+                onAction: () => navigate("/dashboard/buyer/bids"),
+            })
+        )
     );
 }
 
@@ -3911,6 +4015,7 @@ function App() {
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
+    else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
     else if (route === "/dashboard/buyer/grants") page = h(BuyerModulePage, { moduleKey: "grants" });
     else if (route.startsWith("/dashboard/buyer/")) page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);

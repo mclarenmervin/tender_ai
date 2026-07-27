@@ -3037,6 +3037,24 @@ td {
     padding: 0;
     min-height: auto;
 }
+.bid-register-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 14px;
+}
+.bid-register-filters {
+    display: grid;
+    grid-template-columns: minmax(260px, 1.4fr) minmax(190px, .7fr) minmax(190px, .7fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.bid-register-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(340px, 1fr));
+    gap: 14px;
+}
+.bid-register-card .notice {
+    margin: 10px 0;
+}
 .chart-box {
     height: 260px;
 }
@@ -4323,6 +4341,12 @@ select[multiple] {
     .buyer-process-metrics,
     .buyer-item-card .buyer-process-metrics,
     .buyer-guide-grid,
+    .evaluation-setup-grid,
+    .evaluation-inline-form,
+    .evaluation-summary,
+    .bid-register-summary,
+    .bid-register-filters,
+    .bid-register-grid,
     .keyword-form,
     .gem-alert-grid,
     .profile-grid,
