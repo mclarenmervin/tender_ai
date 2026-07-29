@@ -13,6 +13,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
             source_inserted=0
             source_inserted_ids=[]
             skipped_existing=0
+            updated_existing=0
             performance={}
             for item in tenders:
                 search_keyword=item.pop('_search_keyword','') or 'general'
@@ -23,6 +24,15 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                 if existing:
                     skipped_existing+=1
                     stats['duplicate']+=1
+                    changed=False
+                    for field in ['title','department','state','city','estimated_value','deadline','url','description','category']:
+                        value=item.get(field)
+                        if value not in (None,'') and getattr(existing,field,None)!=value:
+                            setattr(existing,field,value)
+                            changed=True
+                    if changed:
+                        db.commit()
+                        updated_existing+=1
                     continue
                 if os.getenv('SCRAPE_PDF_VALUES','false').lower()=='true' and hasattr(scraper,'enrich_item_from_pdf'):
                     item=scraper.enrich_item_from_pdf(item)
@@ -55,7 +65,9 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                 ))
             message=f'Fetched {len(tenders)} tenders, inserted {source_inserted} new tenders'
             if skipped_existing:
-                message+=f', skipped {skipped_existing} already saved'
+                message+=f', found {skipped_existing} already saved'
+            if updated_existing:
+                message+=f', refreshed {updated_existing} existing records'
             db.add(ScrapingLog(user_id=user_id,source=scraper.source_name,status='success',message=message)); db.commit()
             details.append({'source':scraper.source_name,'status':'success','message':message,'inserted_ids':source_inserted_ids})
         except Exception as e:

@@ -125,7 +125,7 @@ const sellerNav = [
     ["Seller Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/bids", "Bid/RA Workflow"]]],
     ["Fulfillment", [["/dashboard/seller/orders", "Orders"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"], ["/dashboard/applied", "Applied"]]],
     ["Intelligence", [["/dashboard/seller/intelligence", "Overview"], ["/dashboard/seller/intelligence/risk-data", "Risk Data"], ["/dashboard/seller/intelligence/buyers", "Buyers"], ["/dashboard/seller/intelligence/competitors", "Competitors"], ["/dashboard/seller/intelligence/risk-signals", "Risk Signals"], ["/dashboard/seller/intelligence/reports", "Reports"], ["/dashboard/seller/intelligence/documents", "Documents"]]],
-    ["Configuration", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Automation"], ["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "User Profile"]]],
+    ["Configuration", [["/dashboard/seller/keywords", "Keywords"], ["/dashboard/seller/scoring", "Scoring"], ["/dashboard/seller/settings", "Automation"], ["/dashboard/seller/data", "Data"], ["/dashboard/company-profile", "Company Profile"], ["/dashboard/profile", "User Profile"]]],
 ];
 
 function navigate(path) {
@@ -356,6 +356,7 @@ function pageTitle(path) {
     if (path === "/dashboard/seller/keywords") return "Seller Keywords";
     if (path === "/dashboard/seller/scoring") return "Seller Scoring";
     if (path === "/dashboard/seller/settings") return "Seller Settings";
+    if (path === "/dashboard/seller/data") return "Seller Data";
     if (path === "/dashboard/seller/readiness") return "Seller Readiness";
     if (path === "/dashboard/seller/catalogue") return "Catalogue Tracker";
     if (path === "/dashboard/seller/opportunities") return "Opportunity Matching";
@@ -2326,7 +2327,7 @@ function TenderRow({ tender, onSave }) {
             ) : null,
             tender.url ? h("a", { className: "source", href: tender.url, target: "_blank" }, "View source") : null
         ),
-        h("td", null, tender.department || "GeM", h("div", { className: "desc" }, tender.state || "")),
+        h("td", null, tender.department || "GeM", h("div", { className: "desc" }, [tender.city, tender.state].filter(Boolean).join(", "))),
         h("td", null, `Rs. ${money(tender.estimated_value)}`),
         h("td", null, tender.deadline || ""),
         h("td", null, h("span", { className: `score ${scoreClass(tender.relevance_score ?? 0)}` }, tender.relevance_score ?? 0)),
@@ -3767,10 +3768,23 @@ function DeletePage() {
     useEffect(() => { api("/api/admin/delete-summary").then(setSummary); }, []);
     async function remove() {
         const result = await api("/api/admin/delete-tenders", { method: "POST", body: JSON.stringify({ confirm }) });
-        setMessage(`Deleted ${result.deleted_tenders || 0} tenders.`);
+        setMessage(`Deleted ${result.deleted_tenders || 0} tenders, ${result.deleted_seller_bids || 0} bid workflows, and ${result.deleted_seller_orders || 0} linked orders.`);
         setSummary(await api("/api/admin/delete-summary"));
     }
-    return h("div", { className: "card danger-card" }, h("h3", null, "Delete Tender Data"), h("p", { className: "desc" }, `Current tender entries: ${summary?.tenders ?? 0}`), message ? h("p", { className: "status" }, message) : null, h("input", { value: confirm, onChange: e => setConfirm(e.target.value), placeholder: "DELETE ALL TENDERS" }), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: e => setChecked(e.target.checked) }), " I understand this deletes tender data for this user."), h("button", { className: "primary danger", disabled: confirm !== "DELETE ALL TENDERS" || !checked, onClick: remove }, "Delete All Tender Entries"));
+    return h("div", { className: "card danger-card" },
+        h("h3", null, "Delete All Tender Data"),
+        h("p", { className: "desc" }, "This deletes only data owned by your account. Your login, company profile, seller readiness documents, and catalogue are retained."),
+        h("div", { className: "buyer-process-metrics" },
+            h("div", null, h("span", null, "Tenders"), h("strong", null, summary?.tenders ?? 0)),
+            h("div", null, h("span", null, "Documents"), h("strong", null, summary?.documents ?? 0)),
+            h("div", null, h("span", null, "Bid Workflows"), h("strong", null, summary?.seller_bid_workflows ?? 0)),
+            h("div", null, h("span", null, "Linked Orders"), h("strong", null, summary?.seller_orders ?? 0))
+        ),
+        message ? h("p", { className: "status" }, message) : null,
+        h("input", { value: confirm, onChange: e => setConfirm(e.target.value), placeholder: "DELETE ALL TENDERS" }),
+        h("label", { className: "toggle" }, h("input", { type: "checkbox", checked, onChange: e => setChecked(e.target.checked) }), " I understand this permanently deletes my tender data and linked seller workflows."),
+        h("button", { className: "primary danger", disabled: confirm !== "DELETE ALL TENDERS" || !checked, onClick: remove }, "Delete All My Tender Data")
+    );
 }
 
 function CompanyProfilePage() {
@@ -4080,6 +4094,7 @@ function App() {
     else if (route === "/dashboard/seller/keywords") page = h(KeywordsPage);
     else if (route === "/dashboard/seller/scoring") page = h(ScoringPage);
     else if (route === "/dashboard/seller/settings") page = h(SettingsPage);
+    else if (route === "/dashboard/seller/data") page = h(DeletePage);
     else if (route === "/dashboard/tenders") page = h(DashboardPage, { view: "all" });
     else if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
     else if (route === "/dashboard/upcoming-deadlines") page = h(DashboardPage, { view: "upcoming" });

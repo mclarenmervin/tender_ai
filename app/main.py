@@ -39,6 +39,7 @@ from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, exp
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
+from app.scraper.location_parser import extract_location, normalize_state
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 load_dotenv(); app=FastAPI(title='Tender AI Agent MVP',version='1.0.0')
@@ -80,6 +81,7 @@ def ensure_schema_updates():
     with engine.begin() as conn:
         for ddl in [
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
@@ -152,6 +154,32 @@ def ensure_schema_updates():
             "CREATE INDEX IF NOT EXISTS ix_gem_bid_status_logs_bid_id ON gem_bid_status_logs(bid_id)",
         ]:
             conn.exec_driver_sql(ddl)
+    repair_tender_locations()
+
+def repair_tender_locations():
+    db=SessionLocal()
+    try:
+        changed=0
+        for tender in db.query(Tender).yield_per(250):
+            current_state=normalize_state(tender.state)
+            inferred_state,inferred_city=extract_location(
+                ' '.join([tender.title or '',tender.department or '',tender.description or '']),
+                state_value=current_state,
+                city_value=tender.city or '',
+            )
+            next_state=current_state or inferred_state or None
+            next_city=tender.city or inferred_city or None
+            if tender.state!=next_state or tender.city!=next_city:
+                tender.state=next_state
+                tender.city=next_city
+                changed+=1
+        if changed:
+            db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
 
 @app.on_event("startup")
 def startup_schema_sync():
@@ -388,6 +416,7 @@ def tender_to_dict(tender):
         'title':tender.title,
         'department':tender.department,
         'state':tender.state,
+        'city':tender.city or '',
         'estimated_value':tender.estimated_value or 0,
         'deadline':iso(tender.deadline),
         'url':tender.url,
@@ -2495,6 +2524,10 @@ def seller_scoring_dashboard(request:Request,db:Session=Depends(get_db),user:Use
 def seller_settings_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/seller/data')
+def seller_data_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/seller/intelligence')
 def seller_intelligence_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
@@ -3700,6 +3733,7 @@ def api_tenders(
             condition
             for value in city_terms
             for condition in [
+                Tender.city.ilike(f'%{value}%'),
                 Tender.title.ilike(f'%{value}%'),
                 Tender.department.ilike(f'%{value}%'),
                 Tender.description.ilike(f'%{value}%'),
@@ -3790,6 +3824,7 @@ def api_tender_filter_options(db:Session=Depends(get_db),user:User=Depends(get_c
     return {
         'departments':values('department'),
         'states':values('state'),
+        'cities':values('city'),
         'categories':values('category'),
         'sources':values('source'),
         'statuses':values('status') or ['new','reviewing','applied','won','lost','ignored'],
@@ -5119,6 +5154,8 @@ def api_delete_summary(db:Session=Depends(get_db),user:User=Depends(get_current_
         'scrape_logs':db.query(ScrapingLog).filter(ScrapingLog.user_id==user.id).count(),
         'scrape_runs':db.query(ScrapeRun).filter(ScrapeRun.user_id==user.id).count(),
         'scrape_jobs':db.query(ScrapeJob).filter(ScrapeJob.user_id==user.id).count(),
+        'seller_bid_workflows':db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.tender_id.in_(tender_ids)).count() if tender_ids else 0,
+        'seller_orders':db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id,SellerOrderFulfillment.tender_id.in_(tender_ids)).count() if tender_ids else 0,
     }
 
 @app.get('/tenders')
@@ -5138,6 +5175,7 @@ def tender_export_rows(tenders):
             'Title':t.title or '',
             'Department':t.department or '',
             'State':t.state or '',
+            'City':t.city or '',
             'Estimated Value':str(t.estimated_value or 0),
             'Deadline':str(t.deadline or ''),
             'Source':t.source or '',
@@ -6203,7 +6241,11 @@ def delete_tenders(confirm:str=Form(...),db:Session=Depends(get_db),user:User=De
     deleted_eligibility=0
     deleted_bid_decisions=0
     deleted_performance=0
+    deleted_seller_bids=0
+    deleted_seller_orders=0
     if user_tender_ids:
+        deleted_seller_orders=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id,SellerOrderFulfillment.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
+        deleted_seller_bids=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_bid_decisions=db.query(BidDecision).filter(BidDecision.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_eligibility=db.query(TenderEligibility).filter(TenderEligibility.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_documents=db.query(TenderDocument).filter(TenderDocument.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
@@ -6226,6 +6268,8 @@ def delete_tenders(confirm:str=Form(...),db:Session=Depends(get_db),user:User=De
         'deleted_logs':deleted_logs,
         'deleted_runs':deleted_runs,
         'deleted_jobs':deleted_jobs,
+        'deleted_seller_bids':deleted_seller_bids,
+        'deleted_seller_orders':deleted_seller_orders,
     }
 
 @app.post('/api/admin/delete-tenders')
@@ -6240,7 +6284,11 @@ async def api_delete_tenders(request:Request,db:Session=Depends(get_db),user:Use
     deleted_eligibility=0
     deleted_bid_decisions=0
     deleted_performance=0
+    deleted_seller_bids=0
+    deleted_seller_orders=0
     if user_tender_ids:
+        deleted_seller_orders=db.query(SellerOrderFulfillment).filter(SellerOrderFulfillment.user_id==user.id,SellerOrderFulfillment.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
+        deleted_seller_bids=db.query(SellerBidParticipation).filter(SellerBidParticipation.user_id==user.id,SellerBidParticipation.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_bid_decisions=db.query(BidDecision).filter(BidDecision.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_eligibility=db.query(TenderEligibility).filter(TenderEligibility.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
         deleted_documents=db.query(TenderDocument).filter(TenderDocument.tender_id.in_(user_tender_ids)).delete(synchronize_session=False)
@@ -6263,6 +6311,8 @@ async def api_delete_tenders(request:Request,db:Session=Depends(get_db),user:Use
         'deleted_logs':deleted_logs,
         'deleted_runs':deleted_runs,
         'deleted_jobs':deleted_jobs,
+        'deleted_seller_bids':deleted_seller_bids,
+        'deleted_seller_orders':deleted_seller_orders,
     }
 @app.post("/rescore")
 def rescore(request: Request, db: Session = Depends(get_db), user: User = Depends(get_current_user)):

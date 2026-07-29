@@ -11,6 +11,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 from app.scraper.base_scraper import BaseScraper
+from app.scraper.location_parser import extract_location
 
 
 class GemScraper(BaseScraper):
@@ -40,15 +41,26 @@ class GemScraper(BaseScraper):
         return list(dict.fromkeys(re.findall(r"GEM/\d{4}/B/\d+", text or "")))
 
     def extract_date(self, text):
-        for pattern in [r"(\d{2}-\d{2}-\d{4})", r"(\d{2}/\d{2}/\d{4})"]:
-            match = re.search(pattern, text or "")
-            if match:
-                raw = match.group(1)
-                for fmt in ("%d-%m-%Y", "%d/%m/%Y"):
-                    try:
-                        return datetime.strptime(raw, fmt).date()
-                    except ValueError:
-                        pass
+        labelled = self.extract_field(text, [
+            "Bid End Date/Time",
+            "Bid End Date",
+            "End Date/Time",
+            "End Date",
+            "Bid Closing Date",
+            "Closing Date",
+        ])
+        candidates = [labelled] if labelled else []
+        candidates.extend(re.findall(r"\d{2}[-/]\d{2}[-/]\d{4}", text or ""))
+        for candidate in candidates:
+            match = re.search(r"\d{2}[-/]\d{2}[-/]\d{4}", candidate or "")
+            if not match:
+                continue
+            raw = match.group(0)
+            for fmt in ("%d-%m-%Y", "%d/%m/%Y"):
+                try:
+                    return datetime.strptime(raw, fmt).date()
+                except ValueError:
+                    pass
         return date.today()
 
     def extract_value(self, text):
@@ -89,13 +101,18 @@ class GemScraper(BaseScraper):
 
         for i, line in enumerate(lines):
             for label in labels:
-                if label.lower() in line.lower():
-                    if ":" in line:
-                        value = line.split(":", 1)[1].strip()
-                        if value:
-                            return value
-                    if i + 1 < len(lines):
-                        return lines[i + 1]
+                match = re.search(
+                    rf"(?:^|/)\s*{re.escape(label)}\s*(?::|[-–|])?\s*(.*?)\s*$",
+                    line,
+                    re.IGNORECASE,
+                )
+                if not match:
+                    continue
+                value = self.clean_text(match.group(1))
+                if value and value.lower() != label.lower():
+                    return value
+                if i + 1 < len(lines):
+                    return lines[i + 1]
         return ""
 
     def location_enabled(self):
@@ -128,6 +145,15 @@ class GemScraper(BaseScraper):
         matched_state = self.matched_state(pdf_text)
         if matched_state:
             item["state"] = matched_state.title()[:100]
+        state, city = extract_location(
+            pdf_text,
+            state_value=item.get("state", ""),
+            city_value=item.get("city", ""),
+            configured_states=self.state_filters,
+            configured_city=self.city_filter,
+        )
+        item["state"] = state[:100]
+        item["city"] = city[:150]
         return True
 
     def matched_state(self, text):
@@ -369,12 +395,26 @@ class GemScraper(BaseScraper):
             "Office Name",
         ]) or "GeM"
 
-        state = self.extract_field(full_text, [
+        raw_state = self.extract_field(full_text, [
             "State Name",
             "State",
             "Consignee State",
             "Buyer State",
-        ]) or (self.state_filters[0].title() if len(self.state_filters) == 1 else "") or "India"
+        ])
+        raw_city = self.extract_field(full_text, [
+            "City",
+            "District",
+            "Consignee District",
+            "Delivery Location",
+            "Location",
+        ])
+        state, city = extract_location(
+            full_text,
+            state_value=raw_state,
+            city_value=raw_city,
+            configured_states=self.state_filters,
+            configured_city=self.city_filter,
+        )
 
         category = self.extract_field(full_text, [
             "Item Category",
@@ -390,6 +430,7 @@ class GemScraper(BaseScraper):
             "title": title[:500],
             "department": department[:500],
             "state": state[:100],
+            "city": city[:150],
             "estimated_value": self.extract_value(full_text),
             "deadline": self.extract_date(full_text),
             "url": url,
@@ -409,6 +450,15 @@ class GemScraper(BaseScraper):
 
         description = self.clean_text((item.get("description") or "") + "\n" + pdf_text)
         item["description"] = description[:5000]
+        state, city = extract_location(
+            pdf_text,
+            state_value=item.get("state", ""),
+            city_value=item.get("city", ""),
+            configured_states=self.state_filters,
+            configured_city=self.city_filter,
+        )
+        item["state"] = state[:100]
+        item["city"] = city[:150]
         return item
 
     def scrape(self):
