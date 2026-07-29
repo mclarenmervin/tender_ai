@@ -353,6 +353,20 @@ def split_filter(value):
         return []
     return [item.strip() for item in str(value).split(',') if item.strip()]
 
+CITY_FILTER_ALIASES={
+    'the dangs':['The Dangs','Dang','Dangs','Ahwa'],
+    'chhotaudepur':['Chhotaudepur','Chhota Udepur','Chhota-Udepur'],
+    'dadra & nagar haveli':['Dadra & Nagar Haveli','Dadra and Nagar Haveli','DNH'],
+    'panch mahals':['Panch Mahals','Panchmahal','Panch Mahal','Godhra'],
+    'mahesana':['Mahesana','Mehsana'],
+    'arvalli':['Arvalli','Aravalli'],
+    'devbhumi dwarka':['Devbhumi Dwarka','Devbhoomi Dwarka'],
+    'kutch':['Kutch','Kachchh'],
+    'sabarkantha':['Sabarkantha','Sabar Kantha'],
+    'surendra nagar':['Surendra Nagar','Surendranagar'],
+    'banaskantha':['Banaskantha','Banas Kantha'],
+}
+
 def tender_to_dict(tender):
     eligibility=getattr(tender,'eligibility',None)
     bid_decision=getattr(tender,'bid_decision',None)
@@ -3590,6 +3604,7 @@ def api_tenders(
     qualification:str='',
     eligibility_query:str='',
     location:str='',
+    city:str='',
     excluded_keywords:str='',
     include_expired:bool=False,
     score:str='all',
@@ -3612,7 +3627,7 @@ def api_tenders(
     limit=max(1,min(500,limit))
     offset=max(0,offset)
     query=user_tenders(db,user)
-    uses_eligibility_text=bool((q or authority or qualification or eligibility_query or location or excluded_keywords or '').strip())
+    uses_eligibility_text=bool((q or authority or qualification or eligibility_query or location or city or excluded_keywords or '').strip())
     if uses_eligibility_text:
         query=query.outerjoin(TenderEligibility,TenderEligibility.tender_id==Tender.id)
     if view=='high':
@@ -3663,6 +3678,23 @@ def api_tenders(
             condition
             for term in location_terms
             for condition in [Tender.state.ilike(f'%{term}%'),Tender.description.ilike(f'%{term}%'),Tender.department.ilike(f'%{term}%')]
+        ]))
+    city_values=split_filter(city)
+    if city_values:
+        city_terms=list(dict.fromkeys(
+            alias
+            for value in city_values
+            for alias in CITY_FILTER_ALIASES.get(value.lower(),[value])
+        ))
+        query=query.filter(or_(*[
+            condition
+            for value in city_terms
+            for condition in [
+                Tender.title.ilike(f'%{value}%'),
+                Tender.department.ilike(f'%{value}%'),
+                Tender.description.ilike(f'%{value}%'),
+                Tender.state.ilike(f'%{value}%'),
+            ]
         ]))
     excluded_terms=split_search_terms(excluded_keywords)
     for term in excluded_terms:

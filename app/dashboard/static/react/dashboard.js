@@ -2128,6 +2128,37 @@ function TenderPager({ page, pages, pageSize, resultCount, loading, onPage, onPa
     );
 }
 
+const priorityAdvancedCities = [
+    "Tapi", "Vyara", "Surat", "Navsari", "The Dangs", "Chhotaudepur", "Narmada",
+    "Vapi", "Bharuch", "Valsad", "Dadra & Nagar Haveli", "Ankleshwar", "Vadodara", "Panch Mahals",
+];
+const otherAdvancedCities = [
+    "Ahmedabad", "Jamnagar", "Mahesana", "Rajkot", "Gir Somnath", "Morbi", "Arvalli",
+    "Porbandar", "Kheda", "Devbhumi Dwarka", "Kutch", "Amreli", "Botad", "Sabarkantha",
+    "Surendra Nagar", "Patan", "Banaskantha", "Dahod", "Mahisagar", "Anand", "Junagadh",
+    "Bhavnagar", "Gandhinagar",
+];
+
+function AdvancedCheckboxFilter({ label, items, value, onChange, priorityCount = 0 }) {
+    const selected = (value || "").split(",").map(item => item.trim()).filter(Boolean);
+    function toggle(item) {
+        const next = selected.includes(item) ? selected.filter(value => value !== item) : [...selected, item];
+        onChange(next.join(","));
+    }
+    return h("fieldset", { className: "advanced-checkbox-filter" },
+        h("legend", null, label),
+        h("div", { className: "advanced-checkbox-grid" },
+            (items || []).map((item, index) => h(React.Fragment, { key: item },
+                priorityCount && index === priorityCount ? h("div", { className: "city-priority-divider" }, h("span", null, "Other locations")) : null,
+                h("label", { className: index < priorityCount ? "priority-location" : "" },
+                    h("input", { type: "checkbox", checked: selected.includes(item), onChange: () => toggle(item) }),
+                    h("span", null, item)
+                )
+            ))
+        )
+    );
+}
+
 function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply, onReset, resultCount, loading, page, pages, pageSize, onPage, onPageSize }) {
     const [advancedOpen, setAdvancedOpen] = useState(false);
     const [statusMsg, setStatusMsg] = useState("");
@@ -2165,9 +2196,21 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
         advancedOpen ? h("div", { className: "advanced-filters" },
             select("status", "Status", options.statuses),
             select("department", "Buyer", options.departments),
-            select("state", "State", options.states),
             select("category", "Category", options.categories),
             select("source", "Source", options.sources),
+            h(AdvancedCheckboxFilter, {
+                label: "State",
+                items: [...new Set(["Gujarat", ...(options.states || [])])].sort((a, b) => a === "Gujarat" ? -1 : b === "Gujarat" ? 1 : a.localeCompare(b)),
+                value: filters.state,
+                onChange: value => update("state", value),
+            }),
+            h(AdvancedCheckboxFilter, {
+                label: "City",
+                items: [...priorityAdvancedCities, ...otherAdvancedCities],
+                priorityCount: priorityAdvancedCities.length,
+                value: filters.city,
+                onChange: value => update("city", value),
+            }),
             h("label", { className: "field-block" }, h("span", null, "Tender authority / department"), h("input", { value: filters.authority, onChange: e => update("authority", e.target.value), placeholder: "Authority, office, buyer" })),
             h("label", { className: "field-block" }, h("span", null, "Qualification criteria"), h("input", { value: filters.qualification, onChange: e => update("qualification", e.target.value), placeholder: "Experience, turnover, technical terms" })),
             h("label", { className: "field-block" }, h("span", null, "Eligibility criteria"), h("input", { value: filters.eligibility_query, onChange: e => update("eligibility_query", e.target.value), placeholder: "Certificates, documents, OEM, MSME" })),
@@ -2311,7 +2354,7 @@ function DashboardPage({ view }) {
     const [summary, setSummary] = useState(null);
     const [tenders, setTenders] = useState([]);
     const [options, setOptions] = useState({ departments: [], states: [], categories: [], sources: [], statuses: [] });
-    const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", excluded_keywords: "", include_expired: view !== "upcoming", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
+    const blankFilters = { q: "", authority: "", qualification: "", eligibility_query: "", location: "", city: "", excluded_keywords: "", include_expired: view !== "upcoming", score: "all", status: "", department: "", state: "", category: "", source: "", min_value: "", max_value: "", deadline_from: "", deadline_to: "", deadline_bucket: "", eligibility: "", bid_decision: "", sort: "newest" };
     const [filters, setFilters] = useState(blankFilters);
     const [resultCount, setResultCount] = useState(0);
     const [page, setPage] = useState(1);
