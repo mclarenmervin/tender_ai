@@ -2327,7 +2327,11 @@ function TenderRow({ tender, onSave }) {
             ) : null,
             tender.url ? h("a", { className: "source", href: tender.url, target: "_blank" }, "View source") : null
         ),
-        h("td", null, tender.department || "GeM", h("div", { className: "desc" }, [tender.city, tender.state].filter(Boolean).join(", "))),
+        h("td", null,
+            tender.department || "GeM",
+            tender.address ? h("div", { className: "desc" }, tender.address) : null,
+            h("div", { className: "desc" }, [tender.city, tender.state].filter(Boolean).join(", "))
+        ),
         h("td", null, `Rs. ${money(tender.estimated_value)}`),
         h("td", null, tender.deadline || ""),
         h("td", null, h("span", { className: `score ${scoreClass(tender.relevance_score ?? 0)}` }, tender.relevance_score ?? 0)),

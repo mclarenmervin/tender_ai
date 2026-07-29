@@ -82,6 +82,7 @@ def ensure_schema_updates():
         for ddl in [
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS address TEXT",
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
@@ -161,6 +162,9 @@ def repair_tender_locations():
     try:
         changed=0
         for tender in db.query(Tender).yield_per(250):
+            if (tender.department or '').strip().lower().rstrip(':') in {'and address','address'}:
+                tender.department='GeM'
+                changed+=1
             current_state=normalize_state(tender.state)
             inferred_state,inferred_city=extract_location(
                 ' '.join([tender.title or '',tender.department or '',tender.description or '']),
@@ -415,6 +419,7 @@ def tender_to_dict(tender):
         'tender_id':tender.tender_id,
         'title':tender.title,
         'department':tender.department,
+        'address':tender.address or '',
         'state':tender.state,
         'city':tender.city or '',
         'estimated_value':tender.estimated_value or 0,
@@ -5174,6 +5179,7 @@ def tender_export_rows(tenders):
             'Tender ID':t.tender_id or '',
             'Title':t.title or '',
             'Department':t.department or '',
+            'Address':t.address or '',
             'State':t.state or '',
             'City':t.city or '',
             'Estimated Value':str(t.estimated_value or 0),

@@ -101,6 +101,14 @@ class GemScraper(BaseScraper):
 
         for i, line in enumerate(lines):
             for label in labels:
+                # Reject partial label matches such as "Department Name" in
+                # "Department Name And Address".
+                if not re.search(
+                    rf"^\s*{re.escape(label)}\s*(?::|\||-|$)",
+                    line,
+                    re.IGNORECASE,
+                ):
+                    continue
                 match = re.search(
                     rf"(?:^|/)\s*{re.escape(label)}\s*(?::|[-–|])?\s*(.*?)\s*$",
                     line,
@@ -393,7 +401,19 @@ class GemScraper(BaseScraper):
             "Ministry",
             "Buyer Organization",
             "Office Name",
-        ]) or "GeM"
+        ])
+        address = self.extract_field(full_text, [
+            "Department Name And Address",
+            "Department Name & Address",
+            "Buyer Address",
+            "Office Address",
+            "Consignee Address",
+            "Department Address",
+            "Address",
+        ])
+        if department.strip().lower().rstrip(":") in {"and address", "address"}:
+            department = ""
+        department = department or "GeM"
 
         raw_state = self.extract_field(full_text, [
             "State Name",
@@ -429,6 +449,7 @@ class GemScraper(BaseScraper):
             "tender_id": bid_no,
             "title": title[:500],
             "department": department[:500],
+            "address": address[:2000],
             "state": state[:100],
             "city": city[:150],
             "estimated_value": self.extract_value(full_text),
@@ -447,6 +468,27 @@ class GemScraper(BaseScraper):
         value = self.extract_value(pdf_text)
         if value:
             item["estimated_value"] = value
+
+        if not item.get("address"):
+            item["address"] = self.extract_field(pdf_text, [
+                "Department Name And Address",
+                "Department Name & Address",
+                "Buyer Address",
+                "Office Address",
+                "Consignee Address",
+                "Department Address",
+                "Address",
+            ])[:2000]
+        if not item.get("department") or item.get("department") == "GeM":
+            pdf_department = self.extract_field(pdf_text, [
+                "Department Name",
+                "Organisation Name",
+                "Buyer Organization",
+                "Office Name",
+                "Ministry",
+            ])
+            if pdf_department:
+                item["department"] = pdf_department[:500]
 
         description = self.clean_text((item.get("description") or "") + "\n" + pdf_text)
         item["description"] = description[:5000]

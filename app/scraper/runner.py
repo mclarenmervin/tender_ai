@@ -25,7 +25,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                     skipped_existing+=1
                     stats['duplicate']+=1
                     changed=False
-                    for field in ['title','department','state','city','estimated_value','deadline','url','description','category']:
+                    for field in ['title','department','address','state','city','estimated_value','deadline','url','description','category']:
                         value=item.get(field)
                         if value not in (None,'') and getattr(existing,field,None)!=value:
                             setattr(existing,field,value)
