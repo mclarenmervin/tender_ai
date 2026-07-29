@@ -46,6 +46,16 @@ BASE_DIR=Path(__file__).resolve().parent.parent
 STATIC_DIR=Path(__file__).parent/'dashboard'/'static'
 STATIC_DIR.mkdir(exist_ok=True)
 app.mount('/static',StaticFiles(directory=str(STATIC_DIR)),name='static')
+
+@app.middleware('http')
+async def prevent_stale_react_assets(request:Request,call_next):
+    response=await call_next(request)
+    if request.url.path.startswith('/static/react/') and request.url.path.endswith(('.js','.css','.html')):
+        response.headers['Cache-Control']='no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma']='no-cache'
+        response.headers['Expires']='0'
+    return response
+
 NOVNC_DIR=Path(os.getenv('NOVNC_STATIC_DIR','/usr/share/novnc'))
 if NOVNC_DIR.exists():
     app.mount('/novnc',StaticFiles(directory=str(NOVNC_DIR)),name='novnc')
