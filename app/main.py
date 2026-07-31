@@ -8,6 +8,7 @@ import asyncio
 import shutil
 import socket
 import uuid
+import itertools
 from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape
@@ -4183,6 +4184,124 @@ async def api_create_bid_from_opportunity(tender_id:int,request:Request,db:Sessi
 def api_seller_analytics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return build_seller_analytics(db,user)
 
+def procurement_intelligence(db,user_id):
+    bids=db.query(ProcurementBid).filter(ProcurementBid.user_id==user_id).all()
+    bid_ids=[row.id for row in bids]
+    participants=db.query(ProcurementBidParticipant).filter(ProcurementBidParticipant.user_id==user_id,ProcurementBidParticipant.bid_id.in_(bid_ids)).all() if bid_ids else []
+    vendor_ids={row.vendor_id for row in participants if row.vendor_id}
+    vendors={row.id:row for row in db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user_id,ProcurementVendor.id.in_(vendor_ids)).all()} if vendor_ids else {}
+    buyers={row.id:row for row in db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user_id).all()}
+    by_bid={}
+    for row in participants:
+        by_bid.setdefault(row.bid_id,[]).append(row)
+    price_gaps=[]
+    vendor_stats={}
+    bid_vendor_sets=[]
+    for bid in bids:
+        rows=by_bid.get(bid.id,[])
+        ranked=sorted([row for row in rows if row.quoted_price and (row.rank or 999)<999],key=lambda row:(row.rank or 999,row.quoted_price))
+        if len(ranked)>=2:
+            l1,l2=ranked[:2]
+            gap=round(((l2.quoted_price-l1.quoted_price)/l1.quoted_price)*100,2) if l1.quoted_price else 0
+            l3=ranked[2] if len(ranked)>=3 else None
+            price_gaps.append({'bid_no':bid.bid_no,'l1':vendors.get(l1.vendor_id).vendor_name_canonical if vendors.get(l1.vendor_id) else 'Unknown','l1_price':l1.quoted_price,'l2':vendors.get(l2.vendor_id).vendor_name_canonical if vendors.get(l2.vendor_id) else 'Unknown','l2_price':l2.quoted_price,'l3':vendors.get(l3.vendor_id).vendor_name_canonical if l3 and vendors.get(l3.vendor_id) else '','l3_price':l3.quoted_price if l3 else None,'gap_percent':gap,'l3_gap_percent':round(((l3.quoted_price-l1.quoted_price)/l1.quoted_price)*100,2) if l3 and l1.quoted_price else None,'risk_level':'high' if gap>=25 else 'medium' if gap>=10 else 'low'})
+        names=[]
+        for row in rows:
+            vendor=vendors.get(row.vendor_id)
+            if not vendor: continue
+            name=vendor.vendor_name_canonical or vendor.vendor_name_clean or vendor.vendor_name_raw
+            names.append(name)
+            stat=vendor_stats.setdefault(name,{'vendor':name,'bids':0,'awards':0,'quoted_value':0})
+            stat['bids']+=1; stat['awards']+=1 if row.is_awarded else 0; stat['quoted_value']+=row.quoted_price or 0
+        if len(set(names))>=2:
+            bid_vendor_sets.append((bid,set(names)))
+    total_awards=sum(row['awards'] for row in vendor_stats.values())
+    dominance=[]
+    for row in vendor_stats.values():
+        row['award_share']=round(row['awards']*100/total_awards,2) if total_awards else 0
+        row['risk_level']='high' if row['award_share']>=50 and row['awards']>=3 else 'medium' if row['award_share']>=30 and row['awards']>=2 else 'low'
+        dominance.append(row)
+    dominance.sort(key=lambda row:(row['awards'],row['bids']),reverse=True)
+    groups={}
+    for bid,names in bid_vendor_sets:
+        for pair in itertools.combinations(sorted(names),2):
+            entry=groups.setdefault(pair,{'group':' + '.join(pair),'bids_together':0,'bid_numbers':[]})
+            entry['bids_together']+=1; entry['bid_numbers'].append(bid.bid_no)
+    repeated=[]
+    for row in groups.values():
+        if row['bids_together']<2: continue
+        row['risk_level']='high' if row['bids_together']>=5 else 'medium' if row['bids_together']>=3 else 'low'
+        repeated.append(row)
+    repeated.sort(key=lambda row:row['bids_together'],reverse=True)
+    restrictive=[]
+    flags=db.query(ProcurementRiskFlag).filter(ProcurementRiskFlag.user_id==user_id,ProcurementRiskFlag.flag_type=='restrictive_clause').all()
+    bid_map={row.id:row for row in bids}
+    for flag in flags:
+        bid=bid_map.get(flag.bid_id)
+        restrictive.append({'bid_no':bid.bid_no if bid else 'Unknown','risk_score':flag.risk_score,'risk_level':flag.risk_level,'explanation':flag.explanation or ''})
+    return {'bids':bids,'participants':participants,'vendors':vendors,'buyers':buyers,'price_gaps':price_gaps,'dominance':dominance,'repeated_groups':repeated,'restrictive_clauses':restrictive}
+
+def parse_import_date(value):
+    value=(value or '').strip()
+    for fmt in ('%Y-%m-%d','%d-%m-%Y','%d/%m/%Y'):
+        try:return datetime.strptime(value,fmt).date()
+        except ValueError:pass
+    return None
+
+def parse_import_number(value):
+    cleaned=re.sub(r'[^0-9.-]','',str(value or ''))
+    try:return int(float(cleaned)) if cleaned else None
+    except ValueError:return None
+
+@app.post('/api/seller/intelligence/import-results')
+async def api_import_procurement_results(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json(); content=payload.get('content') or ''
+    if not content.strip(): raise HTTPException(400,'CSV content is required')
+    reader=csv.DictReader(io.StringIO(content.lstrip('\ufeff')))
+    if not reader.fieldnames or 'bid_no' not in [str(x).strip().lower() for x in reader.fieldnames]:
+        raise HTTPException(400,'CSV must contain a bid_no column')
+    imported=0; errors=[]
+    for line,raw in enumerate(reader,start=2):
+        row={str(k or '').strip().lower():str(v or '').strip() for k,v in raw.items()}
+        bid_no=row.get('bid_no','')
+        if not bid_no: errors.append(f'Line {line}: bid_no missing'); continue
+        buyer_name=row.get('buyer') or row.get('department') or 'Unknown Buyer'
+        buyer=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id,ProcurementBuyer.buyer_name_clean==buyer_name.lower()).first()
+        if not buyer:
+            buyer=ProcurementBuyer(user_id=user.id,buyer_name_raw=buyer_name,buyer_name_clean=buyer_name.lower(),department=row.get('department') or buyer_name,state=row.get('state'),district=row.get('district')); db.add(buyer); db.flush()
+        category_name=row.get('category') or 'Uncategorised'
+        category=db.query(ProcurementCategory).filter(ProcurementCategory.user_id==user.id,ProcurementCategory.category_name==category_name).first()
+        if not category: category=ProcurementCategory(user_id=user.id,category_name=category_name); db.add(category); db.flush()
+        bid=db.query(ProcurementBid).filter(ProcurementBid.user_id==user.id,ProcurementBid.bid_no==bid_no).first()
+        if not bid: bid=ProcurementBid(user_id=user.id,bid_no=bid_no); db.add(bid); db.flush()
+        bid.bid_title=row.get('bid_title') or bid.bid_title; bid.buyer_id=buyer.id; bid.category_id=category.id; bid.state=row.get('state') or bid.state; bid.district=row.get('district') or bid.district
+        bid.bid_start_date=parse_import_date(row.get('bid_start_date')) or bid.bid_start_date; bid.bid_end_date=parse_import_date(row.get('bid_end_date')) or bid.bid_end_date
+        bid.estimated_value=parse_import_number(row.get('estimated_value')) or bid.estimated_value; bid.awarded_value=parse_import_number(row.get('awarded_value')) or bid.awarded_value
+        bid.total_bidders=parse_import_number(row.get('total_bidders')) or bid.total_bidders; bid.technically_qualified=parse_import_number(row.get('technically_qualified')) or bid.technically_qualified; bid.technically_disqualified=parse_import_number(row.get('technically_disqualified')) or bid.technically_disqualified
+        bid.status=row.get('status') or bid.status; bid.extraction_status='imported'; bid.confidence_score=1
+        vendor_name=row.get('vendor') or row.get('vendor_name')
+        if vendor_name:
+            canonical=re.sub(r'\s+',' ',vendor_name).strip().upper()
+            vendor=db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user.id,ProcurementVendor.vendor_name_canonical==canonical).first()
+            if not vendor: vendor=ProcurementVendor(user_id=user.id,vendor_name_raw=vendor_name,vendor_name_clean=vendor_name.lower(),vendor_name_canonical=canonical,gst_no=row.get('gst_no') or None,state=row.get('vendor_state') or None,city=row.get('vendor_city') or None); db.add(vendor); db.flush()
+            participant=db.query(ProcurementBidParticipant).filter(ProcurementBidParticipant.user_id==user.id,ProcurementBidParticipant.bid_id==bid.id,ProcurementBidParticipant.vendor_id==vendor.id).first()
+            if not participant: participant=ProcurementBidParticipant(user_id=user.id,bid_id=bid.id,vendor_id=vendor.id); db.add(participant)
+            participant.rank=parse_import_number(row.get('rank')); participant.quoted_price=parse_import_number(row.get('quoted_price')); participant.technical_status=row.get('technical_status') or None; participant.disqualification_reason=row.get('disqualification_reason') or None; participant.is_awarded=row.get('is_awarded','').lower() in {'1','yes','true','y'} or participant.rank==1
+            if participant.is_awarded: bid.awarded_vendor_id=vendor.id
+        clause=row.get('restrictive_clause') or row.get('restrictive_clause_reason')
+        if clause:
+            existing=db.query(ProcurementRiskFlag).filter(ProcurementRiskFlag.user_id==user.id,ProcurementRiskFlag.bid_id==bid.id,ProcurementRiskFlag.flag_type=='restrictive_clause').first()
+            if not existing: existing=ProcurementRiskFlag(user_id=user.id,bid_id=bid.id,flag_type='restrictive_clause'); db.add(existing)
+            existing.risk_score=parse_import_number(row.get('restrictive_score')) or 60; existing.risk_level='high' if existing.risk_score>=70 else 'medium' if existing.risk_score>=40 else 'low'; existing.explanation=clause
+        imported+=1
+    db.commit()
+    return {'ok':True,'rows_imported':imported,'errors':errors[:25],'message':f'Imported {imported} result rows without storing the source file.'}
+
+@app.get('/exports/seller/intelligence/import-template.csv')
+def export_intelligence_import_template(user:User=Depends(get_current_user)):
+    headers=['bid_no','bid_title','buyer','department','state','district','category','bid_start_date','bid_end_date','estimated_value','awarded_value','status','vendor','gst_no','vendor_state','vendor_city','rank','quoted_price','technical_status','disqualification_reason','is_awarded','total_bidders','technically_qualified','technically_disqualified','restrictive_clause','restrictive_score']
+    return Response(','.join(headers)+'\n',media_type='text/csv',headers={'Content-Disposition':'attachment; filename="intelligence_result_import_template.csv"'})
+
 @app.get('/api/seller/intelligence/overview')
 def api_seller_intelligence_overview(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     data=seller_intelligence_dataset(db,user)
@@ -4225,15 +4344,18 @@ def api_seller_intelligence_buyers(db:Session=Depends(get_db),user:User=Depends(
 @app.get('/api/seller/intelligence/competitors')
 def api_seller_intelligence_competitors(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     data=seller_intelligence_dataset(db,user)
+    procurement=procurement_intelligence(db,user.id)
     return {
         'session_required':not gem_session_is_valid(data['credential']),
-        'items':[],
+        'items':procurement['dominance'],
+        'price_gaps':procurement['price_gaps'],
+        'repeated_groups':procurement['repeated_groups'],
         'summary':{
-            'competitors_tracked':0,
-            'l1_l2_records':0,
-            'repeated_groups':0,
+            'competitors_tracked':len(procurement['dominance']),
+            'l1_l2_records':len(procurement['price_gaps']),
+            'repeated_groups':len(procurement['repeated_groups']),
         },
-        'message':'Competitor/L1/L2/L3 analytics need financial evaluation results, awarded bid pages, or uploaded result PDFs. The data model and menu are ready; upload/result ingestion is the next step.',
+        'message':'Import financial evaluation/result CSV rows to populate and refresh these calculations.' if not procurement['participants'] else 'Competitor analytics calculated from imported participant and award records.',
         'required_fields':['l1_vendor','l1_price','l2_vendor','l2_price','l3_vendor','l3_price','total_bidders','technically_qualified','technically_disqualified'],
     }
 
@@ -4250,6 +4372,7 @@ def api_seller_intelligence_risk_signals(db:Session=Depends(get_db),user:User=De
 @app.get('/api/seller/intelligence/reports')
 def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     data=seller_intelligence_dataset(db,user)
+    procurement=procurement_intelligence(db,user.id)
     buyer_rows=[{
         'Department':row['name'],
         'Total Records':row['count'],
@@ -4271,14 +4394,28 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
         'summary':data['summary'],
         'reports':{
             'department_risk':buyer_rows,
-            'vendor_dominance':[],
-            'l1_l2_l3_gap':[],
-            'repeated_bidder_group':[],
-            'restrictive_clause':[],
+            'vendor_dominance':procurement['dominance'],
+            'l1_l2_l3_gap':procurement['price_gaps'],
+            'repeated_bidder_group':procurement['repeated_groups'],
+            'restrictive_clause':procurement['restrictive_clauses'],
             'seller_risk_signals':risk_rows,
         },
-        'message':'Full vendor dominance and L1/L2/L3 reports become available after result/participant data ingestion.',
+        'message':'Reports are calculated from imported results. Import more result rows to improve coverage.',
     }
+
+@app.get('/exports/seller/intelligence/{report}/{fmt}')
+def export_seller_intelligence(report:str,fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    if fmt not in {'csv','report','pdf'}: raise HTTPException(404,'Unsupported export format')
+    data=procurement_intelligence(db,user.id)
+    mapping={'vendor-dominance':data['dominance'],'price-gaps':data['price_gaps'],'repeated-groups':data['repeated_groups'],'restrictive-clauses':data['restrictive_clauses']}
+    rows=mapping.get(report)
+    if rows is None: raise HTTPException(404,'Unknown intelligence report')
+    rows=rows or [{'message':'No matching records available'}]
+    if fmt=='csv':
+        return Response(build_csv(rows),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="{report}.csv"'})
+    if fmt=='pdf':
+        return Response(build_pdf_report(rows,report.replace('-',' ').title()),media_type='application/pdf',headers={'Content-Disposition':f'attachment; filename="{report}.pdf"'})
+    return Response(build_html_report(rows),media_type='text/html',headers={'Content-Disposition':f'attachment; filename="{report}.html"'})
 
 @app.get('/api/seller/intelligence/documents')
 def api_seller_intelligence_documents(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -4308,19 +4445,18 @@ def api_seller_intelligence_risk_data(db:Session=Depends(get_db),user:User=Depen
     gem_count=db.query(GemParticipatedBid).filter(GemParticipatedBid.user_id==user.id).count()
     document_count=db.query(TenderDocument).join(Tender,TenderDocument.tender_id==Tender.id).filter(Tender.user_id==user.id).count()
     phases=[
-        {'phase':'Phase 1','name':'Internal MVP','status':'started','done':['Login','GeM participated records','Basic document extraction','Excel/CSV exports','Risk-data tables created'],'next':['Upload/import historical bid/result files','Manual correction screen','Vendor/buyer/category master screens']},
-        {'phase':'Phase 2','name':'Analytics Dashboard','status':'started','done':['Seller analytics','Buyer history','Department concentration','Risk signal dashboard'],'next':['Vendor dashboard','Department dashboard','Repeated bidder group charts','PDF risk report export']},
+        {'phase':'Phase 1','name':'Internal MVP','status':'started','done':['Login','GeM participated records','Basic document extraction','CSV result import','Risk-data tables created'],'next':['Manual correction screen','Vendor/buyer/category master screens']},
+        {'phase':'Phase 2','name':'Analytics Dashboard','status':'started','done':['Seller analytics','Buyer history','Department concentration','Risk signal dashboard','Vendor dominance','L1/L2 gaps','Repeated bidder groups','HTML/CSV risk exports'],'next':['Dedicated vendor dashboard','Department dashboard','PDF-formatted risk export']},
         {'phase':'Phase 3','name':'Automated Data Collection','status':'started','done':['Scheduled GeM scrape','Seller GeM session sync','Duplicate prevention','Scrape logs/emails'],'next':['Public contract search ingestion','Awarded bid page ingestion','BOQ/result import validation']},
-        {'phase':'Phase 4','name':'AI/NLP Risk Engine','status':'started','done':['Eligibility extraction','Bid/No-Bid reasoning','Basic risk signal wording'],'next':['Restrictive clause scoring','L1/L2/L3 gap engine','Risk explanation generator','Similar tender comparison']},
+        {'phase':'Phase 4','name':'AI/NLP Risk Engine','status':'started','done':['Eligibility extraction','Bid/No-Bid reasoning','Risk signal wording','Restrictive clause import/scoring','L1/L2 gap engine'],'next':['L3 comparison','Risk explanation generator','Similar tender comparison']},
         {'phase':'Phase 5','name':'SaaS / Client Product','status':'started','done':['Buyer/seller role split','Cloud deployment','Per-user data separation','Notification preferences'],'next':['Granular roles','Audit logs','Subscription/client workspaces','White-label report templates']},
     ]
     missing=[
-        'Historical bid/result PDF or Excel upload/import',
         'Vendor master management screen',
         'Buyer master management screen',
         'Category master management screen',
-        'L1/L2/L3 participant ingestion',
-        'Formula-based anomaly scoring engine',
+        'Award-page automated ingestion',
+        'Advanced formula calibration and false-positive review',
     ]
     return {
         'summary':{
@@ -4335,8 +4471,33 @@ def api_seller_intelligence_risk_data(db:Session=Depends(get_db),user:User=Depen
         },
         'phases':phases,
         'missing':missing,
-        'message':'Phase foundations are started. Upload/import and master-data screens are the next build step before full anomaly formulas can run.',
+        'masters':{
+            'vendors':[{'id':row.id,'name':row.vendor_name_canonical or row.vendor_name_raw,'gst_no':row.gst_no or '','state':row.state or '','city':row.city or ''} for row in db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user.id).order_by(ProcurementVendor.updated_at.desc()).limit(100).all()],
+            'buyers':[{'id':row.id,'name':row.buyer_name_raw,'department':row.department or '','state':row.state or '','district':row.district or ''} for row in db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id).order_by(ProcurementBuyer.updated_at.desc()).limit(100).all()],
+            'categories':[{'id':row.id,'name':row.category_name,'parent_category':row.parent_category or '','sector':row.sector or ''} for row in db.query(ProcurementCategory).filter(ProcurementCategory.user_id==user.id).order_by(ProcurementCategory.updated_at.desc()).limit(100).all()],
+        },
+        'message':'CSV result import and the first anomaly formulas are active. Master-data correction and automated award-page ingestion remain.',
     }
+
+@app.post('/api/seller/intelligence/master/{kind}')
+async def api_save_intelligence_master(kind:str,request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json(); name=(payload.get('name') or '').strip(); row_id=parse_import_number(payload.get('id'))
+    if not name: raise HTTPException(400,'Name is required')
+    if kind=='vendor':
+        item=db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user.id,ProcurementVendor.id==row_id).first() if row_id else None
+        if not item: item=ProcurementVendor(user_id=user.id,vendor_name_raw=name); db.add(item)
+        item.vendor_name_raw=name; item.vendor_name_clean=name.lower(); item.vendor_name_canonical=re.sub(r'\s+',' ',name).upper(); item.gst_no=(payload.get('gst_no') or '').strip() or None; item.state=(payload.get('state') or '').strip() or None; item.city=(payload.get('city') or '').strip() or None
+    elif kind=='buyer':
+        item=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id,ProcurementBuyer.id==row_id).first() if row_id else None
+        if not item: item=ProcurementBuyer(user_id=user.id,buyer_name_raw=name); db.add(item)
+        item.buyer_name_raw=name; item.buyer_name_clean=name.lower(); item.department=(payload.get('department') or '').strip() or name; item.state=(payload.get('state') or '').strip() or None; item.district=(payload.get('district') or '').strip() or None
+    elif kind=='category':
+        item=db.query(ProcurementCategory).filter(ProcurementCategory.user_id==user.id,ProcurementCategory.id==row_id).first() if row_id else None
+        if not item: item=ProcurementCategory(user_id=user.id,category_name=name); db.add(item)
+        item.category_name=name; item.parent_category=(payload.get('parent_category') or '').strip() or None; item.sector=(payload.get('sector') or '').strip() or None
+    else: raise HTTPException(404,'Unknown master type')
+    db.commit(); db.refresh(item)
+    return {'ok':True,'id':item.id,'message':f'{kind.title()} master saved.'}
 
 @app.get('/api/seller/gem-login')
 def api_get_gem_login(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -5215,6 +5376,29 @@ def build_csv(rows):
     for row in rows:
         writer.writerow(row)
     return output.getvalue()
+
+def build_pdf_report(rows,title='Tender Intelligence Risk Report'):
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4,landscape
+    from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.units import mm
+    from reportlab.platypus import SimpleDocTemplate,Table,TableStyle,Paragraph,Spacer
+    buffer=io.BytesIO(); styles=getSampleStyleSheet()
+    doc=SimpleDocTemplate(buffer,pagesize=landscape(A4),leftMargin=12*mm,rightMargin=12*mm,topMargin=12*mm,bottomMargin=12*mm,title=title)
+    headers=list(rows[0].keys()) if rows else ['Message']; safe_rows=rows or [{'Message':'No matching records available'}]
+    available=landscape(A4)[0]-24*mm; widths=[available/max(len(headers),1)]*len(headers)
+    table_data=[[Paragraph(escape(str(header)),styles['BodyText']) for header in headers]]
+    for row in safe_rows:
+        table_data.append([Paragraph(escape(str(row.get(header,''))),styles['BodyText']) for header in headers])
+    table=Table(table_data,colWidths=widths,repeatRows=1)
+    table.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),colors.HexColor('#16324f')),('TEXTCOLOR',(0,0),(-1,0),colors.white),('FONTNAME',(0,0),(-1,0),'Helvetica-Bold'),('FONTSIZE',(0,0),(-1,-1),8),('VALIGN',(0,0),(-1,-1),'TOP'),('GRID',(0,0),(-1,-1),0.35,colors.HexColor('#9ca3af')),('ROWBACKGROUNDS',(0,1),(-1,-1),[colors.white,colors.HexColor('#f3f4f6')]),('LEFTPADDING',(0,0),(-1,-1),4),('RIGHTPADDING',(0,0),(-1,-1),4),('TOPPADDING',(0,0),(-1,-1),4),('BOTTOMPADDING',(0,0),(-1,-1),4)]))
+    doc.build([Paragraph(title,styles['Title']),Spacer(1,6*mm),table],onFirstPage=lambda canvas,document:_pdf_footer(canvas,document),onLaterPages=lambda canvas,document:_pdf_footer(canvas,document))
+    return buffer.getvalue()
+
+def _pdf_footer(canvas,document):
+    from reportlab.lib.pagesizes import A4,landscape
+    from reportlab.lib.units import mm
+    canvas.saveState(); canvas.setFont('Helvetica',8); canvas.setFillColorRGB(.35,.39,.45); canvas.drawString(12*mm,7*mm,'Tender AI - evidence for manual review, not proof of wrongdoing'); canvas.drawRightString(landscape(A4)[0]-12*mm,7*mm,f'Page {document.page}'); canvas.restoreState()
 
 def build_html_report(rows):
     headers=list(rows[0].keys()) if rows else ['Tender ID','Title','Department','Deadline','AI Score','Status']

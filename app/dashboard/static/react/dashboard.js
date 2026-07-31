@@ -3887,12 +3887,69 @@ function SellerIntelligenceOverviewPage() {
 function SellerRiskDataPage() {
     const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
-    useEffect(() => { api("/api/seller/intelligence/risk-data").then(setData).catch(err => setMessage(err.message)); }, []);
+    const [importing, setImporting] = useState(false);
+    const [master, setMaster] = useState({ kind: "vendor", id: "", name: "", gst_no: "", department: "", state: "", city: "", district: "", parent_category: "", sector: "" });
+    const load = () => api("/api/seller/intelligence/risk-data").then(setData).catch(err => setMessage(err.message));
+    useEffect(load, []);
+    async function importResults(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        setImporting(true); setMessage("");
+        try {
+            const content = await file.text();
+            const result = await api("/api/seller/intelligence/import-results", { method: "POST", body: JSON.stringify({ filename: file.name, content }) });
+            setMessage(result.message + (result.errors?.length ? ` ${result.errors.join("; ")}` : ""));
+            load();
+        } catch (err) { setMessage(err.message); }
+        finally { setImporting(false); event.target.value = ""; }
+    }
+    async function saveMaster(event) {
+        event.preventDefault(); setMessage("");
+        try {
+            const result = await api(`/api/seller/intelligence/master/${master.kind}`, { method: "POST", body: JSON.stringify(master) });
+            setMessage(result.message); setMaster({ kind: master.kind, id: "", name: "", gst_no: "", department: "", state: "", city: "", district: "", parent_category: "", sector: "" }); load();
+        } catch (err) { setMessage(err.message); }
+    }
+    function editMaster(kind, row) { setMaster({ kind, id: row.id, name: row.name || "", gst_no: row.gst_no || "", department: row.department || "", state: row.state || "", city: row.city || "", district: row.district || "", parent_category: row.parent_category || "", sector: row.sector || "" }); }
     const summary = data?.summary || {};
     return h(React.Fragment, null,
         h(IntelligenceHero, { title: "Risk Data Foundation", text: "Track the data needed for vendor concentration, L1/L2/L3 price-gap, repeated bidder group, and restrictive-clause analytics." }),
         message ? h("div", { className: "notice err" }, message) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("section", { className: "card" },
+            h("h3", null, "Import Historical Bid Results"),
+            h("p", { className: "desc" }, "Upload a CSV containing one participant per row. The CSV is processed into intelligence records and the original file is not stored on the server."),
+            h("input", { type: "file", accept: ".csv,text/csv", disabled: importing, onChange: importResults }),
+            h("a", { className: "download-btn", href: "/exports/seller/intelligence/import-template.csv" }, "Download CSV Template"),
+            h("p", { className: "desc" }, "Required: bid_no. Recommended: buyer, department, category, vendor, rank, quoted_price, technical_status, is_awarded, total_bidders, awarded_value, restrictive_clause."),
+            importing ? h("p", null, "Importing...") : null
+        ),
+        h("section", { className: "card" },
+            h("h3", null, "Master Data Correction"),
+            h("form", { className: "form-grid", onSubmit: saveMaster },
+                h("label", { className: "field-block" }, h("span", null, "Type"), h("select", { value: master.kind, onChange: e => setMaster({ ...master, kind: e.target.value, id: "", name: "" }) }, ["vendor", "buyer", "category"].map(x => h("option", { key: x, value: x }, x)))),
+                h("label", { className: "field-block" }, h("span", null, "Name"), h("input", { required: true, value: master.name, onChange: e => setMaster({ ...master, name: e.target.value }) })),
+                master.kind === "vendor" ? h(React.Fragment, null,
+                    h("label", { className: "field-block" }, h("span", null, "GST No."), h("input", { value: master.gst_no, onChange: e => setMaster({ ...master, gst_no: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "City"), h("input", { value: master.city, onChange: e => setMaster({ ...master, city: e.target.value }) }))
+                ) : null,
+                master.kind === "buyer" ? h(React.Fragment, null,
+                    h("label", { className: "field-block" }, h("span", null, "Department"), h("input", { value: master.department, onChange: e => setMaster({ ...master, department: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "District"), h("input", { value: master.district, onChange: e => setMaster({ ...master, district: e.target.value }) }))
+                ) : null,
+                master.kind === "category" ? h(React.Fragment, null,
+                    h("label", { className: "field-block" }, h("span", null, "Parent Category"), h("input", { value: master.parent_category, onChange: e => setMaster({ ...master, parent_category: e.target.value }) })),
+                    h("label", { className: "field-block" }, h("span", null, "Sector"), h("input", { value: master.sector, onChange: e => setMaster({ ...master, sector: e.target.value }) }))
+                ) : null,
+                master.kind !== "category" ? h("label", { className: "field-block" }, h("span", null, "State"), h("input", { value: master.state, onChange: e => setMaster({ ...master, state: e.target.value }) })) : null,
+                h("button", { type: "submit" }, master.id ? "Update Master" : "Add Master")
+            )
+        ),
+        h("div", { className: "admin-grid" },
+            h(SimpleTable, { title: "Vendor Master", headers: ["Vendor", "GST", "Location", "Action"], rows: (data?.masters?.vendors || []).map(row => [row.name, row.gst_no, [row.city, row.state].filter(Boolean).join(", "), h("button", { onClick: () => editMaster("vendor", row) }, "Edit")]) }),
+            h(SimpleTable, { title: "Buyer Master", headers: ["Buyer", "Department", "Location", "Action"], rows: (data?.masters?.buyers || []).map(row => [row.name, row.department, [row.district, row.state].filter(Boolean).join(", "), h("button", { onClick: () => editMaster("buyer", row) }, "Edit")]) }),
+            h(SimpleTable, { title: "Category Master", headers: ["Category", "Parent", "Sector", "Action"], rows: (data?.masters?.categories || []).map(row => [row.name, row.parent_category, row.sector, h("button", { onClick: () => editMaster("category", row) }, "Edit")]) })
+        ),
         h("div", { className: "summary six" },
             [["Vendors", summary.vendors || 0], ["Buyers", summary.buyers || 0], ["Categories", summary.categories || 0], ["Risk Bids", summary.risk_bids || 0], ["Participants", summary.participants || 0], ["Risk Flags", summary.risk_flags || 0]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
@@ -3942,7 +3999,10 @@ function SellerCompetitorIntelligencePage() {
             h("h3", null, "Next Data Required"),
             h("p", { className: "desc" }, data?.message || "Upload or ingest financial evaluation/result records to activate competitor analytics."),
             h("div", { className: "tag-list catalogue-gaps" }, (data?.required_fields || []).map(field => h("span", { key: field }, field)))
-        )
+        ),
+        h(SimpleTable, { title: "Vendor Dominance", headers: ["Vendor", "Bids", "Awards", "Award Share", "Risk"], rows: (data?.items || []).map(row => [row.vendor, row.bids, row.awards, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "L1/L2/L3 Price Gaps", headers: ["Bid", "L1", "L1 Price", "L2", "L2 Price", "L3", "L3 Price", "L2 Gap", "L3 Gap", "Risk"], rows: (data?.price_gaps || []).map(row => [row.bid_no, row.l1, `Rs. ${money(row.l1_price)}`, row.l2, `Rs. ${money(row.l2_price)}`, row.l3 || "NA", row.l3_price ? `Rs. ${money(row.l3_price)}` : "NA", `${row.gap_percent}%`, row.l3_gap_percent == null ? "NA" : `${row.l3_gap_percent}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "Repeated Bidder Groups", headers: ["Group", "Bids Together", "Bid Numbers", "Risk"], rows: (data?.repeated_groups || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) })
     );
 }
 
@@ -3971,12 +4031,20 @@ function SellerRiskReportsPage() {
         h(IntelligenceHero, { title: "Risk Reports", text: "Department-wise concentration and seller risk reports, with placeholders for L1/L2/L3 and bidder group reports." }),
         message ? h("div", { className: "notice err" }, message) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("div", { className: "hero-actions" },
+            h("a", { href: "/exports/seller/intelligence/vendor-dominance/csv" }, "Vendor CSV"),
+            h("a", { href: "/exports/seller/intelligence/price-gaps/csv" }, "Price Gap CSV"),
+            h("a", { href: "/exports/seller/intelligence/repeated-groups/pdf" }, "Group PDF"),
+            h("a", { href: "/exports/seller/intelligence/restrictive-clauses/pdf" }, "Clause PDF")
+        ),
         h(SimpleTable, { title: "Department-Wise Risk Report", headers: ["Department", "Total Records", "Total Value", "Record Share %", "Risk Level"], rows: (reports.department_risk || []).map(row => [row.Department, row["Total Records"], `Rs. ${money(row["Total Value"])}`, row["Record Share %"], row["Risk Level"]]) }),
         h(SimpleTable, { title: "Seller Risk Signal Report", headers: ["Record No", "Buyer", "District", "Value", "Risk Score", "Risk Level", "Reasons"], rows: (reports.seller_risk_signals || []).map(row => [row["Record No"], row.Buyer, row.District, `Rs. ${money(row.Value)}`, row["Risk Score"], row["Risk Level"], row.Reasons]) }),
         h("div", { className: "admin-grid" },
-            h(SimpleTable, { title: "L1/L2/L3 Price Gap Report", headers: ["Bid No", "L1", "L2", "Gap %", "Risk"], rows: [] }),
-            h(SimpleTable, { title: "Repeated Bidder Group Report", headers: ["Group", "Department", "Bids Together", "Risk"], rows: [] })
-        )
+            h(SimpleTable, { title: "L1/L2/L3 Price Gap Report", headers: ["Bid No", "L1", "L2", "L3", "L2 Gap %", "L3 Gap %", "Risk"], rows: (reports.l1_l2_l3_gap || []).map(row => [row.bid_no, row.l1, row.l2, row.l3 || "NA", row.gap_percent, row.l3_gap_percent == null ? "NA" : row.l3_gap_percent, h(RiskBadge, { level: row.risk_level })]) }),
+            h(SimpleTable, { title: "Repeated Bidder Group Report", headers: ["Group", "Bids Together", "Bid Numbers", "Risk"], rows: (reports.repeated_bidder_group || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) })
+        ),
+        h(SimpleTable, { title: "Vendor Dominance Report", headers: ["Vendor", "Bids", "Awards", "Award Share", "Risk"], rows: (reports.vendor_dominance || []).map(row => [row.vendor, row.bids, row.awards, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "Restrictive Clause Report", headers: ["Bid", "Score", "Risk", "Explanation"], rows: (reports.restrictive_clause || []).map(row => [row.bid_no, row.risk_score, h(RiskBadge, { level: row.risk_level }), row.explanation]) })
     );
 }
 
