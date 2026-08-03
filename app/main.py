@@ -5840,8 +5840,17 @@ def active_scrape_query_payload(db,user):
     gem_terms=list(dict.fromkeys([str(term).strip().lower() for term in gem_categories+gem_companies if str(term).strip()]))
     expanded.extend(profile_terms)
     expanded.extend(gem_terms)
+    scrape_states=get_json_setting(db,user.id,'scrape_states',[])
+    legacy_state=get_setting(db,user.id,'scrape_state','')
+    if legacy_state and legacy_state not in scrape_states:
+        scrape_states.append(legacy_state)
+    scrape_authorities=get_json_setting(db,user.id,'scrape_authorities',[])
     used_default_keywords=False
-    if not expanded:
+    used_authority_terms=False
+    if not expanded and scrape_authorities:
+        expanded.extend(scrape_authorities)
+        used_authority_terms=True
+    elif not expanded and not (scrape_states or get_setting(db,user.id,'scrape_city','')):
         expanded.extend(SCRAPE_BOOTSTRAP_TERMS)
         used_default_keywords=True
     try:
@@ -5849,10 +5858,6 @@ def active_scrape_query_payload(db,user):
     except Exception:
         rotation_offset=0
     final_keywords=rotate_terms(expanded,rotation_offset,limit=10)
-    scrape_states=get_json_setting(db,user.id,'scrape_states',[])
-    legacy_state=get_setting(db,user.id,'scrape_state','')
-    if legacy_state and legacy_state not in scrape_states:
-        scrape_states.append(legacy_state)
     auto_enabled=get_setting(db,user.id,'auto_scrape_enabled','false')=='true'
     auto_mode=get_setting(db,user.id,'auto_scrape_mode','interval')
     interval_hours=get_setting(db,user.id,'auto_scrape_interval_hours','6')
@@ -5865,15 +5870,16 @@ def active_scrape_query_payload(db,user):
         'gem_alert_terms':gem_terms[:40],
         'states':scrape_states,
         'city':get_setting(db,user.id,'scrape_city',''),
-        'authorities':get_json_setting(db,user.id,'scrape_authorities',[]),
+        'authorities':scrape_authorities,
         'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
         'auto_scrape_enabled':auto_enabled,
         'auto_scrape_mode':auto_mode,
         'auto_scrape_interval_hours':interval_hours,
         'auto_scrape_time':scrape_time,
         'used_default_keywords':used_default_keywords,
+        'used_authority_terms':used_authority_terms,
         'rotation_offset':rotation_offset,
-        'message':'Starter keywords are being used because no active scrape keywords, company profile terms, or GeM alert terms are configured.' if used_default_keywords else 'Scrape runs use the keyword rotation and location filters shown here.',
+        'message':('Starter keywords are being used because no keywords or targeting filters are configured.' if used_default_keywords else 'Selected authorities are being used as GeM search terms because product keywords are off.' if used_authority_terms else 'Scrape runs use the keyword rotation and targeting filters shown here.'),
     }
 
 @app.get('/api/scrape-query')
@@ -6020,6 +6026,7 @@ def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_curr
             'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
             'scrape_states':get_json_setting(db,user.id,'scrape_states',[]),
             'scrape_city':get_setting(db,user.id,'scrape_city',''),
+            'scrape_authorities':get_json_setting(db,user.id,'scrape_authorities',[]),
         },
     }
 

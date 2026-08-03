@@ -34,8 +34,18 @@ def run_gem_job(user_id=None, trigger="manual"):
         else:
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
+        states = setting_json_list(db, user_id, "scrape_states")
+        legacy_state = setting_value(db, user_id, "scrape_state", "")
+        if legacy_state and legacy_state not in states:
+            states.append(legacy_state)
+        city = setting_value(db, user_id, "scrape_city", "")
+        authorities = setting_json_list(db, user_id, "scrape_authorities")
         used_default_keywords = False
-        if not expanded_keywords and not is_gem_alert:
+        used_authority_terms = False
+        if not expanded_keywords and authorities and not is_gem_alert:
+            expanded_keywords.extend(authorities)
+            used_authority_terms = True
+        elif not expanded_keywords and not (states or city) and not is_gem_alert:
             expanded_keywords.extend(DEFAULT_BOOTSTRAP_TERMS)
             used_default_keywords = True
         rotation_offset = int(setting_value(db, user_id, "keyword_rotation_offset", "0") or "0")
@@ -44,14 +54,8 @@ def run_gem_job(user_id=None, trigger="manual"):
             next_offset = (rotation_offset + len(keywords)) % len(list(dict.fromkeys(expanded_keywords)))
             upsert_setting(db, user_id, "keyword_rotation_offset", str(next_offset))
         only_high_priority = setting_enabled(db, user_id, "only_high_priority_scrape")
-        states = setting_json_list(db, user_id, "scrape_states")
-        legacy_state = setting_value(db, user_id, "scrape_state", "")
-        if legacy_state and legacy_state not in states:
-            states.append(legacy_state)
-        city = setting_value(db, user_id, "scrape_city", "")
-        authorities = setting_json_list(db, user_id, "scrape_authorities")
         has_filters = bool(states or city or authorities)
-        max_bids = 60 if has_filters else (45 if only_high_priority else 35)
+        max_bids = 200 if has_filters and not keywords else (100 if has_filters else (45 if only_high_priority else 35))
         inserted, source_logs = run_gem_keyword_scraper(
             db,
             keywords,
@@ -106,6 +110,11 @@ def run_gem_job(user_id=None, trigger="manual"):
                 source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + default_message
             else:
                 source_logs.append({"source": "GeM", "status": "success", "message": default_message, "inserted_ids": []})
+        elif used_authority_terms:
+            authority_message = "No active product keywords were configured, so selected authorities were used as GeM search terms: " + ", ".join(keywords)
+            message = (message + "; " if message else "") + authority_message
+            if source_logs:
+                source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + authority_message
         if inserted == 0 and not failed_sources and not source_logs:
             message = "Scrape completed but returned no source logs. Add active keywords or complete the company profile, then retry."
             source_logs.append({"source": "GeM", "status": "success", "message": message, "inserted_ids": []})
@@ -130,6 +139,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             "keyword_count": len(keywords),
             "keywords": keywords,
             "used_default_keywords": used_default_keywords,
+            "used_authority_terms": used_authority_terms,
         }
     except Exception as e:
         if run:

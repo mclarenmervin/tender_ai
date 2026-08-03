@@ -50,6 +50,11 @@ GUJARAT_LOCATION_ALIASES = {
     "Gandhinagar": ["Gandhinagar"],
 }
 
+STATE_LOCATION_ALIASES = {
+    "Odisha": ["Odisha", "Orissa", "Bhubaneswar", "Bhubaneshwar", "Cuttack", "Koraput", "Damanjodi", "Rourkela", "Sambalpur", "Berhampur", "Balasore", "Puri", "Angul", "Jharsuguda", "Jeypore"],
+    "Gujarat": list({alias for aliases in GUJARAT_LOCATION_ALIASES.values() for alias in aliases}),
+}
+
 
 def compact(value):
     return re.sub(r"\s+", " ", str(value or "")).strip()
@@ -78,6 +83,9 @@ def infer_state(text, configured_states=None):
             return state
     for state in INDIAN_STATE_NAMES:
         if contains_phrase(haystack, state):
+            return state
+    for state,aliases in STATE_LOCATION_ALIASES.items():
+        if any(contains_phrase(haystack, alias) for alias in aliases):
             return state
     return configured[0] if len(configured) == 1 else ""
 

@@ -105,7 +105,7 @@ class GemScraper(BaseScraper):
                 # Reject partial label matches such as "Department Name" in
                 # "Department Name And Address".
                 if not re.search(
-                    rf"^\s*{re.escape(label)}\s*(?::|\||-|$)",
+                    rf"^\s*/?\s*{re.escape(label)}\s*(?::|\||-|$)",
                     line,
                     re.IGNORECASE,
                 ):
@@ -134,8 +134,10 @@ class GemScraper(BaseScraper):
         if not self.location_enabled():
             return True
         haystack = self.clean_text(text).lower()
-        if self.state_filters and not any(state in haystack for state in self.state_filters):
-            return False
+        if self.state_filters:
+            inferred_state,_=extract_location(text)
+            if not any(state in haystack for state in self.state_filters) and inferred_state.lower() not in self.state_filters:
+                return False
         if self.city_filter and self.city_filter not in haystack:
             return False
         return True
