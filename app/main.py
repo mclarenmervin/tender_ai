@@ -5749,7 +5749,7 @@ def run_scrape_subprocess(user_id,trigger='manual'):
             cwd=str(Path(__file__).resolve().parent.parent),
             capture_output=True,
             text=True,
-            timeout=150,
+            timeout=360,
             env=env,
         )
     except subprocess.TimeoutExpired:
@@ -5760,7 +5760,7 @@ def run_scrape_subprocess(user_id,trigger='manual'):
             'emails_sent':0,
             'removed_low_priority':0,
             'failed_sources':['GeM'],
-            'source_logs':[{'source':'GeM','status':'failed','message':'Manual scrape timed out after 2.5 minutes. Try fewer active keywords or disable high-priority-only mode temporarily.'}],
+            'source_logs':[{'source':'GeM','status':'failed','message':'Manual scrape timed out after 6 minutes. Reduce selected authorities or active keywords and retry.'}],
         }
     except Exception as e:
         return {
