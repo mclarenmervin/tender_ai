@@ -1,6 +1,7 @@
 import io
 import os
 import re
+import math
 from datetime import date, datetime
 from urllib.parse import urljoin
 
@@ -280,13 +281,12 @@ class GemScraper(BaseScraper):
 
         all_links = []
         seen = set()
+        per_keyword_limit = max(1, math.ceil(self.max_bids / max(len(self.keywords), 1)))
 
         for keyword in self.keywords:
-            if len(all_links) >= self.max_bids:
-                break
             page.goto(self.list_url, wait_until="domcontentloaded", timeout=60000)
             self.apply_keyword_search(page, keyword)
-            links = self.collect_links_across_pages(page)
+            links = self.collect_links_across_pages(page, limit=per_keyword_limit)
 
             for link in links:
                 if len(all_links) >= self.max_bids:
@@ -302,21 +302,22 @@ class GemScraper(BaseScraper):
 
         return all_links[:self.max_bids]
 
-    def collect_links_across_pages(self, page):
+    def collect_links_across_pages(self, page, limit=None):
         all_links = []
         seen = set()
+        limit = limit or self.max_bids
 
-        while len(all_links) < self.max_bids:
+        while len(all_links) < limit:
             links = self.collect_links_from_current_page(page)
             for link in links:
                 if link["bid_no"] in seen:
                     continue
                 seen.add(link["bid_no"])
                 all_links.append(link)
-                if len(all_links) >= self.max_bids:
+                if len(all_links) >= limit:
                     break
 
-            if len(all_links) >= self.max_bids:
+            if len(all_links) >= limit:
                 break
 
             next_link = page.locator("#light-pagination a.next").first
@@ -404,16 +405,21 @@ class GemScraper(BaseScraper):
             "Bid Details",
         ]) or bid_no
 
+        combined_authority = self.extract_field(full_text, [
+            "Department Name And Address",
+            "Department Name & Address",
+        ])
         department = self.extract_field(full_text, [
             "Department Name",
             "Organisation Name",
+            "Organization Name",
+            "Ministry/State Name",
+            "Ministry / State Name",
             "Ministry",
             "Buyer Organization",
             "Office Name",
         ])
         address = self.extract_field(full_text, [
-            "Department Name And Address",
-            "Department Name & Address",
             "Buyer Address",
             "Office Address",
             "Consignee Address",
@@ -422,7 +428,7 @@ class GemScraper(BaseScraper):
         ])
         if department.strip().lower().rstrip(":") in {"and address", "address"}:
             department = ""
-        department = department or "GeM"
+        department = department or combined_authority or "GeM"
 
         raw_state = self.extract_field(full_text, [
             "State Name",
@@ -480,8 +486,6 @@ class GemScraper(BaseScraper):
 
         if not item.get("address"):
             item["address"] = self.extract_field(pdf_text, [
-                "Department Name And Address",
-                "Department Name & Address",
                 "Buyer Address",
                 "Office Address",
                 "Consignee Address",
@@ -492,10 +496,15 @@ class GemScraper(BaseScraper):
             pdf_department = self.extract_field(pdf_text, [
                 "Department Name",
                 "Organisation Name",
+                "Organization Name",
+                "Ministry/State Name",
+                "Ministry / State Name",
                 "Buyer Organization",
                 "Office Name",
                 "Ministry",
             ])
+            if not pdf_department:
+                pdf_department = self.extract_field(pdf_text, ["Department Name And Address", "Department Name & Address"])
             if pdf_department:
                 item["department"] = pdf_department[:500]
 

@@ -164,6 +164,10 @@ def repair_tender_locations():
     try:
         changed=0
         for tender in db.query(Tender).yield_per(250):
+            if (tender.department or '').strip().lower() in {'','gem','unknown'} and (tender.address or '').strip():
+                tender.department=re.sub(r'\s+',' ',tender.address).strip()[:500]
+                tender.address=None
+                changed+=1
             if (tender.department or '').strip().lower().rstrip(':') in {'and address','address'}:
                 tender.department='GeM'
                 changed+=1

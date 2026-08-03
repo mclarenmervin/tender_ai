@@ -55,7 +55,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             upsert_setting(db, user_id, "keyword_rotation_offset", str(next_offset))
         only_high_priority = setting_enabled(db, user_id, "only_high_priority_scrape")
         has_filters = bool(states or city or authorities)
-        max_bids = 200 if has_filters and not keywords else (100 if has_filters else (45 if only_high_priority else 35))
+        max_bids = 120 if has_filters else (45 if only_high_priority else 35)
         inserted, source_logs = run_gem_keyword_scraper(
             db,
             keywords,
