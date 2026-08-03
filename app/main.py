@@ -36,6 +36,7 @@ from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import run_gem_job
+from app.scraper.gem_scraper import GemScraper
 from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
@@ -5291,10 +5292,19 @@ def api_admin_settings(db:Session=Depends(get_db),user:User=Depends(get_current_
     legacy_state=get_setting(db,user.id,'scrape_state','')
     if legacy_state and legacy_state not in scrape_states:
         scrape_states.append(legacy_state)
+    scrape_authorities=get_json_setting(db,user.id,'scrape_authorities',[])
+    cached_authorities=get_json_setting(db,user.id,'gem_authority_options',[])
+    authority_options=sorted({
+        (row[0] or '').strip()
+        for row in user_tenders(db,user).filter(Tender.source.ilike('%gem%'),Tender.department.isnot(None)).with_entities(Tender.department).distinct().all()
+        if (row[0] or '').strip() and (row[0] or '').strip().lower() not in {'gem','and address:','unknown'}
+    }.union(scrape_authorities).union(cached_authorities),key=str.lower)
     return {
         'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
         'scrape_states':scrape_states,
         'scrape_city':get_setting(db,user.id,'scrape_city',''),
+        'scrape_authorities':scrape_authorities,
+        'authority_options':authority_options,
         'indian_states':INDIAN_STATES,
         'auto_scrape_enabled':get_setting(db,user.id,'auto_scrape_enabled','false')=='true',
         'auto_scrape_mode':get_setting(db,user.id,'auto_scrape_mode','interval'),
@@ -5855,6 +5865,7 @@ def active_scrape_query_payload(db,user):
         'gem_alert_terms':gem_terms[:40],
         'states':scrape_states,
         'city':get_setting(db,user.id,'scrape_city',''),
+        'authorities':get_json_setting(db,user.id,'scrape_authorities',[]),
         'only_high_priority':get_setting(db,user.id,'only_high_priority_scrape','false')=='true',
         'auto_scrape_enabled':auto_enabled,
         'auto_scrape_mode':auto_mode,
@@ -6052,11 +6063,30 @@ async def api_set_scrape_location(request:Request,db:Session=Depends(get_db),use
     states=payload.get('states') or []
     clean_states=[state.strip() for state in states if isinstance(state,str) and state.strip() in INDIAN_STATES]
     clean_city=(payload.get('city') or '').strip()
+    authorities=payload.get('authorities') or []
+    clean_authorities=list(dict.fromkeys(str(value).strip() for value in authorities if isinstance(value,str) and str(value).strip()))[:250]
     clean_states=list(dict.fromkeys(clean_states))
     set_setting(db,user.id,'scrape_states',json.dumps(clean_states))
     set_setting(db,user.id,'scrape_state',clean_states[0] if len(clean_states)==1 else '')
     set_setting(db,user.id,'scrape_city',clean_city)
-    return {'states':clean_states,'city':clean_city}
+    set_setting(db,user.id,'scrape_authorities',json.dumps(clean_authorities))
+    return {'states':clean_states,'city':clean_city,'authorities':clean_authorities}
+
+@app.post('/api/admin/settings/authorities/refresh')
+def api_refresh_gem_authorities(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    try:
+        tenders=GemScraper(keywords=[],max_bids=200).scrape()
+    except Exception as exc:
+        raise HTTPException(502,f'GeM authority refresh failed: {str(exc)[:240]}')
+    existing=get_json_setting(db,user.id,'gem_authority_options',[])
+    discovered=[
+        (item.get('department') or '').strip()
+        for item in tenders
+        if (item.get('department') or '').strip().lower() not in {'','gem','unknown','and address:'}
+    ]
+    authorities=sorted(set(existing).union(discovered),key=str.lower)[:1000]
+    set_setting(db,user.id,'gem_authority_options',json.dumps(authorities))
+    return {'authorities':authorities,'discovered':len(set(discovered)),'message':f'Authority catalogue refreshed from {len(tenders)} current GeM bid records.'}
 
 @app.post('/admin/settings/auto-scrape')
 async def set_auto_scrape(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):

@@ -3690,14 +3690,50 @@ function GemAlertsPage() {
     );
 }
 
+function AutomationMultiSelect({ label, hint, options, selected, onChange, placeholder }) {
+    const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState("");
+    const values = Array.from(new Set([...(options || []), ...(selected || [])])).filter(Boolean);
+    const visible = values.filter(value => String(value).toLowerCase().includes(search.trim().toLowerCase()));
+    const toggle = value => onChange((selected || []).includes(value) ? selected.filter(item => item !== value) : [...selected, value]);
+    return h("div", { className: "automation-multiselect" },
+        h("div", { className: "automation-field-head" }, h("div", null, h("strong", null, label), hint ? h("small", null, hint) : null), h("span", null, `${(selected || []).length} selected`)),
+        h("button", { type: "button", className: "automation-select-trigger", onClick: () => setOpen(!open), "aria-expanded": open },
+            h("span", null, selected?.length ? selected.slice(0, 2).join(", ") + (selected.length > 2 ? ` +${selected.length - 2}` : "") : placeholder),
+            h("b", null, open ? "▲" : "▼")
+        ),
+        open ? h("div", { className: "automation-select-panel" },
+            h("input", { value: search, onChange: e => setSearch(e.target.value), placeholder: `Search ${label.toLowerCase()}...`, autoFocus: true }),
+            h("div", { className: "automation-select-actions" },
+                h("button", { type: "button", onClick: () => onChange(Array.from(new Set([...(selected || []), ...visible]))) }, "Select shown"),
+                h("button", { type: "button", onClick: () => onChange([]) }, "Clear all")
+            ),
+            h("div", { className: "automation-option-list" }, visible.length ? visible.map(value => h("label", { key: value, className: (selected || []).includes(value) ? "selected" : "" },
+                h("input", { type: "checkbox", checked: (selected || []).includes(value), onChange: () => toggle(value) }), h("span", null, value)
+            )) : h("p", { className: "desc" }, "No matching options"))
+        ) : null,
+        h("div", { className: "automation-selected-tags" }, (selected || []).map(value => h("button", { key: value, type: "button", onClick: () => toggle(value), title: `Remove ${value}` }, value, h("span", null, "×"))))
+    );
+}
+
 function SettingsPage() {
     const [settings, setSettings] = useState(null);
     const [digestMessage, setDigestMessage] = useState("");
+    const [filterMessage, setFilterMessage] = useState("");
+    const [refreshingAuthorities, setRefreshingAuthorities] = useState(false);
     async function load() { setSettings(await api("/api/admin/settings")); }
     useEffect(() => { load(); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading settings...");
     async function saveHigh(value) { await api("/api/admin/settings/only-high-priority", { method: "POST", body: JSON.stringify({ enabled: value }) }); await load(); }
-    async function saveLocation(e) { e.preventDefault(); await api("/api/admin/settings/location", { method: "POST", body: JSON.stringify({ states: settings.scrape_states, city: settings.scrape_city }) }); await load(); }
+    async function saveLocation(e) { e.preventDefault(); await api("/api/admin/settings/location", { method: "POST", body: JSON.stringify({ states: settings.scrape_states, city: settings.scrape_city, authorities: settings.scrape_authorities }) }); await load(); }
+    async function refreshAuthorities() {
+        setRefreshingAuthorities(true); setFilterMessage("Reading current authority names from GeM...");
+        try {
+            const result = await api("/api/admin/settings/authorities/refresh", { method: "POST" });
+            setSettings({ ...settings, authority_options: result.authorities || [] }); setFilterMessage(result.message);
+        } catch (err) { setFilterMessage(err.message); }
+        finally { setRefreshingAuthorities(false); }
+    }
     async function saveAuto(e) {
         e.preventDefault();
         await api("/api/admin/settings/auto-scrape", {
@@ -3730,18 +3766,21 @@ function SettingsPage() {
         await load();
     }
     const autoStatus = settings.auto_scrape_status || {};
-    return h("div", { className: "admin-grid" },
-        h("div", { className: "card" }, h("h3", null, "High Priority Scrape"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }), " Keep only high priority bids")),
-        h("div", { className: "card" }, h("h3", null, "Location Filters"), h("form", { onSubmit: saveLocation, className: "stack" },
-            h("select", { multiple: true, value: settings.scrape_states, onChange: e => setSettings({ ...settings, scrape_states: Array.from(e.target.selectedOptions).map(o => o.value) }) }, settings.indian_states.map(s => h("option", { key: s, value: s }, s))),
-            h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "City" }),
-            h("button", { className: "primary" }, "Save Location")
+    return h(React.Fragment, null,
+        h("div", { className: "automation-hero" }, h("div", null, h("span", null, "SCRAPING CONTROL"), h("h2", null, "Automation Settings"), h("p", null, "Choose exactly where and for whom GeM opportunities should be collected.")), h("div", { className: settings.auto_scrape_enabled ? "automation-live active" : "automation-live" }, h("i", null), settings.auto_scrape_enabled ? "Automation active" : "Automation paused")),
+        h("div", { className: "admin-grid automation-settings-grid" },
+        h("div", { className: "card automation-priority-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "High Priority Scrape"), h("p", { className: "desc" }, "Keep only opportunities that pass your configured scoring threshold.")), h("label", { className: "switch" }, h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }), h("span", null)))),
+        h("div", { className: "card automation-target-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "GeM Targeting Filters"), h("p", { className: "desc" }, "Multiple states and authorities use OR matching within each group. Different filter groups work together."))), h("form", { onSubmit: saveLocation, className: "stack" },
+            h(AutomationMultiSelect, { label: "States", hint: "Select without holding Ctrl", options: settings.indian_states || [], selected: settings.scrape_states || [], onChange: values => setSettings({ ...settings, scrape_states: values }), placeholder: "All Indian states" }),
+            h("label", { className: "field-block automation-city" }, h("span", null, "City or district (optional)"), h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "Example: Surat" })),
+            h(AutomationMultiSelect, { label: "Authorities / Departments", hint: "Discovered from your GeM tender records", options: settings.authority_options || [], selected: settings.scrape_authorities || [], onChange: values => setSettings({ ...settings, scrape_authorities: values }), placeholder: "All GeM authorities" }),
+            h("div", { className: "automation-authority-refresh" }, h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing from GeM..." : "Refresh Authority List from GeM"), h("span", null, "No bid PDFs are stored.")),
+            filterMessage ? h("div", { className: "notice" }, filterMessage) : h("div", { className: "automation-filter-note" }, "The authority list expands automatically whenever scraping discovers a new GeM department or organisation."),
+            h("button", { className: "primary automation-save" }, "Save Targeting Filters")
         )),
-        h("div", { className: "card" }, h("h3", null, "Auto Scrape"), h("form", { onSubmit: saveAuto, className: "stack" },
-            h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }), " Enabled"),
-            h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time")),
-            h("input", { type: "number", value: settings.auto_scrape_interval_hours, onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) }),
-            h("input", { type: "time", value: settings.auto_scrape_time, onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) }),
+        h("div", { className: "card automation-schedule-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Auto Scrape Schedule"), h("p", { className: "desc" }, "Run discovery at a fixed interval or once per day.")), h("label", { className: "switch" }, h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }), h("span", null))), h("form", { onSubmit: saveAuto, className: "stack" },
+            h("label", { className: "field-block" }, h("span", null, "Schedule mode"), h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time"))),
+            h("div", { className: "automation-time-grid" }, h("label", { className: "field-block" }, h("span", null, "Interval hours"), h("input", { type: "number", min: 1, max: 168, value: settings.auto_scrape_interval_hours, disabled: settings.auto_scrape_mode !== "interval", onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) })), h("label", { className: "field-block" }, h("span", null, "Daily time"), h("input", { type: "time", value: settings.auto_scrape_time, disabled: settings.auto_scrape_mode !== "daily", onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) }))),
             h("button", { className: "primary" }, "Save Auto Scrape"),
             h("div", { className: autoStatus.scheduler_running ? "notice ok" : "notice err" }, autoStatus.scheduler_running ? "Scheduler is running in the web app." : "Scheduler is not running in the web app. Redeploy or restart the container."),
             h("div", { className: "alert-status-grid" },
@@ -3752,7 +3791,7 @@ function SettingsPage() {
             ),
             autoStatus.reason ? h("p", { className: "desc" }, autoStatus.reason) : null
         )),
-        h("div", { className: "card" }, h("h3", null, "Daily Digest Alerts"), h("form", { onSubmit: saveDigest, className: "stack" },
+        h("div", { className: "card automation-digest-card" }, h("h3", null, "Daily Digest Alerts"), h("form", { onSubmit: saveDigest, className: "stack" },
             digestMessage ? h("p", { className: "status" }, digestMessage) : null,
             h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!settings.daily_digest_enabled, onChange: e => setSettings({ ...settings, daily_digest_enabled: e.target.checked }) }), " Send daily digest"),
             h("label", { className: "field-block" }, h("span", null, "Digest time"), h("input", { type: "time", value: settings.daily_digest_time || "09:00", onChange: e => setSettings({ ...settings, daily_digest_time: e.target.value }) })),
@@ -3760,7 +3799,7 @@ function SettingsPage() {
             settings.daily_digest_last_run ? h("p", { className: "desc" }, `Last digest: ${settings.daily_digest_last_run}`) : h("p", { className: "desc" }, "No daily digest sent yet."),
             h("button", { className: "primary" }, "Save Digest Settings"),
             h("button", { type: "button", onClick: sendDigestNow }, "Send Digest Now")
-        ))
+        )))
     );
 }
 

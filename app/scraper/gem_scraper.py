@@ -19,7 +19,7 @@ class GemScraper(BaseScraper):
     base_url = "https://bidplus.gem.gov.in"
     list_url = "https://bidplus.gem.gov.in/all-bids"
 
-    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None):
+    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, authorities=None):
         self.keywords = [keyword.strip() for keyword in (keywords or []) if keyword and keyword.strip()]
         self.max_bids = max_bids
         state_values = states if states is not None else ([state] if state else [])
@@ -29,6 +29,7 @@ class GemScraper(BaseScraper):
             if self.clean_text(value)
         ]
         self.city_filter = self.clean_text(city).lower()
+        self.authority_filters = [self.clean_text(value).lower() for value in (authorities or []) if self.clean_text(value)]
 
     def clean_text(self, text):
         return re.sub(r"\s+", " ", text or "").strip()
@@ -163,6 +164,12 @@ class GemScraper(BaseScraper):
         item["state"] = state[:100]
         item["city"] = city[:150]
         return True
+
+    def authority_matches_item(self,item):
+        if not self.authority_filters:
+            return True
+        haystack=self.clean_text(' '.join([item.get('department',''),item.get('address',''),item.get('description','')])).lower()
+        return any(authority in haystack for authority in self.authority_filters)
 
     def matched_state(self, text):
         haystack = self.clean_text(text).lower()
@@ -525,7 +532,7 @@ class GemScraper(BaseScraper):
                     for bid in bids:
                         try:
                             item = self.parse_detail_page(page, bid)
-                            if self.location_matches_item(item):
+                            if self.authority_matches_item(item) and self.location_matches_item(item):
                                 tenders.append(item)
                         except Exception:
                             continue

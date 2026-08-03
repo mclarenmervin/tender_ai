@@ -49,8 +49,9 @@ def run_gem_job(user_id=None, trigger="manual"):
         if legacy_state and legacy_state not in states:
             states.append(legacy_state)
         city = setting_value(db, user_id, "scrape_city", "")
-        has_location = bool(states or city)
-        max_bids = 30 if has_location else (45 if only_high_priority else 35)
+        authorities = setting_json_list(db, user_id, "scrape_authorities")
+        has_filters = bool(states or city or authorities)
+        max_bids = 60 if has_filters else (45 if only_high_priority else 35)
         inserted, source_logs = run_gem_keyword_scraper(
             db,
             keywords,
@@ -59,23 +60,9 @@ def run_gem_job(user_id=None, trigger="manual"):
             user_id=user_id,
             states=states,
             city=city,
+            authorities=authorities,
             scrape_run_id=run.id if run else None,
         )
-        if inserted == 0 and has_location and trigger == "manual" and not is_gem_alert:
-            fallback_inserted, fallback_logs = run_gem_keyword_scraper(
-                db,
-                keywords,
-                return_details=True,
-                max_bids=45 if only_high_priority else 35,
-                user_id=user_id,
-                states=[],
-                city="",
-                scrape_run_id=run.id if run else None,
-            )
-            for log in fallback_logs:
-                log["message"] = "Broad fallback after location filters found no new bids: " + log.get("message", "")
-            inserted += fallback_inserted
-            source_logs.extend(fallback_logs)
         inserted_ids = [
             tender_id
             for log in source_logs
