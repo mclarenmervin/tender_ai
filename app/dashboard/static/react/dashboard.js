@@ -3721,6 +3721,7 @@ function SettingsPage() {
     const [digestMessage, setDigestMessage] = useState("");
     const [filterMessage, setFilterMessage] = useState("");
     const [refreshingAuthorities, setRefreshingAuthorities] = useState(false);
+    const [customAuthority, setCustomAuthority] = useState("");
     async function load() { setSettings(await api("/api/admin/settings")); }
     useEffect(() => { load(); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading settings...");
@@ -3733,6 +3734,16 @@ function SettingsPage() {
             setSettings({ ...settings, authority_options: result.authorities || [] }); setFilterMessage(result.message);
         } catch (err) { setFilterMessage(err.message); }
         finally { setRefreshingAuthorities(false); }
+    }
+    function addCustomAuthority() {
+        const value = customAuthority.trim().replace(/\s+/g, " ");
+        if (!value) { setFilterMessage("Enter an authority or department name first."); return; }
+        const options = settings.authority_options || [];
+        const selected = settings.scrape_authorities || [];
+        const existing = [...options, ...selected].find(item => String(item).toLowerCase() === value.toLowerCase());
+        const authority = existing || value;
+        setSettings({ ...settings, authority_options: Array.from(new Set([...options, authority])).sort((a, b) => a.localeCompare(b)), scrape_authorities: Array.from(new Set([...selected, authority])) });
+        setCustomAuthority(""); setFilterMessage(existing ? `${existing} was already available and is now selected.` : `${value} added and selected. Save targeting filters to apply it.`);
     }
     async function saveAuto(e) {
         e.preventDefault();
@@ -3774,6 +3785,10 @@ function SettingsPage() {
             h(AutomationMultiSelect, { label: "States", hint: "Select without holding Ctrl", options: settings.indian_states || [], selected: settings.scrape_states || [], onChange: values => setSettings({ ...settings, scrape_states: values }), placeholder: "All Indian states" }),
             h("label", { className: "field-block automation-city" }, h("span", null, "City or district (optional)"), h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "Example: Surat" })),
             h(AutomationMultiSelect, { label: "Authorities / Departments", hint: "Discovered from your GeM tender records", options: settings.authority_options || [], selected: settings.scrape_authorities || [], onChange: values => setSettings({ ...settings, scrape_authorities: values }), placeholder: "All GeM authorities" }),
+            h("div", { className: "automation-custom-authority" },
+                h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Authority not listed? Enter it manually" }),
+                h("button", { type: "button", onClick: addCustomAuthority }, "Add Authority")
+            ),
             h("div", { className: "automation-authority-refresh" }, h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing from GeM..." : "Refresh Authority List from GeM"), h("span", null, "No bid PDFs are stored.")),
             filterMessage ? h("div", { className: "notice" }, filterMessage) : h("div", { className: "automation-filter-note" }, "The authority list expands automatically whenever scraping discovers a new GeM department or organisation."),
             h("button", { className: "primary automation-save" }, "Save Targeting Filters")

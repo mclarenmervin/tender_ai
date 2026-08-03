@@ -4142,6 +4142,9 @@ select[multiple] {
 .automation-authority-refresh { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .automation-authority-refresh button { padding: 8px 11px; color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe; box-shadow: none; }
 .automation-authority-refresh span { color: #94a3b8; font-size: 11px; font-weight: 700; }
+.automation-custom-authority { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
+.automation-custom-authority input { min-width: 0; }
+.automation-custom-authority button { color: #fff; background: linear-gradient(135deg,#2563eb,#0f766e); white-space: nowrap; }
 .automation-save { margin-top: 4px; }
 .automation-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .switch { position: relative; display: inline-block; width: 48px; height: 27px; flex: 0 0 auto; }
@@ -4566,6 +4569,7 @@ select[multiple] {
     .hero-panel { flex-direction: column; }
     .automation-hero { flex-direction: column; align-items: flex-start; }
     .automation-time-grid { grid-template-columns: 1fr; }
+    .automation-custom-authority { grid-template-columns: 1fr; }
     .settings-hero,
     .scrape-query-head,
     .buyer-form-head,

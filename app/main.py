@@ -6064,7 +6064,14 @@ async def api_set_scrape_location(request:Request,db:Session=Depends(get_db),use
     clean_states=[state.strip() for state in states if isinstance(state,str) and state.strip() in INDIAN_STATES]
     clean_city=(payload.get('city') or '').strip()
     authorities=payload.get('authorities') or []
-    clean_authorities=list(dict.fromkeys(str(value).strip() for value in authorities if isinstance(value,str) and str(value).strip()))[:250]
+    clean_authorities=[]; authority_keys=set()
+    for value in authorities:
+        if not isinstance(value,str): continue
+        cleaned=re.sub(r'\s+',' ',value).strip()[:200]
+        key=cleaned.lower()
+        if cleaned and key not in authority_keys:
+            authority_keys.add(key); clean_authorities.append(cleaned)
+        if len(clean_authorities)>=250: break
     clean_states=list(dict.fromkeys(clean_states))
     set_setting(db,user.id,'scrape_states',json.dumps(clean_states))
     set_setting(db,user.id,'scrape_state',clean_states[0] if len(clean_states)==1 else '')
