@@ -299,7 +299,7 @@ function scrapeMessage(result) {
     const detail = failures.map(log => `${log.source || "Source"}: ${log.message || log.status}`).join(" | ");
     const extra = [];
     if (result?.used_default_keywords) extra.push(`used starter keywords: ${(result.keywords || []).join(", ")}`);
-    else if (result?.used_authority_terms) extra.push(`searched selected authorities: ${(result.keywords || []).join(", ")}`);
+    else if (result?.used_authority_terms) extra.push("used strict Department filtering on current GeM listings");
     else if (result?.keyword_count !== undefined) extra.push(`${result.keyword_count} keyword(s) searched`);
     if (result?.removed_low_priority) extra.push(`${result.removed_low_priority} low-priority tender(s) removed`);
     const base = `Scrape finished. Inserted ${result?.inserted || 0}, scored ${result?.scored || 0}.`;
@@ -317,7 +317,7 @@ function scrapeDiagnosticsMessage(data) {
     if (!data.active_keywords?.length && !data.has_company_profile && !data.settings?.scrape_authorities?.length) {
         parts.push("No active keywords or company profile terms are configured for this user.");
     } else if (!data.active_keywords?.length && data.settings?.scrape_authorities?.length) {
-        parts.push(`Product keywords are off; ${data.settings.scrape_authorities.length} selected authority name(s) will be used for GeM search.`);
+        parts.push(`Product keywords are off; current GeM listings will be checked against ${data.settings.scrape_authorities.length} selected Department name(s).`);
     }
     if (data.settings?.only_high_priority) {
         parts.push("High-priority-only mode is enabled, so low-score tenders may be removed after scraping.");

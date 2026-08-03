@@ -43,7 +43,6 @@ def run_gem_job(user_id=None, trigger="manual"):
         used_default_keywords = False
         used_authority_terms = False
         if not expanded_keywords and authorities and not is_gem_alert:
-            expanded_keywords.extend(authorities)
             used_authority_terms = True
         elif not expanded_keywords and not (states or city) and not is_gem_alert:
             expanded_keywords.extend(DEFAULT_BOOTSTRAP_TERMS)
@@ -111,7 +110,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             else:
                 source_logs.append({"source": "GeM", "status": "success", "message": default_message, "inserted_ids": []})
         elif used_authority_terms:
-            authority_message = "No active product keywords were configured, so selected authorities were used as GeM search terms: " + ", ".join(keywords)
+            authority_message = "No active product keywords were configured. Current GeM listings were browsed and strict Department filtering was applied for: " + ", ".join(authorities)
             message = (message + "; " if message else "") + authority_message
             if source_logs:
                 source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + authority_message

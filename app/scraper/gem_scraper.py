@@ -171,8 +171,14 @@ class GemScraper(BaseScraper):
     def authority_matches_item(self,item):
         if not self.authority_filters:
             return True
-        haystack=self.clean_text(' '.join([item.get('department',''),item.get('address',''),item.get('description','')])).lower()
-        return any(authority in haystack for authority in self.authority_filters)
+        department=self.clean_text(item.get('department','')).lower()
+        if not department or department in {'gem','unknown'}:
+            return False
+        return any(
+            department == authority
+            or bool(re.search(rf"(?<![a-z0-9]){re.escape(authority)}(?![a-z0-9])",department))
+            for authority in self.authority_filters
+        )
 
     def matched_state(self, text):
         haystack = self.clean_text(text).lower()
