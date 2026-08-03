@@ -52,13 +52,13 @@ class GemScraper(BaseScraper):
             "Closing Date",
         ])
         candidates = [labelled] if labelled else []
-        candidates.extend(re.findall(r"\d{2}[-/]\d{2}[-/]\d{4}", text or ""))
+        candidates.extend(re.findall(r"(?:\d{2}[-/]\d{2}[-/]\d{4}|\d{4}-\d{2}-\d{2})", text or ""))
         for candidate in candidates:
-            match = re.search(r"\d{2}[-/]\d{2}[-/]\d{4}", candidate or "")
+            match = re.search(r"(?:\d{2}[-/]\d{2}[-/]\d{4}|\d{4}-\d{2}-\d{2})", candidate or "")
             if not match:
                 continue
             raw = match.group(0)
-            for fmt in ("%d-%m-%Y", "%d/%m/%Y"):
+            for fmt in ("%d-%m-%Y", "%d/%m/%Y", "%Y-%m-%d"):
                 try:
                     return datetime.strptime(raw, fmt).date()
                 except ValueError:
@@ -125,6 +125,22 @@ class GemScraper(BaseScraper):
                     return lines[i + 1]
         return ""
 
+    def extract_multiline_field(self,text,labels,stop_labels=None,max_lines=4):
+        lines=[self.clean_text(line) for line in (text or "").split("\n") if self.clean_text(line)]
+        stops=stop_labels or ["Start Date","End Date","Bid Start Date","Bid End Date","BID NO"]
+        for index,line in enumerate(lines):
+            for label in labels:
+                match=re.search(rf"^\s*/?\s*{re.escape(label)}\s*(?::|\||-|$)\s*(.*?)\s*$",line,re.IGNORECASE)
+                if not match: continue
+                values=[]; inline=self.clean_text(match.group(1) or "")
+                if inline: values.append(inline)
+                for candidate in lines[index+1:index+1+max_lines]:
+                    if any(re.search(rf"^\s*{re.escape(stop)}\s*(?::|\||-|$)",candidate,re.IGNORECASE) for stop in stops): break
+                    if self.extract_bid_no(candidate): break
+                    values.append(candidate)
+                return " / ".join(dict.fromkeys(value for value in values if value))
+        return ""
+
     def location_enabled(self):
         return bool(self.state_filters or self.city_filter)
 
@@ -174,11 +190,9 @@ class GemScraper(BaseScraper):
         department=self.clean_text(item.get('department','')).lower()
         if not department or department in {'gem','unknown'}:
             return False
-        return any(
-            department == authority
-            or bool(re.search(rf"(?<![a-z0-9]){re.escape(authority)}(?![a-z0-9])",department))
-            for authority in self.authority_filters
-        )
+        segments={self.clean_text(value).lower() for value in re.split(r'[/|\n]+',department) if self.clean_text(value)}
+        segments.add(department)
+        return any(authority in segments for authority in self.authority_filters)
 
     def matched_state(self, text):
         haystack = self.clean_text(text).lower()
@@ -292,7 +306,7 @@ class GemScraper(BaseScraper):
         for keyword in self.keywords:
             page.goto(self.list_url, wait_until="domcontentloaded", timeout=60000)
             self.apply_keyword_search(page, keyword)
-            links = self.collect_links_across_pages(page, limit=per_keyword_limit)
+            links = self.collect_authority_links_from_feed(page,match_limit=per_keyword_limit) if self.authority_filters else self.collect_links_across_pages(page, limit=per_keyword_limit)
 
             for link in links:
                 if len(all_links) >= self.max_bids:
@@ -307,6 +321,40 @@ class GemScraper(BaseScraper):
             raise RuntimeError("No GeM bid numbers found for active keywords: " + ", ".join(self.keywords))
 
         return all_links[:self.max_bids]
+
+    def collect_authority_links_from_feed(self,page,match_limit=100,max_scan_pages=300):
+        links=[]; seen=set(); page_number=1; total_pages=max_scan_pages
+        while page_number<=min(total_pages,max_scan_pages) and len(links)<match_limit:
+            result=page.evaluate(
+                """async ({pageNumber}) => {
+                    const tokenName=document.querySelector('#cname')?.value;
+                    const tokenValue=document.querySelector('#chash')?.value;
+                    const payload={page:pageNumber,param:window.param,filter:window.filter};
+                    const values={payload:JSON.stringify(payload)};
+                    if(tokenName) values[tokenName]=tokenValue;
+                    const response=await fetch('/all-bids-data',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},body:new URLSearchParams(values)});
+                    if(!response.ok) throw new Error('GeM bid data request failed: '+response.status);
+                    return await response.json();
+                }""",
+                {"pageNumber":page_number},
+            )
+            response=((result or {}).get("response") or {}).get("response") or {}
+            docs=response.get("docs") or []
+            total_pages=max(1,math.ceil(int(response.get("numFound") or 0)/10))
+            if not docs: break
+            for doc in docs:
+                scalar=lambda value: value[0] if isinstance(value,list) and value else value
+                bid_no=self.extract_bid_no(str(scalar(doc.get("b_bid_number")) or ""))
+                bid_id=scalar(doc.get("b_id")); ministry=self.clean_text(str(scalar(doc.get("ba_official_details_minName")) or "")); department=self.clean_text(str(scalar(doc.get("ba_official_details_deptName")) or ""))
+                authority=" / ".join(value for value in (ministry,department) if value)
+                if not bid_no or bid_no in seen or not self.authority_matches_item({"department":authority}): continue
+                categories=doc.get("b_category_name") or []
+                if isinstance(categories,str): categories=[categories]
+                card_text="\n".join([bid_no,"Items:"," / ".join(str(value) for value in categories),"Department Name And Address:",ministry,department,"Start Date:",str(scalar(doc.get("final_start_date_sort")) or ""),"End Date:",str(scalar(doc.get("final_end_date_sort")) or "")])
+                links.append({"bid_no":bid_no,"url":urljoin(self.base_url,f"/showbidDocument/{bid_id}"),"card_text":card_text}); seen.add(bid_no)
+                if len(links)>=match_limit: break
+            page_number+=1
+        return links
 
     def collect_links_across_pages(self, page, limit=None):
         all_links = []
@@ -411,7 +459,7 @@ class GemScraper(BaseScraper):
             "Bid Details",
         ]) or bid_no
 
-        combined_authority = self.extract_field(full_text, [
+        combined_authority = self.extract_multiline_field(full_text, [
             "Department Name And Address",
             "Department Name & Address",
         ])

@@ -43,6 +43,7 @@ def run_gem_job(user_id=None, trigger="manual"):
         used_default_keywords = False
         used_authority_terms = False
         if not expanded_keywords and authorities and not is_gem_alert:
+            expanded_keywords.extend(authorities)
             used_authority_terms = True
         elif not expanded_keywords and not (states or city) and not is_gem_alert:
             expanded_keywords.extend(DEFAULT_BOOTSTRAP_TERMS)
@@ -54,7 +55,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             upsert_setting(db, user_id, "keyword_rotation_offset", str(next_offset))
         only_high_priority = setting_enabled(db, user_id, "only_high_priority_scrape")
         has_filters = bool(states or city or authorities)
-        max_bids = 120 if has_filters else (45 if only_high_priority else 35)
+        max_bids = 300 if used_authority_terms else (120 if has_filters else (45 if only_high_priority else 35))
         inserted, source_logs = run_gem_keyword_scraper(
             db,
             keywords,
@@ -110,7 +111,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             else:
                 source_logs.append({"source": "GeM", "status": "success", "message": default_message, "inserted_ids": []})
         elif used_authority_terms:
-            authority_message = "No active product keywords were configured. Current GeM listings were browsed and strict Department filtering was applied for: " + ", ".join(authorities)
+            authority_message = "No active product keywords were configured. Each selected authority was searched separately and exact Department-segment filtering was applied for: " + ", ".join(authorities)
             message = (message + "; " if message else "") + authority_message
             if source_logs:
                 source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + authority_message

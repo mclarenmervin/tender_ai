@@ -5852,6 +5852,7 @@ def active_scrape_query_payload(db,user):
     used_default_keywords=False
     used_authority_terms=False
     if not expanded and scrape_authorities:
+        expanded.extend(scrape_authorities)
         used_authority_terms=True
     elif not expanded and not (scrape_states or get_setting(db,user.id,'scrape_city','')):
         expanded.extend(SCRAPE_BOOTSTRAP_TERMS)
@@ -5882,7 +5883,7 @@ def active_scrape_query_payload(db,user):
         'used_default_keywords':used_default_keywords,
         'used_authority_terms':used_authority_terms,
         'rotation_offset':rotation_offset,
-        'message':('Starter keywords are being used because no keywords or targeting filters are configured.' if used_default_keywords else 'Product keywords are off. Current GeM listings will be browsed and strict Department filtering will be applied.' if used_authority_terms else 'Scrape runs use the keyword rotation and targeting filters shown here.'),
+        'message':('Starter keywords are being used because no keywords or targeting filters are configured.' if used_default_keywords else 'Product keywords are off. Every selected authority will be searched separately and exact Department matching will be applied.' if used_authority_terms else 'Scrape runs use the keyword rotation and targeting filters shown here.'),
     }
 
 @app.get('/api/scrape-query')
