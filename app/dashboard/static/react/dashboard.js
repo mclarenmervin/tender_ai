@@ -120,7 +120,7 @@ const buyerModules = {
 
 const sellerNav = [
     ["Control Center", [["/dashboard/seller", "Overview"], ["/dashboard/seller/analytics", "Performance"]]],
-    ["Tender Discovery", [["/dashboard/tenders", "Scraped Bids"], ["/dashboard/high-priority", "Priority Matches"], ["/dashboard/upcoming-deadlines", "Closing Soon"], ["/dashboard/seller/opportunities", "Opportunity Match"]]],
+    ["Tender Discovery", [["/dashboard/tender-search", "Global Search"], ["/dashboard/tenders", "Scraped Bids"], ["/dashboard/high-priority", "Priority Matches"], ["/dashboard/upcoming-deadlines", "Closing Soon"], ["/dashboard/seller/opportunities", "Opportunity Match"]]],
     ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Own Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
     ["Seller Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/bids", "Bid/RA Workflow"]]],
     ["Fulfillment", [["/dashboard/seller/orders", "Orders"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"], ["/dashboard/applied", "Applied"]]],
@@ -4151,6 +4151,92 @@ function SimpleTable({ title, headers, rows }) {
     return h("div", { className: "panel table-panel" }, h("h3", null, title), rows.length ? h("table", null, h("thead", null, h("tr", null, headers.map(x => h("th", { key: x }, x)))), h("tbody", null, rows.map((row, i) => h("tr", { key: i }, row.map((cell, j) => h("td", { key: j }, cell)))))) : h("div", { className: "empty" }, "No data available."));
 }
 
+const GLOBAL_SEARCH_STATES = ["", "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
+
+function displayGemDate(value) {
+    if (!value) return "Not specified";
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+}
+
+function GlobalTenderSearchPage() {
+    const defaults = { q: "", department: "", state: "", city: "", bid_type: "all", status: "ongoing_bids", from_date: "", to_date: "", sort: "Bid-End-Date-Oldest" };
+    const [filters, setFilters] = useState(defaults);
+    const [result, setResult] = useState({ items: [], page: 1, pages: 1, total: 0, notice: "" });
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
+    const [saved, setSaved] = useState({});
+    const update = (key, value) => setFilters(current => ({ ...current, [key]: value }));
+
+    async function search(page = 1, values = filters) {
+        setLoading(true); setMessage("");
+        const params = new URLSearchParams({ ...values, page: String(page), page_size: "10" });
+        try {
+            const data = await api(`/api/gem/global-search?${params}`, { silent: true });
+            setResult(data);
+        } catch (error) {
+            setMessage(error.message || "Live GeM search could not be completed.");
+        } finally { setLoading(false); }
+    }
+    useEffect(() => { search(1, defaults); }, []);
+
+    async function save(item) {
+        setSaved(current => ({ ...current, [item.bid_number]: "saving" }));
+        try {
+            const data = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
+            setSaved(current => ({ ...current, [item.bid_number]: "saved" }));
+            setMessage(data.message);
+        } catch (error) {
+            setSaved(current => ({ ...current, [item.bid_number]: "" }));
+            setMessage(error.message);
+        }
+    }
+    function reset() {
+        setFilters(defaults); search(1, defaults);
+    }
+    return h("div", { className: "global-search-page" },
+        h("section", { className: "global-search-hero" },
+            h("div", null, h("span", { className: "eyebrow" }, "Live GeM discovery"), h("h2", null, "Global Tender Search"), h("p", null, "Search current GeM bids by bid number, item, department, authority, state, or city.")),
+            h("form", { className: "global-search-bar", onSubmit: e => { e.preventDefault(); search(1); } },
+                h("select", { value: "contains", "aria-label": "Search matching method", disabled: true }, h("option", null, "Contains")),
+                h("input", { value: filters.q, onChange: e => update("q", e.target.value), placeholder: "Bid number, item, department or keyword", "aria-label": "Search GeM tenders" }),
+                h("button", { className: "primary", disabled: loading }, loading ? "Searching…" : "Search GeM")
+            )
+        ),
+        h("div", { className: "global-search-layout" },
+            h("aside", { className: "global-search-filters panel" },
+                h("div", { className: "panel-title-row" }, h("h3", null, "Filters"), h("button", { type: "button", onClick: reset }, "Reset")),
+                h("label", { className: "field-block" }, h("span", null, "Listing status"), h("select", { value: filters.status, onChange: e => update("status", e.target.value) }, h("option", { value: "ongoing_bids" }, "Ongoing bids / RA"), h("option", { value: "bidrastatus" }, "Bid / RA status"))),
+                h("label", { className: "field-block" }, h("span", null, "Bid type"), h("select", { value: filters.bid_type, onChange: e => update("bid_type", e.target.value) }, h("option", { value: "all" }, "All Bid / RAs"), h("option", { value: "product" }, "Product bids"), h("option", { value: "service" }, "Service bids"), h("option", { value: "custom" }, "Custom bids"), h("option", { value: "boq" }, "BOQ bids"), h("option", { value: "gt" }, "Global tenders"), h("option", { value: "lt" }, "Limited tenders"), h("option", { value: "st" }, "Single tenders"))),
+                h("label", { className: "field-block" }, h("span", null, "Department / authority"), h("input", { value: filters.department, onChange: e => update("department", e.target.value), placeholder: "e.g. Materials, STPI" })),
+                h("label", { className: "field-block" }, h("span", null, "State"), h("select", { value: filters.state, onChange: e => update("state", e.target.value) }, GLOBAL_SEARCH_STATES.map(value => h("option", { key: value || "all", value }, value || "All Indian states")))),
+                h("label", { className: "field-block" }, h("span", null, "City / district"), h("input", { value: filters.city, onChange: e => update("city", e.target.value), placeholder: "e.g. Surat, Koraput" })),
+                h("div", { className: "global-date-grid" }, h("label", { className: "field-block" }, h("span", null, "End date from"), h("input", { type: "date", value: filters.from_date, onChange: e => update("from_date", e.target.value) })), h("label", { className: "field-block" }, h("span", null, "End date to"), h("input", { type: "date", value: filters.to_date, onChange: e => update("to_date", e.target.value) }))),
+                h("button", { className: "primary global-filter-submit", onClick: () => search(1), disabled: loading }, "Apply Filters")
+            ),
+            h("main", { className: "global-search-results" },
+                result.notice ? h("div", { className: "global-search-notice" }, result.notice) : null,
+                message ? h("div", { className: "notice" }, message) : null,
+                h("div", { className: "global-results-toolbar" },
+                    h("strong", null, loading ? "Loading live results…" : `Showing ${result.items.length} of ${result.total || 0} records`),
+                    h("label", null, h("span", null, "Sort by"), h("select", { value: filters.sort, onChange: e => { const next = { ...filters, sort: e.target.value }; setFilters(next); search(1, next); } }, h("option", { value: "Bid-End-Date-Oldest" }, "End date: oldest first"), h("option", { value: "Bid-End-Date-Latest" }, "End date: latest first"), h("option", { value: "Bid-Start-Date-Latest" }, "Start date: latest first"), h("option", { value: "Bid-Start-Date-Oldest" }, "Start date: oldest first")))
+                ),
+                !loading && !result.items.length ? h("div", { className: "empty" }, h("h3", null, "No matching live bids"), h("p", null, "Try a bid number or use fewer filters. GeM can take several minutes to publish new changes.")) : null,
+                result.items.map(item => h("article", { className: "global-tender-card", key: item.bid_number || item.source_id },
+                    h("div", { className: "global-card-top" }, h("a", { href: item.url, target: "_blank", rel: "noreferrer" }, item.bid_number || "GeM bid"), h("div", { className: "global-card-badges" }, item.is_high_value ? h("span", null, "High value") : null, item.is_global_tender ? h("span", null, "Global") : null)),
+                    h("div", { className: "global-card-body" },
+                        h("div", null, h("h3", null, item.title), h("p", null, `Quantity: ${item.quantity || "Not specified"}`)),
+                        h("div", null, h("small", null, "Department name and address"), h("strong", null, item.authority || "Not specified"), item.organisation ? h("p", null, item.organisation) : null, item.office ? h("p", null, item.office) : null, (item.state || item.city) ? h("p", { className: "global-location" }, [item.city, item.state].filter(Boolean).join(", ")) : null),
+                        h("div", { className: "global-card-dates" }, h("span", null, "Start date", h("strong", null, displayGemDate(item.start_date))), h("span", null, "End date", h("strong", null, displayGemDate(item.end_date))))
+                    ),
+                    h("div", { className: "global-card-actions" }, h("a", { className: "button secondary", href: item.url, target: "_blank", rel: "noreferrer" }, "View on GeM"), h("button", { className: "primary", disabled: saved[item.bid_number], onClick: () => save(item) }, saved[item.bid_number] === "saving" ? "Adding…" : saved[item.bid_number] === "saved" ? "Added" : "Add to Discovery"))
+                )),
+                result.items.length ? h("div", { className: "global-pagination" }, h("button", { disabled: loading || result.page <= 1, onClick: () => search(result.page - 1) }, "Previous"), h("span", null, `Page ${result.page} of ${result.pages}`), h("button", { disabled: loading || result.page >= result.pages, onClick: () => search(result.page + 1) }, "Next")) : null
+            )
+        )
+    );
+}
+
 function App() {
     const [path, setPath] = useState(location.pathname);
     const [me, setMe] = useState(null);
@@ -4193,7 +4279,7 @@ function App() {
     );
     const sellerOnlyRoutes = ["/dashboard/seller"];
     const buyerOnlyRoutes = ["/dashboard/buyer", "/dashboard/buyers", "/dashboard/market", "/dashboard/reports", "/dashboard/analysis", "/dashboard/competitors", "/dashboard/admin"];
-    const restrictedBuyerRoutes = ["/dashboard/tenders", "/dashboard/high-priority", "/dashboard/upcoming-deadlines", "/dashboard/applied", "/dashboard/pipeline", "/dashboard/tracking", "/dashboard/analysis", "/dashboard/market", "/dashboard/reports", "/dashboard/buyers", "/dashboard/competitors", "/dashboard/admin"];
+    const restrictedBuyerRoutes = ["/dashboard/tender-search", "/dashboard/tenders", "/dashboard/high-priority", "/dashboard/upcoming-deadlines", "/dashboard/applied", "/dashboard/pipeline", "/dashboard/tracking", "/dashboard/analysis", "/dashboard/market", "/dashboard/reports", "/dashboard/buyers", "/dashboard/competitors", "/dashboard/admin"];
     let route = path === "/dashboard" ? roleDashboard(me) : path;
     if (me?.role === "seller" && buyerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/seller";
     if (me?.role !== "seller" && sellerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
@@ -4224,6 +4310,7 @@ function App() {
     else if (route === "/dashboard/seller/scoring") page = h(ScoringPage);
     else if (route === "/dashboard/seller/settings") page = h(SettingsPage);
     else if (route === "/dashboard/seller/data") page = h(DeletePage);
+    else if (route === "/dashboard/tender-search") page = h(GlobalTenderSearchPage);
     else if (route === "/dashboard/tenders") page = h(DashboardPage, { view: "all" });
     else if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
     else if (route === "/dashboard/upcoming-deadlines") page = h(DashboardPage, { view: "upcoming" });

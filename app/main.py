@@ -42,6 +42,7 @@ from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
 from app.scraper.location_parser import extract_location, normalize_state
+from app.scraper.gem_global_search import search_gem_bids
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 load_dotenv(); app=FastAPI(title='Tender AI Agent MVP',version='1.0.0')
@@ -2511,6 +2512,10 @@ def seller_orders_dashboard(request:Request,db:Session=Depends(get_db),user:User
 def seller_opportunities_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
+@app.get('/dashboard/tender-search')
+def global_tender_search_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
 @app.get('/dashboard/seller/analytics')
 def seller_analytics_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
@@ -3841,6 +3846,56 @@ def api_tender_filter_options(db:Session=Depends(get_db),user:User=Depends(get_c
         'statuses':values('status') or ['new','reviewing','applied','won','lost','ignored'],
         'total':len(tenders),
     }
+
+@app.get('/api/gem/global-search')
+def api_gem_global_search(
+    q:str='', department:str='', state:str='', city:str='', bid_type:str='all',
+    status:str='ongoing_bids', from_date:str='', to_date:str='',
+    sort:str='Bid-End-Date-Oldest', page:int=1, page_size:int=10,
+    user:User=Depends(get_current_user),
+):
+    try:
+        return search_gem_bids(
+            q=q, department=department, state=state, city=city, bid_type=bid_type,
+            status=status, from_date=from_date, to_date=to_date, sort=sort,
+            page=page, page_size=page_size,
+        )
+    except RuntimeError as exc:
+        raise HTTPException(502,str(exc))
+
+@app.post('/api/gem/global-search/save')
+async def api_save_global_search_result(
+    request:Request, db:Session=Depends(get_db), user:User=Depends(get_current_user),
+):
+    item=await request.json()
+    bid_number=str(item.get('bid_number') or '').strip().upper()
+    if not re.fullmatch(r'GEM/\d{4}/(?:B|R)/\d+',bid_number):
+        raise HTTPException(400,'A valid GeM bid number is required')
+    existing=user_tenders(db,user).filter(Tender.source=='GeM',Tender.tender_id==bid_number).first()
+    if existing:
+        return {'ok':True,'created':False,'message':'This bid is already in Tender Discovery.','tender':tender_to_dict(existing)}
+    end_value=str(item.get('end_date') or '').strip()
+    deadline=None
+    if end_value:
+        try:
+            deadline=datetime.fromisoformat(end_value.replace('Z','+00:00')).date()
+        except ValueError:
+            deadline=None
+    authority=str(item.get('authority') or item.get('department') or 'GeM').strip()
+    address='; '.join(value for value in [str(item.get('organisation') or '').strip(),str(item.get('office') or '').strip()] if value)
+    tender=Tender(
+        user_id=user.id, source='GeM', tender_id=bid_number,
+        title=str(item.get('title') or 'GeM tender').strip()[:2000],
+        department=authority[:2000], address=address[:4000],
+        state=str(item.get('state') or '').strip()[:100], city=str(item.get('city') or '').strip()[:150],
+        estimated_value=0, deadline=deadline, url=str(item.get('url') or '').strip()[:4000],
+        description=f"Live GeM search result. Quantity: {item.get('quantity') or 'Not specified'}.",
+        category=str(item.get('category') or '').strip()[:255], status='new',
+    )
+    db.add(tender)
+    db.commit()
+    db.refresh(tender)
+    return {'ok':True,'created':True,'message':'Bid added to Tender Discovery.','tender':tender_to_dict(tender)}
 
 @app.get('/api/tenders/{tender_id}')
 def api_tender_detail(tender_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
