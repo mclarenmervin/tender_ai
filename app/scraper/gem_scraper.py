@@ -20,7 +20,7 @@ class GemScraper(BaseScraper):
     base_url = "https://bidplus.gem.gov.in"
     list_url = "https://bidplus.gem.gov.in/all-bids"
 
-    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, authorities=None):
+    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, cities=None, authorities=None):
         self.keywords = [keyword.strip() for keyword in (keywords or []) if keyword and keyword.strip()]
         self.max_bids = max_bids
         state_values = states if states is not None else ([state] if state else [])
@@ -29,7 +29,9 @@ class GemScraper(BaseScraper):
             for value in state_values
             if self.clean_text(value)
         ]
-        self.city_filter = self.clean_text(city).lower()
+        city_values = cities if cities is not None else ([city] if city else [])
+        self.city_filters = [self.clean_text(value).lower() for value in city_values if self.clean_text(value)]
+        self.city_filter = self.city_filters[0] if self.city_filters else ""
         self.authority_filters = [self.clean_text(value).lower() for value in (authorities or []) if self.clean_text(value)]
 
     def clean_text(self, text):
@@ -142,10 +144,10 @@ class GemScraper(BaseScraper):
         return ""
 
     def location_enabled(self):
-        return bool(self.state_filters or self.city_filter)
+        return bool(self.state_filters or self.city_filters)
 
     def location_search_suffix(self):
-        return " ".join(self.state_filters + ([self.city_filter] if self.city_filter else []))
+        return " ".join(self.state_filters + self.city_filters)
 
     def location_matches(self, text):
         if not self.location_enabled():
@@ -155,7 +157,7 @@ class GemScraper(BaseScraper):
             inferred_state,_=extract_location(text)
             if not any(state in haystack for state in self.state_filters) and inferred_state.lower() not in self.state_filters:
                 return False
-        if self.city_filter and self.city_filter not in haystack:
+        if self.city_filters and not any(city in haystack for city in self.city_filters):
             return False
         return True
 
@@ -178,7 +180,7 @@ class GemScraper(BaseScraper):
             state_value=item.get("state", ""),
             city_value=item.get("city", ""),
             configured_states=self.state_filters,
-            configured_city=self.city_filter,
+            configured_city=next((value for value in self.city_filters if value in pdf_text.lower()), self.city_filter),
         )
         item["state"] = state[:100]
         item["city"] = city[:150]
@@ -502,7 +504,7 @@ class GemScraper(BaseScraper):
             state_value=raw_state,
             city_value=raw_city,
             configured_states=self.state_filters,
-            configured_city=self.city_filter,
+            configured_city=next((value for value in self.city_filters if value in pdf_text.lower()), self.city_filter),
         )
 
         category = self.extract_field(full_text, [
@@ -569,7 +571,7 @@ class GemScraper(BaseScraper):
             state_value=item.get("state", ""),
             city_value=item.get("city", ""),
             configured_states=self.state_filters,
-            configured_city=self.city_filter,
+            configured_city=next((value for value in self.city_filters if value in pdf_text.lower()), self.city_filter),
         )
         item["state"] = state[:100]
         item["city"] = city[:150]

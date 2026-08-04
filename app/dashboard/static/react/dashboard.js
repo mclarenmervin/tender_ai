@@ -3669,12 +3669,14 @@ function GemAlertsPage() {
     return h("div", { className: "admin-grid gem-alert-grid" },
         h("section", { className: "card gem-alert-card" },
             h("h3", null, "GeM Website Alerts"),
-            h("p", { className: "desc" }, "Watch specific GeM categories or company names. Scheduled checks run daily at 6 AM and 6 PM and notify you when matching new tenders are added."),
+            h("p", { className: "desc" }, "Receive email alerts for newly published GeM bids matching your categories, departments, states, and cities. Scheduled checks run daily at 6 AM and 6 PM."),
             message ? h("p", { className: "status" }, message) : null,
             h("form", { className: "stack", onSubmit: save },
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!settings.enabled, onChange: e => setSettings({ ...settings, enabled: e.target.checked }) }), " Enable GeM alert schedule"),
                 multiSelect("categories", "GeM categories", settings.options?.categories || []),
-                multiSelect("companies", "Companies / departments", settings.options?.company_departments || []),
+                multiSelect("departments", "Departments / authorities", settings.options?.departments || []),
+                multiSelect("states", "States", settings.options?.states || []),
+                multiSelect("cities", "Cities / districts", settings.options?.cities || []),
                 h("div", { className: "schedule-pills" }, (settings.schedules || ["06:00","18:00"]).map(slot => h("span", { key: slot }, slot === "06:00" ? "6:00 AM" : "6:00 PM"))),
                 h("button", { className: "primary" }, "Save Alert Settings"),
                 h("button", { type: "button", disabled: running, onClick: runNow }, running ? "Running..." : "Run Alert Check Now")
@@ -3688,7 +3690,7 @@ function GemAlertsPage() {
                 h("div", null, h("span", null, "Last 6 AM"), h("strong", null, settings.last_6am || "Not run")),
                 h("div", null, h("span", null, "Last 6 PM"), h("strong", null, settings.last_6pm || "Not run"))
             ),
-            h("div", { className: "notice" }, "Alerts use your Profile notification toggles. Keep Telegram or Email enabled in Profile to receive messages.")
+            h("div", { className: "notice" }, "Only newly published matching bids are emailed. Email must remain enabled in Profile; previously stored bids are not resent.")
         )
     );
 }

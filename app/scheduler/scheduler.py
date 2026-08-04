@@ -93,7 +93,10 @@ def gem_alert_due_slots(db, user, now=None):
         return []
     categories = json_list_setting(db, user.id, "gem_alert_categories")
     companies = json_list_setting(db, user.id, "gem_alert_companies")
-    if not categories and not companies:
+    departments = json_list_setting(db, user.id, "gem_alert_departments")
+    states = json_list_setting(db, user.id, "gem_alert_states")
+    cities = json_list_setting(db, user.id, "gem_alert_cities")
+    if not categories and not companies and not departments and not states and not cities:
         return []
     now = now or datetime.now()
     due = []

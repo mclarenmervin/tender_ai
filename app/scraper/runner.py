@@ -81,8 +81,8 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
 def run_gem_scraper(db,return_details=False,user_id=None,scrape_run_id=None):
     return run_scrapers(db,[GemScraper()],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
 
-def run_gem_keyword_scraper(db,keywords,return_details=False,max_bids=20,user_id=None,state=None,states=None,city=None,authorities=None,scrape_run_id=None):
-    return run_scrapers(db,[GemScraper(keywords=keywords,max_bids=max_bids,state=state,states=states,city=city,authorities=authorities)],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
+def run_gem_keyword_scraper(db,keywords,return_details=False,max_bids=20,user_id=None,state=None,states=None,city=None,cities=None,authorities=None,scrape_run_id=None):
+    return run_scrapers(db,[GemScraper(keywords=keywords,max_bids=max_bids,state=state,states=states,city=city,cities=cities,authorities=authorities)],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
 
 def run_all_scrapers(db,return_details=False,user_id=None,scrape_run_id=None):
     return run_scrapers(db,[NexizoScraper(),GemScraper(),CPPPScraper()],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)

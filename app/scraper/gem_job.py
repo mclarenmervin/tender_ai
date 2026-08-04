@@ -30,19 +30,35 @@ def run_gem_job(user_id=None, trigger="manual"):
         for item in keyword_rows:
             expanded_keywords.extend(expand_keyword(item.keyword, item.profile, item.synonyms))
         if is_gem_alert:
-            expanded_keywords.extend(gem_alert_terms(db, user_id))
+            expanded_keywords.extend(setting_json_list(db, user_id, "gem_alert_categories"))
+            expanded_keywords.extend(setting_json_list(db, user_id, "gem_alert_companies"))
         else:
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
-        states = setting_json_list(db, user_id, "scrape_states")
-        legacy_state = setting_value(db, user_id, "scrape_state", "")
-        if legacy_state and legacy_state not in states:
-            states.append(legacy_state)
-        city = setting_value(db, user_id, "scrape_city", "")
-        authorities = setting_json_list(db, user_id, "scrape_authorities")
+        if is_gem_alert:
+            states = setting_json_list(db, user_id, "gem_alert_states")
+            cities = setting_json_list(db, user_id, "gem_alert_cities")
+            city = cities[0] if cities else ""
+            authorities = setting_json_list(db, user_id, "gem_alert_departments")
+        else:
+            states = setting_json_list(db, user_id, "scrape_states")
+            legacy_state = setting_value(db, user_id, "scrape_state", "")
+            if legacy_state and legacy_state not in states:
+                states.append(legacy_state)
+            city = setting_value(db, user_id, "scrape_city", "")
+            cities = [city] if city else []
+            authorities = setting_json_list(db, user_id, "scrape_authorities")
+        if is_gem_alert:
+            # Search location terms as well as applying strict post-parse
+            # location checks, so location-only alerts are not limited to the
+            # first page of general GeM listings.
+            expanded_keywords.extend(states)
+            expanded_keywords.extend(cities)
         used_default_keywords = False
         used_authority_terms = False
-        if not expanded_keywords and authorities and not is_gem_alert:
+        if is_gem_alert and not (expanded_keywords or states or cities or authorities):
+            raise RuntimeError("Configure at least one GeM alert category, department, state, or city before running the alert check.")
+        if not expanded_keywords and authorities:
             expanded_keywords.extend(authorities)
             used_authority_terms = True
         elif not expanded_keywords and not (states or city) and not is_gem_alert:
@@ -64,6 +80,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             user_id=user_id,
             states=states,
             city=city,
+            cities=cities,
             authorities=authorities,
             scrape_run_id=run.id if run else None,
         )

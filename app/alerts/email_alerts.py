@@ -30,6 +30,7 @@ def tender_html(tender):
     <span style="color:#64748b;">{escape(tender.tender_id or '')}</span><br>
     Department: {escape(tender.department or '')}<br>
     State: {escape(tender.state or '')}<br>
+    City: {escape(tender.city or '')}<br>
     Value: Rs. {tender.estimated_value or 0}<br>
     Deadline: {escape(str(tender.deadline or ''))}<br>
     Score: {escape(str(tender.relevance_score if tender.relevance_score is not None else ''))}<br>
@@ -220,19 +221,20 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
         return 0
 
     rows = "\n".join(tender_html(tender) for tender in tenders)
-    subject = f"Tender AI: {len(tenders)} new tender{'s' if len(tenders) != 1 else ''} added"
+    alert_run = str((scrape_details or {}).get("trigger") or "").startswith("gem_alert")
+    subject = f"Tender AI GeM Alert: {len(tenders)} new matching bid{'s' if len(tenders) != 1 else ''}" if alert_run else f"Tender AI: {len(tenders)} new tender{'s' if len(tenders) != 1 else ''} added"
     details_html = scrape_details_html(scrape_details)
     details_text = scrape_details_text(scrape_details)
     html_body = f"""
 <div style="font-family:Arial,sans-serif;color:#111827;">
-  <h2>New tenders added to Tender AI</h2>
-  <p>{len(tenders)} new tender{'s were' if len(tenders) != 1 else ' was'} added during your scrape.</p>
+  <h2>{'New matching GeM bids' if alert_run else 'New tenders added to Tender AI'}</h2>
+  <p>{len(tenders)} new matching bid{'s were' if len(tenders) != 1 else ' was'} found for your department and location alert filters.</p>
   {details_html}
   <table style="border-collapse:collapse;width:100%;">{rows}</table>
 </div>
 """.strip()
     tender_text = "\n\n".join(
-        f"{t.title or ''}\nID: {t.tender_id or ''}\nDepartment: {t.department or ''}\nState: {t.state or ''}\nDeadline: {t.deadline or ''}\nScore: {t.relevance_score if t.relevance_score is not None else ''}\nLink: {t.url or ''}"
+        f"{t.title or ''}\nID: {t.tender_id or ''}\nDepartment: {t.department or ''}\nState: {t.state or ''}\nCity: {t.city or ''}\nDeadline: {t.deadline or ''}\nScore: {t.relevance_score if t.relevance_score is not None else ''}\nLink: {t.url or ''}"
         for t in tenders
     )
     text_body = (details_text + "\n\n" if details_text else "") + tender_text

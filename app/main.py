@@ -5965,20 +5965,37 @@ def clean_alert_terms(values):
 DEFAULT_GEM_CATEGORIES=[
     'automation','computer','hardware','iot','medical equipment','network','security','sensor','software','water purification'
 ]
+DEFAULT_GEM_ALERT_CITIES=[
+    'Tapi','Vyara','Surat','Navsari','The Dangs','Chhotaudepur','Narmada','Vapi','Bharuch','Valsad',
+    'Dadra & Nagar Haveli','Ankleshwar','Vadodara','Panch Mahals','Ahmedabad','Jamnagar','Mahesana',
+    'Rajkot','Gir Somnath','Morbi','Arvalli','Porbandar','Kheda','Devbhumi Dwarka','Kutch','Amreli',
+    'Botad','Sabarkantha','Surendra Nagar','Patan','Banaskantha','Dahod','Mahisagar','Anand','Junagadh',
+    'Bhavnagar','Gandhinagar',
+]
 
 def gem_alert_select_options(db,user):
     saved_categories=get_json_setting(db,user.id,'gem_alert_categories',[])
     saved_companies=get_json_setting(db,user.id,'gem_alert_companies',[])
+    saved_departments=get_json_setting(db,user.id,'gem_alert_departments',[])
+    discovered_departments=get_json_setting(db,user.id,'scrape_authorities',[])
+    saved_states=get_json_setting(db,user.id,'gem_alert_states',[])
+    saved_cities=get_json_setting(db,user.id,'gem_alert_cities',[])
     tenders=user_tenders(db,user).all()
     gem_tenders=[t for t in tenders if 'gem' in (t.source or '').lower()]
 
     categories=set(saved_categories)
-    departments=set(saved_companies)
+    departments=set(saved_companies+saved_departments+discovered_departments)
+    states=set(saved_states)
+    cities=set(saved_cities)
     for tender in gem_tenders:
         if tender.category and tender.category.strip():
             categories.add(tender.category.strip().lower())
         if tender.department and tender.department.strip():
             departments.add(tender.department.strip().lower())
+        if tender.state and tender.state.strip():
+            states.add(tender.state.strip())
+        if tender.city and tender.city.strip():
+            cities.add(tender.city.strip())
 
     categories.update(DEFAULT_GEM_CATEGORIES)
     company_department_options=sorted(
@@ -5988,6 +6005,9 @@ def gem_alert_select_options(db,user):
     return {
         'categories':sorted({value for value in categories if value},key=lambda value:value.lower())[:250],
         'company_departments':company_department_options[:250],
+        'departments':company_department_options[:250],
+        'states':sorted({*INDIAN_STATES,*states},key=lambda value:value.lower()),
+        'cities':list(dict.fromkeys(DEFAULT_GEM_ALERT_CITIES+sorted(cities,key=lambda value:value.lower()))),
         'source':'saved_gem_tenders',
     }
 
@@ -6249,6 +6269,9 @@ def api_get_gem_alerts(db:Session=Depends(get_db),user:User=Depends(get_current_
         'enabled':get_setting(db,user.id,'gem_alert_enabled','false')=='true',
         'categories':get_json_setting(db,user.id,'gem_alert_categories',[]),
         'companies':get_json_setting(db,user.id,'gem_alert_companies',[]),
+        'departments':get_json_setting(db,user.id,'gem_alert_departments',[]) or get_json_setting(db,user.id,'gem_alert_companies',[]),
+        'states':get_json_setting(db,user.id,'gem_alert_states',[]),
+        'cities':get_json_setting(db,user.id,'gem_alert_cities',[]),
         'options':gem_alert_select_options(db,user),
         'schedules':['06:00','18:00'],
         'last_6am':get_setting(db,user.id,'gem_alert_last_run_0600',''),
@@ -6271,13 +6294,22 @@ async def api_save_gem_alerts(request:Request,db:Session=Depends(get_db),user:Us
     enabled='true' if payload.get('enabled') else 'false'
     categories=clean_alert_terms(payload.get('categories') or [])
     companies=clean_alert_terms(payload.get('companies') or [])
+    departments=clean_alert_terms(payload.get('departments') or [])
+    states=clean_alert_terms(payload.get('states') or [])
+    cities=clean_alert_terms(payload.get('cities') or [])
     set_setting(db,user.id,'gem_alert_enabled',enabled)
     set_setting(db,user.id,'gem_alert_categories',json.dumps(categories))
     set_setting(db,user.id,'gem_alert_companies',json.dumps(companies))
+    set_setting(db,user.id,'gem_alert_departments',json.dumps(departments))
+    set_setting(db,user.id,'gem_alert_states',json.dumps(states))
+    set_setting(db,user.id,'gem_alert_cities',json.dumps(cities))
     return {
         'enabled':enabled=='true',
         'categories':categories,
         'companies':companies,
+        'departments':departments,
+        'states':states,
+        'cities':cities,
         'options':gem_alert_select_options(db,user),
         'schedules':['06:00','18:00'],
     }
