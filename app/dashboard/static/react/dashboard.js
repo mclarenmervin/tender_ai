@@ -3625,26 +3625,19 @@ function GemAlertsPage() {
     async function load() { setSettings(await api("/api/seller/gem-alerts")); }
     useEffect(() => { load().catch(e => setMessage(e.message)); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading GeM alerts...");
-    const selectedValues = field => settings[field] || [];
-    const setSelected = (field, event) => setSettings({ ...settings, [field]: Array.from(event.target.selectedOptions).map(option => option.value) });
-    const niceLabel = value => String(value || "").split(" ").map(part => part.length <= 4 ? part.toUpperCase() : part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-    const multiSelect = (field, label, items) => {
-        const selected = selectedValues(field);
-        const options = Array.from(new Set([...(items || []), ...selected])).filter(Boolean).sort((a, b) => String(a).localeCompare(String(b)));
-        return h("label", { className: "field-block gem-alert-select-block" },
-            h("span", null, label),
-            h("select", { multiple: true, className: "gem-alert-select", value: selected, onChange: e => setSelected(field, e) },
-                options.map(item => h("option", { key: item, value: item }, niceLabel(item)))
-            ),
-            h("div", { className: "selected-alert-tags" },
-                selected.length ? selected.map(item => h("button", {
-                    key: item,
-                    type: "button",
-                    className: "selected-alert-tag",
-                    onClick: () => setSettings({ ...settings, [field]: selected.filter(value => value !== item) })
-                }, niceLabel(item), h("span", null, "x"))) : h("small", null, "Select one or more options")
-            )
-        );
+    const multiSelect = (field, label, items, placeholder) => {
+        const selected = settings[field] || [];
+        const sourceOptions = Array.from(new Set(items || [])).filter(Boolean);
+        const displaySelected = selected.map(value => sourceOptions.find(option => String(option).toLowerCase() === String(value).toLowerCase()) || value);
+        const options = Array.from(new Map([...sourceOptions, ...displaySelected].map(value => [String(value).toLowerCase(), value])).values());
+        return h(AutomationMultiSelect, {
+            label,
+            hint: "Select one or more",
+            options,
+            selected: displaySelected,
+            placeholder,
+            onChange: values => setSettings({ ...settings, [field]: values }),
+        });
     };
     async function save(e) {
         e.preventDefault();
@@ -3673,10 +3666,12 @@ function GemAlertsPage() {
             message ? h("p", { className: "status" }, message) : null,
             h("form", { className: "stack", onSubmit: save },
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!settings.enabled, onChange: e => setSettings({ ...settings, enabled: e.target.checked }) }), " Enable GeM alert schedule"),
-                multiSelect("categories", "GeM categories", settings.options?.categories || []),
-                multiSelect("departments", "Departments / authorities", settings.options?.departments || []),
-                multiSelect("states", "States", settings.options?.states || []),
-                multiSelect("cities", "Cities / districts", settings.options?.cities || []),
+                h("div", { className: "gem-alert-filter-grid" },
+                    multiSelect("categories", "GeM categories", settings.options?.categories || [], "Choose product or service categories"),
+                    multiSelect("departments", "Departments / authorities", settings.options?.departments || [], "Choose GeM departments"),
+                    multiSelect("states", "States", settings.options?.states || [], "Choose one or more states"),
+                    multiSelect("cities", "Cities / districts", settings.options?.cities || [], "Choose cities or districts")
+                ),
                 h("div", { className: "schedule-pills" }, (settings.schedules || ["06:00","18:00"]).map(slot => h("span", { key: slot }, slot === "06:00" ? "6:00 AM" : "6:00 PM"))),
                 h("button", { className: "primary" }, "Save Alert Settings"),
                 h("button", { type: "button", disabled: running, onClick: runNow }, running ? "Running..." : "Run Alert Check Now")
@@ -3684,6 +3679,11 @@ function GemAlertsPage() {
         ),
         h("section", { className: "card" },
             h("h3", null, "Alert Status"),
+            h("div", { className: "gem-alert-scope" },
+                h("span", null, "Current alert scope"),
+                h("strong", null, `${(settings.categories || []).length} categories · ${(settings.departments || []).length} departments`),
+                h("p", null, `${(settings.states || []).length} states · ${(settings.cities || []).length} cities / districts`)
+            ),
             h("div", { className: "alert-status-grid" },
                 h("div", null, h("span", null, "Telegram"), h("strong", null, settings.telegram_enabled ? "Enabled" : "Off")),
                 h("div", null, h("span", null, "Email"), h("strong", null, settings.email_enabled ? "Enabled" : "Off")),

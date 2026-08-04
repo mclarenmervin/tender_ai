@@ -3918,6 +3918,22 @@ td {
 .gem-alert-select option {
     padding: 8px 10px;
 }
+.gem-alert-grid{align-items:start}.gem-alert-grid>.card{align-self:start}
+.gem-alert-card{overflow:visible}.gem-alert-filter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.gem-alert-filter-grid .automation-multiselect{min-width:0;align-content:start}
+.gem-alert-filter-grid .automation-field-head strong{color:var(--text)}.gem-alert-filter-grid .automation-field-head small{color:var(--text-faint)}.gem-alert-filter-grid .automation-field-head>span{color:var(--accent)}
+.gem-alert-filter-grid .automation-select-trigger{min-width:0;background:var(--surface);border-color:var(--border-strong);color:var(--text);box-shadow:var(--shadow-sm)}
+.gem-alert-filter-grid .automation-select-trigger:hover{background:var(--surface-hover);border-color:var(--accent)}
+.gem-alert-filter-grid .automation-select-trigger span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gem-alert-filter-grid .automation-select-panel{background:var(--surface);border-color:var(--accent-soft-strong);box-shadow:var(--shadow-md)}
+.gem-alert-filter-grid .automation-select-panel>input{background:var(--surface-2);border-color:var(--border);color:var(--text)}
+.gem-alert-filter-grid .automation-select-actions button{background:var(--accent-soft);color:var(--accent)}
+.gem-alert-filter-grid .automation-option-list label{color:var(--text-muted)}
+.gem-alert-filter-grid .automation-option-list label:hover,.gem-alert-filter-grid .automation-option-list label.selected{background:var(--accent-soft);color:var(--accent)}
+.gem-alert-filter-grid .automation-selected-tags button{background:var(--accent-soft);border-color:var(--accent-soft-strong);color:var(--accent)}
+.gem-alert-scope{display:grid;gap:5px;margin:12px 0 16px;padding:16px;border:1px solid var(--accent-soft-strong);border-radius:12px;background:linear-gradient(135deg,var(--accent-soft),var(--surface-2))}
+.gem-alert-scope span{color:var(--text-muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.gem-alert-scope strong{color:var(--text);font-size:16px}.gem-alert-scope p{margin:0;color:var(--text-muted);font-size:13px}
+@media(max-width:800px){.gem-alert-filter-grid{grid-template-columns:minmax(0,1fr)}}
 .selected-alert-tags {
     min-height: 34px;
     display: flex;
