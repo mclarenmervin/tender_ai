@@ -4643,3 +4643,16 @@ select[multiple] {
 .global-card-actions .button.secondary{min-height:40px;padding:0 14px;border:1px solid var(--border-strong);border-radius:9px;background:var(--surface);color:var(--accent)!important;font-weight:800}
 .global-card-actions .button.secondary:hover{background:var(--accent-soft);border-color:var(--accent)}
 .global-pagination,.global-pagination span{color:var(--text-muted)}
+
+/* Keep every sidebar control contained and fully visible at all zoom levels. */
+.global-search-layout{grid-template-columns:330px minmax(0,1fr)}
+.global-search-filters,.global-search-filters *{box-sizing:border-box}
+.global-search-filters{min-width:0;width:100%;overflow:hidden}
+.global-search-filters .field-block{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;min-width:0;width:100%}
+.global-search-filters input,.global-search-filters select,.global-search-filters button{display:block;min-width:0;max-width:100%;width:100%}
+.global-search-filters input[type="date"]{appearance:auto;-webkit-appearance:auto;padding-right:10px}
+.global-date-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:13px;min-width:0;width:100%}
+.global-date-grid .field-block{min-width:0;width:100%}
+@media(max-width:1100px){.global-search-layout{grid-template-columns:290px minmax(0,1fr)}}
+@media(max-width:900px){.global-search-layout{grid-template-columns:minmax(0,1fr)}.global-search-filters{position:static;overflow:visible}.global-date-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.global-date-grid{grid-template-columns:minmax(0,1fr)}}
