@@ -4270,7 +4270,6 @@ function GlobalTenderSearchPage() {
                         !filters.state?h("p",{className:"desc"},"Select a state to load GeM cities."):null,
                         filters.state.toUpperCase()==="GUJARAT"?h(React.Fragment,null,h(AdvancedCheckboxFilter,{label:"Priority cities / districts",items:priorityAdvancedCities,value:filters.city,onChange:value=>update("city",value)}),h(AdvancedCheckboxFilter,{label:"Other locations",items:Array.from(new Set([...otherAdvancedCities,...locationCities])),value:filters.city,onChange:value=>update("city",value)})):null,
                         filters.state&&filters.state.toUpperCase()!=="GUJARAT"?h(AdvancedCheckboxFilter,{label:"GeM cities / districts",items:locationCities,value:filters.city,onChange:value=>update("city",value)}):null)
-                    )
                 ):null,
                 filters.mode === "boq" ? h(React.Fragment,null,
                     h("label",{className:"field-block"},h("span",null,"BOQ title"),h("input",{value:filters.boq_title,onChange:e=>update("boq_title",e.target.value),placeholder:"Enter exact BOQ title"})),
