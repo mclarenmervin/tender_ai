@@ -161,3 +161,78 @@ def search_gem_bids(q="", department="", state="", city="", bid_type="all",
         }
     except (requests.RequestException, ValueError, RuntimeError) as exc:
         raise RuntimeError(f"GeM search is temporarily unavailable: {exc}") from exc
+
+
+def search_gem_advanced(mode="bid", page=1, bid_number="", category="", ministry="",
+                        buyer_state="", organization="", department="", state="", city="",
+                        boq_title="", high_value="", from_date="", to_date=""):
+    """Run one of the four public GeM Advanced Search modes."""
+    mode = mode if mode in {"bid", "ministry", "location", "boq"} else "bid"
+    if mode == "bid" and category and not bid_number:
+        return search_gem_bids(q=category,from_date=from_date,to_date=to_date,page=page,page_size=10)
+    city_values=[value.strip() for value in str(city or "").split(",") if value.strip()]
+    if mode == "location" and len(city_values)>1:
+        combined=[]; total=0
+        for value in city_values:
+            result=search_gem_advanced(mode=mode,page=page,state=state,city=value,from_date=from_date,to_date=to_date)
+            total+=result.get("total",0)
+            for item in result.get("items",[]):
+                if item.get("bid_number") not in {row.get("bid_number") for row in combined}:
+                    combined.append(item)
+        return {"items":combined[:10],"page":max(1,int(page)),"page_size":10,"total":total,
+                "pages":max(1,(total+9)//10),"query":"location",
+                "notice":"Advanced location results are loaded live from GeM for the selected cities / districts."}
+    def gem_date(value):
+        try:
+            return datetime.strptime(value,"%Y-%m-%d").strftime("%d-%m-%Y") if value else ""
+        except ValueError:
+            return value
+    from_date,to_date=gem_date(from_date),gem_date(to_date)
+    session = requests.Session()
+    session.headers.update({"User-Agent": "Mozilla/5.0 TenderAI/1.0"})
+    try:
+        listing = session.get(f"{GEM_BASE_URL}/advance-search", timeout=25)
+        listing.raise_for_status()
+        parser = _HiddenInputParser(); parser.feed(listing.text)
+        csrf_name = parser.values.get("cname", "").strip()
+        csrf_token = parser.values.get("chash", "").strip()
+        if not csrf_name or not csrf_token:
+            raise RuntimeError("GeM Advanced Search token was not available")
+        if mode == "ministry":
+            payload = {"searchType":"ministry-search","ministry":ministry,"buyerState":buyer_state,
+                       "organization":organization,"department":department,"bidEndFromMin":from_date,"bidEndToMin":to_date}
+        elif mode == "location":
+            payload = {"searchType":"con","state_name_con":state,"city_name_con":city,
+                       "bidEndFromCon":from_date,"bidEndToCon":to_date}
+        elif mode == "boq":
+            payload = {"searchType":"boq","boqtitle_con":boq_title,"bidvalue":high_value,
+                       "bidEndFromBoq":from_date,"bidEndToBoq":to_date}
+        else:
+            payload = {"searchType":"bidNumber","bidNumber":bid_number,"category":category,
+                       "bidEndFrom":from_date,"bidEndTo":to_date}
+        payload["page"] = max(1, int(page))
+        response = session.post(f"{GEM_BASE_URL}/search-bids",
+            data={"payload":json.dumps(payload,separators=(",",":")),csrf_name:csrf_token},
+            headers={"Referer":f"{GEM_BASE_URL}/advance-search","X-Requested-With":"XMLHttpRequest"},timeout=35)
+        if response.status_code == 404:
+            return {"items":[],"page":max(1,int(page)),"page_size":10,"total":0,"pages":1,
+                    "query":mode,"notice":"No live GeM bids matched the selected Advanced Search filters."}
+        response.raise_for_status()
+        result=response.json(); body=result.get("response",{}).get("response",{})
+        items=[map_gem_document(doc) for doc in (body.get("docs") or [])]
+        total=int(body.get("numFound") or len(items)); current=max(1,int(page))
+        return {"items":items,"page":current,"page_size":10,"total":total,
+                "pages":max(1,(total+9)//10),"query":mode,
+                "notice":"Advanced results are loaded live from GeM using the selected search group."}
+    except (requests.RequestException,ValueError,RuntimeError) as exc:
+        raise RuntimeError(f"GeM Advanced Search is temporarily unavailable: {exc}") from exc
+
+
+def gem_advanced_options():
+    session=requests.Session(); session.headers.update({"User-Agent":"Mozilla/5.0 TenderAI/1.0"})
+    try:
+        ministries=session.get(f"{GEM_BASE_URL}/ministry-list-adv",timeout=25).json().get("data",{}).get("MinistryList",[])
+        states=session.get(f"{GEM_BASE_URL}/state-list-adv",timeout=25).json().get("data",[])
+        return {"ministries":ministries,"states":[row.get("state_name","") for row in states if row.get("state_name")]}
+    except (requests.RequestException,ValueError) as exc:
+        raise RuntimeError(f"GeM Advanced Search options are temporarily unavailable: {exc}") from exc

@@ -4672,3 +4672,10 @@ select[multiple] {
 @media(max-width:1100px){.global-search-layout{grid-template-columns:290px minmax(0,1fr)}}
 @media(max-width:900px){.global-search-layout{grid-template-columns:minmax(0,1fr)}.global-search-filters{position:static;overflow:visible}.global-date-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.global-date-grid{grid-template-columns:minmax(0,1fr)}}
+.global-advanced-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding-bottom:13px;border-bottom:1px solid var(--border)}
+.global-advanced-tabs button{min-width:0;padding:8px 7px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-muted);box-shadow:none;font-size:11px}
+.global-advanced-tabs button:first-child{grid-column:1/-1}.global-advanced-tabs button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.global-city-checkboxes{display:grid;gap:14px;max-height:430px;overflow:auto;padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
+.global-city-checkboxes .advanced-checkbox-filter{display:block}.global-city-checkboxes .advanced-checkbox-filter legend{color:var(--text);border-color:var(--border);font-size:11px}
+.global-city-checkboxes .advanced-checkbox-grid{grid-template-columns:minmax(0,1fr);gap:2px;padding:7px 0}.global-city-checkboxes .advanced-checkbox-grid label{min-height:28px;color:var(--text-muted);font-size:12px}
+.global-city-checkboxes .advanced-checkbox-grid label:hover{color:var(--accent)}

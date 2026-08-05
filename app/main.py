@@ -42,7 +42,7 @@ from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
 from app.scraper.location_parser import extract_location, normalize_state
-from app.scraper.gem_global_search import search_gem_bids
+from app.scraper.gem_global_search import search_gem_bids,search_gem_advanced,gem_advanced_options
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 load_dotenv(); app=FastAPI(title='Tender AI Agent MVP',version='1.0.0')
@@ -3860,6 +3860,28 @@ def api_gem_global_search(
             status=status, from_date=from_date, to_date=to_date, sort=sort,
             page=page, page_size=page_size,
         )
+    except RuntimeError as exc:
+        raise HTTPException(502,str(exc))
+
+@app.get('/api/gem/advance-options')
+def api_gem_advance_options(user:User=Depends(get_current_user)):
+    try:
+        return gem_advanced_options()
+    except RuntimeError as exc:
+        raise HTTPException(502,str(exc))
+
+@app.get('/api/gem/advanced-search')
+def api_gem_advanced_search(
+    mode:str='bid', page:int=1, bid_number:str='', category:str='', ministry:str='',
+    buyer_state:str='', organization:str='', department:str='', state:str='', city:str='',
+    boq_title:str='', high_value:str='', from_date:str='', to_date:str='',
+    user:User=Depends(get_current_user),
+):
+    try:
+        return search_gem_advanced(mode=mode,page=page,bid_number=bid_number,category=category,
+            ministry=ministry,buyer_state=buyer_state,organization=organization,department=department,
+            state=state,city=city,boq_title=boq_title,high_value=high_value,
+            from_date=from_date,to_date=to_date)
     except RuntimeError as exc:
         raise HTTPException(502,str(exc))
 

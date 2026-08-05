@@ -4162,8 +4162,9 @@ function displayGemDate(value) {
 }
 
 function GlobalTenderSearchPage() {
-    const defaults = { q: "", department: "", state: "", city: "", bid_type: "all", status: "ongoing_bids", from_date: "", to_date: "", sort: "Bid-End-Date-Oldest" };
+    const defaults = { mode: "all", q: "", department: "", state: "", city: "", bid_type: "all", status: "ongoing_bids", from_date: "", to_date: "", sort: "Bid-End-Date-Oldest", bid_number: "", category: "", ministry: "", buyer_state: "", organization: "", advanced_department: "", boq_title: "", high_value: "" };
     const [filters, setFilters] = useState(defaults);
+    const [advancedOptions, setAdvancedOptions] = useState({ ministries: [], states: [] });
     const [result, setResult] = useState({ items: [], page: 1, pages: 1, total: 0, notice: "" });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -4171,16 +4172,21 @@ function GlobalTenderSearchPage() {
     const update = (key, value) => setFilters(current => ({ ...current, [key]: value }));
 
     async function search(page = 1, values = filters) {
+        if ((values.from_date && !values.to_date) || (!values.from_date && values.to_date)) {
+            setMessage("Select both End date from and End date to."); return;
+        }
         setLoading(true); setMessage("");
-        const params = new URLSearchParams({ ...values, page: String(page), page_size: "10" });
+        const requestValues = values.mode === "ministry" ? { ...values, department: values.advanced_department } : values;
+        const params = new URLSearchParams({ ...requestValues, page: String(page), page_size: "10" });
         try {
-            const data = await api(`/api/gem/global-search?${params}`, { silent: true });
+            const endpoint = values.mode === "all" ? "/api/gem/global-search" : "/api/gem/advanced-search";
+            const data = await api(`${endpoint}?${params}`, { silent: true });
             setResult(data);
         } catch (error) {
             setMessage(error.message || "Live GeM search could not be completed.");
         } finally { setLoading(false); }
     }
-    useEffect(() => { search(1, defaults); }, []);
+    useEffect(() => { search(1, defaults); api("/api/gem/advance-options", { silent: true }).then(setAdvancedOptions).catch(() => {}); }, []);
 
     async function save(item) {
         setSaved(current => ({ ...current, [item.bid_number]: "saving" }));
@@ -4201,18 +4207,39 @@ function GlobalTenderSearchPage() {
             h("div", null, h("span", { className: "eyebrow" }, "Live GeM discovery"), h("h2", null, "Global Tender Search"), h("p", null, "Search current GeM bids by bid number, item, department, authority, state, or city.")),
             h("form", { className: "global-search-bar", onSubmit: e => { e.preventDefault(); search(1); } },
                 h("select", { value: "contains", "aria-label": "Search matching method", disabled: true }, h("option", null, "Contains")),
-                h("input", { value: filters.q, onChange: e => update("q", e.target.value), placeholder: "Bid number, item, department or keyword", "aria-label": "Search GeM tenders" }),
+                h("input", { value: filters.mode === "all" ? filters.q : "", disabled: filters.mode !== "all", onChange: e => update("q", e.target.value), placeholder: filters.mode === "all" ? "Bid number, item, department or keyword" : "Use the selected Advanced Search filters below", "aria-label": "Search GeM tenders" }),
                 h("button", { className: "primary", disabled: loading }, loading ? "Searching…" : "Search GeM")
             )
         ),
         h("div", { className: "global-search-layout" },
             h("aside", { className: "global-search-filters panel" },
                 h("div", { className: "panel-title-row" }, h("h3", null, "Filters"), h("button", { type: "button", onClick: reset }, "Reset")),
-                h("label", { className: "field-block" }, h("span", null, "Listing status"), h("select", { value: filters.status, onChange: e => update("status", e.target.value) }, h("option", { value: "ongoing_bids" }, "Ongoing bids / RA"), h("option", { value: "bidrastatus" }, "Bid / RA status"))),
-                h("label", { className: "field-block" }, h("span", null, "Bid type"), h("select", { value: filters.bid_type, onChange: e => update("bid_type", e.target.value) }, h("option", { value: "all" }, "All Bid / RAs"), h("option", { value: "product" }, "Product bids"), h("option", { value: "service" }, "Service bids"), h("option", { value: "custom" }, "Custom bids"), h("option", { value: "boq" }, "BOQ bids"), h("option", { value: "gt" }, "Global tenders"), h("option", { value: "lt" }, "Limited tenders"), h("option", { value: "st" }, "Single tenders"))),
-                h("label", { className: "field-block" }, h("span", null, "Department / authority"), h("input", { value: filters.department, onChange: e => update("department", e.target.value), placeholder: "e.g. Materials, STPI" })),
-                h("label", { className: "field-block" }, h("span", null, "State"), h("select", { value: filters.state, onChange: e => update("state", e.target.value) }, GLOBAL_SEARCH_STATES.map(value => h("option", { key: value || "all", value }, value || "All Indian states")))),
-                h("label", { className: "field-block" }, h("span", null, "City / district"), h("input", { value: filters.city, onChange: e => update("city", e.target.value), placeholder: "e.g. Surat, Koraput" })),
+                h("div", { className: "global-advanced-tabs" }, [["all","All bids"],["bid","Bid / RA"],["ministry","Ministry"],["location","Location"],["boq","BOQ"]].map(([value,label]) => h("button", { key:value,type:"button",className:filters.mode===value?"active":"",onClick:()=>update("mode",value) },label))),
+                filters.mode === "all" ? h(React.Fragment,null,
+                    h("label", { className: "field-block" }, h("span", null, "Listing status"), h("select", { value: filters.status, onChange: e => update("status", e.target.value) }, h("option", { value: "ongoing_bids" }, "Ongoing bids / RA"), h("option", { value: "bidrastatus" }, "Bid / RA status"))),
+                    h("label", { className: "field-block" }, h("span", null, "Bid type"), h("select", { value: filters.bid_type, onChange: e => update("bid_type", e.target.value) }, h("option", { value: "all" }, "All Bid / RAs"), h("option", { value: "product" }, "Product bids"), h("option", { value: "service" }, "Service bids"), h("option", { value: "custom" }, "Custom bids"), h("option", { value: "boq" }, "BOQ bids"), h("option", { value: "gt" }, "Global tenders"), h("option", { value: "lt" }, "Limited tenders"), h("option", { value: "st" }, "Single tenders"))),
+                    h("label", { className: "field-block" }, h("span", null, "Department / authority"), h("input", { value: filters.department, onChange: e => update("department", e.target.value), placeholder: "e.g. Materials, STPI" })),
+                    h("label", { className: "field-block" }, h("span", null, "State"), h("select", { value: filters.state, onChange: e => update("state", e.target.value) }, GLOBAL_SEARCH_STATES.map(value => h("option", { key: value || "all", value }, value || "All Indian states")))),
+                    h("label", { className: "field-block" }, h("span", null, "City / district"), h("input", { value: filters.city, onChange: e => update("city", e.target.value), placeholder: "e.g. Surat, Koraput" }))
+                ) : null,
+                filters.mode === "bid" ? h(React.Fragment,null,
+                    h("label",{className:"field-block"},h("span",null,"Bid / RA number"),h("input",{value:filters.bid_number,onChange:e=>update("bid_number",e.target.value),placeholder:"GEM/2026/B/1234567"})),
+                    h("label",{className:"field-block"},h("span",null,"Category"),h("input",{value:filters.category,onChange:e=>update("category",e.target.value),placeholder:"Product or service category"}))
+                ):null,
+                filters.mode === "ministry" ? h(React.Fragment,null,
+                    h("label",{className:"field-block"},h("span",null,"Ministry"),h("select",{value:filters.ministry,onChange:e=>update("ministry",e.target.value)},h("option",{value:""},"Select ministry"),(advancedOptions.ministries||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("label",{className:"field-block"},h("span",null,"Buyer state"),h("select",{value:filters.buyer_state,onChange:e=>update("buyer_state",e.target.value)},h("option",{value:""},"Select buyer state"),(advancedOptions.states||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("label",{className:"field-block"},h("span",null,"Organization"),h("input",{value:filters.organization,onChange:e=>update("organization",e.target.value),placeholder:"Organization name"})),
+                    h("label",{className:"field-block"},h("span",null,"Department"),h("input",{value:filters.advanced_department,onChange:e=>update("advanced_department",e.target.value),placeholder:"Department name"}))
+                ):null,
+                filters.mode === "location" ? h(React.Fragment,null,
+                    h("label",{className:"field-block"},h("span",null,"Consignee state"),h("select",{value:filters.state,onChange:e=>update("state",e.target.value)},h("option",{value:""},"Select state"),(advancedOptions.states||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("div",{className:"global-city-checkboxes"},h(AdvancedCheckboxFilter,{label:"Priority cities / districts",items:priorityAdvancedCities,value:filters.city,onChange:value=>update("city",value)}),h(AdvancedCheckboxFilter,{label:"Other locations",items:otherAdvancedCities,value:filters.city,onChange:value=>update("city",value)}))
+                ):null,
+                filters.mode === "boq" ? h(React.Fragment,null,
+                    h("label",{className:"field-block"},h("span",null,"BOQ title"),h("input",{value:filters.boq_title,onChange:e=>update("boq_title",e.target.value),placeholder:"Enter exact BOQ title"})),
+                    h("label",{className:"field-block"},h("span",null,"Bid value"),h("select",{value:filters.high_value,onChange:e=>update("high_value",e.target.value)},h("option",{value:""},"All bid values"),h("option",{value:"highbid"},"High value (Rs. 2 Cr or more)")))
+                ):null,
                 h("div", { className: "global-date-grid" }, h("label", { className: "field-block" }, h("span", null, "End date from"), h("input", { type: "date", value: filters.from_date, onChange: e => update("from_date", e.target.value) })), h("label", { className: "field-block" }, h("span", null, "End date to"), h("input", { type: "date", value: filters.to_date, onChange: e => update("to_date", e.target.value) }))),
                 h("button", { className: "primary global-filter-submit", onClick: () => search(1), disabled: loading }, "Apply Filters")
             ),
@@ -4221,7 +4248,7 @@ function GlobalTenderSearchPage() {
                 message ? h("div", { className: "notice" }, message) : null,
                 h("div", { className: "global-results-toolbar" },
                     h("strong", null, loading ? "Loading live results…" : `Showing ${result.items.length} of ${result.total || 0} records`),
-                    h("label", null, h("span", null, "Sort by"), h("select", { value: filters.sort, onChange: e => { const next = { ...filters, sort: e.target.value }; setFilters(next); search(1, next); } }, h("option", { value: "Bid-End-Date-Oldest" }, "End date: oldest first"), h("option", { value: "Bid-End-Date-Latest" }, "End date: latest first"), h("option", { value: "Bid-Start-Date-Latest" }, "Start date: latest first"), h("option", { value: "Bid-Start-Date-Oldest" }, "Start date: oldest first")))
+                    filters.mode === "all" ? h("label", null, h("span", null, "Sort by"), h("select", { value: filters.sort, onChange: e => { const next = { ...filters, sort: e.target.value }; setFilters(next); search(1, next); } }, h("option", { value: "Bid-End-Date-Oldest" }, "End date: oldest first"), h("option", { value: "Bid-End-Date-Latest" }, "End date: latest first"), h("option", { value: "Bid-Start-Date-Latest" }, "Start date: latest first"), h("option", { value: "Bid-Start-Date-Oldest" }, "Start date: oldest first"))) : h("span", { className: "advanced-live-label" }, "GeM Advanced Search")
                 ),
                 !loading && !result.items.length ? h("div", { className: "empty" }, h("h3", null, "No matching live bids"), h("p", null, "Try a bid number or use fewer filters. GeM can take several minutes to publish new changes.")) : null,
                 result.items.map(item => h("article", { className: "global-tender-card", key: item.bid_number || item.source_id },
