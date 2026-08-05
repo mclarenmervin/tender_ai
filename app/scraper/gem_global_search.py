@@ -231,8 +231,43 @@ def search_gem_advanced(mode="bid", page=1, bid_number="", category="", ministry
 def gem_advanced_options():
     session=requests.Session(); session.headers.update({"User-Agent":"Mozilla/5.0 TenderAI/1.0"})
     try:
-        ministries=session.get(f"{GEM_BASE_URL}/ministry-list-adv",timeout=25).json().get("data",{}).get("MinistryList",[])
+        ministry_data=session.get(f"{GEM_BASE_URL}/ministry-list-adv",timeout=25).json().get("data",{})
+        ministries=ministry_data.get("MinistryList",[])
         states=session.get(f"{GEM_BASE_URL}/state-list-adv",timeout=25).json().get("data",[])
-        return {"ministries":ministries,"states":[row.get("state_name","") for row in states if row.get("state_name")]}
+        return {"ministries":ministries,"buyer_states":ministry_data.get("BuyerStateList",[]),
+                "states":[row.get("state_name","") for row in states if row.get("state_name")]}
     except (requests.RequestException,ValueError) as exc:
         raise RuntimeError(f"GeM Advanced Search options are temporarily unavailable: {exc}") from exc
+
+
+def gem_dependent_options(kind, ministry="", buyer_state="", organization="", state=""):
+    endpoints={"organizations":"org-list-adv","departments":"dept-list-adv","cities":"city-list-adv"}
+    if kind not in endpoints:
+        raise RuntimeError("Unsupported GeM option group")
+    session=requests.Session(); session.headers.update({"User-Agent":"Mozilla/5.0 TenderAI/1.0"})
+    try:
+        page=session.get(f"{GEM_BASE_URL}/advance-search",timeout=25); page.raise_for_status()
+        parser=_HiddenInputParser(); parser.feed(page.text)
+        csrf_name=parser.values.get("cname",""); csrf_token=parser.values.get("chash","")
+        data={csrf_name:csrf_token}
+        if kind=="organizations":
+            if ministry: data["ministry"]=ministry
+            if buyer_state: data["buyer_state"]=buyer_state
+        elif kind=="departments":
+            data.update({"ministry":ministry,"buyer_state":buyer_state,"organization":organization})
+        else:
+            data["state_name"]=state
+        response=session.post(f"{GEM_BASE_URL}/{endpoints[kind]}",data=data,
+            headers={"Referer":f"{GEM_BASE_URL}/advance-search","X-Requested-With":"XMLHttpRequest"},timeout=30)
+        response.raise_for_status(); payload=response.json()
+        if kind=="cities":
+            values=[row.get("city_name","") for row in (payload.get("data") or []) if row.get("city_name")]
+        else:
+            values=payload if isinstance(payload,list) else []
+        cleaned=[]
+        for value in values:
+            value=str(value or "").strip()
+            if value and value.lower() not in {"null","na","n/a"} and value not in cleaned: cleaned.append(value)
+        return {"items":cleaned}
+    except (requests.RequestException,ValueError) as exc:
+        raise RuntimeError(f"GeM dependent options are temporarily unavailable: {exc}") from exc

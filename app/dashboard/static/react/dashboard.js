@@ -4165,13 +4165,45 @@ function GlobalTenderSearchPage() {
     const defaults = { mode: "all", q: "", department: "", state: "", city: "", bid_type: "all", status: "ongoing_bids", from_date: "", to_date: "", sort: "Bid-End-Date-Oldest", bid_number: "", category: "", ministry: "", buyer_state: "", organization: "", advanced_department: "", boq_title: "", high_value: "" };
     const [filters, setFilters] = useState(defaults);
     const [advancedOptions, setAdvancedOptions] = useState({ ministries: [], states: [] });
+    const [organizationOptions, setOrganizationOptions] = useState([]);
+    const [departmentOptions, setDepartmentOptions] = useState([]);
+    const [locationCities, setLocationCities] = useState([]);
     const [result, setResult] = useState({ items: [], page: 1, pages: 1, total: 0, notice: "" });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [saved, setSaved] = useState({});
     const update = (key, value) => setFilters(current => ({ ...current, [key]: value }));
+    async function loadDependent(kind, values) {
+        try {
+            const params=new URLSearchParams({kind,...values});
+            const data=await api(`/api/gem/advance-options?${params}`,{silent:true});
+            return data.items || [];
+        } catch (error) {
+            setMessage(error.message || `Could not load GeM ${kind}.`); return [];
+        }
+    }
+    async function chooseMinistry(value) {
+        setFilters(current=>({...current,ministry:value,buyer_state:"",organization:"",advanced_department:""}));
+        setDepartmentOptions([]); setOrganizationOptions(value?await loadDependent("organizations",{ministry:value}):[]);
+    }
+    async function chooseBuyerState(value) {
+        setFilters(current=>({...current,buyer_state:value,ministry:"",organization:"",advanced_department:""}));
+        setDepartmentOptions([]); setOrganizationOptions(value?await loadDependent("organizations",{buyer_state:value}):[]);
+    }
+    async function chooseOrganization(value) {
+        setFilters(current=>({...current,organization:value,advanced_department:""}));
+        setDepartmentOptions(value?await loadDependent("departments",{ministry:filters.ministry,buyer_state:filters.buyer_state,organization:value}):[]);
+    }
+    async function chooseConsigneeState(value) {
+        setFilters(current=>({...current,state:value,city:""}));
+        setLocationCities(value?await loadDependent("cities",{state:value}):[]);
+    }
 
     async function search(page = 1, values = filters) {
+        if (values.mode === "bid" && !values.bid_number && !values.category && !values.from_date && !values.to_date) { setMessage("Enter a bid number, category, or bid-end date range."); return; }
+        if (values.mode === "ministry" && !values.ministry && !values.buyer_state) { setMessage("Select a ministry or buyer state."); return; }
+        if (values.mode === "location" && !values.state) { setMessage("Select a consignee state."); return; }
+        if (values.mode === "boq" && !values.boq_title) { setMessage("Enter a BOQ title."); return; }
         if ((values.from_date && !values.to_date) || (!values.from_date && values.to_date)) {
             setMessage("Select both End date from and End date to."); return;
         }
@@ -4200,7 +4232,7 @@ function GlobalTenderSearchPage() {
         }
     }
     function reset() {
-        setFilters(defaults); search(1, defaults);
+        setFilters(defaults); setOrganizationOptions([]); setDepartmentOptions([]); setLocationCities([]); search(1, defaults);
     }
     return h("div", { className: "global-search-page" },
         h("section", { className: "global-search-hero" },
@@ -4227,14 +4259,18 @@ function GlobalTenderSearchPage() {
                     h("label",{className:"field-block"},h("span",null,"Category"),h("input",{value:filters.category,onChange:e=>update("category",e.target.value),placeholder:"Product or service category"}))
                 ):null,
                 filters.mode === "ministry" ? h(React.Fragment,null,
-                    h("label",{className:"field-block"},h("span",null,"Ministry"),h("select",{value:filters.ministry,onChange:e=>update("ministry",e.target.value)},h("option",{value:""},"Select ministry"),(advancedOptions.ministries||[]).map(value=>h("option",{key:value,value},value)))),
-                    h("label",{className:"field-block"},h("span",null,"Buyer state"),h("select",{value:filters.buyer_state,onChange:e=>update("buyer_state",e.target.value)},h("option",{value:""},"Select buyer state"),(advancedOptions.states||[]).map(value=>h("option",{key:value,value},value)))),
-                    h("label",{className:"field-block"},h("span",null,"Organization"),h("input",{value:filters.organization,onChange:e=>update("organization",e.target.value),placeholder:"Organization name"})),
-                    h("label",{className:"field-block"},h("span",null,"Department"),h("input",{value:filters.advanced_department,onChange:e=>update("advanced_department",e.target.value),placeholder:"Department name"}))
+                    h("label",{className:"field-block"},h("span",null,"Ministry"),h("select",{value:filters.ministry,disabled:!!filters.buyer_state,onChange:e=>chooseMinistry(e.target.value)},h("option",{value:""},"Select ministry"),(advancedOptions.ministries||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("label",{className:"field-block"},h("span",null,"Buyer state"),h("select",{value:filters.buyer_state,disabled:!!filters.ministry,onChange:e=>chooseBuyerState(e.target.value)},h("option",{value:""},"Select buyer state"),(advancedOptions.buyer_states||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("label",{className:"field-block"},h("span",null,"Organization"),h("select",{value:filters.organization,disabled:!(filters.ministry||filters.buyer_state),onChange:e=>chooseOrganization(e.target.value)},h("option",{value:""},filters.ministry||filters.buyer_state?"Select organization":"Select ministry or buyer state first"),organizationOptions.map(value=>h("option",{key:value,value},value)))),
+                    h("label",{className:"field-block"},h("span",null,"Department"),h("select",{value:filters.advanced_department,disabled:!filters.organization,onChange:e=>update("advanced_department",e.target.value)},h("option",{value:""},filters.organization?"Select department":"Select organization first"),departmentOptions.map(value=>h("option",{key:value,value},value))))
                 ):null,
                 filters.mode === "location" ? h(React.Fragment,null,
-                    h("label",{className:"field-block"},h("span",null,"Consignee state"),h("select",{value:filters.state,onChange:e=>update("state",e.target.value)},h("option",{value:""},"Select state"),(advancedOptions.states||[]).map(value=>h("option",{key:value,value},value)))),
-                    h("div",{className:"global-city-checkboxes"},h(AdvancedCheckboxFilter,{label:"Priority cities / districts",items:priorityAdvancedCities,value:filters.city,onChange:value=>update("city",value)}),h(AdvancedCheckboxFilter,{label:"Other locations",items:otherAdvancedCities,value:filters.city,onChange:value=>update("city",value)}))
+                    h("label",{className:"field-block"},h("span",null,"Consignee state"),h("select",{value:filters.state,onChange:e=>chooseConsigneeState(e.target.value)},h("option",{value:""},"Select state"),(advancedOptions.states||[]).map(value=>h("option",{key:value,value},value)))),
+                    h("div",{className:"global-city-checkboxes"},
+                        !filters.state?h("p",{className:"desc"},"Select a state to load GeM cities."):null,
+                        filters.state.toUpperCase()==="GUJARAT"?h(React.Fragment,null,h(AdvancedCheckboxFilter,{label:"Priority cities / districts",items:priorityAdvancedCities,value:filters.city,onChange:value=>update("city",value)}),h(AdvancedCheckboxFilter,{label:"Other locations",items:Array.from(new Set([...otherAdvancedCities,...locationCities])),value:filters.city,onChange:value=>update("city",value)})):null,
+                        filters.state&&filters.state.toUpperCase()!=="GUJARAT"?h(AdvancedCheckboxFilter,{label:"GeM cities / districts",items:locationCities,value:filters.city,onChange:value=>update("city",value)}):null)
+                    )
                 ):null,
                 filters.mode === "boq" ? h(React.Fragment,null,
                     h("label",{className:"field-block"},h("span",null,"BOQ title"),h("input",{value:filters.boq_title,onChange:e=>update("boq_title",e.target.value),placeholder:"Enter exact BOQ title"})),

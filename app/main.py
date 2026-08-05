@@ -42,7 +42,7 @@ from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
 from app.scheduler.scheduler import background_scheduler_running, start_background_scheduler, start_scheduler, stop_background_scheduler
 from app.tracking.status_tracker import update_tender_statuses
 from app.scraper.location_parser import extract_location, normalize_state
-from app.scraper.gem_global_search import search_gem_bids,search_gem_advanced,gem_advanced_options
+from app.scraper.gem_global_search import search_gem_bids,search_gem_advanced,gem_advanced_options,gem_dependent_options
 if sys.platform.startswith('win'):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 load_dotenv(); app=FastAPI(title='Tender AI Agent MVP',version='1.0.0')
@@ -3864,8 +3864,10 @@ def api_gem_global_search(
         raise HTTPException(502,str(exc))
 
 @app.get('/api/gem/advance-options')
-def api_gem_advance_options(user:User=Depends(get_current_user)):
+def api_gem_advance_options(kind:str='',ministry:str='',buyer_state:str='',organization:str='',state:str='',user:User=Depends(get_current_user)):
     try:
+        if kind:
+            return gem_dependent_options(kind,ministry=ministry,buyer_state=buyer_state,organization=organization,state=state)
         return gem_advanced_options()
     except RuntimeError as exc:
         raise HTTPException(502,str(exc))
