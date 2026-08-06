@@ -1446,17 +1446,24 @@ def build_multi_sheet_xlsx(sheets):
             cells=[]
             for col_index,value in enumerate(row,1):
                 ref=cell_ref(col_index,row_index)
-                style='1' if row_index==1 else '0'
-                cells.append(f'<c r="{ref}" s="{style}" t="inlineStr"><is><t xml:space="preserve">{xml(value)}</t></is></c>')
                 value_text=str(value or '').strip()
-                if row_index>1 and re.match(r'^https?://',value_text,re.I):
+                is_url=bool(row_index>1 and re.match(r'^https?://',value_text,re.I))
+                if row_index==1:
+                    style='1'
+                elif is_url:
+                    style='4' if row_index%2==0 else '3'
+                else:
+                    style='2' if row_index%2==0 else '0'
+                cells.append(f'<c r="{ref}" s="{style}" t="inlineStr"><is><t xml:space="preserve">{xml(value)}</t></is></c>')
+                if is_url:
                     hyperlink_index+=1
                     rel_id=f'rId{hyperlink_index}'
                     hyperlinks.append(f'<hyperlink ref="{ref}" r:id="{rel_id}"/>')
                     hyperlink_relationships.append(
                         f'<Relationship Id="{rel_id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="{xml(value_text)}" TargetMode="External"/>'
                     )
-            sheet_rows.append(f'<row r="{row_index}">{"".join(cells)}</row>')
+            row_height=' ht="28" customHeight="1"' if row_index==1 else ''
+            sheet_rows.append(f'<row r="{row_index}"{row_height}>{"".join(cells)}</row>')
         widths=[]
         for col_index,header in enumerate(headers,1):
             sample_lengths=[len(str(row.get(header,'') or '')) for row in rows[:100]]
@@ -1483,7 +1490,7 @@ def build_multi_sheet_xlsx(sheets):
     workbook_rels=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">{''.join(workbook_relationships)}</Relationships>'''
     styles='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF16324F"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'''
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="3"><font><sz val="10"/><name val="Calibri"/><color rgb="FF14213D"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="10"/><name val="Calibri"/></font><font><u/><color rgb="FF2563EB"/><sz val="10"/><name val="Calibri"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF16324F"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF1F5F9"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD8E0EA"/></left><right style="thin"><color rgb="FFD8E0EA"/></right><top style="thin"><color rgb="FFD8E0EA"/></top><bottom style="thin"><color rgb="FFD8E0EA"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="3" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="2" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="2" fillId="3" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'''
     content_types=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>{''.join(content_overrides)}</Types>'''
     buffer=io.BytesIO()
@@ -5515,8 +5522,6 @@ def tender_export_rows(tenders,tracking_by_tender=None,documents_by_tender=None)
         tracking=tracking_by_tender.get(t.id) or getattr(t,'tracking',None)
         documents=documents_by_tender.get(t.id,[])
         rows.append({
-            'Database ID':t.id,
-            'User ID':t.user_id,
             'Tender ID':t.tender_id or '',
             'Title':t.title or '',
             'Department':t.department or '',
@@ -5533,7 +5538,6 @@ def tender_export_rows(tenders,tracking_by_tender=None,documents_by_tender=None)
             'Status':t.status or '',
             'Created At':iso(t.created_at) or '',
             'Updated At':iso(t.updated_at) or '',
-            'Tracking ID':tracking.id if tracking else '',
             'Submission Status':tracking.submission_status if tracking else '',
             'Documents Ready':tracking.documents_ready if tracking else '',
             'Applied':tracking.applied if tracking else '',
@@ -5543,7 +5547,6 @@ def tender_export_rows(tenders,tracking_by_tender=None,documents_by_tender=None)
             'Source Available':tracking.source_available if tracking else '',
             'Last Source Check':iso(tracking.last_checked_at) if tracking else '',
             'Tracking Updated At':iso(tracking.updated_at) if tracking else '',
-            'Bid Decision ID':bid_decision.id if bid_decision else '',
             'Bid Decision':bid_decision.recommendation if bid_decision else '',
             'Bid Decision Score':str(bid_decision.decision_score if bid_decision else ''),
             'Bid Decision Reasons':json_list_text(bid_decision.reasons) if bid_decision else '',
@@ -5552,7 +5555,6 @@ def tender_export_rows(tenders,tracking_by_tender=None,documents_by_tender=None)
             'Bid Decision Confidence':bid_decision.confidence if bid_decision else '',
             'Bid Decision Created At':iso(bid_decision.created_at) if bid_decision else '',
             'Bid Decision Updated At':iso(bid_decision.updated_at) if bid_decision else '',
-            'Eligibility ID':eligibility.id if eligibility else '',
             'EMD':eligibility.emd if eligibility else '',
             'Turnover Requirement':eligibility.turnover_requirement if eligibility else '',
             'Experience Requirement':eligibility.experience_requirement if eligibility else '',
@@ -5581,8 +5583,6 @@ def tender_document_export_rows(tenders,documents_by_tender):
         tender=tender_map.get(tender_id)
         for document in documents:
             rows.append({
-                'Document ID':document.id,
-                'Tender Database ID':tender_id,
                 'Tender ID':tender.tender_id if tender else '',
                 'Tender Title':tender.title if tender else '',
                 'Document Type':document.document_type or '',
@@ -5594,6 +5594,16 @@ def tender_document_export_rows(tenders,documents_by_tender):
                 'Updated At':iso(document.updated_at) or '',
             })
     return rows
+
+def non_empty_export_headers(rows,fallback):
+    """Keep columns in their original order, but omit columns empty in every row."""
+    if not rows:
+        return list(fallback)
+    headers=list(rows[0].keys())
+    return [
+        header for header in headers
+        if any(value is not None and (not isinstance(value,str) or value.strip()!='') for value in (row.get(header) for row in rows))
+    ]
 
 def build_csv(rows):
     output=io.StringIO()
@@ -5666,9 +5676,9 @@ def build_tender_export_response(db,tenders,fmt,filename_base):
     rows=tender_export_rows(tenders,tracking_by_tender,documents_by_tender)
     base=safe_filename(filename_base)
     if fmt=='xlsx':
-        tender_headers=list(rows[0].keys()) if rows else ['Tender ID','Title','Source / Bid Document URL']
+        tender_headers=non_empty_export_headers(rows,['Tender ID','Title','Source / Bid Document URL'])
         documents=tender_document_export_rows(tenders,documents_by_tender)
-        document_headers=list(documents[0].keys()) if documents else ['Document ID','Tender Database ID','Tender ID','Tender Title','Document Type','Document URL','File Path','Status','Extracted Text','Created At','Updated At']
+        document_headers=non_empty_export_headers(documents,['Tender ID','Tender Title','Document Type','Document URL','Status'])
         content=build_multi_sheet_xlsx([
             ('Scraped Tenders',tender_headers,rows),
             ('Document Links',document_headers,documents),
