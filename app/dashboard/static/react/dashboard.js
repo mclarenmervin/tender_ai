@@ -2194,7 +2194,7 @@ function TenderTable({ tenders, options, filters, setFilters, onRefresh, onApply
             ),
             h("button", { className: "primary", onClick: onApply }, "Apply"),
             h("button", { type: "button", onClick: () => setAdvancedOpen(!advancedOpen) }, advancedOpen ? "Hide Filters" : "Advanced Filters"),
-            h("a", { className: "download-btn", href: "/exports/tenders/xlsx" }, "Download CSV"),
+            h("a", { className: "download-btn", href: "/exports/tenders/xlsx" }, "Download Excel"),
             h("a", { className: "download-btn", href: "/exports/tenders/pdf" }, "Download Report")
         ),
         advancedOpen ? h("div", { className: "advanced-filters" },

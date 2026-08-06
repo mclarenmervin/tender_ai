@@ -1418,6 +1418,87 @@ def build_xlsx(headers,rows,sheet_name='Report'):
         archive.writestr('xl/worksheets/sheet1.xml',worksheet)
     return buffer.getvalue()
 
+def build_multi_sheet_xlsx(sheets):
+    """Build a dependency-free XLSX workbook with styled headers and clickable URLs."""
+    def cell_ref(col,row):
+        name=''
+        while col:
+            col,rem=divmod(col-1,26)
+            name=chr(65+rem)+name
+        return f'{name}{row}'
+    def xml(value):
+        return escape(str(value if value is not None else ''),quote=True)
+    def safe_sheet_name(value,index):
+        cleaned=re.sub(r'[\\/*?:\[\]]',' ',str(value or f'Sheet {index}')).strip() or f'Sheet {index}'
+        return cleaned[:31]
+
+    worksheet_parts=[]
+    workbook_sheets=[]
+    workbook_relationships=[]
+    content_overrides=[]
+    for sheet_index,(sheet_name,headers,rows) in enumerate(sheets,1):
+        all_rows=[headers]+[[row.get(header,'') for header in headers] for row in rows]
+        sheet_rows=[]
+        hyperlinks=[]
+        hyperlink_relationships=[]
+        hyperlink_index=0
+        for row_index,row in enumerate(all_rows,1):
+            cells=[]
+            for col_index,value in enumerate(row,1):
+                ref=cell_ref(col_index,row_index)
+                style='1' if row_index==1 else '0'
+                cells.append(f'<c r="{ref}" s="{style}" t="inlineStr"><is><t xml:space="preserve">{xml(value)}</t></is></c>')
+                value_text=str(value or '').strip()
+                if row_index>1 and re.match(r'^https?://',value_text,re.I):
+                    hyperlink_index+=1
+                    rel_id=f'rId{hyperlink_index}'
+                    hyperlinks.append(f'<hyperlink ref="{ref}" r:id="{rel_id}"/>')
+                    hyperlink_relationships.append(
+                        f'<Relationship Id="{rel_id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="{xml(value_text)}" TargetMode="External"/>'
+                    )
+            sheet_rows.append(f'<row r="{row_index}">{"".join(cells)}</row>')
+        widths=[]
+        for col_index,header in enumerate(headers,1):
+            sample_lengths=[len(str(row.get(header,'') or '')) for row in rows[:100]]
+            width=min(max([len(str(header))+3,12]+sample_lengths),55)
+            widths.append(f'<col min="{col_index}" max="{col_index}" width="{width}" customWidth="1"/>')
+        last_ref=cell_ref(max(len(headers),1),max(len(all_rows),1))
+        hyperlink_xml=f'<hyperlinks>{"".join(hyperlinks)}</hyperlinks>' if hyperlinks else ''
+        worksheet=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
+<cols>{''.join(widths)}</cols><sheetData>{''.join(sheet_rows)}</sheetData><autoFilter ref="A1:{last_ref}"/>{hyperlink_xml}
+</worksheet>'''
+        worksheet_parts.append((sheet_index,worksheet,hyperlink_relationships))
+        workbook_sheets.append(f'<sheet name="{xml(safe_sheet_name(sheet_name,sheet_index))}" sheetId="{sheet_index}" r:id="rId{sheet_index}"/>')
+        workbook_relationships.append(f'<Relationship Id="rId{sheet_index}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{sheet_index}.xml"/>')
+        content_overrides.append(f'<Override PartName="/xl/worksheets/sheet{sheet_index}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>')
+
+    style_rel_id=f'rId{len(worksheet_parts)+1}'
+    workbook_relationships.append(f'<Relationship Id="{style_rel_id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>')
+    workbook=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>{''.join(workbook_sheets)}</sheets></workbook>'''
+    rels='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'''
+    workbook_rels=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">{''.join(workbook_relationships)}</Relationships>'''
+    styles='''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF16324F"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>'''
+    content_types=f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>{''.join(content_overrides)}</Types>'''
+    buffer=io.BytesIO()
+    with zipfile.ZipFile(buffer,'w',zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr('[Content_Types].xml',content_types)
+        archive.writestr('_rels/.rels',rels)
+        archive.writestr('xl/workbook.xml',workbook)
+        archive.writestr('xl/_rels/workbook.xml.rels',workbook_rels)
+        archive.writestr('xl/styles.xml',styles)
+        for sheet_index,worksheet,hyperlink_relationships in worksheet_parts:
+            archive.writestr(f'xl/worksheets/sheet{sheet_index}.xml',worksheet)
+            if hyperlink_relationships:
+                archive.writestr(f'xl/worksheets/_rels/sheet{sheet_index}.xml.rels',f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">{''.join(hyperlink_relationships)}</Relationships>''')
+    return buffer.getvalue()
+
 def gem_bid_change_alert(field,new,bid):
     value=str(new or '').lower()
     if field=='technical_status' and value=='opened':
@@ -5424,12 +5505,18 @@ def safe_filename(value):
     cleaned=''.join(ch if ch.isalnum() else '_' for ch in (value or 'tender'))
     return cleaned[:80].strip('_') or 'tender'
 
-def tender_export_rows(tenders):
+def tender_export_rows(tenders,tracking_by_tender=None,documents_by_tender=None):
+    tracking_by_tender=tracking_by_tender or {}
+    documents_by_tender=documents_by_tender or {}
     rows=[]
     for t in tenders:
         eligibility=getattr(t,'eligibility',None)
         bid_decision=getattr(t,'bid_decision',None)
+        tracking=tracking_by_tender.get(t.id) or getattr(t,'tracking',None)
+        documents=documents_by_tender.get(t.id,[])
         rows.append({
+            'Database ID':t.id,
+            'User ID':t.user_id,
             'Tender ID':t.tender_id or '',
             'Title':t.title or '',
             'Department':t.department or '',
@@ -5441,24 +5528,71 @@ def tender_export_rows(tenders):
             'Source':t.source or '',
             'Category':t.category or '',
             'AI Score':str(t.relevance_score if t.relevance_score is not None else ''),
-            'Recommendation':'Apply' if t.ai_recommendation else 'Review',
+            'AI Recommendation':'Apply' if t.ai_recommendation is True else 'Do Not Apply' if t.ai_recommendation is False else 'Review',
+            'AI Reason':t.ai_reason or '',
             'Status':t.status or '',
-            'Reason':t.ai_reason or '',
+            'Created At':iso(t.created_at) or '',
+            'Updated At':iso(t.updated_at) or '',
+            'Tracking ID':tracking.id if tracking else '',
+            'Submission Status':tracking.submission_status if tracking else '',
+            'Documents Ready':tracking.documents_ready if tracking else '',
+            'Applied':tracking.applied if tracking else '',
+            'Evaluation Status':tracking.evaluation_status if tracking else '',
+            'Tracking Remarks':tracking.remarks if tracking else '',
+            'Source Status':tracking.source_status if tracking else '',
+            'Source Available':tracking.source_available if tracking else '',
+            'Last Source Check':iso(tracking.last_checked_at) if tracking else '',
+            'Tracking Updated At':iso(tracking.updated_at) if tracking else '',
+            'Bid Decision ID':bid_decision.id if bid_decision else '',
             'Bid Decision':bid_decision.recommendation if bid_decision else '',
             'Bid Decision Score':str(bid_decision.decision_score if bid_decision else ''),
             'Bid Decision Reasons':json_list_text(bid_decision.reasons) if bid_decision else '',
             'Bid Decision Blockers':json_list_text(bid_decision.blockers) if bid_decision else '',
             'Bid Decision Next Steps':json_list_text(bid_decision.next_steps) if bid_decision else '',
+            'Bid Decision Confidence':bid_decision.confidence if bid_decision else '',
+            'Bid Decision Created At':iso(bid_decision.created_at) if bid_decision else '',
+            'Bid Decision Updated At':iso(bid_decision.updated_at) if bid_decision else '',
+            'Eligibility ID':eligibility.id if eligibility else '',
             'EMD':eligibility.emd if eligibility else '',
             'Turnover Requirement':eligibility.turnover_requirement if eligibility else '',
             'Experience Requirement':eligibility.experience_requirement if eligibility else '',
             'Documents Required':eligibility.documents_required if eligibility else '',
             'Certifications Required':eligibility.certifications_required if eligibility else '',
+            'Submission Deadline (Extracted)':eligibility.submission_deadline if eligibility else '',
+            'Payment Terms':eligibility.payment_terms if eligibility else '',
+            'Technical Specifications':eligibility.technical_specs if eligibility else '',
             'Eligibility Risks':eligibility.risk_flags if eligibility else '',
             'Eligibility Summary':eligibility.summary if eligibility else '',
-            'URL':t.url or '',
+            'Eligibility Extracted From':eligibility.extracted_from if eligibility else '',
+            'Eligibility Confidence':eligibility.confidence if eligibility else '',
+            'Eligibility Created At':iso(eligibility.created_at) if eligibility else '',
+            'Eligibility Updated At':iso(eligibility.updated_at) if eligibility else '',
+            'Source / Bid Document URL':t.url or '',
+            'Document Count':len(documents),
+            'All Document Links':'\n'.join(doc.url for doc in documents if doc.url),
             'Description':t.description or '',
         })
+    return rows
+
+def tender_document_export_rows(tenders,documents_by_tender):
+    tender_map={t.id:t for t in tenders}
+    rows=[]
+    for tender_id,documents in documents_by_tender.items():
+        tender=tender_map.get(tender_id)
+        for document in documents:
+            rows.append({
+                'Document ID':document.id,
+                'Tender Database ID':tender_id,
+                'Tender ID':tender.tender_id if tender else '',
+                'Tender Title':tender.title if tender else '',
+                'Document Type':document.document_type or '',
+                'Document URL':document.url or '',
+                'File Path':document.file_path or '',
+                'Status':document.status or '',
+                'Extracted Text':document.extracted_text or '',
+                'Created At':iso(document.created_at) or '',
+                'Updated At':iso(document.updated_at) or '',
+            })
     return rows
 
 def build_csv(rows):
@@ -5521,15 +5655,28 @@ td {{ white-space: pre-wrap; }}
 </body>
 </html>'''
 
-def build_tender_export_response(tenders,fmt,filename_base):
-    rows=tender_export_rows(tenders)
+def build_tender_export_response(db,tenders,fmt,filename_base):
+    tender_ids=[t.id for t in tenders]
+    tracking_rows=db.query(TenderTracking).filter(TenderTracking.tender_id.in_(tender_ids)).all() if tender_ids else []
+    document_rows=db.query(TenderDocument).filter(TenderDocument.tender_id.in_(tender_ids)).order_by(TenderDocument.tender_id,TenderDocument.id).all() if tender_ids else []
+    tracking_by_tender={item.tender_id:item for item in tracking_rows}
+    documents_by_tender={}
+    for document in document_rows:
+        documents_by_tender.setdefault(document.tender_id,[]).append(document)
+    rows=tender_export_rows(tenders,tracking_by_tender,documents_by_tender)
     base=safe_filename(filename_base)
     if fmt=='xlsx':
-        content=build_csv(rows)
+        tender_headers=list(rows[0].keys()) if rows else ['Tender ID','Title','Source / Bid Document URL']
+        documents=tender_document_export_rows(tenders,documents_by_tender)
+        document_headers=list(documents[0].keys()) if documents else ['Document ID','Tender Database ID','Tender ID','Tender Title','Document Type','Document URL','File Path','Status','Extracted Text','Created At','Updated At']
+        content=build_multi_sheet_xlsx([
+            ('Scraped Tenders',tender_headers,rows),
+            ('Document Links',document_headers,documents),
+        ])
         return Response(
             content,
-            media_type='text/csv; charset=utf-8',
-            headers={'Content-Disposition':f'attachment; filename="{base}.csv"'},
+            media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            headers={'Content-Disposition':f'attachment; filename="{base}.xlsx"'},
         )
     content=build_html_report(rows)
     return Response(
@@ -5695,7 +5842,7 @@ def export_all_tenders(fmt:str,db:Session=Depends(get_db),user:User=Depends(get_
     if fmt not in {'pdf','xlsx'}:
         raise HTTPException(404,'Unsupported export format')
     tenders=user_tenders(db,user).order_by(Tender.created_at.desc()).all()
-    return build_tender_export_response(tenders,fmt,'all_tenders_report')
+    return build_tender_export_response(db,tenders,fmt,'all_scraped_tenders_full_report')
 
 @app.get('/tender/{tender_id}/export/{fmt}')
 def export_single_tender(tender_id:int,fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -5704,7 +5851,7 @@ def export_single_tender(tender_id:int,fmt:str,db:Session=Depends(get_db),user:U
     tender=user_tenders(db,user).filter(Tender.id==tender_id).first()
     if not tender:
         raise HTTPException(404,'Tender not found')
-    return build_tender_export_response([tender],fmt,f'tender_{tender.id}_{tender.tender_id}')
+    return build_tender_export_response(db,[tender],fmt,f'tender_{tender.id}_{tender.tender_id}')
 
 @app.get('/tender/{tender_id}/download/raw-pdf')
 def download_raw_bid_pdf(tender_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
