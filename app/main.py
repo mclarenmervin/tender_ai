@@ -86,6 +86,9 @@ def ensure_schema_updates():
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS address TEXT",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS scrape_run_id INTEGER REFERENCES scrape_runs(id)",
+            "CREATE INDEX IF NOT EXISTS ix_tenders_scrape_run_id ON tenders(scrape_run_id)",
+            "ALTER TABLE scrape_runs ADD COLUMN IF NOT EXISTS criteria_json TEXT",
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
@@ -2129,6 +2132,14 @@ def log_to_dict(item):
 def scrape_run_to_dict(item):
     if not item:
         return None
+    try:
+        criteria=json.loads(item.criteria_json or '{}')
+        criteria=criteria if isinstance(criteria,dict) else {}
+    except Exception:
+        criteria={}
+    duration_seconds=None
+    if item.started_at and item.finished_at:
+        duration_seconds=max(0,int((item.finished_at-item.started_at).total_seconds()))
     return {
         'id':item.id,
         'trigger':item.trigger,
@@ -2140,6 +2151,8 @@ def scrape_run_to_dict(item):
         'email_count':item.email_count or 0,
         'removed_low_priority_count':item.removed_low_priority_count or 0,
         'message':item.message or '',
+        'criteria':criteria,
+        'duration_seconds':duration_seconds,
         'started_at':iso(item.started_at),
         'finished_at':iso(item.finished_at),
     }
@@ -2602,6 +2615,10 @@ def seller_opportunities_dashboard(request:Request,db:Session=Depends(get_db),us
 
 @app.get('/dashboard/tender-search')
 def global_tender_search_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/scrape-history')
+def scrape_history_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/seller/analytics')
@@ -6289,6 +6306,51 @@ def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_curr
             'scrape_authorities':get_json_setting(db,user.id,'scrape_authorities',[]),
         },
     }
+
+def scrape_run_tenders(db,user,run):
+    direct=user_tenders(db,user).filter(Tender.scrape_run_id==run.id).order_by(Tender.created_at.desc()).all()
+    if direct or not run.started_at:
+        return direct
+    # Backward-compatible fallback for runs created before scrape_run_id was stored.
+    query=user_tenders(db,user).filter(Tender.created_at>=run.started_at)
+    if run.finished_at:
+        query=query.filter(Tender.created_at<=run.finished_at+timedelta(seconds=5))
+    return query.order_by(Tender.created_at.desc()).all()
+
+@app.get('/api/scrape-history')
+def api_scrape_history(limit:int=50,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    limit=max(1,min(limit,200))
+    runs=db.query(ScrapeRun).filter(ScrapeRun.user_id==user.id).order_by(ScrapeRun.started_at.desc()).limit(limit).all()
+    run_ids=[item.id for item in runs]
+    performance=db.query(KeywordPerformance).filter(KeywordPerformance.user_id==user.id,KeywordPerformance.scrape_run_id.in_(run_ids)).all() if run_ids else []
+    by_run={}
+    for row in performance:
+        bucket=by_run.setdefault(row.scrape_run_id,{'keywords':[],'fetched_count':0,'duplicate_count':0,'high_priority_count':0})
+        if row.keyword and row.keyword not in bucket['keywords']:
+            bucket['keywords'].append(row.keyword)
+        bucket['fetched_count']+=row.fetched_count or 0
+        bucket['duplicate_count']+=row.duplicate_count or 0
+        bucket['high_priority_count']+=row.high_priority_count or 0
+    items=[]
+    for run in runs:
+        data=scrape_run_to_dict(run)
+        metrics=by_run.get(run.id,{'keywords':[],'fetched_count':0,'duplicate_count':0,'high_priority_count':0})
+        criteria=data.get('criteria') or {}
+        if not criteria.get('keywords') and metrics['keywords']:
+            criteria['keywords']=metrics['keywords']
+        data['criteria']=criteria
+        data.update({key:value for key,value in metrics.items() if key!='keywords'})
+        data['excel_url']=f'/exports/scrape-runs/{run.id}/xlsx'
+        items.append(data)
+    return {'items':items,'total':db.query(ScrapeRun).filter(ScrapeRun.user_id==user.id).count()}
+
+@app.get('/exports/scrape-runs/{run_id}/xlsx')
+def export_scrape_run_excel(run_id:int,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    run=db.query(ScrapeRun).filter(ScrapeRun.id==run_id,ScrapeRun.user_id==user.id).first()
+    if not run:
+        raise HTTPException(404,'Scrape run not found')
+    tenders=scrape_run_tenders(db,user,run)
+    return build_tender_export_response(db,tenders,'xlsx',f'scrape_run_{run.id}_tenders')
 
 @app.post('/admin/settings/only-high-priority')
 def set_only_high_priority(request:Request,enabled:str=Form('false'),db:Session=Depends(get_db),user:User=Depends(get_current_user)):

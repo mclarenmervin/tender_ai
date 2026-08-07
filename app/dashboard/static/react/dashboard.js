@@ -120,7 +120,7 @@ const buyerModules = {
 
 const sellerNav = [
     ["Control Center", [["/dashboard/seller", "Overview"], ["/dashboard/seller/analytics", "Performance"]]],
-    ["Tender Discovery", [["/dashboard/tender-search", "Global Search"], ["/dashboard/tenders", "Scraped Bids"], ["/dashboard/high-priority", "Priority Matches"], ["/dashboard/upcoming-deadlines", "Closing Soon"], ["/dashboard/seller/opportunities", "Opportunity Match"]]],
+    ["Tender Discovery", [["/dashboard/tender-search", "Global Search"], ["/dashboard/tenders", "Scraped Bids"], ["/dashboard/scrape-history", "Scrape History"], ["/dashboard/high-priority", "Priority Matches"], ["/dashboard/upcoming-deadlines", "Closing Soon"], ["/dashboard/seller/opportunities", "Opportunity Match"]]],
     ["GeM Portal", [["/dashboard/seller/gem-login", "Secure Login"], ["/dashboard/seller/gem-bids", "Own Bids"], ["/dashboard/seller/gem-alerts", "GeM Alerts"]]],
     ["Seller Operations", [["/dashboard/seller/readiness", "Readiness"], ["/dashboard/seller/catalogue", "Catalogue"], ["/dashboard/seller/bids", "Bid/RA Workflow"]]],
     ["Fulfillment", [["/dashboard/seller/orders", "Orders"], ["/dashboard/pipeline", "Pipeline"], ["/dashboard/tracking", "Tracking"], ["/dashboard/applied", "Applied"]]],
@@ -2358,6 +2358,66 @@ function TenderRow({ tender, onSave }) {
     );
 }
 
+function ScrapeHistoryPage() {
+    const [data, setData] = useState({ items: [], total: 0 });
+    const [message, setMessage] = useState("");
+    async function load() {
+        try { setData(await api("/api/scrape-history?limit=100")); }
+        catch (error) { setMessage(error.message); }
+    }
+    useEffect(() => { load(); }, []);
+    function dateTime(value) {
+        if (!value) return "Not completed";
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString();
+    }
+    function duration(seconds) {
+        if (seconds === null || seconds === undefined) return "In progress";
+        if (seconds < 60) return `${seconds}s`;
+        const minutes = Math.floor(seconds / 60);
+        const remaining = seconds % 60;
+        return `${minutes}m ${remaining}s`;
+    }
+    function values(items) {
+        return (items || []).length ? (items || []).join(", ") : "Not selected";
+    }
+    return h("div", { className: "scrape-history-page" },
+        h("section", { className: "hero-panel scrape-history-hero" },
+            h("div", null, h("span", { className: "eyebrow" }, "DISCOVERY AUDIT"), h("h2", null, "Scraping Details"), h("p", null, "Review when every scrape ran, which criteria it used, how many bids it discovered, and download the run-specific Excel report.")),
+            h("div", { className: "hero-actions" }, h("button", { onClick: load }, "Refresh"))
+        ),
+        h("div", { className: "summary four scrape-history-summary" },
+            h("div", { className: "tile" }, h("span", null, "Recorded runs"), h("strong", null, data.total || 0)),
+            h("div", { className: "tile" }, h("span", null, "Successful"), h("strong", null, (data.items || []).filter(item => item.status === "success").length)),
+            h("div", { className: "tile" }, h("span", null, "Tenders inserted"), h("strong", null, (data.items || []).reduce((sum, item) => sum + (item.inserted_count || 0), 0))),
+            h("div", { className: "tile" }, h("span", null, "Bids discovered"), h("strong", null, (data.items || []).reduce((sum, item) => sum + (item.fetched_count || 0), 0)))
+        ),
+        message ? h("div", { className: "notice" }, message) : null,
+        !(data.items || []).length ? h(EmptyAction, { title: "No scrape history yet", text: "Run a manual or scheduled scrape. Its timing, criteria, results and Excel report will appear here.", action: "Open Automation", onAction: () => navigate("/dashboard/seller/settings") }) : null,
+        h("div", { className: "scrape-history-list" }, (data.items || []).map(item => {
+            const criteria = item.criteria || {};
+            return h("article", { className: "card scrape-run-card", key: item.id },
+                h("div", { className: "scrape-run-head" },
+                    h("div", null, h("span", { className: `status-badge ${item.status || "running"}` }, item.status || "running"), h("h3", null, `${item.source || "GeM"} ${String(item.trigger || "manual").replaceAll("_", " ")} scrape`), h("p", { className: "desc" }, `${dateTime(item.started_at)} → ${dateTime(item.finished_at)}`)),
+                    h("a", { className: "download-btn", href: item.excel_url }, "Download Excel")
+                ),
+                h("div", { className: "scrape-run-metrics" },
+                    [["Discovered", item.fetched_count || 0], ["Inserted", item.inserted_count || 0], ["Scored", item.scored_count || 0], ["Duplicates", item.duplicate_count || 0], ["High priority", item.high_priority_count || 0], ["Duration", duration(item.duration_seconds)]].map(([label, value]) => h("div", { key: label }, h("span", null, label), h("strong", null, value)))
+                ),
+                h("div", { className: "scrape-criteria-grid" },
+                    h("div", null, h("span", null, "Keywords"), h("p", null, values(criteria.keywords))),
+                    h("div", null, h("span", null, "Departments / authorities"), h("p", null, values(criteria.departments))),
+                    h("div", null, h("span", null, "States"), h("p", null, values(criteria.states))),
+                    h("div", null, h("span", null, "Cities / districts"), h("p", null, values(criteria.cities))),
+                    h("div", null, h("span", null, "Time frame"), h("p", null, `${dateTime(item.started_at)} to ${dateTime(item.finished_at)} (${duration(item.duration_seconds)})`)),
+                    h("div", null, h("span", null, "Mode"), h("p", null, criteria.only_high_priority ? "High-priority results only" : "All matching results"))
+                ),
+                item.message ? h("details", { className: "scrape-run-log" }, h("summary", null, "Run details"), h("p", null, item.message)) : null
+            );
+        }))
+    );
+}
+
 function DashboardPage({ view }) {
     const [summary, setSummary] = useState(null);
     const [tenders, setTenders] = useState([]);
@@ -4343,7 +4403,7 @@ function App() {
     );
     const sellerOnlyRoutes = ["/dashboard/seller"];
     const buyerOnlyRoutes = ["/dashboard/buyer", "/dashboard/buyers", "/dashboard/market", "/dashboard/reports", "/dashboard/analysis", "/dashboard/competitors", "/dashboard/admin"];
-    const restrictedBuyerRoutes = ["/dashboard/tender-search", "/dashboard/tenders", "/dashboard/high-priority", "/dashboard/upcoming-deadlines", "/dashboard/applied", "/dashboard/pipeline", "/dashboard/tracking", "/dashboard/analysis", "/dashboard/market", "/dashboard/reports", "/dashboard/buyers", "/dashboard/competitors", "/dashboard/admin"];
+    const restrictedBuyerRoutes = ["/dashboard/tender-search", "/dashboard/tenders", "/dashboard/scrape-history", "/dashboard/high-priority", "/dashboard/upcoming-deadlines", "/dashboard/applied", "/dashboard/pipeline", "/dashboard/tracking", "/dashboard/analysis", "/dashboard/market", "/dashboard/reports", "/dashboard/buyers", "/dashboard/competitors", "/dashboard/admin"];
     let route = path === "/dashboard" ? roleDashboard(me) : path;
     if (me?.role === "seller" && buyerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/seller";
     if (me?.role !== "seller" && sellerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
@@ -4376,6 +4436,7 @@ function App() {
     else if (route === "/dashboard/seller/data") page = h(DeletePage);
     else if (route === "/dashboard/tender-search") page = h(GlobalTenderSearchPage);
     else if (route === "/dashboard/tenders") page = h(DashboardPage, { view: "all" });
+    else if (route === "/dashboard/scrape-history") page = h(ScrapeHistoryPage);
     else if (route === "/dashboard/high-priority") page = h(DashboardPage, { view: "high" });
     else if (route === "/dashboard/upcoming-deadlines") page = h(DashboardPage, { view: "upcoming" });
     else if (route === "/dashboard/applied") page = h(DashboardPage, { view: "applied" });

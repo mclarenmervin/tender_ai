@@ -20,6 +20,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                 stats=performance.setdefault(search_keyword,{'fetched':0,'inserted':0,'duplicate':0,'inserted_ids':[]})
                 stats['fetched']+=1
                 item['user_id']=user_id
+                item['scrape_run_id']=scrape_run_id
                 existing=db.query(Tender).filter(Tender.user_id==user_id,Tender.source==item['source'],Tender.tender_id==item['tender_id']).first()
                 if existing:
                     skipped_existing+=1

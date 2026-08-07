@@ -102,6 +102,14 @@ def run_gem_job(user_id=None, trigger="manual"):
             "removed_low_priority": removed_low_priority,
             "source_logs": source_logs,
         }
+        run.criteria_json=json.dumps({
+            "keywords":keywords,
+            "departments":authorities,
+            "states":states,
+            "cities":cities,
+            "only_high_priority":only_high_priority,
+            "max_bids":max_bids,
+        })
         emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details=scrape_details)
         if trigger == "auto" and not inserted_ids:
             emailed = notify_scrape_summary_email(

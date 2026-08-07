@@ -5,7 +5,7 @@ from html import escape
 
 from dotenv import load_dotenv
 
-from app.database.models import NotificationLog, NotificationPreference, Tender, User
+from app.database.models import NotificationLog, NotificationPreference, Tender, TenderDocument, TenderTracking, User
 
 load_dotenv()
 
@@ -89,7 +89,7 @@ def scrape_details_text(details):
     return "\n".join(lines)
 
 
-def send_email(to_email, subject, html_body, text_body):
+def send_email(to_email, subject, html_body, text_body, attachments=None):
     if not email_configured() or not to_email:
         return False
 
@@ -101,6 +101,16 @@ def send_email(to_email, subject, html_body, text_body):
         msg["Reply-To"] = ADMIN_EMAIL
     msg.set_content(text_body)
     msg.add_alternative(html_body, subtype="html")
+    for attachment in attachments or []:
+        content=attachment.get("content")
+        if not content:
+            continue
+        msg.add_attachment(
+            content,
+            maintype=attachment.get("maintype") or "application",
+            subtype=attachment.get("subtype") or "octet-stream",
+            filename=attachment.get("filename") or "attachment.bin",
+        )
 
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as server:
         if SMTP_USE_TLS:
@@ -109,6 +119,42 @@ def send_email(to_email, subject, html_body, text_body):
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.send_message(msg)
     return True
+
+
+def build_scrape_excel_attachment(db, tenders):
+    """Create the same detailed workbook export, limited to this scrape's tenders."""
+    if not tenders:
+        return None
+    # Imported lazily to avoid coupling email module initialization to the web app.
+    from app.main import (
+        build_multi_sheet_xlsx,
+        non_empty_export_headers,
+        tender_document_export_rows,
+        tender_export_rows,
+    )
+
+    tender_ids=[tender.id for tender in tenders]
+    tracking_rows=db.query(TenderTracking).filter(TenderTracking.tender_id.in_(tender_ids)).all()
+    documents=db.query(TenderDocument).filter(TenderDocument.tender_id.in_(tender_ids)).order_by(TenderDocument.tender_id,TenderDocument.id).all()
+    tracking_by_tender={item.tender_id:item for item in tracking_rows}
+    documents_by_tender={}
+    for document in documents:
+        documents_by_tender.setdefault(document.tender_id,[]).append(document)
+
+    tender_rows=tender_export_rows(tenders,tracking_by_tender,documents_by_tender)
+    tender_headers=non_empty_export_headers(tender_rows,['Tender ID','Title','Source / Bid Document URL'])
+    document_rows=tender_document_export_rows(tenders,documents_by_tender)
+    document_headers=non_empty_export_headers(document_rows,['Tender ID','Tender Title','Document Type','Document URL','Status'])
+    content=build_multi_sheet_xlsx([
+        ('Scraped Tenders',tender_headers,tender_rows),
+        ('Document Links',document_headers,document_rows),
+    ])
+    return {
+        "content":content,
+        "maintype":"application",
+        "subtype":"vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "filename":"new_scraped_tenders.xlsx",
+    }
 
 
 def email_notification_readiness(db, user_id, tender_ids=None):
@@ -229,6 +275,7 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
 <div style="font-family:Arial,sans-serif;color:#111827;">
   <h2>{'New matching GeM bids' if alert_run else 'New tenders added to Tender AI'}</h2>
   <p>{len(tenders)} new matching bid{'s were' if len(tenders) != 1 else ' was'} found for your department and location alert filters.</p>
+  <p>A detailed Excel report containing only the tenders found in this scrape is attached.</p>
   {details_html}
   <table style="border-collapse:collapse;width:100%;">{rows}</table>
 </div>
@@ -237,10 +284,11 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
         f"{t.title or ''}\nID: {t.tender_id or ''}\nDepartment: {t.department or ''}\nState: {t.state or ''}\nCity: {t.city or ''}\nDeadline: {t.deadline or ''}\nScore: {t.relevance_score if t.relevance_score is not None else ''}\nLink: {t.url or ''}"
         for t in tenders
     )
-    text_body = (details_text + "\n\n" if details_text else "") + tender_text
+    text_body = (details_text + "\n\n" if details_text else "") + "A detailed Excel report containing only this scrape's new tenders is attached.\n\n" + tender_text
 
     try:
-        if send_email(user.email, subject, html_body, text_body):
+        attachment=build_scrape_excel_attachment(db,tenders)
+        if send_email(user.email, subject, html_body, text_body, attachments=[attachment] if attachment else None):
             log_email_notifications(db, tenders, user.email, "sent", message=subject)
             return len(tenders)
         log_email_notifications(db, tenders, user.email, "skipped", message="SMTP is not configured")

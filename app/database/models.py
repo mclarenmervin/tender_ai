@@ -15,6 +15,7 @@ class Tender(Base):
     __tablename__='tenders'
     id=Column(Integer,primary_key=True,index=True)
     user_id=Column(Integer,ForeignKey('users.id'),index=True)
+    scrape_run_id=Column(Integer,ForeignKey('scrape_runs.id'),index=True)
     source=Column(String(100),nullable=False)
     tender_id=Column(String(255),nullable=False)
     title=Column(Text,nullable=False)
@@ -113,6 +114,7 @@ class ScrapeRun(Base):
     email_count=Column(Integer,default=0)
     removed_low_priority_count=Column(Integer,default=0)
     message=Column(Text)
+    criteria_json=Column(Text)
     started_at=Column(DateTime(timezone=True),server_default=func.now())
     finished_at=Column(DateTime(timezone=True))
 class ScrapeJob(Base):

@@ -4053,6 +4053,29 @@ select[multiple] {
         linear-gradient(135deg, #0f172a 0%, #173b68 58%, #0f766e 130%);
     box-shadow: 0 18px 38px rgba(15,23,42,.18);
 }
+
+.scrape-history-page{display:grid;gap:16px}
+.scrape-history-hero{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.scrape-history-hero h2{margin:5px 0 7px;font-size:clamp(24px,3vw,36px)}
+.scrape-history-hero p{margin:0;max-width:760px;color:var(--text-muted)}
+.scrape-history-list{display:grid;gap:15px}
+.scrape-run-card{padding:20px;overflow:hidden}
+.scrape-run-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:1px solid var(--border)}
+.scrape-run-head h3{margin:8px 0 3px;text-transform:capitalize}
+.status-badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;background:var(--surface-2);color:var(--text-muted)}
+.status-badge.success{background:#dcfce7;color:#166534}.status-badge.failed{background:#fee2e2;color:#991b1b}.status-badge.running{background:#dbeafe;color:#1d4ed8}
+.scrape-run-metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;margin:16px 0;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.scrape-run-metrics>div{display:grid;gap:4px;padding:12px;background:var(--surface)}
+.scrape-run-metrics span,.scrape-criteria-grid span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.045em;color:var(--text-faint)}
+.scrape-run-metrics strong{font-size:18px;color:var(--text)}
+.scrape-criteria-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.scrape-criteria-grid>div{padding:13px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;min-width:0}
+.scrape-criteria-grid p{margin:5px 0 0;color:var(--text);line-height:1.45;overflow-wrap:anywhere}
+.scrape-run-log{margin-top:14px;border-top:1px solid var(--border);padding-top:12px;color:var(--text-muted)}
+.scrape-run-log summary{cursor:pointer;font-weight:750;color:var(--accent)}
+.scrape-run-log p{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:1000px){.scrape-run-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:680px){.scrape-history-hero,.scrape-run-head{align-items:stretch;flex-direction:column}.scrape-run-metrics,.scrape-criteria-grid{grid-template-columns:1fr 1fr}}
 .automation-hero span {
     display: block;
     margin-bottom: 6px;
