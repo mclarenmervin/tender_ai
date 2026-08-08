@@ -6091,7 +6091,19 @@ def get_setting(db,user_id,key,default=None):
 
 def scrape_profiles(db,user_id):
     profiles=get_json_setting(db,user_id,'scrape_profiles',[])
-    return [profile for profile in profiles if isinstance(profile,dict)]
+    output=[]
+    for index,profile in enumerate(profiles):
+        if not isinstance(profile,dict):
+            continue
+        clean=dict(profile)
+        clean['id']=str(clean.get('id') or f'criteria-{index+1}')
+        clean['name']=re.sub(r'\s+',' ',str(clean.get('name') or f'Scrape Criteria {index+1}')).strip()
+        for field in ['keywords','authorities','states','cities']:
+            clean[field]=clean.get(field) if isinstance(clean.get(field),list) else []
+        clean['enabled']=bool(clean.get('enabled',True))
+        clean['only_high_priority']=bool(clean.get('only_high_priority',False))
+        output.append(clean)
+    return output
 
 def clean_profile_values(values,limit=100,max_length=200):
     if isinstance(values,str):

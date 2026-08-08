@@ -3807,11 +3807,12 @@ function SettingsPage() {
         const value = customAuthority.trim().replace(/\s+/g, " ");
         if (!value) { setFilterMessage("Enter an authority or department name first."); return; }
         const options = settings.authority_options || [];
-        const selected = settings.scrape_authorities || [];
+        const selected = profileForm.authorities || [];
         const existing = [...options, ...selected].find(item => String(item).toLowerCase() === value.toLowerCase());
         const authority = existing || value;
-        setSettings({ ...settings, authority_options: Array.from(new Set([...options, authority])).sort((a, b) => a.localeCompare(b)), scrape_authorities: Array.from(new Set([...selected, authority])) });
-        setCustomAuthority(""); setFilterMessage(existing ? `${existing} was already available and is now selected.` : `${value} added and selected. Save targeting filters to apply it.`);
+        setSettings({ ...settings, authority_options: Array.from(new Set([...options, authority])).sort((a, b) => a.localeCompare(b)) });
+        setProfileForm({ ...profileForm, authorities: Array.from(new Set([...selected, authority])) });
+        setCustomAuthority(""); setProfileMessage(existing ? `${existing} selected.` : `${value} added to this criterion.`);
     }
     async function saveProfile(e) {
         e.preventDefault();
@@ -3876,21 +3877,8 @@ function SettingsPage() {
     return h(React.Fragment, null,
         h("div", { className: "automation-hero" }, h("div", null, h("span", null, "SCRAPING CONTROL"), h("h2", null, "Automation Settings"), h("p", null, "Choose exactly where and for whom GeM opportunities should be collected.")), h("div", { className: settings.auto_scrape_enabled ? "automation-live active" : "automation-live" }, h("i", null), settings.auto_scrape_enabled ? "Automation active" : "Automation paused")),
         h("div", { className: "admin-grid automation-settings-grid" },
-        h("div", { className: "card automation-priority-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "High Priority Scrape"), h("p", { className: "desc" }, "Keep only opportunities that pass your configured scoring threshold.")), h("label", { className: "switch" }, h("input", { type: "checkbox", checked: settings.only_high_priority, onChange: e => saveHigh(e.target.checked) }), h("span", null)))),
-        h("div", { className: "card automation-target-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "GeM Targeting Filters"), h("p", { className: "desc" }, "Multiple states and authorities use OR matching within each group. Different filter groups work together."))), h("form", { onSubmit: saveLocation, className: "stack" },
-            h(AutomationMultiSelect, { label: "States", hint: "Select without holding Ctrl", options: settings.indian_states || [], selected: settings.scrape_states || [], onChange: values => setSettings({ ...settings, scrape_states: values }), placeholder: "All Indian states" }),
-            h("label", { className: "field-block automation-city" }, h("span", null, "City or district (optional)"), h("input", { value: settings.scrape_city || "", onChange: e => setSettings({ ...settings, scrape_city: e.target.value }), placeholder: "Example: Surat" })),
-            h(AutomationMultiSelect, { label: "Authorities / Departments", hint: "Discovered from your GeM tender records", options: settings.authority_options || [], selected: settings.scrape_authorities || [], onChange: values => setSettings({ ...settings, scrape_authorities: values }), placeholder: "All GeM authorities" }),
-            h("div", { className: "automation-custom-authority" },
-                h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Authority not listed? Enter it manually" }),
-                h("button", { type: "button", onClick: addCustomAuthority }, "Add Authority")
-            ),
-            h("div", { className: "automation-authority-refresh" }, h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing from GeM..." : "Refresh Authority List from GeM"), h("span", null, "No bid PDFs are stored.")),
-            filterMessage ? h("div", { className: "notice" }, filterMessage) : h("div", { className: "automation-filter-note" }, "The authority list expands automatically whenever scraping discovers a new GeM department or organisation."),
-            h("button", { className: "primary automation-save" }, "Save Targeting Filters")
-        )),
         h("div", { className: "card automation-profile-card" },
-            h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Multiple Scrape Criteria"), h("p", { className: "desc" }, "Create independent targeting profiles. Every enabled profile runs separately and receives its own history entry, email attachment, and Excel report.")), h("strong", null, `${(settings.scrape_profiles || []).length}/20`)),
+            h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Multiple Scrape Criteria"), h("p", { className: "desc" }, "Create independent targeting profiles. Every enabled profile runs separately and receives its own history entry, email attachment, and Excel report.")), h("div", { className: "scrape-profile-title-actions" }, h("strong", null, `${(settings.scrape_profiles || []).length}/20`), h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing..." : "Refresh Departments"))),
             profileMessage ? h("p", { className: "status" }, profileMessage) : null,
             h("form", { className: "stack scrape-profile-form", onSubmit: saveProfile },
                 h("div", { className: "automation-time-grid" },
@@ -3900,11 +3888,18 @@ function SettingsPage() {
                 h(AutomationMultiSelect, { label: "States", hint: "Profile-specific locations", options: settings.indian_states || [], selected: profileForm.states || [], onChange: values => setProfileForm({ ...profileForm, states: values }), placeholder: "Select states" }),
                 h("label", { className: "field-block" }, h("span", null, "Cities / districts"), h("input", { value: (profileForm.cities || []).join(", "), onChange: e => setProfileForm({ ...profileForm, cities: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "Bhubaneswar, Koraput" })),
                 h(AutomationMultiSelect, { label: "Departments / authorities", hint: "Profile-specific organisations", options: settings.authority_options || [], selected: profileForm.authorities || [], onChange: values => setProfileForm({ ...profileForm, authorities: values }), placeholder: "Select departments" }),
+                h("div", { className: "automation-custom-authority" }, h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Department not listed? Enter it manually" }), h("button", { type: "button", onClick: addCustomAuthority }, "Add Department")),
+                filterMessage ? h("div", { className: "notice" }, filterMessage) : null,
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profileForm.only_high_priority, onChange: e => setProfileForm({ ...profileForm, only_high_priority: e.target.checked }) }), " Keep only high-priority tenders for this criterion"),
                 h("div", { className: "scrape-profile-form-actions" }, h("button", { className: "primary" }, profileForm.id ? "Update Criterion" : "Add Criterion"), profileForm.id ? h("button", { type: "button", onClick: () => setProfileForm(blankProfile) }, "Cancel Edit") : null)
             ),
-            h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map(profile => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
-                h("div", null, h("span", null, profile.enabled ? "Enabled" : "Paused"), h("h4", null, profile.name), h("p", null, `${(profile.keywords || []).length} keywords · ${(profile.authorities || []).length} departments · ${(profile.states || []).length} states · ${(profile.cities || []).length} cities`)),
+            h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map((profile, index) => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
+                h("div", { className: "scrape-profile-content" }, h("span", null, profile.enabled ? "Enabled" : "Paused"), h("h4", null, profile.name || `Scrape Criteria ${index + 1}`), h("div", { className: "scrape-profile-details" },
+                    h("div", null, h("b", null, "Keywords"), h("p", null, (profile.keywords || []).join(", ") || "No keyword filter")),
+                    h("div", null, h("b", null, "Departments"), h("p", null, (profile.authorities || []).join(", ") || "All departments")),
+                    h("div", null, h("b", null, "States"), h("p", null, (profile.states || []).join(", ") || "All states")),
+                    h("div", null, h("b", null, "Cities / districts"), h("p", null, (profile.cities || []).join(", ") || "All cities"))
+                )),
                 h("div", { className: "scrape-profile-actions" }, h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
             )))
         ),
