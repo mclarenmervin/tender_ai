@@ -1,4 +1,5 @@
 import io
+import json
 import os
 import re
 import math
@@ -13,6 +14,7 @@ from playwright.sync_api import sync_playwright
 
 from app.scraper.base_scraper import BaseScraper
 from app.scraper.location_parser import extract_location
+from app.scraper.gem_global_search import _HiddenInputParser
 
 
 class GemScraper(BaseScraper):
@@ -224,10 +226,91 @@ class GemScraper(BaseScraper):
             proxy["password"] = password
         return proxy
 
+    def collect_links_via_http(self):
+        session = requests.Session()
+        session.headers.update({"User-Agent": "Mozilla/5.0 TenderAI/1.0"})
+        listing = session.get(self.list_url, timeout=30)
+        listing.raise_for_status()
+        parser = _HiddenInputParser()
+        parser.feed(listing.text)
+        csrf_name = parser.values.get("cname", "").strip()
+        csrf_token = parser.values.get("chash", "").strip()
+        if not csrf_name or not csrf_token:
+            raise RuntimeError("GeM search token was not available")
+
+        keywords = self.keywords or [""]
+        per_keyword_limit = max(1, math.ceil(self.max_bids / len(keywords)))
+        links, seen = [], set()
+        for keyword in keywords:
+            page_number = 1
+            total_pages = 1
+            while page_number <= min(total_pages, 80) and len(
+                [row for row in links if row.get("keyword") == keyword]
+            ) < per_keyword_limit:
+                payload = {
+                    "page": page_number,
+                    "param": {"searchBid": keyword, "searchType": "fullText"},
+                    "filter": {
+                        "bidStatusType": "ongoing_bids", "byType": "all",
+                        "highBidValue": "", "byEndDate": {"from": "", "to": ""},
+                        "sort": "Bid-End-Date-Oldest",
+                    },
+                }
+                response = session.post(
+                    f"{self.base_url}/all-bids-data",
+                    data={"payload": json.dumps(payload, separators=(",", ":")), csrf_name: csrf_token},
+                    headers={"Referer": self.list_url, "X-Requested-With": "XMLHttpRequest"},
+                    timeout=35,
+                )
+                response.raise_for_status()
+                body = ((response.json() or {}).get("response") or {}).get("response") or {}
+                docs = body.get("docs") or []
+                total_pages = max(1, math.ceil(int(body.get("numFound") or 0) / 10))
+                if not docs:
+                    break
+                for doc in docs:
+                    first = lambda value: value[0] if isinstance(value, list) and value else (value or "")
+                    bid_no = self.extract_bid_no(str(first(doc.get("b_bid_number"))))
+                    if not bid_no or bid_no in seen:
+                        continue
+                    ministry = self.clean_text(str(first(doc.get("ba_official_details_minName"))))
+                    department = self.clean_text(str(first(doc.get("ba_official_details_deptName"))))
+                    organisation = self.clean_text(str(first(doc.get("ba_official_details_orgName"))))
+                    office = self.clean_text(str(first(doc.get("ba_official_details_officeName"))))
+                    authority_segments = {
+                        value.lower() for value in (ministry, department, organisation, office) if value
+                    }
+                    if self.authority_filters and not any(value in authority_segments for value in self.authority_filters):
+                        continue
+                    categories = doc.get("b_category_name") or []
+                    if isinstance(categories, str):
+                        categories = [categories]
+                    bid_id = str(first(doc.get("b_id")))
+                    bid_type = str(first(doc.get("b_bid_type")))
+                    path = f"/showradocumentPdf/{bid_id}" if bid_type == "2" else f"/showbidDocument/{bid_id}"
+                    card_text = "\n".join([
+                        f"BID NO: {bid_no}", "Items:", " / ".join(map(str, categories)),
+                        "Ministry:", ministry, "Department Name:",
+                        " / ".join(value for value in (ministry, department, organisation, office) if value),
+                        "Organisation Name:", organisation, "Office Name:", office,
+                        "Start Date:", str(first(doc.get("final_start_date_sort"))),
+                        "End Date:", str(first(doc.get("final_end_date_sort"))),
+                    ])
+                    links.append({
+                        "bid_no": bid_no, "url": urljoin(self.base_url, path),
+                        "card_text": card_text, "keyword": keyword,
+                    })
+                    seen.add(bid_no)
+                    if len([row for row in links if row.get("keyword") == keyword]) >= per_keyword_limit:
+                        break
+                page_number += 1
+        return links[:self.max_bids]
+
     def apply_keyword_search(self, page, keyword):
         if not keyword:
             return
 
+        page.wait_for_selector("#searchBid", timeout=30000)
         field = page.locator("#searchBid")
         if field.count() == 0:
             raise RuntimeError("GeM keyword search input #searchBid was not found")
@@ -237,7 +320,7 @@ class GemScraper(BaseScraper):
         page.wait_for_timeout(4500)
 
     def collect_links_from_page(self, page):
-        page.goto(self.list_url, wait_until="domcontentloaded", timeout=60000)
+        page.goto(self.list_url, wait_until="commit", timeout=30000)
 
         try:
             page.wait_for_function(
@@ -298,7 +381,8 @@ class GemScraper(BaseScraper):
 
     def get_bid_links(self, page):
         if not self.keywords:
-            page.goto(self.list_url, wait_until="domcontentloaded", timeout=60000)
+            page.goto(self.list_url, wait_until="commit", timeout=30000)
+            page.wait_for_selector("#searchBid", timeout=30000)
             return self.collect_links_across_pages(page)
 
         all_links = []
@@ -306,7 +390,7 @@ class GemScraper(BaseScraper):
         per_keyword_limit = max(1, math.ceil(self.max_bids / max(len(self.keywords), 1)))
 
         for keyword in self.keywords:
-            page.goto(self.list_url, wait_until="domcontentloaded", timeout=60000)
+            page.goto(self.list_url, wait_until="commit", timeout=30000)
             self.apply_keyword_search(page, keyword)
             links = self.collect_authority_links_from_feed(page,match_limit=per_keyword_limit) if self.authority_filters else self.collect_links_across_pages(page, limit=per_keyword_limit)
 
@@ -324,7 +408,7 @@ class GemScraper(BaseScraper):
 
         return all_links[:self.max_bids]
 
-    def collect_authority_links_from_feed(self,page,match_limit=100,max_scan_pages=300):
+    def collect_authority_links_from_feed(self,page,match_limit=100,max_scan_pages=80):
         links=[]; seen=set(); page_number=1; total_pages=max_scan_pages
         while page_number<=min(total_pages,max_scan_pages) and len(links)<match_limit:
             result=page.evaluate(
@@ -579,6 +663,18 @@ class GemScraper(BaseScraper):
 
     def scrape(self):
         try:
+            bids = self.collect_links_via_http()
+            tenders = []
+            for bid in bids:
+                item = self.parse_detail_page(None, bid)
+                if self.authority_matches_item(item) and self.location_matches_item(item):
+                    tenders.append(item)
+            return tenders
+        except requests.RequestException:
+            # Retain the browser path as a fallback when GeM's data endpoint is
+            # temporarily unavailable but the public listing page still works.
+            pass
+        try:
             with sync_playwright() as playwright:
                 launch_options = {"headless": True, "args": self.browser_args()}
                 proxy = self.browser_proxy()
@@ -624,8 +720,10 @@ class GemScraper(BaseScraper):
                     "Playwright Docker image or install Chromium system dependencies. "
                     f"Original error: {message}"
                 )
-            raise RuntimeError(
-                "Playwright could not start Chromium for GeM scraping. "
-                "Run 'venv\\Scripts\\playwright.exe install chromium' and retry. "
-                f"Original error: {message}"
-            )
+            if "Timeout" in message or "timed out" in message.lower():
+                raise RuntimeError(
+                    "GeM did not finish loading within the allowed time. The run was stopped safely; "
+                    "retry when GeM is responsive. "
+                    f"Original error: {message}"
+                )
+            raise RuntimeError(f"GeM browser scrape failed: {message}")

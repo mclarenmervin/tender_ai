@@ -78,7 +78,10 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             upsert_setting(db, user_id, "keyword_rotation_offset", str(next_offset))
         only_high_priority = bool(profile.get("only_high_priority")) if profile else setting_enabled(db, user_id, "only_high_priority_scrape")
         has_filters = bool(states or city or authorities)
-        max_bids = 300 if used_authority_terms else (120 if has_filters else (45 if only_high_priority else 35))
+        # Authority-only searches can expose thousands of records. Keep each
+        # profile run bounded so one broad department cannot monopolize the
+        # scheduler or make a manual request appear hung.
+        max_bids = 40 if used_authority_terms else (60 if has_filters else (45 if only_high_priority else 35))
         inserted, source_logs = run_gem_keyword_scraper(
             db,
             keywords,

@@ -92,7 +92,6 @@ def ensure_schema_updates():
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
-            "ALTER TABLE app_settings ALTER COLUMN value TYPE TEXT",
             "ALTER TABLE scoring_criteria ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS profile VARCHAR(100) DEFAULT 'Custom'",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS synonyms TEXT",
@@ -162,7 +161,8 @@ def ensure_schema_updates():
             "CREATE INDEX IF NOT EXISTS ix_gem_bid_status_logs_bid_id ON gem_bid_status_logs(bid_id)",
         ]:
             conn.exec_driver_sql(ddl)
-    repair_tender_locations()
+    # Location repair is an explicit maintenance operation. Running it here scans
+    # every tender and can keep the web application stuck during startup.
 
 def repair_tender_locations():
     db=SessionLocal()
@@ -198,7 +198,9 @@ def repair_tender_locations():
 
 @app.on_event("startup")
 def startup_schema_sync():
-    ensure_schema_updates()
+    # Schema migrations are run explicitly during deployment. Re-running the
+    # complete legacy DDL list here can block the web process behind database
+    # locks and leave the site unavailable.
     start_background_scheduler()
 
 @app.on_event("shutdown")
@@ -6085,6 +6087,33 @@ def run_scrape_subprocess(user_id,trigger='manual',profile=None):
             'source_logs':[{'source':'GeM','status':'failed','message':f'Could not parse scrape result: {e}. Output: {result.stdout}'}],
         }
 
+def run_configured_scrapes(db,user_id,trigger='manual'):
+    profiles=[profile for profile in scrape_profiles(db,user_id) if profile.get('enabled',True)]
+    if not profiles:
+        return run_scrape_subprocess(user_id,trigger=trigger)
+    combined={
+        'inserted':0,'scored':0,'alerts_sent':0,'emails_sent':0,
+        'removed_low_priority':0,'failed_sources':[],'source_logs':[],
+        'profile_results':[],
+    }
+    for profile in profiles:
+        profile_id=str(profile.get('id') or 'criteria')[:8]
+        result=run_scrape_subprocess(user_id,trigger=f'{trigger}_profile_{profile_id}',profile=profile)
+        profile_result={
+            'profile_id':profile.get('id'),
+            'profile_name':profile.get('name') or 'Scrape Criteria',
+            **result,
+        }
+        combined['profile_results'].append(profile_result)
+        for field in ['inserted','scored','alerts_sent','emails_sent','removed_low_priority']:
+            combined[field]+=int(result.get(field) or 0)
+        combined['failed_sources'].extend(result.get('failed_sources') or [])
+        for log in result.get('source_logs') or []:
+            combined['source_logs'].append({**log,'profile_name':profile_result['profile_name']})
+    combined['failed_sources']=list(dict.fromkeys(combined['failed_sources']))
+    combined['profiles_run']=len(profiles)
+    return combined
+
 def get_setting(db,user_id,key,default=None):
     item=db.query(AppSetting).filter(AppSetting.user_id==user_id,AppSetting.key==key).first()
     return item.value if item else default
@@ -6340,7 +6369,7 @@ def auto_scrape_status_payload(db,user):
 @app.post("/scrape-now")
 def scrape_now(request: Request, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     try:
-        result=run_scrape_subprocess(user.id)
+        result=run_configured_scrapes(db,user.id)
     except Exception as e:
         result={
             'inserted':0,
@@ -6359,8 +6388,8 @@ def scrape_now(request: Request, db: Session = Depends(get_db), user: User = Dep
     return result
 
 @app.post('/api/scrape-now')
-def api_scrape_now(user:User=Depends(get_current_user)):
-    return run_scrape_subprocess(user.id)
+def api_scrape_now(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return run_configured_scrapes(db,user.id)
 
 @app.get('/api/scrape-diagnostics')
 def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
