@@ -121,6 +121,8 @@ def json_list_setting(db, user_id, key):
         values = []
     if not isinstance(values, list):
         return []
+    if key == "scrape_profiles":
+        return [value for value in values if isinstance(value,dict)]
     return [str(value).strip() for value in values if str(value).strip()]
 
 
@@ -132,7 +134,17 @@ def scraping_job():
             if not auto_scrape_due(db, user):
                 continue
             print("[AutoScrape] starting", user.email)
-            result = run_gem_job(user.id, trigger="auto")
+            profiles=[profile for profile in json_list_setting(db,user.id,"scrape_profiles") if profile.get("enabled",True)]
+            if profiles:
+                result=[]
+                for profile in profiles:
+                    profile_id=str(profile.get("id") or "criteria")[:8]
+                    try:
+                        result.append(run_gem_job(user.id,trigger=f"auto_profile_{profile_id}",profile=profile))
+                    except Exception as exc:
+                        result.append({'profile':profile.get('name') or profile_id,'error':str(exc)})
+            else:
+                result = run_gem_job(user.id, trigger="auto")
             set_setting(db, user.id, "auto_scrape_last_run", datetime.now().isoformat(timespec="seconds"))
             print("[AutoScrape] finished", user.email, result)
     finally:

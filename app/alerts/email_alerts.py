@@ -61,6 +61,7 @@ def scrape_details_html(details):
 <div style="margin:16px 0;padding:12px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;">
   <h3 style="margin:0 0 8px;">Scrape details</h3>
   <p style="margin:0 0 6px;">Trigger: {escape(str(details.get('trigger') or 'scrape'))}</p>
+  <p style="margin:0 0 6px;">Criteria: {escape(str(details.get('profile_name') or 'Default targeting'))}</p>
   <p style="margin:0 0 6px;">Inserted: {escape(str(details.get('inserted', 0)))} | Scored: {escape(str(details.get('scored', 0)))} | Removed low priority: {escape(str(details.get('removed_low_priority', 0)))}</p>
   <p style="margin:0 0 10px;">Keywords: {keyword_text}</p>
   <table style="border-collapse:collapse;width:100%;font-size:13px;">
@@ -78,6 +79,7 @@ def scrape_details_text(details):
     lines = [
         "Scrape details:",
         f"Trigger: {details.get('trigger') or 'scrape'}",
+        f"Criteria: {details.get('profile_name') or 'Default targeting'}",
         f"Inserted: {details.get('inserted', 0)}",
         f"Scored: {details.get('scored', 0)}",
         f"Removed low priority: {details.get('removed_low_priority', 0)}",

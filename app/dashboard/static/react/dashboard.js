@@ -2398,7 +2398,7 @@ function ScrapeHistoryPage() {
             const criteria = item.criteria || {};
             return h("article", { className: "card scrape-run-card", key: item.id },
                 h("div", { className: "scrape-run-head" },
-                    h("div", null, h("span", { className: `status-badge ${item.status || "running"}` }, item.status || "running"), h("h3", null, `${item.source || "GeM"} ${String(item.trigger || "manual").replaceAll("_", " ")} scrape`), h("p", { className: "desc" }, `${dateTime(item.started_at)} → ${dateTime(item.finished_at)}`)),
+                    h("div", null, h("span", { className: `status-badge ${item.status || "running"}` }, item.status || "running"), h("h3", null, criteria.profile_name || `${item.source || "GeM"} ${String(item.trigger || "manual").replaceAll("_", " ")} scrape`), h("p", { className: "desc" }, `${dateTime(item.started_at)} → ${dateTime(item.finished_at)}`)),
                     h("a", { className: "download-btn", href: item.excel_url }, "Download Excel")
                 ),
                 h("div", { className: "scrape-run-metrics" },
@@ -3787,6 +3787,9 @@ function SettingsPage() {
     const [filterMessage, setFilterMessage] = useState("");
     const [refreshingAuthorities, setRefreshingAuthorities] = useState(false);
     const [customAuthority, setCustomAuthority] = useState("");
+    const blankProfile = { id: "", name: "", enabled: true, keywords: [], authorities: [], states: [], cities: [], only_high_priority: false };
+    const [profileForm, setProfileForm] = useState(blankProfile);
+    const [profileMessage, setProfileMessage] = useState("");
     async function load() { setSettings(await api("/api/admin/settings")); }
     useEffect(() => { load(); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading settings...");
@@ -3809,6 +3812,34 @@ function SettingsPage() {
         const authority = existing || value;
         setSettings({ ...settings, authority_options: Array.from(new Set([...options, authority])).sort((a, b) => a.localeCompare(b)), scrape_authorities: Array.from(new Set([...selected, authority])) });
         setCustomAuthority(""); setFilterMessage(existing ? `${existing} was already available and is now selected.` : `${value} added and selected. Save targeting filters to apply it.`);
+    }
+    async function saveProfile(e) {
+        e.preventDefault();
+        setProfileMessage("Saving scrape criterion...");
+        try {
+            const result = await api("/api/admin/settings/scrape-profiles", { method: "POST", body: JSON.stringify(profileForm) });
+            setSettings({ ...settings, scrape_profiles: result.profiles || [] });
+            setProfileForm(blankProfile);
+            setProfileMessage("Scrape criterion saved.");
+        } catch (err) { setProfileMessage(err.message); }
+    }
+    function editProfile(profile) { setProfileForm({ ...blankProfile, ...profile }); setProfileMessage(`Editing ${profile.name}.`); }
+    async function removeProfile(profile) {
+        if (!confirm(`Delete scrape criterion "${profile.name}"?`)) return;
+        const result = await api(`/api/admin/settings/scrape-profiles/${profile.id}`, { method: "DELETE" });
+        setSettings({ ...settings, scrape_profiles: result.profiles || [] });
+        if (profileForm.id === profile.id) setProfileForm(blankProfile);
+    }
+    async function toggleProfile(profile) {
+        const result = await api("/api/admin/settings/scrape-profiles", { method: "POST", body: JSON.stringify({ ...profile, enabled: !profile.enabled }) });
+        setSettings({ ...settings, scrape_profiles: result.profiles || [] });
+    }
+    async function runProfile(profile) {
+        setProfileMessage(`Running ${profile.name}...`);
+        try {
+            const result = await api(`/api/admin/settings/scrape-profiles/${profile.id}/run`, { method: "POST", loadingLabel: `Scraping ${profile.name}...` });
+            setProfileMessage(`${profile.name} finished: inserted ${result.inserted || 0}, scored ${result.scored || 0}. Its Excel report is available in Scrape History.`);
+        } catch (err) { setProfileMessage(err.message); }
     }
     async function saveAuto(e) {
         e.preventDefault();
@@ -3858,6 +3889,25 @@ function SettingsPage() {
             filterMessage ? h("div", { className: "notice" }, filterMessage) : h("div", { className: "automation-filter-note" }, "The authority list expands automatically whenever scraping discovers a new GeM department or organisation."),
             h("button", { className: "primary automation-save" }, "Save Targeting Filters")
         )),
+        h("div", { className: "card automation-profile-card" },
+            h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Multiple Scrape Criteria"), h("p", { className: "desc" }, "Create independent targeting profiles. Every enabled profile runs separately and receives its own history entry, email attachment, and Excel report.")), h("strong", null, `${(settings.scrape_profiles || []).length}/20`)),
+            profileMessage ? h("p", { className: "status" }, profileMessage) : null,
+            h("form", { className: "stack scrape-profile-form", onSubmit: saveProfile },
+                h("div", { className: "automation-time-grid" },
+                    h("label", { className: "field-block" }, h("span", null, "Criteria name"), h("input", { value: profileForm.name, required: true, maxLength: 100, onChange: e => setProfileForm({ ...profileForm, name: e.target.value }), placeholder: "Example: Odisha software bids" })),
+                    h("label", { className: "field-block" }, h("span", null, "Keywords"), h("input", { value: (profileForm.keywords || []).join(", "), onChange: e => setProfileForm({ ...profileForm, keywords: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "software, automation, IoT" }))
+                ),
+                h(AutomationMultiSelect, { label: "States", hint: "Profile-specific locations", options: settings.indian_states || [], selected: profileForm.states || [], onChange: values => setProfileForm({ ...profileForm, states: values }), placeholder: "Select states" }),
+                h("label", { className: "field-block" }, h("span", null, "Cities / districts"), h("input", { value: (profileForm.cities || []).join(", "), onChange: e => setProfileForm({ ...profileForm, cities: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "Bhubaneswar, Koraput" })),
+                h(AutomationMultiSelect, { label: "Departments / authorities", hint: "Profile-specific organisations", options: settings.authority_options || [], selected: profileForm.authorities || [], onChange: values => setProfileForm({ ...profileForm, authorities: values }), placeholder: "Select departments" }),
+                h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profileForm.only_high_priority, onChange: e => setProfileForm({ ...profileForm, only_high_priority: e.target.checked }) }), " Keep only high-priority tenders for this criterion"),
+                h("div", { className: "scrape-profile-form-actions" }, h("button", { className: "primary" }, profileForm.id ? "Update Criterion" : "Add Criterion"), profileForm.id ? h("button", { type: "button", onClick: () => setProfileForm(blankProfile) }, "Cancel Edit") : null)
+            ),
+            h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map(profile => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
+                h("div", null, h("span", null, profile.enabled ? "Enabled" : "Paused"), h("h4", null, profile.name), h("p", null, `${(profile.keywords || []).length} keywords · ${(profile.authorities || []).length} departments · ${(profile.states || []).length} states · ${(profile.cities || []).length} cities`)),
+                h("div", { className: "scrape-profile-actions" }, h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
+            )))
+        ),
         h("div", { className: "card automation-schedule-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Auto Scrape Schedule"), h("p", { className: "desc" }, "Run discovery at a fixed interval or once per day.")), h("label", { className: "switch" }, h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }), h("span", null))), h("form", { onSubmit: saveAuto, className: "stack" },
             h("label", { className: "field-block" }, h("span", null, "Schedule mode"), h("select", { value: settings.auto_scrape_mode, onChange: e => setSettings({ ...settings, auto_scrape_mode: e.target.value }) }, h("option", { value: "interval" }, "Every N hours"), h("option", { value: "daily" }, "Daily time"))),
             h("div", { className: "automation-time-grid" }, h("label", { className: "field-block" }, h("span", null, "Interval hours"), h("input", { type: "number", min: 1, max: 168, value: settings.auto_scrape_interval_hours, disabled: settings.auto_scrape_mode !== "interval", onChange: e => setSettings({ ...settings, auto_scrape_interval_hours: e.target.value }) })), h("label", { className: "field-block" }, h("span", null, "Daily time"), h("input", { type: "time", value: settings.auto_scrape_time, disabled: settings.auto_scrape_mode !== "daily", onChange: e => setSettings({ ...settings, auto_scrape_time: e.target.value }) }))),

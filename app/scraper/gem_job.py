@@ -15,7 +15,7 @@ from app.scraper.runner import run_gem_keyword_scraper
 DEFAULT_BOOTSTRAP_TERMS = ["iot", "automation", "software", "hardware", "security"]
 
 
-def run_gem_job(user_id=None, trigger="manual"):
+def run_gem_job(user_id=None, trigger="manual", profile=None):
     db = next(get_db())
     run = None
     try:
@@ -25,13 +25,20 @@ def run_gem_job(user_id=None, trigger="manual"):
         db.add(run)
         db.commit()
         is_gem_alert = str(trigger or "").startswith("gem_alert")
-        keyword_rows = [] if is_gem_alert else db.query(ScrapeKeyword).filter(ScrapeKeyword.user_id == user_id, ScrapeKeyword.is_active.is_(True)).all()
+        profile=profile if isinstance(profile,dict) else None
+        keyword_rows = [] if (is_gem_alert or profile) else db.query(ScrapeKeyword).filter(ScrapeKeyword.user_id == user_id, ScrapeKeyword.is_active.is_(True)).all()
         expanded_keywords = []
         for item in keyword_rows:
             expanded_keywords.extend(expand_keyword(item.keyword, item.profile, item.synonyms))
         if is_gem_alert:
             expanded_keywords.extend(setting_json_list(db, user_id, "gem_alert_categories"))
             expanded_keywords.extend(setting_json_list(db, user_id, "gem_alert_companies"))
+        elif profile:
+            expanded_keywords.extend(profile.get("keywords") or [])
+            states=[value for value in (profile.get("states") or []) if value]
+            cities=[value for value in (profile.get("cities") or []) if value]
+            city=cities[0] if cities else ""
+            authorities=[value for value in (profile.get("authorities") or []) if value]
         else:
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
@@ -40,7 +47,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             cities = setting_json_list(db, user_id, "gem_alert_cities")
             city = cities[0] if cities else ""
             authorities = setting_json_list(db, user_id, "gem_alert_departments")
-        else:
+        elif not profile:
             states = setting_json_list(db, user_id, "scrape_states")
             legacy_state = setting_value(db, user_id, "scrape_state", "")
             if legacy_state and legacy_state not in states:
@@ -69,7 +76,7 @@ def run_gem_job(user_id=None, trigger="manual"):
         if expanded_keywords:
             next_offset = (rotation_offset + len(keywords)) % len(list(dict.fromkeys(expanded_keywords)))
             upsert_setting(db, user_id, "keyword_rotation_offset", str(next_offset))
-        only_high_priority = setting_enabled(db, user_id, "only_high_priority_scrape")
+        only_high_priority = bool(profile.get("only_high_priority")) if profile else setting_enabled(db, user_id, "only_high_priority_scrape")
         has_filters = bool(states or city or authorities)
         max_bids = 300 if used_authority_terms else (120 if has_filters else (45 if only_high_priority else 35))
         inserted, source_logs = run_gem_keyword_scraper(
@@ -96,6 +103,7 @@ def run_gem_job(user_id=None, trigger="manual"):
         email_status = email_notification_readiness(db, user_id, inserted_ids)
         scrape_details = {
             "trigger": trigger,
+            "profile_name":profile.get("name") if profile else None,
             "keywords": keywords,
             "inserted": inserted,
             "scored": scored,
@@ -103,6 +111,8 @@ def run_gem_job(user_id=None, trigger="manual"):
             "source_logs": source_logs,
         }
         run.criteria_json=json.dumps({
+            "profile_id":profile.get("id") if profile else None,
+            "profile_name":profile.get("name") if profile else None,
             "keywords":keywords,
             "departments":authorities,
             "states":states,
@@ -111,7 +121,7 @@ def run_gem_job(user_id=None, trigger="manual"):
             "max_bids":max_bids,
         })
         emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details=scrape_details)
-        if trigger == "auto" and not inserted_ids:
+        if str(trigger).startswith("auto") and not inserted_ids:
             emailed = notify_scrape_summary_email(
                 db,
                 user_id,
@@ -313,5 +323,9 @@ def remove_low_priority_inserts(db, user_id, tender_ids):
 
 
 if __name__ == "__main__":
-    print(json.dumps(run_gem_job(trigger=os.getenv("MANUAL_SCRAPE_TRIGGER", "manual")), default=str), flush=True)
+    try:
+        env_profile=json.loads(os.getenv("SCRAPE_PROFILE_JSON") or "null")
+    except Exception:
+        env_profile=None
+    print(json.dumps(run_gem_job(trigger=os.getenv("MANUAL_SCRAPE_TRIGGER", "manual"),profile=env_profile), default=str), flush=True)
     os._exit(0)

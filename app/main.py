@@ -92,6 +92,7 @@ def ensure_schema_updates():
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
+            "ALTER TABLE app_settings ALTER COLUMN value TYPE TEXT",
             "ALTER TABLE scoring_criteria ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS profile VARCHAR(100) DEFAULT 'Custom'",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS synonyms TEXT",
@@ -5493,6 +5494,7 @@ def api_admin_settings(db:Session=Depends(get_db),user:User=Depends(get_current_
         'scrape_city':get_setting(db,user.id,'scrape_city',''),
         'scrape_authorities':scrape_authorities,
         'authority_options':authority_options,
+        'scrape_profiles':scrape_profiles(db,user.id),
         'indian_states':INDIAN_STATES,
         'auto_scrape_enabled':get_setting(db,user.id,'auto_scrape_enabled','false')=='true',
         'auto_scrape_mode':get_setting(db,user.id,'auto_scrape_mode','interval'),
@@ -5505,6 +5507,40 @@ def api_admin_settings(db:Session=Depends(get_db),user:User=Depends(get_current_
         'daily_digest_min_score':get_setting(db,user.id,'daily_digest_min_score','70'),
         'daily_digest_last_run':get_setting(db,user.id,'daily_digest_last_run',''),
     }
+
+@app.post('/api/admin/settings/scrape-profiles')
+async def api_save_scrape_profile(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    payload=await request.json()
+    profiles=scrape_profiles(db,user.id)
+    profile_id=str(payload.get('id') or '').strip()
+    existing=next((item for item in profiles if item.get('id')==profile_id),None)
+    profile=normalized_scrape_profile(payload,profile_id if existing else None)
+    if not any([profile['keywords'],profile['authorities'],profile['states'],profile['cities']]):
+        raise HTTPException(400,'Add at least one keyword, department, state, or city to this criterion.')
+    if existing:
+        profiles=[profile if item.get('id')==profile_id else item for item in profiles]
+    else:
+        if len(profiles)>=20:
+            raise HTTPException(400,'A maximum of 20 scrape criteria profiles is supported.')
+        profiles.append(profile)
+    set_setting(db,user.id,'scrape_profiles',json.dumps(profiles))
+    return {'ok':True,'profile':profile,'profiles':profiles}
+
+@app.delete('/api/admin/settings/scrape-profiles/{profile_id}')
+def api_delete_scrape_profile(profile_id:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    profiles=scrape_profiles(db,user.id)
+    remaining=[item for item in profiles if item.get('id')!=profile_id]
+    if len(remaining)==len(profiles):
+        raise HTTPException(404,'Scrape criterion not found')
+    set_setting(db,user.id,'scrape_profiles',json.dumps(remaining))
+    return {'ok':True,'profiles':remaining}
+
+@app.post('/api/admin/settings/scrape-profiles/{profile_id}/run')
+def api_run_scrape_profile(profile_id:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    profile=next((item for item in scrape_profiles(db,user.id) if item.get('id')==profile_id),None)
+    if not profile:
+        raise HTTPException(404,'Scrape criterion not found')
+    return run_scrape_subprocess(user.id,trigger=f"profile_{profile_id[:8]}",profile=profile)
 
 @app.get('/api/admin/delete-summary')
 def api_delete_summary(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -5992,11 +6028,13 @@ def api_generate_all_bid_decisions(limit:int=100,db:Session=Depends(get_db),user
 def run_scrape_pipeline(db):
     return run_gem_job()
 
-def run_scrape_subprocess(user_id,trigger='manual'):
+def run_scrape_subprocess(user_id,trigger='manual',profile=None):
     try:
         env=os.environ.copy()
         env['MANUAL_SCRAPE_USER_ID']=str(user_id)
         env['MANUAL_SCRAPE_TRIGGER']=trigger
+        if profile:
+            env['SCRAPE_PROFILE_JSON']=json.dumps(profile)
         result=subprocess.run(
             [sys.executable,'-m','app.scraper.gem_job'],
             cwd=str(Path(__file__).resolve().parent.parent),
@@ -6050,6 +6088,36 @@ def run_scrape_subprocess(user_id,trigger='manual'):
 def get_setting(db,user_id,key,default=None):
     item=db.query(AppSetting).filter(AppSetting.user_id==user_id,AppSetting.key==key).first()
     return item.value if item else default
+
+def scrape_profiles(db,user_id):
+    profiles=get_json_setting(db,user_id,'scrape_profiles',[])
+    return [profile for profile in profiles if isinstance(profile,dict)]
+
+def clean_profile_values(values,limit=100,max_length=200):
+    if isinstance(values,str):
+        values=re.split(r'[,\n]',values)
+    output=[]; seen=set()
+    for value in values or []:
+        cleaned=re.sub(r'\s+',' ',str(value)).strip()[:max_length]
+        key=cleaned.lower()
+        if cleaned and key not in seen:
+            seen.add(key); output.append(cleaned)
+        if len(output)>=limit:
+            break
+    return output
+
+def normalized_scrape_profile(payload,existing_id=None):
+    states=[value for value in clean_profile_values(payload.get('states'),40,100) if value in INDIAN_STATES]
+    return {
+        'id':existing_id or str(uuid.uuid4()),
+        'name':re.sub(r'\s+',' ',str(payload.get('name') or 'Scrape criteria')).strip()[:100] or 'Scrape criteria',
+        'enabled':bool(payload.get('enabled',True)),
+        'keywords':clean_profile_values(payload.get('keywords'),100,150),
+        'authorities':clean_profile_values(payload.get('authorities'),250,200),
+        'states':states,
+        'cities':clean_profile_values(payload.get('cities'),100,150),
+        'only_high_priority':bool(payload.get('only_high_priority',False)),
+    }
 
 def set_setting(db,user_id,key,value):
     item=db.query(AppSetting).filter(AppSetting.user_id==user_id,AppSetting.key==key).first()
@@ -6350,7 +6418,9 @@ def export_scrape_run_excel(run_id:int,db:Session=Depends(get_db),user:User=Depe
     if not run:
         raise HTTPException(404,'Scrape run not found')
     tenders=scrape_run_tenders(db,user,run)
-    return build_tender_export_response(db,tenders,'xlsx',f'scrape_run_{run.id}_tenders')
+    details=scrape_run_to_dict(run)
+    profile_name=(details.get('criteria') or {}).get('profile_name') or f'scrape_run_{run.id}'
+    return build_tender_export_response(db,tenders,'xlsx',f'{profile_name}_tenders')
 
 @app.post('/admin/settings/only-high-priority')
 def set_only_high_priority(request:Request,enabled:str=Form('false'),db:Session=Depends(get_db),user:User=Depends(get_current_user)):
