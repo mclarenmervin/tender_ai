@@ -3895,10 +3895,10 @@ function SettingsPage() {
             ),
             h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map((profile, index) => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
                 h("div", { className: "scrape-profile-content" }, h("span", null, profile.enabled ? "Enabled" : "Paused"), h("h4", null, profile.name || `Scrape Criteria ${index + 1}`), h("div", { className: "scrape-profile-details" },
-                    h("div", null, h("b", null, "Keywords"), h("p", null, (profile.keywords || []).join(", ") || "No keyword filter")),
-                    h("div", null, h("b", null, "Departments"), h("p", null, (profile.authorities || []).join(", ") || "All departments")),
-                    h("div", null, h("b", null, "States"), h("p", null, (profile.states || []).join(", ") || "All states")),
-                    h("div", null, h("b", null, "Cities / districts"), h("p", null, (profile.cities || []).join(", ") || "All cities"))
+                    h("div", null, h("b", null, "Keywords"), h("div", { className: "criteria-value-list" }, (profile.keywords || []).length ? profile.keywords.map(value => h("em", { key: value }, value)) : h("p", null, "No keyword filter"))),
+                    h("div", null, h("b", null, "Departments"), h("div", { className: "criteria-value-list" }, (profile.authorities || []).length ? profile.authorities.map(value => h("em", { key: value }, value)) : h("p", null, "All departments"))),
+                    h("div", null, h("b", null, "States"), h("div", { className: "criteria-value-list" }, (profile.states || []).length ? profile.states.map(value => h("em", { key: value }, value)) : h("p", null, "All states"))),
+                    h("div", null, h("b", null, "Cities / districts"), h("div", { className: "criteria-value-list" }, (profile.cities || []).length ? profile.cities.map(value => h("em", { key: value }, value)) : h("p", null, "All cities")))
                 )),
                 h("div", { className: "scrape-profile-actions" }, h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
             )))
