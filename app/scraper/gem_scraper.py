@@ -45,11 +45,12 @@ class GemScraper(BaseScraper):
         self.keywords = [keyword.strip() for keyword in (keywords or []) if keyword and keyword.strip()]
         self.max_bids = max_bids
         state_values = states if states is not None else ([state] if state else [])
-        self.state_filters = [
-            self.clean_text(value).lower()
+        self.state_values = [
+            self.clean_text(value)
             for value in state_values
             if self.clean_text(value)
         ]
+        self.state_filters = [value.lower() for value in self.state_values]
         city_values = cities if cities is not None else ([city] if city else [])
         self.city_filters = [self.clean_text(value).lower() for value in city_values if self.clean_text(value)]
         self.city_filter = self.city_filters[0] if self.city_filters else ""
@@ -202,7 +203,7 @@ class GemScraper(BaseScraper):
             state_value=item.get("state", ""),
             city_value=item.get("city", ""),
             configured_states=self.state_filters,
-            configured_city=next((value for value in self.city_filters if value in pdf_text.lower()), self.city_filter),
+            configured_city=next((value for value in self.city_filters if value in full_text.lower()), self.city_filter),
         )
         item["state"] = state[:100]
         item["city"] = city[:150]
@@ -326,9 +327,10 @@ class GemScraper(BaseScraper):
                 page_number += 1
         return links[:self.max_bids]
 
-    def collect_links_via_advanced_search(self):
+    def collect_links_via_advanced_search(self, limit=None):
         if not self.authority_filters:
-            return None
+            return []
+        limit = max(1, int(limit or self.max_bids))
         resolved = []
         for authority, authority_label in zip(self.authority_filters, self.authority_values):
             hint = self.advanced_authority_hints.get(authority)
@@ -337,7 +339,7 @@ class GemScraper(BaseScraper):
             resolved.append((authority, authority_label, hint))
 
         links, seen = [], set()
-        per_authority_limit = max(1, math.ceil(self.max_bids / len(resolved)))
+        per_authority_limit = max(1, math.ceil(limit / len(resolved)))
         for authority, authority_label, hint in resolved:
             page_number = 1
             collected = 0
@@ -364,6 +366,7 @@ class GemScraper(BaseScraper):
                     links.append({
                         "bid_no": bid_no, "url": item.get("url") or self.list_url,
                         "card_text": card_text, "keyword": authority_label,
+                        "match_scope": "authority",
                     })
                     seen.add(bid_no)
                     collected += 1
@@ -372,7 +375,52 @@ class GemScraper(BaseScraper):
                 if page_number >= int(result.get("pages") or 1):
                     break
                 page_number += 1
-        return links[:self.max_bids]
+        return links[:limit]
+
+    def collect_links_via_location_search(self, limit=None):
+        if not self.state_filters and not self.city_filters:
+            return []
+        limit = max(1, int(limit or self.max_bids))
+        targets = self.state_values or [""]
+        links, seen = [], set()
+        per_target_limit = max(1, math.ceil(limit / len(targets)))
+        for state in targets:
+            page_number = 1
+            collected = 0
+            while collected < per_target_limit and page_number <= 20:
+                result = search_gem_advanced(
+                    mode="location", page=page_number, state=state,
+                    city=",".join(self.city_filters),
+                )
+                items = result.get("items") or []
+                if not items:
+                    break
+                for item in items:
+                    bid_no = self.extract_bid_no(item.get("bid_number") or "")
+                    if not bid_no or bid_no in seen:
+                        continue
+                    display_state = state
+                    card_text = "\n".join([
+                        f"BID NO: {bid_no}", "Items:", item.get("title") or "GeM tender",
+                        "Department Name:", item.get("department") or "GeM",
+                        "State:", display_state,
+                        "City:", item.get("city") or "",
+                        "Start Date:", item.get("start_date") or "",
+                        "End Date:", item.get("end_date") or "",
+                    ])
+                    links.append({
+                        "bid_no": bid_no, "url": item.get("url") or self.list_url,
+                        "card_text": card_text, "keyword": display_state or "location",
+                        "match_scope": "location",
+                    })
+                    seen.add(bid_no)
+                    collected += 1
+                    if collected >= per_target_limit:
+                        break
+                if page_number >= int(result.get("pages") or 1):
+                    break
+                page_number += 1
+        return links[:limit]
 
     def apply_keyword_search(self, page, keyword):
         if not keyword:
@@ -655,7 +703,10 @@ class GemScraper(BaseScraper):
             full_text,
             state_value=raw_state,
             city_value=raw_city,
-            configured_states=self.state_filters,
+            # Do not assign a configured state merely because a record matched
+            # the authority branch. Location-target records already carry an
+            # explicit State field from GeM Advanced Search.
+            configured_states=[],
             configured_city=next((value for value in self.city_filters if value in pdf_text.lower()), self.city_filter),
         )
 
@@ -731,13 +782,25 @@ class GemScraper(BaseScraper):
 
     def scrape(self):
         try:
-            bids = self.collect_links_via_advanced_search()
-            if bids is None:
+            target_groups = int(bool(self.authority_filters)) + int(self.location_enabled())
+            group_limit = max(1, math.ceil(self.max_bids / max(1, target_groups)))
+            authority_bids = self.collect_links_via_advanced_search(group_limit)
+            if authority_bids is None:
                 bids = self.collect_links_via_http()
+            else:
+                location_bids = self.collect_links_via_location_search(group_limit)
+                bids = []
+                seen = set()
+                for bid in authority_bids + location_bids:
+                    if bid["bid_no"] not in seen:
+                        seen.add(bid["bid_no"])
+                        bids.append(bid)
             tenders = []
             for bid in bids:
                 item = self.parse_detail_page(None, bid)
-                if self.authority_matches_item(item) and self.location_matches_item(item):
+                scope = bid.get("match_scope")
+                matches = self.authority_matches_item(item) if scope == "authority" else self.location_matches_item(item) if scope == "location" else self.authority_matches_item(item) and self.location_matches_item(item)
+                if matches:
                     tenders.append(item)
             return tenders
         except requests.RequestException:
