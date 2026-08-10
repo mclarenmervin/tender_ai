@@ -14,13 +14,32 @@ from playwright.sync_api import sync_playwright
 
 from app.scraper.base_scraper import BaseScraper
 from app.scraper.location_parser import extract_location
-from app.scraper.gem_global_search import _HiddenInputParser
+from app.scraper.gem_global_search import _HiddenInputParser, search_gem_advanced
 
 
 class GemScraper(BaseScraper):
     source_name = "GeM"
     base_url = "https://bidplus.gem.gov.in"
     list_url = "https://bidplus.gem.gov.in/all-bids"
+    advanced_authority_hints = {
+        "software technology parks of india": {
+            "ministry": "Ministry of Electronics and Information Technology",
+            "organization": "Software Technology Parks of India (STPI)",
+        },
+        "software technology parks of india (stpi)": {
+            "ministry": "Ministry of Electronics and Information Technology",
+            "organization": "Software Technology Parks of India (STPI)",
+        },
+        "materials": {
+            "ministry": "Ministry of Mines",
+            "organization": "National Aluminium Company Limited, Bhubaneswar",
+            "department": "Materials",
+        },
+        "national aluminium company limited, bhubaneswar": {
+            "ministry": "Ministry of Mines",
+            "organization": "National Aluminium Company Limited, Bhubaneswar",
+        },
+    }
 
     def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, cities=None, authorities=None):
         self.keywords = [keyword.strip() for keyword in (keywords or []) if keyword and keyword.strip()]
@@ -34,7 +53,8 @@ class GemScraper(BaseScraper):
         city_values = cities if cities is not None else ([city] if city else [])
         self.city_filters = [self.clean_text(value).lower() for value in city_values if self.clean_text(value)]
         self.city_filter = self.city_filters[0] if self.city_filters else ""
-        self.authority_filters = [self.clean_text(value).lower() for value in (authorities or []) if self.clean_text(value)]
+        self.authority_values = [self.clean_text(value) for value in (authorities or []) if self.clean_text(value)]
+        self.authority_filters = [value.lower() for value in self.authority_values]
 
     def clean_text(self, text):
         return re.sub(r"\s+", " ", text or "").strip()
@@ -303,6 +323,54 @@ class GemScraper(BaseScraper):
                     seen.add(bid_no)
                     if len([row for row in links if row.get("keyword") == keyword]) >= per_keyword_limit:
                         break
+                page_number += 1
+        return links[:self.max_bids]
+
+    def collect_links_via_advanced_search(self):
+        if not self.authority_filters:
+            return None
+        resolved = []
+        for authority, authority_label in zip(self.authority_filters, self.authority_values):
+            hint = self.advanced_authority_hints.get(authority)
+            if not hint:
+                return None
+            resolved.append((authority, authority_label, hint))
+
+        links, seen = [], set()
+        per_authority_limit = max(1, math.ceil(self.max_bids / len(resolved)))
+        for authority, authority_label, hint in resolved:
+            page_number = 1
+            collected = 0
+            while collected < per_authority_limit and page_number <= 20:
+                result = search_gem_advanced(mode="ministry", page=page_number, **hint)
+                items = result.get("items") or []
+                if not items:
+                    break
+                for item in items:
+                    bid_no = self.extract_bid_no(item.get("bid_number") or "")
+                    if not bid_no or bid_no in seen:
+                        continue
+                    hierarchy = [
+                        authority_label, hint.get("ministry", ""), hint.get("organization", ""),
+                        hint.get("department", ""), item.get("department", ""),
+                    ]
+                    card_text = "\n".join([
+                        f"BID NO: {bid_no}", "Items:", item.get("title") or "GeM tender",
+                        "Department Name:", " / ".join(dict.fromkeys(value for value in hierarchy if value)),
+                        "Organisation Name:", hint.get("organization", ""),
+                        "Start Date:", item.get("start_date") or "",
+                        "End Date:", item.get("end_date") or "",
+                    ])
+                    links.append({
+                        "bid_no": bid_no, "url": item.get("url") or self.list_url,
+                        "card_text": card_text, "keyword": authority_label,
+                    })
+                    seen.add(bid_no)
+                    collected += 1
+                    if collected >= per_authority_limit:
+                        break
+                if page_number >= int(result.get("pages") or 1):
+                    break
                 page_number += 1
         return links[:self.max_bids]
 
@@ -663,7 +731,9 @@ class GemScraper(BaseScraper):
 
     def scrape(self):
         try:
-            bids = self.collect_links_via_http()
+            bids = self.collect_links_via_advanced_search()
+            if bids is None:
+                bids = self.collect_links_via_http()
             tenders = []
             for bid in bids:
                 item = self.parse_detail_page(None, bid)

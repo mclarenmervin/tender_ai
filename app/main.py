@@ -6413,6 +6413,7 @@ def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_curr
             'scrape_states':get_json_setting(db,user.id,'scrape_states',[]),
             'scrape_city':get_setting(db,user.id,'scrape_city',''),
             'scrape_authorities':get_json_setting(db,user.id,'scrape_authorities',[]),
+            'scrape_profiles':scrape_profiles(db,user.id),
         },
     }
 

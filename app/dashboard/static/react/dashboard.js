@@ -299,7 +299,7 @@ function scrapeMessage(result) {
     const detail = failures.map(log => `${log.source || "Source"}: ${log.message || log.status}`).join(" | ");
     const extra = [];
     if (result?.used_default_keywords) extra.push(`used starter keywords: ${(result.keywords || []).join(", ")}`);
-    else if (result?.used_authority_terms) extra.push("searched every selected authority with exact Department matching");
+    else if (result?.used_authority_terms) extra.push("searched each selected authority through GeM hierarchy and verified profile locations");
     else if (result?.keyword_count !== undefined) extra.push(`${result.keyword_count} keyword(s) searched`);
     if (result?.removed_low_priority) extra.push(`${result.removed_low_priority} low-priority tender(s) removed`);
     const base = `Scrape finished. Inserted ${result?.inserted || 0}, scored ${result?.scored || 0}.`;
@@ -314,7 +314,10 @@ function scrapeDiagnosticsMessage(data) {
         parts.push(`Last run ${latest.status || "unknown"}: inserted ${latest.inserted_count || 0}, scored ${latest.scored_count || 0}, removed ${latest.removed_low_priority_count || 0}.`);
         if (latest.message) parts.push(latest.message);
     }
-    if (!data.active_keywords?.length && !data.has_company_profile && !data.settings?.scrape_authorities?.length) {
+    const enabledProfiles = (data.settings?.scrape_profiles || []).filter(profile => profile.enabled !== false);
+    if (enabledProfiles.length) {
+        parts.push(`Configured criteria: ${enabledProfiles.map(profile => profile.name || "Scrape Criteria").join(", ")}. Each criterion runs independently.`);
+    } else if (!data.active_keywords?.length && !data.has_company_profile && !data.settings?.scrape_authorities?.length) {
         parts.push("No active keywords or company profile terms are configured for this user.");
     } else if (!data.active_keywords?.length && data.settings?.scrape_authorities?.length) {
         parts.push(`Product keywords are off; all ${data.settings.scrape_authorities.length} selected authority name(s) will be searched with exact Department matching.`);

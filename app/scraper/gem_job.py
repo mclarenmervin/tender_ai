@@ -149,7 +149,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             else:
                 source_logs.append({"source": "GeM", "status": "success", "message": default_message, "inserted_ids": []})
         elif used_authority_terms:
-            authority_message = "No active product keywords were configured. Each selected authority was searched separately and exact Department-segment filtering was applied for: " + ", ".join(authorities)
+            authority_message = "No product keywords were configured. Each selected authority was searched through GeM ministry/organisation/department hierarchy and the profile location was verified for: " + ", ".join(authorities)
             message = (message + "; " if message else "") + authority_message
             if source_logs:
                 source_logs[0]["message"] = source_logs[0].get("message", "") + "; " + authority_message
