@@ -798,8 +798,11 @@ class GemScraper(BaseScraper):
             tenders = []
             for bid in bids:
                 item = self.parse_detail_page(None, bid)
-                scope = bid.get("match_scope")
-                matches = self.authority_matches_item(item) if scope == "authority" else self.location_matches_item(item) if scope == "location" else self.authority_matches_item(item) and self.location_matches_item(item)
+                # Every configured profile constraint is mandatory. Discovery
+                # scope only records where a candidate came from; it must not
+                # weaken the other filters (for example, accepting every bid
+                # in a state when a department was also selected).
+                matches = self.authority_matches_item(item) and self.location_matches_item(item)
                 if matches:
                     tenders.append(item)
             return tenders
