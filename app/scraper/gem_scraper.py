@@ -61,11 +61,11 @@ class GemScraper(BaseScraper):
         return re.sub(r"\s+", " ", text or "").strip()
 
     def extract_bid_no(self, text):
-        match = re.search(r"GEM/\d{4}/B/\d+", text or "")
+        match = re.search(r"GEM/\d{4}/(?:B|R)/\d+", text or "")
         return match.group(0) if match else None
 
     def extract_bid_numbers(self, text):
-        return list(dict.fromkeys(re.findall(r"GEM/\d{4}/B/\d+", text or "")))
+        return list(dict.fromkeys(re.findall(r"GEM/\d{4}/(?:B|R)/\d+", text or "")))
 
     def extract_date(self, text):
         labelled = self.extract_field(text, [
@@ -346,8 +346,10 @@ class GemScraper(BaseScraper):
             while collected < per_authority_limit and page_number <= 20:
                 result = search_gem_advanced(mode="ministry", page=page_number, **hint)
                 items = result.get("items") or []
-                if not items:
-                    break
+                # `search_gem_bids` applies the department check locally to
+                # each GeM result page. An empty filtered page does not mean
+                # later pages have no matches, so continue through the bounded
+                # scan instead of stopping at the first gap.
                 for item in items:
                     bid_no = self.extract_bid_no(item.get("bid_number") or "")
                     if not bid_no or bid_no in seen:
@@ -393,8 +395,6 @@ class GemScraper(BaseScraper):
                     city=",".join(self.city_filters),
                 )
                 items = result.get("items") or []
-                if not items:
-                    break
                 for item in items:
                     bid_no = self.extract_bid_no(item.get("bid_number") or "")
                     if not bid_no or bid_no in seen:
@@ -448,8 +448,6 @@ class GemScraper(BaseScraper):
                     page_size=min(100, per_pair_limit - collected),
                 )
                 items = result.get("items") or []
-                if not items:
-                    break
                 for item in items:
                     bid_no = self.extract_bid_no(item.get("bid_number") or "")
                     if not bid_no or bid_no in seen:

@@ -150,12 +150,16 @@ def search_gem_bids(q="", department="", state="", city="", bid_type="all",
         local_q = "" if search_text == q else q
         items = [item for item in items if _matches(item, local_q, department)]
         total = int(body.get("numFound") or len(items))
+        # GeM's endpoint returns 10 documents per upstream page regardless of
+        # our local response limit. Pagination must therefore use 10; using
+        # `page_size` here can stop scans before a matching department appears.
+        upstream_page_size = 10
         return {
             "items": items[:page_size],
             "page": page,
             "page_size": page_size,
             "total": total,
-            "pages": max(1, (total + page_size - 1) // page_size),
+            "pages": max(1, (total + upstream_page_size - 1) // upstream_page_size),
             "query": search_text,
             "notice": "Results are loaded live from GeM. GeM may take up to 15 minutes to show newly published or modified bids.",
         }
