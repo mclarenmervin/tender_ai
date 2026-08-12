@@ -35,7 +35,7 @@ from app.ai_engine.bid_decision import bid_decision_for_tender
 from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
-from app.scraper.gem_job import run_gem_job
+from app.scraper.gem_job import GEM_SCRAPER_VERSION,run_gem_job
 from app.scraper.gem_scraper import GemScraper
 from app.ai_engine.keyword_engine import DEFAULT_CRITERIA, KEYWORD_PROFILES, expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders,rescore_all_tenders
@@ -6400,6 +6400,7 @@ def api_scrape_diagnostics(db:Session=Depends(get_db),user:User=Depends(get_curr
     profile=db.query(CompanyProfile).filter(CompanyProfile.user_id==user.id,CompanyProfile.is_active.is_(True)).first()
     total=user_tenders(db,user).count()
     return {
+        'scraper_version':GEM_SCRAPER_VERSION,
         'total_tenders':total,
         'latest_run':scrape_run_to_dict(latest_run),
         'logs':[log_to_dict(item) for item in logs],

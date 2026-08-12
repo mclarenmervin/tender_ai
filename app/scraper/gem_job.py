@@ -13,6 +13,7 @@ from app.database.models import AppSetting, CompanyProfile, KeywordPerformance, 
 from app.scraper.runner import run_gem_keyword_scraper
 
 DEFAULT_BOOTSTRAP_TERMS = ["iot", "automation", "software", "hardware", "security"]
+GEM_SCRAPER_VERSION = "profile-pagination-v2"
 
 
 def run_gem_job(user_id=None, trigger="manual", profile=None):
@@ -105,6 +106,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
         notified = notify_new_tenders(db, inserted_ids, timeout=5, user_id=user_id)
         email_status = email_notification_readiness(db, user_id, inserted_ids)
         scrape_details = {
+            "scraper_version": GEM_SCRAPER_VERSION,
             "trigger": trigger,
             "profile_name":profile.get("name") if profile else None,
             "keywords": keywords,
@@ -166,6 +168,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
         run.finished_at = func.now()
         db.commit()
         return {
+            "scraper_version": GEM_SCRAPER_VERSION,
             "inserted": inserted,
             "scored": scored,
             "alerts_sent": notified,
