@@ -9,7 +9,8 @@ class GemScraperFilterTests(unittest.TestCase):
     def test_location_discovery_still_requires_configured_authority(self):
         scraper = GemScraper(max_bids=10, states=["Odisha"], authorities=["Materials"])
         item = {"department": "Public Works Department", "state": "Odisha", "description": "Odisha"}
-        with patch.object(scraper, "collect_links_via_advanced_search", return_value=[]), \
+        with patch.object(scraper, "collect_links_via_profile_search", return_value=None), \
+             patch.object(scraper, "collect_links_via_advanced_search", return_value=[]), \
              patch.object(scraper, "collect_links_via_location_search", return_value=[{"bid_no": "GEM/2026/B/1", "match_scope": "location"}]), \
              patch.object(scraper, "parse_detail_page", return_value=item):
             self.assertEqual(scraper.scrape(), [])
@@ -18,7 +19,8 @@ class GemScraperFilterTests(unittest.TestCase):
     def test_authority_discovery_still_requires_configured_location(self):
         scraper = GemScraper(max_bids=10, states=["Odisha"], authorities=["Materials"])
         item = {"department": "Ministry of Mines / Materials", "state": "Gujarat", "description": "Gujarat"}
-        with patch.object(scraper, "collect_links_via_advanced_search", return_value=[{"bid_no": "GEM/2026/B/2", "match_scope": "authority"}]), \
+        with patch.object(scraper, "collect_links_via_profile_search", return_value=None), \
+             patch.object(scraper, "collect_links_via_advanced_search", return_value=[{"bid_no": "GEM/2026/B/2", "match_scope": "authority"}]), \
              patch.object(scraper, "collect_links_via_location_search", return_value=[]), \
              patch.object(scraper, "parse_detail_page", return_value=item):
             self.assertEqual(scraper.scrape(), [])

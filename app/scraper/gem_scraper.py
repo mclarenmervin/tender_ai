@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 
 from app.scraper.base_scraper import BaseScraper
 from app.scraper.location_parser import extract_location
-from app.scraper.gem_global_search import _HiddenInputParser, search_gem_advanced
+from app.scraper.gem_global_search import _HiddenInputParser, search_gem_advanced, search_gem_bids
 
 
 class GemScraper(BaseScraper):
@@ -422,6 +422,63 @@ class GemScraper(BaseScraper):
                 page_number += 1
         return links[:limit]
 
+    def collect_links_via_profile_search(self, limit=None):
+        """Discover candidates with department and location applied by GeM.
+
+        Free-text department searches do not reliably search buyer metadata.
+        Use the global search filters together so arbitrary departments (not
+        only the small advanced-search hint list) can be discovered correctly.
+        """
+        if not self.authority_values or not (self.state_values or self.city_filters):
+            return None
+        limit = max(1, int(limit or self.max_bids))
+        states = self.state_values or [""]
+        pairs = [(authority, state) for authority in self.authority_values for state in states]
+        per_pair_limit = max(1, math.ceil(limit / len(pairs)))
+        links, seen = [], set()
+        for authority, state in pairs:
+            page = 1
+            collected = 0
+            while collected < per_pair_limit and page <= 20:
+                result = search_gem_bids(
+                    department=authority,
+                    state=state,
+                    city=",".join(self.city_filters),
+                    page=page,
+                    page_size=min(100, per_pair_limit - collected),
+                )
+                items = result.get("items") or []
+                if not items:
+                    break
+                for item in items:
+                    bid_no = self.extract_bid_no(item.get("bid_number") or "")
+                    if not bid_no or bid_no in seen:
+                        continue
+                    department = item.get("department") or item.get("authority") or "GeM"
+                    card_text = "\n".join([
+                        f"BID NO: {bid_no}", "Items:", item.get("title") or "GeM tender",
+                        "Department Name:", department,
+                        "State:", item.get("state") or state,
+                        "City:", item.get("city") or "",
+                        "Start Date:", item.get("start_date") or "",
+                        "End Date:", item.get("end_date") or "",
+                    ])
+                    links.append({
+                        "bid_no": bid_no,
+                        "url": item.get("url") or self.list_url,
+                        "card_text": card_text,
+                        "keyword": authority,
+                        "match_scope": "profile",
+                    })
+                    seen.add(bid_no)
+                    collected += 1
+                    if collected >= per_pair_limit:
+                        break
+                if page >= int(result.get("pages") or 1):
+                    break
+                page += 1
+        return links[:limit]
+
     def apply_keyword_search(self, page, keyword):
         if not keyword:
             return
@@ -782,19 +839,23 @@ class GemScraper(BaseScraper):
 
     def scrape(self):
         try:
-            target_groups = int(bool(self.authority_filters)) + int(self.location_enabled())
-            group_limit = max(1, math.ceil(self.max_bids / max(1, target_groups)))
-            authority_bids = self.collect_links_via_advanced_search(group_limit)
-            if authority_bids is None:
-                bids = self.collect_links_via_http()
+            profile_bids = self.collect_links_via_profile_search(self.max_bids)
+            if profile_bids is not None:
+                bids = profile_bids
             else:
-                location_bids = self.collect_links_via_location_search(group_limit)
-                bids = []
-                seen = set()
-                for bid in authority_bids + location_bids:
-                    if bid["bid_no"] not in seen:
-                        seen.add(bid["bid_no"])
-                        bids.append(bid)
+                target_groups = int(bool(self.authority_filters)) + int(self.location_enabled())
+                group_limit = max(1, math.ceil(self.max_bids / max(1, target_groups)))
+                authority_bids = self.collect_links_via_advanced_search(group_limit)
+                if authority_bids is None:
+                    bids = self.collect_links_via_http()
+                else:
+                    location_bids = self.collect_links_via_location_search(group_limit)
+                    bids = []
+                    seen = set()
+                    for bid in authority_bids + location_bids:
+                        if bid["bid_no"] not in seen:
+                            seen.add(bid["bid_no"])
+                            bids.append(bid)
             tenders = []
             for bid in bids:
                 item = self.parse_detail_page(None, bid)
