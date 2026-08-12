@@ -10,6 +10,16 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
     for scraper in scrapers:
         try:
             tenders=scraper.scrape()
+            # Final persistence boundary: never save a GeM candidate that
+            # fails any configured profile constraint. The scraper already
+            # filters candidates during discovery, but keeping this guard here
+            # prevents a discovery branch from bypassing department/location
+            # validation again.
+            if isinstance(scraper,GemScraper):
+                tenders=[
+                    item for item in tenders
+                    if scraper.authority_matches_item(item) and scraper.location_matches_item(item)
+                ]
             source_inserted=0
             source_inserted_ids=[]
             skipped_existing=0

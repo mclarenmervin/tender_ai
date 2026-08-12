@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from app.scraper.gem_scraper import GemScraper
+from app.scraper.runner import run_scrapers
 
 
 class GemScraperFilterTests(unittest.TestCase):
@@ -21,6 +22,15 @@ class GemScraperFilterTests(unittest.TestCase):
              patch.object(scraper, "collect_links_via_location_search", return_value=[]), \
              patch.object(scraper, "parse_detail_page", return_value=item):
             self.assertEqual(scraper.scrape(), [])
+
+    def test_persistence_boundary_rejects_wrong_department(self):
+        scraper = GemScraper(states=["Odisha"], authorities=["Materials"])
+        wrong = {"department": "Indian Railways", "state": "Odisha", "description": "Odisha"}
+        with patch.object(scraper, "scrape", return_value=[wrong]):
+            db = unittest.mock.MagicMock()
+            inserted, details = run_scrapers(db, [scraper], return_details=True, user_id=1)
+        self.assertEqual(inserted, 0)
+        self.assertIn("Fetched 0 tenders", details[0]["message"])
 
 
 if __name__ == "__main__":
