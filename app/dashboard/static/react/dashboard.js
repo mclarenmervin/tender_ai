@@ -1774,7 +1774,9 @@ function SellerGemLoginPage() {
             setCredential(result.credential);
             setAssisted(result);
             if (result.vnc_url && loginWindow && !loginWindow.closed) {
-                loginWindow.location.href = result.vnc_url;
+                loginWindow.location.replace(result.vnc_url);
+            } else if (loginWindow && !loginWindow.closed) {
+                loginWindow.document.body.innerHTML = "<p style='font:16px Arial;padding:24px'>The secure GeM viewer was not available. Return to Tender AI for the error details.</p>";
             }
             setMessage(result.message || "GeM login window is ready. Complete OTP/CAPTCHA there, then capture session here.");
         } catch (err) {

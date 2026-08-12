@@ -1113,6 +1113,9 @@ async def close_gem_assisted_session(user_id):
     session=GEM_ASSISTED_SESSIONS.pop(user_id,None)
     if not session:
         return
+    navigation_task=session.get('navigation_task')
+    if navigation_task and not navigation_task.done():
+        navigation_task.cancel()
     for key in ['context','browser']:
         try:
             await session[key].close()
@@ -1198,6 +1201,25 @@ async def fill_gem_login_if_possible(page,gem_user_id,password):
             except Exception:
                 continue
     return filled
+
+async def navigate_gem_assisted_session(user_id,login_url,gem_user_id,password):
+    session=GEM_ASSISTED_SESSIONS.get(user_id)
+    if not session:
+        return
+    page=session['page']
+    try:
+        # Return the noVNC viewer before waiting on GeM. SSO can be slow or
+        # unreachable from cloud IPs and must not strand the popup on about:blank.
+        await page.goto(login_url or GEM_LOGIN_URL,wait_until='commit',timeout=30000)
+        session['filled']=await fill_gem_login_if_possible(page,gem_user_id,password)
+        session['navigation_status']='ready'
+        session['navigation_error']=''
+    except asyncio.CancelledError:
+        raise
+    except Exception as exc:
+        session['navigation_status']='failed'
+        session['navigation_error']=(str(exc) or repr(exc))[:500]
+        log_gem_vnc(f'navigation failed session={session.get("session_id")}: {session["navigation_error"]}')
 
 def gem_credential_to_dict(item):
     if not item:
@@ -4815,8 +4837,6 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         browser=await playwright.chromium.launch(**launch_options)
         context=await browser.new_context(viewport={'width':1366,'height':900} if embedded_viewer else None)
         page=await context.new_page()
-        await page.goto(item.login_url or GEM_LOGIN_URL,wait_until='domcontentloaded',timeout=60000)
-        filled=await fill_gem_login_if_possible(page,item.gem_user_id,password)
     except Exception as exc:
         terminate_process(x11vnc_proc)
         terminate_process(xvfb_proc)
@@ -4845,7 +4865,14 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'xvfb_proc':xvfb_proc,
         'x11vnc_proc':x11vnc_proc,
         'embedded_viewer':embedded_viewer,
+        'navigation_status':'starting',
+        'navigation_error':'',
+        'filled':[],
     }
+    navigation_task=asyncio.create_task(navigate_gem_assisted_session(
+        user.id,item.login_url or GEM_LOGIN_URL,item.gem_user_id,password,
+    ))
+    GEM_ASSISTED_SESSIONS[user.id]['navigation_task']=navigation_task
     item.login_mode='assisted_browser'
     item.status='authorization_in_progress'
     item.last_login_status='authorization_in_progress'
@@ -4861,7 +4888,8 @@ async def api_start_gem_assisted_login(db:Session=Depends(get_db),user:User=Depe
         'embedded_viewer':embedded_viewer,
         'session_id':session_id,
         'started_at':iso(GEM_ASSISTED_SESSIONS[user.id]['started_at']),
-        'filled':filled,
+        'filled':[],
+        'navigation_status':'starting',
         'credential':gem_credential_to_dict(item),
         'viewer_mode':'embedded_novnc' if embedded_viewer else 'local_window',
         'message':item.last_login_error,
@@ -4874,17 +4902,29 @@ async def api_gem_assisted_login_status(user:User=Depends(get_current_user)):
         return {'ok':True,'active':False,'message':'No assisted GeM login window is active.'}
     page=session.get('page')
     try:
+        navigation_status=session.get('navigation_status','starting')
+        navigation_error=session.get('navigation_error','')
+        title=await page.title() if navigation_status=='ready' else ''
         return {
             'ok':True,
             'active':True,
             'url':page.url,
-            'title':await page.title(),
+            'title':title,
             'started_at':iso(session.get('started_at')),
             'vnc_url':session.get('vnc_url'),
             'embedded_viewer':bool(session.get('embedded_viewer')),
             'session_id':session.get('session_id'),
             'viewer_mode':'embedded_novnc' if session.get('embedded_viewer') else 'local_window',
-            'message':'Complete GeM OTP/CAPTCHA in the GeM login window, then return here and click Capture Session.',
+            'navigation_status':navigation_status,
+            'navigation_error':navigation_error,
+            'filled':session.get('filled') or [],
+            'message':(
+                f'Could not load GeM SSO in the assisted browser: {navigation_error}'
+                if navigation_status=='failed' else
+                'GeM login is loading in the secure window.'
+                if navigation_status=='starting' else
+                'Complete GeM OTP/CAPTCHA in the GeM login window, then return here and click Capture Session.'
+            ),
         }
     except Exception:
         await close_gem_assisted_session(user.id)
