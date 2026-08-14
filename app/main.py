@@ -4673,18 +4673,23 @@ def export_seller_intelligence(report:str,fmt:str,db:Session=Depends(get_db),use
         return Response(build_pdf_report(rows,report.replace('-',' ').title()),media_type='application/pdf',headers={'Content-Disposition':f'attachment; filename="{report}.pdf"'})
     return Response(build_html_report(rows),media_type='text/html',headers={'Content-Disposition':f'attachment; filename="{report}.html"'})
 
+def tender_document_intelligence_item(doc):
+    source=doc.file_path or doc.url or ''
+    file_name=Path(source.split('?',1)[0].rstrip('/')).name if source else f'Document {doc.id}'
+    return {
+        'id':doc.id,
+        'file_name':file_name or f'Document {doc.id}',
+        'document_type':doc.document_type or '',
+        'extraction_status':doc.status or 'pending',
+        'confidence_score':'',
+        'uploaded_at':iso(doc.created_at) or '',
+    }
+
 @app.get('/api/seller/intelligence/documents')
 def api_seller_intelligence_documents(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
-    tender_docs=db.query(TenderDocument).join(Tender,TenderDocument.tender_id==Tender.id).filter(Tender.user_id==user.id).order_by(TenderDocument.uploaded_at.desc()).limit(50).all()
+    tender_docs=db.query(TenderDocument).join(Tender,TenderDocument.tender_id==Tender.id).filter(Tender.user_id==user.id).order_by(TenderDocument.created_at.desc()).limit(50).all()
     return {
-        'items':[{
-            'id':doc.id,
-            'file_name':Path(doc.file_path or doc.url or '').name if (doc.file_path or doc.url) else f'Document {doc.id}',
-            'document_type':doc.document_type or '',
-            'extraction_status':doc.status or 'pending',
-            'confidence_score':'',
-            'uploaded_at':iso(doc.created_at),
-        } for doc in tender_docs],
+        'items':[tender_document_intelligence_item(doc) for doc in tender_docs],
         'supported_files':['PDF','Excel','CSV','ZIP','Images with OCR later'],
         'extraction_tasks':['Bid number','Buyer department','Item/service','Quantity','Estimated value','EMD','Bid dates','Eligibility','Turnover','OEM authorization','L1/L2/L3 where present'],
         'message':'This page reuses tender document storage today. Dedicated seller risk document upload can be added next.',
