@@ -32,6 +32,7 @@ from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKey
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
+from app.ai_engine.procurement_anomaly import calculate_price_gap_metrics
 from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
@@ -4416,9 +4417,10 @@ def procurement_intelligence(db,user_id):
         ranked=sorted([row for row in rows if row.quoted_price and (row.rank or 999)<999],key=lambda row:(row.rank or 999,row.quoted_price))
         if len(ranked)>=2:
             l1,l2=ranked[:2]
-            gap=round(((l2.quoted_price-l1.quoted_price)/l1.quoted_price)*100,2) if l1.quoted_price else 0
             l3=ranked[2] if len(ranked)>=3 else None
-            price_gaps.append({'bid_no':bid.bid_no,'l1':vendors.get(l1.vendor_id).vendor_name_canonical if vendors.get(l1.vendor_id) else 'Unknown','l1_price':l1.quoted_price,'l2':vendors.get(l2.vendor_id).vendor_name_canonical if vendors.get(l2.vendor_id) else 'Unknown','l2_price':l2.quoted_price,'l3':vendors.get(l3.vendor_id).vendor_name_canonical if l3 and vendors.get(l3.vendor_id) else '','l3_price':l3.quoted_price if l3 else None,'gap_percent':gap,'l3_gap_percent':round(((l3.quoted_price-l1.quoted_price)/l1.quoted_price)*100,2) if l3 and l1.quoted_price else None,'risk_level':'high' if gap>=25 else 'medium' if gap>=10 else 'low'})
+            metrics=calculate_price_gap_metrics(l1.quoted_price,l2.quoted_price,l3.quoted_price if l3 else None)
+            if metrics:
+                price_gaps.append({'bid_no':bid.bid_no,'l1':vendors.get(l1.vendor_id).vendor_name_canonical if vendors.get(l1.vendor_id) else 'Unknown','l1_price':l1.quoted_price,'l2':vendors.get(l2.vendor_id).vendor_name_canonical if vendors.get(l2.vendor_id) else 'Unknown','l2_price':l2.quoted_price,'l3':vendors.get(l3.vendor_id).vendor_name_canonical if l3 and vendors.get(l3.vendor_id) else '','l3_price':l3.quoted_price if l3 else None,'gap_percent':metrics['l1_l2_gap_percent'],'l2_l3_gap_percent':metrics['l2_l3_gap_percent'],'l3_gap_percent':metrics['cluster_spread_percent'],'cluster_spread_percent':metrics['cluster_spread_percent'],'risk_level':metrics['risk_level'],'explanation':metrics['explanation']})
         names=[]
         for row in rows:
             vendor=vendors.get(row.vendor_id)
