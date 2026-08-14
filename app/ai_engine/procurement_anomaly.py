@@ -64,3 +64,58 @@ def calculate_price_gap_metrics(l1_price, l2_price, l3_price=None):
         "risk_level": risk_level,
         "explanation": "; ".join(evidence) + ". Requires manual review; not proof of wrongdoing.",
     }
+
+
+def calculate_competition_metrics(total_bidders, technically_qualified=None, technically_disqualified=None):
+    """Calculate low-competition and technical-rejection risk indicators.
+
+    The calculation accepts partially evaluated bids, but rejects contradictory
+    counts. A missing value remains unknown rather than being treated as zero.
+    """
+    try:
+        total = int(total_bidders)
+        qualified = int(technically_qualified) if technically_qualified is not None else None
+        disqualified = int(technically_disqualified) if technically_disqualified is not None else None
+    except (TypeError, ValueError):
+        return None
+
+    if total <= 0 or qualified is not None and qualified < 0 or disqualified is not None and disqualified < 0:
+        return None
+    if qualified is not None and qualified > total or disqualified is not None and disqualified > total:
+        return None
+    if qualified is not None and disqualified is not None and qualified + disqualified > total:
+        return None
+
+    competition_ratio = round((qualified / total) * 100, 2) if qualified is not None else None
+    disqualification_rate = round((disqualified / total) * 100, 2) if disqualified is not None else None
+    reasons = []
+    levels = []
+
+    if qualified == 1:
+        levels.append("very_high")
+        reasons.append("Only one bidder was technically qualified")
+    elif qualified == 2:
+        levels.append("high")
+        reasons.append("Only two bidders were technically qualified")
+
+    if disqualification_rate is not None and disqualification_rate > 60:
+        levels.append("high")
+        reasons.append(f"Technical disqualification rate is {disqualification_rate:.2f}%, above 60%")
+
+    if total < 3:
+        levels.append("medium")
+        reasons.append(f"Only {total} bidder{'s' if total != 1 else ''} participated")
+
+    risk_level = _strongest_risk(*levels) or "low"
+    if not reasons:
+        reasons.append("No prescribed low-competition threshold was crossed")
+
+    return {
+        "total_bidders": total,
+        "technically_qualified": qualified,
+        "technically_disqualified": disqualified,
+        "competition_ratio_percent": competition_ratio,
+        "disqualification_rate_percent": disqualification_rate,
+        "risk_level": risk_level,
+        "explanation": "; ".join(reasons) + ". Requires manual review; not proof of wrongdoing.",
+    }

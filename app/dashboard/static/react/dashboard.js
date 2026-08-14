@@ -4160,7 +4160,7 @@ function SellerCompetitorIntelligencePage() {
         h(IntelligenceHero, { title: "Competitor Intelligence", text: "Prepare L1/L2/L3, repeated bidder group, and vendor dominance analytics from result data." }),
         message ? h("div", { className: "notice err" }, message) : null,
         h("div", { className: "summary three" },
-            [["Competitors", data?.summary?.competitors_tracked || 0], ["L1/L2 Records", data?.summary?.l1_l2_records || 0], ["Repeated Groups", data?.summary?.repeated_groups || 0]].map(([label, value]) =>
+            [["Competitors", data?.summary?.competitors_tracked || 0], ["L1/L2 Records", data?.summary?.l1_l2_records || 0], ["Low Competition", data?.summary?.low_competition_records || 0], ["Repeated Groups", data?.summary?.repeated_groups || 0]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
@@ -4171,6 +4171,7 @@ function SellerCompetitorIntelligencePage() {
         ),
         h(SimpleTable, { title: "Vendor Dominance", headers: ["Vendor", "Bids", "Awards", "Award Share", "Risk"], rows: (data?.items || []).map(row => [row.vendor, row.bids, row.awards, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
         h(SimpleTable, { title: "L1/L2/L3 Price Gaps", headers: ["Bid", "L1", "L1 Price", "L2", "L2 Price", "L3", "L3 Price", "L1-L2 Gap", "L2-L3 Gap", "Cluster Spread", "Risk", "Explanation"], rows: (data?.price_gaps || []).map(row => [row.bid_no, row.l1, `Rs. ${money(row.l1_price)}`, row.l2, `Rs. ${money(row.l2_price)}`, row.l3 || "NA", row.l3_price ? `Rs. ${money(row.l3_price)}` : "NA", `${row.gap_percent}%`, row.l2_l3_gap_percent == null ? "NA" : `${row.l2_l3_gap_percent}%`, row.cluster_spread_percent == null ? "NA" : `${row.cluster_spread_percent}%`, h(RiskBadge, { level: row.risk_level }), row.explanation || ""] ) }),
+        h(SimpleTable, { title: "Low Competition / Technical Rejection", headers: ["Bid", "Buyer", "Total", "Qualified", "Disqualified", "Competition Ratio", "Rejection Rate", "Risk", "Explanation"], rows: (data?.competition_risks || []).map(row => [row.bid_no, row.buyer, row.total_bidders, row.technically_qualified == null ? "NA" : row.technically_qualified, row.technically_disqualified == null ? "NA" : row.technically_disqualified, row.competition_ratio_percent == null ? "NA" : `${row.competition_ratio_percent}%`, row.disqualification_rate_percent == null ? "NA" : `${row.disqualification_rate_percent}%`, h(RiskBadge, { level: row.risk_level }), row.explanation]) }),
         h(SimpleTable, { title: "Repeated Bidder Groups", headers: ["Group", "Bids Together", "Bid Numbers", "Risk"], rows: (data?.repeated_groups || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) })
     );
 }
@@ -4203,6 +4204,7 @@ function SellerRiskReportsPage() {
         h("div", { className: "hero-actions" },
             h("a", { href: "/exports/seller/intelligence/vendor-dominance/csv" }, "Vendor CSV"),
             h("a", { href: "/exports/seller/intelligence/price-gaps/csv" }, "Price Gap CSV"),
+            h("a", { href: "/exports/seller/intelligence/low-competition/csv" }, "Competition CSV"),
             h("a", { href: "/exports/seller/intelligence/repeated-groups/pdf" }, "Group PDF"),
             h("a", { href: "/exports/seller/intelligence/restrictive-clauses/pdf" }, "Clause PDF")
         ),
@@ -4213,6 +4215,7 @@ function SellerRiskReportsPage() {
             h(SimpleTable, { title: "Repeated Bidder Group Report", headers: ["Group", "Bids Together", "Bid Numbers", "Risk"], rows: (reports.repeated_bidder_group || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) })
         ),
         h(SimpleTable, { title: "Vendor Dominance Report", headers: ["Vendor", "Bids", "Awards", "Award Share", "Risk"], rows: (reports.vendor_dominance || []).map(row => [row.vendor, row.bids, row.awards, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "Low Competition / Technical Rejection Report", headers: ["Bid", "Buyer", "Total", "Qualified", "Disqualified", "Competition Ratio", "Rejection Rate", "Risk", "Explanation"], rows: (reports.low_competition || []).map(row => [row.bid_no, row.buyer, row.total_bidders, row.technically_qualified == null ? "NA" : row.technically_qualified, row.technically_disqualified == null ? "NA" : row.technically_disqualified, row.competition_ratio_percent == null ? "NA" : `${row.competition_ratio_percent}%`, row.disqualification_rate_percent == null ? "NA" : `${row.disqualification_rate_percent}%`, h(RiskBadge, { level: row.risk_level }), row.explanation]) }),
         h(SimpleTable, { title: "Restrictive Clause Report", headers: ["Bid", "Score", "Risk", "Explanation"], rows: (reports.restrictive_clause || []).map(row => [row.bid_no, row.risk_score, h(RiskBadge, { level: row.risk_level }), row.explanation]) })
     );
 }
