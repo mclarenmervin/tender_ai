@@ -4445,8 +4445,12 @@ function App() {
     }
     useEffect(() => {
         if (publicRoutes.includes(path)) { setLoading(false); return; }
+        // Client-side dashboard navigation must not unmount the whole app just
+        // to re-check a session that is already loaded. API calls still handle
+        // an expired session through the shared 401 redirect.
+        if (me) { setLoading(false); return; }
         setLoading(true); refreshMe();
-    }, [path]);
+    }, [path, me]);
     if (path === "/") return h(React.Fragment, null, h(GlobalBackdrop), h(HomePage));
     if (path === "/features") return h(React.Fragment, null, h(GlobalBackdrop), h(FeaturesPage));
     if (path === "/pricing") return h(React.Fragment, null, h(GlobalBackdrop), h(PricingPage));
