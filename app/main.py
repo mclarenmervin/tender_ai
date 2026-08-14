@@ -32,7 +32,7 @@ from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKey
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
-from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics
+from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics, calculate_vendor_concentration_metrics
 from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
@@ -4406,6 +4406,7 @@ def procurement_intelligence(db,user_id):
     vendor_ids={row.vendor_id for row in participants if row.vendor_id}
     vendors={row.id:row for row in db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user_id,ProcurementVendor.id.in_(vendor_ids)).all()} if vendor_ids else {}
     buyers={row.id:row for row in db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user_id).all()}
+    categories={row.id:row for row in db.query(ProcurementCategory).filter(ProcurementCategory.user_id==user_id).all()}
     by_bid={}
     for row in participants:
         by_bid.setdefault(row.bid_id,[]).append(row)
@@ -4414,6 +4415,7 @@ def procurement_intelligence(db,user_id):
     award_value_risks=[]
     vendor_stats={}
     bid_vendor_sets=[]
+    concentration_segments={}
     for bid in bids:
         rows=by_bid.get(bid.id,[])
         competition=calculate_competition_metrics(bid.total_bidders,bid.technically_qualified,bid.technically_disqualified)
@@ -4439,6 +4441,20 @@ def procurement_intelligence(db,user_id):
             stat['bids']+=1; stat['awards']+=1 if row.is_awarded else 0; stat['quoted_value']+=row.quoted_price or 0
         if len(set(names))>=2:
             bid_vendor_sets.append((bid,set(names)))
+        winner=next((row for row in rows if bid.awarded_vendor_id and row.vendor_id==bid.awarded_vendor_id),None)
+        if not winner:
+            winner=next((row for row in sorted(rows,key=lambda item:(item.rank or 999,item.id)) if row.is_awarded or row.rank==1),None)
+        winner_vendor=vendors.get(winner.vendor_id) if winner else None
+        if winner_vendor:
+            department=(buyers.get(bid.buyer_id).department or buyers.get(bid.buyer_id).buyer_name_raw) if buyers.get(bid.buyer_id) else 'Unknown'
+            category=categories.get(bid.category_id).category_name if categories.get(bid.category_id) else 'Uncategorised'
+            segment=concentration_segments.setdefault((department,category),{'total_awards':0,'total_value':0,'vendors':{}})
+            segment['total_awards']+=1
+            award_value=bid.awarded_value or winner.quoted_price or 0
+            segment['total_value']+=award_value
+            vendor_name=winner_vendor.vendor_name_canonical or winner_vendor.vendor_name_clean or winner_vendor.vendor_name_raw
+            vendor_segment=segment['vendors'].setdefault(vendor_name,{'wins':0,'value':0})
+            vendor_segment['wins']+=1; vendor_segment['value']+=award_value
     total_awards=sum(row['awards'] for row in vendor_stats.values())
     dominance=[]
     for row in vendor_stats.values():
@@ -4446,6 +4462,13 @@ def procurement_intelligence(db,user_id):
         row['risk_level']='high' if row['award_share']>=50 and row['awards']>=3 else 'medium' if row['award_share']>=30 and row['awards']>=2 else 'low'
         dominance.append(row)
     dominance.sort(key=lambda row:(row['awards'],row['bids']),reverse=True)
+    vendor_concentration=[]
+    for (department,category),segment in concentration_segments.items():
+        for vendor_name,vendor_segment in segment['vendors'].items():
+            metrics=calculate_vendor_concentration_metrics(vendor_segment['wins'],segment['total_awards'],vendor_segment['value'],segment['total_value'])
+            if not metrics: continue
+            vendor_concentration.append({'vendor':vendor_name,'department':department,'category':category,'wins':metrics['vendor_wins'],'total_awards':metrics['total_awards'],'awarded_value':metrics['vendor_awarded_value'],'total_awarded_value':metrics['total_awarded_value'],'win_share_percent':metrics['win_share_percent'],'value_share_percent':metrics['value_share_percent'],'concentration_level':metrics['concentration_level'],'risk_level':metrics['risk_level'],'explanation':metrics['explanation']})
+    vendor_concentration.sort(key=lambda row:(row['win_share_percent'],row['value_share_percent'] or 0,row['wins']),reverse=True)
     groups={}
     for bid,names in bid_vendor_sets:
         for pair in itertools.combinations(sorted(names),2):
@@ -4463,7 +4486,7 @@ def procurement_intelligence(db,user_id):
     for flag in flags:
         bid=bid_map.get(flag.bid_id)
         restrictive.append({'bid_no':bid.bid_no if bid else 'Unknown','risk_score':flag.risk_score,'risk_level':flag.risk_level,'explanation':flag.explanation or ''})
-    return {'bids':bids,'participants':participants,'vendors':vendors,'buyers':buyers,'price_gaps':price_gaps,'competition_risks':competition_risks,'award_value_risks':award_value_risks,'dominance':dominance,'repeated_groups':repeated,'restrictive_clauses':restrictive}
+    return {'bids':bids,'participants':participants,'vendors':vendors,'buyers':buyers,'categories':categories,'price_gaps':price_gaps,'competition_risks':competition_risks,'award_value_risks':award_value_risks,'dominance':dominance,'vendor_concentration':vendor_concentration,'repeated_groups':repeated,'restrictive_clauses':restrictive}
 
 def parse_import_date(value):
     value=(value or '').strip()
@@ -4575,12 +4598,14 @@ def api_seller_intelligence_competitors(db:Session=Depends(get_db),user:User=Dep
         'price_gaps':procurement['price_gaps'],
         'competition_risks':procurement['competition_risks'],
         'award_value_risks':procurement['award_value_risks'],
+        'vendor_concentration':procurement['vendor_concentration'],
         'repeated_groups':procurement['repeated_groups'],
         'summary':{
             'competitors_tracked':len(procurement['dominance']),
             'l1_l2_records':len(procurement['price_gaps']),
             'low_competition_records':sum(1 for row in procurement['competition_risks'] if row['risk_level']!='low'),
             'award_value_review_records':sum(1 for row in procurement['award_value_risks'] if row['risk_level']!='low'),
+            'high_concentration_records':sum(1 for row in procurement['vendor_concentration'] if row['concentration_level']=='high'),
             'repeated_groups':len(procurement['repeated_groups']),
         },
         'message':'Import financial evaluation/result CSV rows to populate and refresh these calculations.' if not procurement['participants'] else 'Competitor analytics calculated from imported participant and award records.',
@@ -4626,6 +4651,7 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
             'l1_l2_l3_gap':procurement['price_gaps'],
             'low_competition':procurement['competition_risks'],
             'award_value_ratio':procurement['award_value_risks'],
+            'vendor_concentration':procurement['vendor_concentration'],
             'repeated_bidder_group':procurement['repeated_groups'],
             'restrictive_clause':procurement['restrictive_clauses'],
             'seller_risk_signals':risk_rows,
@@ -4637,7 +4663,7 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
 def export_seller_intelligence(report:str,fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     if fmt not in {'csv','report','pdf'}: raise HTTPException(404,'Unsupported export format')
     data=procurement_intelligence(db,user.id)
-    mapping={'vendor-dominance':data['dominance'],'price-gaps':data['price_gaps'],'low-competition':data['competition_risks'],'award-ratios':data['award_value_risks'],'repeated-groups':data['repeated_groups'],'restrictive-clauses':data['restrictive_clauses']}
+    mapping={'vendor-dominance':data['dominance'],'vendor-concentration':data['vendor_concentration'],'price-gaps':data['price_gaps'],'low-competition':data['competition_risks'],'award-ratios':data['award_value_risks'],'repeated-groups':data['repeated_groups'],'restrictive-clauses':data['restrictive_clauses']}
     rows=mapping.get(report)
     if rows is None: raise HTTPException(404,'Unknown intelligence report')
     rows=rows or [{'message':'No matching records available'}]

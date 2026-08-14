@@ -1,6 +1,6 @@
 import unittest
 
-from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics, price_similarity_risk
+from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics, calculate_vendor_concentration_metrics, price_similarity_risk
 
 
 class PriceSimilarityRiskTests(unittest.TestCase):
@@ -126,6 +126,46 @@ class AwardRatioMetricTests(unittest.TestCase):
         self.assertIsNone(calculate_award_ratio_metrics(0, 10))
         self.assertIsNone(calculate_award_ratio_metrics(100, 0))
         self.assertIsNone(calculate_award_ratio_metrics("bad", 10))
+
+
+class VendorConcentrationMetricTests(unittest.TestCase):
+    def test_above_fifty_percent_is_high_concentration(self):
+        result = calculate_vendor_concentration_metrics(6, 10, 700, 1000)
+        self.assertEqual(result["win_share_percent"], 60)
+        self.assertEqual(result["value_share_percent"], 70)
+        self.assertEqual(result["concentration_level"], "high")
+
+    def test_exactly_fifty_percent_is_medium(self):
+        result = calculate_vendor_concentration_metrics(5, 10, 500, 1000)
+        self.assertEqual(result["concentration_level"], "medium")
+
+    def test_thirty_percent_boundary_is_medium(self):
+        result = calculate_vendor_concentration_metrics(3, 10, 250, 1000)
+        self.assertEqual(result["concentration_level"], "medium")
+
+    def test_fifteen_percent_boundary_is_watchlist(self):
+        result = calculate_vendor_concentration_metrics(15, 100, 100, 1000)
+        self.assertEqual(result["concentration_level"], "watchlist")
+        self.assertEqual(result["risk_level"], "low")
+
+    def test_below_fifteen_percent_is_normal(self):
+        result = calculate_vendor_concentration_metrics(14, 100, 140, 1000)
+        self.assertEqual(result["concentration_level"], "normal")
+
+    def test_value_share_can_govern_concentration(self):
+        result = calculate_vendor_concentration_metrics(2, 10, 600, 1000)
+        self.assertEqual(result["win_share_percent"], 20)
+        self.assertEqual(result["concentration_level"], "high")
+
+    def test_zero_total_value_keeps_value_share_unknown(self):
+        result = calculate_vendor_concentration_metrics(2, 10, 0, 0)
+        self.assertIsNone(result["value_share_percent"])
+        self.assertEqual(result["concentration_level"], "watchlist")
+
+    def test_invalid_totals_are_rejected(self):
+        self.assertIsNone(calculate_vendor_concentration_metrics(2, 0, 10, 100))
+        self.assertIsNone(calculate_vendor_concentration_metrics(11, 10, 10, 100))
+        self.assertIsNone(calculate_vendor_concentration_metrics(1, 10, 110, 100))
 
 
 if __name__ == "__main__":

@@ -164,3 +164,49 @@ def calculate_award_ratio_metrics(estimated_value, awarded_value):
         "interpretation": interpretation,
         "explanation": f"{interpretation}; award ratio is {ratio_percent:.2f}% and saving is {saving_percent:.2f}%. Requires manual review; not proof of wrongdoing.",
     }
+
+
+def calculate_vendor_concentration_metrics(vendor_wins, total_awards, vendor_awarded_value, total_awarded_value):
+    """Calculate vendor concentration inside one department/category segment."""
+    try:
+        wins = int(vendor_wins)
+        awards = int(total_awards)
+        vendor_value = float(vendor_awarded_value)
+        total_value = float(total_awarded_value)
+    except (TypeError, ValueError):
+        return None
+
+    if awards <= 0 or wins < 0 or wins > awards or vendor_value < 0 or total_value < 0:
+        return None
+    if total_value == 0 and vendor_value != 0 or total_value > 0 and vendor_value > total_value:
+        return None
+
+    win_share = round((wins / awards) * 100, 2)
+    value_share = round((vendor_value / total_value) * 100, 2) if total_value else None
+    governing_share = max(win_share, value_share if value_share is not None else 0)
+
+    if governing_share > 50:
+        concentration_level = "high"
+        risk_level = "high"
+    elif governing_share >= 30:
+        concentration_level = "medium"
+        risk_level = "medium"
+    elif governing_share >= 15:
+        concentration_level = "watchlist"
+        risk_level = "low"
+    else:
+        concentration_level = "normal"
+        risk_level = "low"
+
+    value_text = f"{value_share:.2f}%" if value_share is not None else "not available"
+    return {
+        "vendor_wins": wins,
+        "total_awards": awards,
+        "vendor_awarded_value": vendor_awarded_value,
+        "total_awarded_value": total_awarded_value,
+        "win_share_percent": win_share,
+        "value_share_percent": value_share,
+        "concentration_level": concentration_level,
+        "risk_level": risk_level,
+        "explanation": f"Vendor win share is {win_share:.2f}% and awarded-value share is {value_text}; {concentration_level} concentration observed. Requires manual review; not proof of wrongdoing.",
+    }
