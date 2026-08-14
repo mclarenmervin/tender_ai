@@ -1,6 +1,6 @@
 import unittest
 
-from app.ai_engine.procurement_anomaly import calculate_competition_metrics, calculate_price_gap_metrics, price_similarity_risk
+from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics, price_similarity_risk
 
 
 class PriceSimilarityRiskTests(unittest.TestCase):
@@ -91,6 +91,41 @@ class CompetitionMetricTests(unittest.TestCase):
         self.assertIsNone(calculate_competition_metrics(3, 4, 0))
         self.assertIsNone(calculate_competition_metrics(3, 2, 2))
         self.assertIsNone(calculate_competition_metrics("bad", 1, 1))
+
+
+class AwardRatioMetricTests(unittest.TestCase):
+    def test_above_estimate_requires_high_risk_review(self):
+        result = calculate_award_ratio_metrics(100, 101)
+        self.assertEqual(result["award_ratio_percent"], 101)
+        self.assertEqual(result["saving_percent"], -1)
+        self.assertEqual(result["risk_level"], "high")
+
+    def test_exact_estimate_is_close_to_estimate(self):
+        result = calculate_award_ratio_metrics(100, 100)
+        self.assertEqual(result["risk_level"], "medium")
+        self.assertEqual(result["saving_percent"], 0)
+
+    def test_ninety_five_percent_boundary_is_close_to_estimate(self):
+        result = calculate_award_ratio_metrics(100, 95)
+        self.assertEqual(result["award_ratio"], 0.95)
+        self.assertEqual(result["risk_level"], "medium")
+
+    def test_eighty_to_below_ninety_five_is_moderate_saving(self):
+        result = calculate_award_ratio_metrics(100, 94.99)
+        self.assertEqual(result["risk_level"], "low")
+        self.assertIn("moderate saving", result["interpretation"])
+        boundary = calculate_award_ratio_metrics(100, 80)
+        self.assertIn("moderate saving", boundary["interpretation"])
+
+    def test_below_eighty_is_competitive_saving(self):
+        result = calculate_award_ratio_metrics(100, 79.99)
+        self.assertEqual(result["risk_level"], "low")
+        self.assertIn("competitive saving", result["interpretation"])
+
+    def test_invalid_values_are_rejected(self):
+        self.assertIsNone(calculate_award_ratio_metrics(0, 10))
+        self.assertIsNone(calculate_award_ratio_metrics(100, 0))
+        self.assertIsNone(calculate_award_ratio_metrics("bad", 10))
 
 
 if __name__ == "__main__":

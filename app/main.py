@@ -32,7 +32,7 @@ from app.database.models import User,Tender,TenderTracking,ScrapingLog,ScrapeKey
 from app.auth import hash_password,verify_password,create_access_token,get_current_user,SECRET_KEY,ALGORITHM
 from app.ai_engine.eligibility_extractor import extract_eligibility
 from app.ai_engine.bid_decision import bid_decision_for_tender
-from app.ai_engine.procurement_anomaly import calculate_competition_metrics, calculate_price_gap_metrics
+from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics
 from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
 from app.alerts.telegram_alerts import broadcast_telegram_message
@@ -4411,6 +4411,7 @@ def procurement_intelligence(db,user_id):
         by_bid.setdefault(row.bid_id,[]).append(row)
     price_gaps=[]
     competition_risks=[]
+    award_value_risks=[]
     vendor_stats={}
     bid_vendor_sets=[]
     for bid in bids:
@@ -4418,6 +4419,9 @@ def procurement_intelligence(db,user_id):
         competition=calculate_competition_metrics(bid.total_bidders,bid.technically_qualified,bid.technically_disqualified)
         if competition:
             competition_risks.append({'bid_no':bid.bid_no,'buyer':buyers.get(bid.buyer_id).buyer_name_raw if buyers.get(bid.buyer_id) else 'Unknown','total_bidders':competition['total_bidders'],'technically_qualified':competition['technically_qualified'],'technically_disqualified':competition['technically_disqualified'],'competition_ratio_percent':competition['competition_ratio_percent'],'disqualification_rate_percent':competition['disqualification_rate_percent'],'risk_level':competition['risk_level'],'explanation':competition['explanation']})
+        award_ratio=calculate_award_ratio_metrics(bid.estimated_value,bid.awarded_value)
+        if award_ratio:
+            award_value_risks.append({'bid_no':bid.bid_no,'buyer':buyers.get(bid.buyer_id).buyer_name_raw if buyers.get(bid.buyer_id) else 'Unknown','estimated_value':bid.estimated_value,'awarded_value':bid.awarded_value,'award_ratio':award_ratio['award_ratio'],'award_ratio_percent':award_ratio['award_ratio_percent'],'saving_percent':award_ratio['saving_percent'],'risk_level':award_ratio['risk_level'],'interpretation':award_ratio['interpretation'],'explanation':award_ratio['explanation']})
         ranked=sorted([row for row in rows if row.quoted_price and (row.rank or 999)<999],key=lambda row:(row.rank or 999,row.quoted_price))
         if len(ranked)>=2:
             l1,l2=ranked[:2]
@@ -4459,7 +4463,7 @@ def procurement_intelligence(db,user_id):
     for flag in flags:
         bid=bid_map.get(flag.bid_id)
         restrictive.append({'bid_no':bid.bid_no if bid else 'Unknown','risk_score':flag.risk_score,'risk_level':flag.risk_level,'explanation':flag.explanation or ''})
-    return {'bids':bids,'participants':participants,'vendors':vendors,'buyers':buyers,'price_gaps':price_gaps,'competition_risks':competition_risks,'dominance':dominance,'repeated_groups':repeated,'restrictive_clauses':restrictive}
+    return {'bids':bids,'participants':participants,'vendors':vendors,'buyers':buyers,'price_gaps':price_gaps,'competition_risks':competition_risks,'award_value_risks':award_value_risks,'dominance':dominance,'repeated_groups':repeated,'restrictive_clauses':restrictive}
 
 def parse_import_date(value):
     value=(value or '').strip()
@@ -4570,11 +4574,13 @@ def api_seller_intelligence_competitors(db:Session=Depends(get_db),user:User=Dep
         'items':procurement['dominance'],
         'price_gaps':procurement['price_gaps'],
         'competition_risks':procurement['competition_risks'],
+        'award_value_risks':procurement['award_value_risks'],
         'repeated_groups':procurement['repeated_groups'],
         'summary':{
             'competitors_tracked':len(procurement['dominance']),
             'l1_l2_records':len(procurement['price_gaps']),
             'low_competition_records':sum(1 for row in procurement['competition_risks'] if row['risk_level']!='low'),
+            'award_value_review_records':sum(1 for row in procurement['award_value_risks'] if row['risk_level']!='low'),
             'repeated_groups':len(procurement['repeated_groups']),
         },
         'message':'Import financial evaluation/result CSV rows to populate and refresh these calculations.' if not procurement['participants'] else 'Competitor analytics calculated from imported participant and award records.',
@@ -4619,6 +4625,7 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
             'vendor_dominance':procurement['dominance'],
             'l1_l2_l3_gap':procurement['price_gaps'],
             'low_competition':procurement['competition_risks'],
+            'award_value_ratio':procurement['award_value_risks'],
             'repeated_bidder_group':procurement['repeated_groups'],
             'restrictive_clause':procurement['restrictive_clauses'],
             'seller_risk_signals':risk_rows,
@@ -4630,7 +4637,7 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
 def export_seller_intelligence(report:str,fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     if fmt not in {'csv','report','pdf'}: raise HTTPException(404,'Unsupported export format')
     data=procurement_intelligence(db,user.id)
-    mapping={'vendor-dominance':data['dominance'],'price-gaps':data['price_gaps'],'low-competition':data['competition_risks'],'repeated-groups':data['repeated_groups'],'restrictive-clauses':data['restrictive_clauses']}
+    mapping={'vendor-dominance':data['dominance'],'price-gaps':data['price_gaps'],'low-competition':data['competition_risks'],'award-ratios':data['award_value_risks'],'repeated-groups':data['repeated_groups'],'restrictive-clauses':data['restrictive_clauses']}
     rows=mapping.get(report)
     if rows is None: raise HTTPException(404,'Unknown intelligence report')
     rows=rows or [{'message':'No matching records available'}]

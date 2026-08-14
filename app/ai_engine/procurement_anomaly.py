@@ -119,3 +119,48 @@ def calculate_competition_metrics(total_bidders, technically_qualified=None, tec
         "risk_level": risk_level,
         "explanation": "; ".join(reasons) + ". Requires manual review; not proof of wrongdoing.",
     }
+
+
+def calculate_award_ratio_metrics(estimated_value, awarded_value):
+    """Compare awarded value with the tender's estimated value.
+
+    Ratios above 1 require review, while awards from 0.95 through 1.00 are
+    flagged as close to estimate. Lower ratios are retained as context but do
+    not create an anomaly signal on their own.
+    """
+    try:
+        estimated = float(estimated_value)
+        awarded = float(awarded_value)
+    except (TypeError, ValueError):
+        return None
+
+    if estimated <= 0 or awarded <= 0:
+        return None
+
+    ratio = awarded / estimated
+    ratio_percent = round(ratio * 100, 2)
+    saving_percent = round((1 - ratio) * 100, 2)
+
+    if ratio > 1:
+        risk_level = "high"
+        interpretation = "Awarded value exceeds the estimated value"
+    elif ratio >= 0.95:
+        risk_level = "medium"
+        interpretation = "Awarded value is very close to the estimated value"
+    elif ratio >= 0.80:
+        risk_level = "low"
+        interpretation = "Award reflects moderate saving against the estimate"
+    else:
+        risk_level = "low"
+        interpretation = "Award reflects competitive saving against the estimate"
+
+    return {
+        "estimated_value": estimated_value,
+        "awarded_value": awarded_value,
+        "award_ratio": round(ratio, 4),
+        "award_ratio_percent": ratio_percent,
+        "saving_percent": saving_percent,
+        "risk_level": risk_level,
+        "interpretation": interpretation,
+        "explanation": f"{interpretation}; award ratio is {ratio_percent:.2f}% and saving is {saving_percent:.2f}%. Requires manual review; not proof of wrongdoing.",
+    }
