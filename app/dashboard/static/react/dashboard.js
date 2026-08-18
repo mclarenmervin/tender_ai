@@ -3792,7 +3792,7 @@ function SettingsPage() {
     const [filterMessage, setFilterMessage] = useState("");
     const [refreshingAuthorities, setRefreshingAuthorities] = useState(false);
     const [customAuthority, setCustomAuthority] = useState("");
-    const blankProfile = { id: "", name: "", enabled: true, keywords: [], authorities: [], states: [], cities: [], only_high_priority: false };
+    const blankProfile = { id: "", name: "", enabled: true, keywords: [], authorities: [], states: [], cities: [], emd_amount: "", only_high_priority: false };
     const [profileForm, setProfileForm] = useState(blankProfile);
     const [profileMessage, setProfileMessage] = useState("");
     async function load() { setSettings(await api("/api/admin/settings")); }
@@ -3892,6 +3892,7 @@ function SettingsPage() {
                 ),
                 h(AutomationMultiSelect, { label: "States", hint: "Profile-specific locations", options: settings.indian_states || [], selected: profileForm.states || [], onChange: values => setProfileForm({ ...profileForm, states: values }), placeholder: "Select states" }),
                 h("label", { className: "field-block" }, h("span", null, "Cities / districts"), h("input", { value: (profileForm.cities || []).join(", "), onChange: e => setProfileForm({ ...profileForm, cities: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "Bhubaneswar, Koraput" })),
+                h("label", { className: "field-block" }, h("span", null, "Maximum EMD (₹)"), h("input", { type: "number", min: 0, step: 1, value: profileForm.emd_amount ?? "", onChange: e => setProfileForm({ ...profileForm, emd_amount: e.target.value }), placeholder: "Blank = any EMD; 0 = nil / unspecified" }), h("small", null, "Include bids at or below this EMD. Enter 0 for nil, exempt, or unspecified EMD.")),
                 h(AutomationMultiSelect, { label: "Departments / authorities", hint: "Profile-specific organisations", options: settings.authority_options || [], selected: profileForm.authorities || [], onChange: values => setProfileForm({ ...profileForm, authorities: values }), placeholder: "Select departments" }),
                 h("div", { className: "automation-custom-authority" }, h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Department not listed? Enter it manually" }), h("button", { type: "button", onClick: addCustomAuthority }, "Add Department")),
                 filterMessage ? h("div", { className: "notice" }, filterMessage) : null,
@@ -3903,7 +3904,8 @@ function SettingsPage() {
                     h("div", null, h("b", null, "Keywords"), h("div", { className: "criteria-value-list" }, (profile.keywords || []).length ? profile.keywords.map(value => h("em", { key: value }, value)) : h("p", null, "No keyword filter"))),
                     h("div", null, h("b", null, "Departments"), h("div", { className: "criteria-value-list" }, (profile.authorities || []).length ? profile.authorities.map(value => h("em", { key: value }, value)) : h("p", null, "All departments"))),
                     h("div", null, h("b", null, "States"), h("div", { className: "criteria-value-list" }, (profile.states || []).length ? profile.states.map(value => h("em", { key: value }, value)) : h("p", null, "All states"))),
-                    h("div", null, h("b", null, "Cities / districts"), h("div", { className: "criteria-value-list" }, (profile.cities || []).length ? profile.cities.map(value => h("em", { key: value }, value)) : h("p", null, "All cities")))
+                    h("div", null, h("b", null, "Cities / districts"), h("div", { className: "criteria-value-list" }, (profile.cities || []).length ? profile.cities.map(value => h("em", { key: value }, value)) : h("p", null, "All cities"))),
+                    h("div", null, h("b", null, "Maximum EMD"), h("p", null, profile.emd_amount === null || profile.emd_amount === undefined || profile.emd_amount === "" ? "Any EMD" : `₹${Number(profile.emd_amount).toLocaleString("en-IN")}${Number(profile.emd_amount) === 0 ? " (nil / unspecified)" : ""}`))
                 )),
                 h("div", { className: "scrape-profile-actions" }, h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
             )))
