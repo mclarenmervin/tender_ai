@@ -839,8 +839,10 @@ function AuthPage({ mode }) {
     const isSignup = mode === "signup";
     const { me, checked } = useSessionProbe();
     useEffect(() => {
-        if (checked && me) navigate(roleDashboard(me));
-    }, [checked, me]);
+        // A signed-in user may still need to create a separate buyer or seller
+        // workspace. Do not redirect away from the signup form in that case.
+        if (!isSignup && checked && me) navigate(roleDashboard(me));
+    }, [checked, me, isSignup]);
 
     function validate() {
         const next = {};
@@ -871,7 +873,7 @@ function AuthPage({ mode }) {
     }
 
     if (!checked) return h("div", { className: "auth" }, h("div", { className: "empty auth-loading" }, "Checking session..."));
-    if (me) return h("div", { className: "empty" }, "Opening dashboard...");
+    if (me && !isSignup) return h("div", { className: "empty" }, "Opening dashboard...");
 
     return h("div", { className: "auth" },
         h("div", { className: "auth-art" },
