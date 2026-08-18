@@ -21,7 +21,8 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Buyer Modules", [["/dashboard/buyer/bids", "Add Bid"], ["/dashboard/buyer/bid-verification", "Bids & Verification"], ["/dashboard/buyer/grants", "Grants"]]],
+    ["Buyer Modules", [["/dashboard/buyer/tenders", "Tender List"], ["/dashboard/buyer/bids", "Add Bid"], ["/dashboard/buyer/bid-verification", "Bids & Verification"], ["/dashboard/buyer/grants", "Grants"]]],
+    ["GeM Intelligence", [["/dashboard/buyer/intelligence", "Bid Results & Sellers"]]],
     ["Account", [["/dashboard/profile", "Profile"]]],
 ];
 
@@ -4276,6 +4277,70 @@ function SimpleTable({ title, headers, rows }) {
     return h("div", { className: "panel table-panel" }, h("h3", null, title), rows.length ? h("table", null, h("thead", null, h("tr", null, headers.map(x => h("th", { key: x }, x)))), h("tbody", null, rows.map((row, i) => h("tr", { key: i }, row.map((cell, j) => h("td", { key: j }, cell)))))) : h("div", { className: "empty" }, "No data available."));
 }
 
+function BuyerGeMIntelligencePage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    const [importing, setImporting] = useState(false);
+    const [rawText, setRawText] = useState("");
+    const [sourceUrl, setSourceUrl] = useState("");
+    const load = () => api("/api/buyer/intelligence").then(setData).catch(err => setMessage(err.message));
+    useEffect(load, []);
+    async function importFile(event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        setImporting(true); setMessage("");
+        try {
+            const text = await file.text();
+            const body = file.name.toLowerCase().endsWith(".json") ? JSON.stringify(JSON.parse(text)) : JSON.stringify({ filename: file.name, content: text });
+            const result = await api("/api/buyer/intelligence/import-results", { method: "POST", body });
+            setMessage(result.message + (result.errors?.length ? ` ${result.errors.join("; ")}` : ""));
+            load();
+        } catch (err) { setMessage(err.message); }
+        finally { setImporting(false); event.target.value = ""; }
+    }
+    async function importText(event) {
+        event.preventDefault();
+        if (!rawText.trim()) { setMessage("Paste a GeM result page HTML/text extract first."); return; }
+        setImporting(true); setMessage("");
+        try {
+            const result = await api("/api/buyer/intelligence/import-results", { method: "POST", body: JSON.stringify({ source_url: sourceUrl, html: rawText }) });
+            setMessage(result.message + (result.errors?.length ? ` ${result.errors.join("; ")}` : ""));
+            setRawText(""); load();
+        } catch (err) { setMessage(err.message); }
+        finally { setImporting(false); }
+    }
+    const summary = data?.summary || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "GeM Bid Result Intelligence", text: "Buyer-side bid result records, participating sellers, L1/L2/L3 ranking, repeated bidder groups, and award concentration." }),
+        message ? h("div", { className: "notice" }, message) : null,
+        data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("div", { className: "summary six" },
+            [["Result Bids", summary.bids || 0], ["Participants", summary.participants || 0], ["Sellers", summary.vendors || 0], ["Awarded Bids", summary.awarded_bids || 0], ["L1/L2/L3", summary.l1_l2_l3_records || 0], ["Repeated Groups", summary.repeated_bidder_groups || 0]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
+        ),
+        h("section", { className: "card" },
+            h("h3", null, "Import GeM Result Data"),
+            h("p", { className: "desc" }, "Upload CSV/JSON result records or paste an authorized GeM bid result page extract. Raw structured result data is stored with the bid for later audit."),
+            h("div", { className: "actions" },
+                h("input", { type: "file", accept: ".csv,.json,text/csv,application/json", disabled: importing, onChange: importFile }),
+                h("a", { className: "download-btn", href: "/exports/seller/intelligence/import-template.csv" }, "Download CSV Template")
+            ),
+            h("form", { className: "stack", onSubmit: importText },
+                h("input", { value: sourceUrl, onChange: e => setSourceUrl(e.target.value), placeholder: "GeM result URL" }),
+                h("textarea", { value: rawText, onChange: e => setRawText(e.target.value), rows: 5, placeholder: "Paste result page HTML/text here" }),
+                h("button", { className: "primary", disabled: importing }, importing ? "Importing..." : "Import Result Extract")
+            )
+        ),
+        h(SimpleTable, { title: "Collected Bid Results", headers: ["Bid", "Title", "Status", "Estimated", "EMD", "Awarded", "Bidders", "Qualified", "Disqualified", "Source"], rows: (data?.bids || []).map(row => [row.bid_no, row.title || "NA", row.status, `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.awarded_value == null ? "NA" : `Rs. ${money(row.awarded_value)}`, row.total_bidders ?? "NA", row.technically_qualified ?? "NA", row.technically_disqualified ?? "NA", row.source_url ? h("a", { href: row.source_url, target: "_blank", rel: "noreferrer" }, "Open") : "NA"]) }),
+        h(SimpleTable, { title: "Seller Award History", headers: ["Seller", "Bids", "Awards", "Quoted Value", "Award Share", "Risk"], rows: (data?.vendor_history || []).map(row => [row.vendor, row.bids, row.awards, `Rs. ${money(row.quoted_value)}`, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "L1/L2/L3 Price Gaps", headers: ["Bid", "L1", "L1 Price", "L2", "L2 Price", "L3", "L3 Price", "Gap", "Cluster Spread", "Risk"], rows: (data?.price_gaps || []).map(row => [row.bid_no, row.l1, `Rs. ${money(row.l1_price)}`, row.l2, `Rs. ${money(row.l2_price)}`, row.l3 || "NA", row.l3_price == null ? "NA" : `Rs. ${money(row.l3_price)}`, `${row.gap_percent}%`, row.cluster_spread_percent == null ? "NA" : `${row.cluster_spread_percent}%`, h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "Repeated Seller Groups", headers: ["Sellers", "Bids Together", "Bid Numbers", "Risk"], rows: (data?.repeated_groups || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) }),
+        h(SimpleTable, { title: "Vendor Concentration", headers: ["Seller", "Department", "Category", "Wins", "Segment Awards", "Win Share", "Value Share", "Level"], rows: (data?.vendor_concentration || []).map(row => [row.vendor, row.department, row.category, row.wins, row.total_awards, `${row.win_share_percent}%`, row.value_share_percent == null ? "NA" : `${row.value_share_percent}%`, row.concentration_level]) }),
+        h(SimpleTable, { title: "Competition / Rejection Signals", headers: ["Bid", "Buyer", "Total", "Qualified", "Disqualified", "Competition", "Rejection", "Risk"], rows: (data?.competition_risks || []).map(row => [row.bid_no, row.buyer, row.total_bidders, row.technically_qualified ?? "NA", row.technically_disqualified ?? "NA", row.competition_ratio_percent == null ? "NA" : `${row.competition_ratio_percent}%`, row.disqualification_rate_percent == null ? "NA" : `${row.disqualification_rate_percent}%`, h(RiskBadge, { level: row.risk_level })]) })
+    );
+}
+
 const GLOBAL_SEARCH_STATES = ["", "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
 
 function displayGemDate(value) {
@@ -4477,8 +4542,10 @@ function App() {
     if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
+    else if (route === "/dashboard/buyer/tenders") page = h(DashboardPage, { view: "all" });
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
     else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
+    else if (route === "/dashboard/buyer/intelligence") page = h(BuyerGeMIntelligencePage);
     else if (route === "/dashboard/buyer/grants") page = h(BuyerModulePage, { moduleKey: "grants" });
     else if (route.startsWith("/dashboard/buyer/")) page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
