@@ -86,6 +86,7 @@ def ensure_schema_updates():
         for ddl in [
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS address TEXT",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS scrape_run_id INTEGER REFERENCES scrape_runs(id)",
             "CREATE INDEX IF NOT EXISTS ix_tenders_scrape_run_id ON tenders(scrape_run_id)",
@@ -437,6 +438,7 @@ def tender_to_dict(tender):
         'state':tender.state,
         'city':tender.city or '',
         'estimated_value':tender.estimated_value or 0,
+        'emd_amount':tender.emd_amount if tender.emd_amount is not None else '',
         'deadline':iso(tender.deadline),
         'url':tender.url,
         'description':tender.description,
@@ -6216,6 +6218,12 @@ def scrape_profiles(db,user_id):
         clean['name']=re.sub(r'\s+',' ',str(clean.get('name') or f'Scrape Criteria {index+1}')).strip()
         for field in ['keywords','authorities','states','cities']:
             clean[field]=clean.get(field) if isinstance(clean.get(field),list) else []
+        try:
+            clean['emd_amount']=int(clean['emd_amount']) if clean.get('emd_amount') not in (None,'') else None
+        except (TypeError,ValueError):
+            clean['emd_amount']=None
+        if clean['emd_amount'] is not None and clean['emd_amount'] < 0:
+            clean['emd_amount']=None
         clean['enabled']=bool(clean.get('enabled',True))
         clean['only_high_priority']=bool(clean.get('only_high_priority',False))
         output.append(clean)
@@ -6236,6 +6244,12 @@ def clean_profile_values(values,limit=100,max_length=200):
 
 def normalized_scrape_profile(payload,existing_id=None):
     states=[value for value in clean_profile_values(payload.get('states'),40,100) if value in INDIAN_STATES]
+    try:
+        emd_amount=int(payload.get('emd_amount')) if payload.get('emd_amount') not in (None,'') else None
+    except (TypeError,ValueError):
+        raise HTTPException(400,'EMD amount must be a whole number of rupees.')
+    if emd_amount is not None and emd_amount < 0:
+        raise HTTPException(400,'EMD amount cannot be negative.')
     return {
         'id':existing_id or str(uuid.uuid4()),
         'name':re.sub(r'\s+',' ',str(payload.get('name') or 'Scrape criteria')).strip()[:100] or 'Scrape criteria',
@@ -6244,6 +6258,7 @@ def normalized_scrape_profile(payload,existing_id=None):
         'authorities':clean_profile_values(payload.get('authorities'),250,200),
         'states':states,
         'cities':clean_profile_values(payload.get('cities'),100,150),
+        'emd_amount':emd_amount,
         'only_high_priority':bool(payload.get('only_high_priority',False)),
     }
 

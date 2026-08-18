@@ -40,6 +40,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             cities=[value for value in (profile.get("cities") or []) if value]
             city=cities[0] if cities else ""
             authorities=[value for value in (profile.get("authorities") or []) if value]
+            emd_amount=profile.get("emd_amount")
         else:
             expanded_keywords.extend(company_profile_terms(db, user_id))
             expanded_keywords.extend(gem_alert_terms(db, user_id))
@@ -56,6 +57,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             city = setting_value(db, user_id, "scrape_city", "")
             cities = [city] if city else []
             authorities = setting_json_list(db, user_id, "scrape_authorities")
+            emd_amount = None
         if is_gem_alert:
             # Search location terms as well as applying strict post-parse
             # location checks, so location-only alerts are not limited to the
@@ -93,6 +95,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             city=city,
             cities=cities,
             authorities=authorities,
+            emd_amount=emd_amount,
             scrape_run_id=run.id if run else None,
         )
         inserted_ids = [
@@ -122,6 +125,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             "departments":authorities,
             "states":states,
             "cities":cities,
+            "emd_amount":emd_amount,
             "only_high_priority":only_high_priority,
             "max_bids":max_bids,
         })

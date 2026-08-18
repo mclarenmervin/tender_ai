@@ -18,7 +18,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
             if isinstance(scraper,GemScraper):
                 tenders=[
                     item for item in tenders
-                    if scraper.authority_matches_item(item) and scraper.location_matches_item(item)
+                    if scraper.authority_matches_item(item) and scraper.location_matches_item(item) and scraper.emd_matches_item(item)
                 ]
             source_inserted=0
             source_inserted_ids=[]
@@ -36,7 +36,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                     skipped_existing+=1
                     stats['duplicate']+=1
                     changed=False
-                    for field in ['title','department','address','state','city','estimated_value','deadline','url','description','category']:
+                    for field in ['title','department','address','state','city','estimated_value','emd_amount','deadline','url','description','category']:
                         value=item.get(field)
                         if value not in (None,'') and getattr(existing,field,None)!=value:
                             setattr(existing,field,value)
@@ -92,8 +92,8 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
 def run_gem_scraper(db,return_details=False,user_id=None,scrape_run_id=None):
     return run_scrapers(db,[GemScraper()],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
 
-def run_gem_keyword_scraper(db,keywords,return_details=False,max_bids=20,user_id=None,state=None,states=None,city=None,cities=None,authorities=None,scrape_run_id=None):
-    return run_scrapers(db,[GemScraper(keywords=keywords,max_bids=max_bids,state=state,states=states,city=city,cities=cities,authorities=authorities)],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
+def run_gem_keyword_scraper(db,keywords,return_details=False,max_bids=20,user_id=None,state=None,states=None,city=None,cities=None,authorities=None,emd_amount=None,scrape_run_id=None):
+    return run_scrapers(db,[GemScraper(keywords=keywords,max_bids=max_bids,state=state,states=states,city=city,cities=cities,authorities=authorities,emd_amount=emd_amount)],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)
 
 def run_all_scrapers(db,return_details=False,user_id=None,scrape_run_id=None):
     return run_scrapers(db,[NexizoScraper(),GemScraper(),CPPPScraper()],return_details=return_details,user_id=user_id,scrape_run_id=scrape_run_id)

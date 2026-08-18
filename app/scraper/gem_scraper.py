@@ -41,7 +41,7 @@ class GemScraper(BaseScraper):
         },
     }
 
-    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, cities=None, authorities=None):
+    def __init__(self, keywords=None, max_bids=20, state=None, states=None, city=None, cities=None, authorities=None, emd_amount=None):
         self.keywords = [keyword.strip() for keyword in (keywords or []) if keyword and keyword.strip()]
         self.max_bids = max_bids
         state_values = states if states is not None else ([state] if state else [])
@@ -56,6 +56,7 @@ class GemScraper(BaseScraper):
         self.city_filter = self.city_filters[0] if self.city_filters else ""
         self.authority_values = [self.clean_text(value) for value in (authorities or []) if self.clean_text(value)]
         self.authority_filters = [value.lower() for value in self.authority_values]
+        self.emd_amount = int(emd_amount) if emd_amount not in (None, '') else None
 
     def clean_text(self, text):
         return re.sub(r"\s+", " ", text or "").strip()
@@ -107,6 +108,24 @@ class GemScraper(BaseScraper):
         if money_values:
             return max(money_values)
         return 0
+
+    def extract_emd_amount(self, text):
+        """Return the stated EMD amount, or None when GeM does not state one."""
+        cleaned=self.clean_text(text).replace(',', '')
+        match=re.search(r'(?:EMD|Earnest\s+Money(?:\s+Deposit)?|Bid\s+Security)\s*(?:Amount)?\s*[:/-]?\s*(?:Rs\.?|INR|₹)?\s*([0-9]+)',cleaned,re.IGNORECASE)
+        if match:
+            return int(match.group(1))
+        if re.search(r'(?:EMD|Earnest\s+Money(?:\s+Deposit)?|Bid\s+Security).{0,80}(?:nil|not\s+applicable|exempt(?:ed)?|zero)',cleaned,re.IGNORECASE):
+            return 0
+        return None
+
+    def emd_matches_item(self, item):
+        if self.emd_amount is None:
+            return True
+        actual=item.get('emd_amount')
+        if self.emd_amount == 0:
+            return actual in (None, 0)
+        return actual is not None and actual <= self.emd_amount
 
     def extract_pdf_text(self, url, timeout=20, pages=3):
         try:
@@ -782,6 +801,7 @@ class GemScraper(BaseScraper):
             "state": state[:100],
             "city": city[:150],
             "estimated_value": self.extract_value(full_text),
+            "emd_amount": self.extract_emd_amount(full_text),
             "deadline": self.extract_date(full_text),
             "url": url,
             "description": clean_full_text[:5000],
@@ -797,6 +817,10 @@ class GemScraper(BaseScraper):
         value = self.extract_value(pdf_text)
         if value:
             item["estimated_value"] = value
+
+        emd_amount=self.extract_emd_amount(pdf_text)
+        if emd_amount is not None:
+            item['emd_amount']=emd_amount
 
         if not item.get("address"):
             item["address"] = self.extract_field(pdf_text, [
