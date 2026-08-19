@@ -4340,34 +4340,38 @@ function BuyerDirectoryPage() {
         try {
             const buyerPayload = { name: form.organization, department: form.department || form.organization, ministry: form.ministry, state: form.buyer_state };
             try { await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(buyerPayload), silent: true }); } catch (error) { if (!String(error.message).includes("already exists")) throw error; }
-            let saved = 0; let refreshed = 0;
-            for (let page = 1; page <= 10; page += 1) {
-                setMessage(`Loading GeM tenders: page ${page} of up to 10 — ${saved} new, ${refreshed} refreshed...`);
+            let saved = 0; let refreshed = 0; let failed = 0;
+            async function savePage(items) {
+                const outcomes = await Promise.allSettled((items || []).map(item => api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true })));
+                outcomes.forEach(outcome => {
+                    if (outcome.status === "rejected") failed += 1;
+                    else if (outcome.value.created) saved += 1;
+                    else if (outcome.value.updated) refreshed += 1;
+                });
+            }
+            let ongoingPages = 1;
+            for (let page = 1; page <= Math.min(ongoingPages, 250); page += 1) {
+                setMessage(`Loading all GeM tenders: page ${page} of ${ongoingPages === 1 ? "..." : ongoingPages} — ${saved} new, ${refreshed} refreshed...`);
                 const params = new URLSearchParams({ mode: "ministry", page: String(page), ministry: form.ministry, buyer_state: form.buyer_state, organization: form.organization, department: form.department, from_date: form.from_date, to_date: form.to_date });
                 const result = await api(`/api/gem/advanced-search?${params}`, { silent: true });
-                for (const item of (result.items || [])) {
-                    const response = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
-                    if (response.created) saved += 1;
-                    else if (response.updated) refreshed += 1;
-                }
-                if (page >= (result.pages || 1) || !(result.items || []).length) break;
+                ongoingPages = Math.min(Math.max(1, result.pages || 1), 250);
+                await savePage(result.items || []);
+                if (page >= ongoingPages || !(result.items || []).length) break;
             }
             let completed = 0;
-            for (let page = 1; page <= 10; page += 1) {
-                setMessage(`Loading completed GeM Bid/RA results: page ${page} of up to 10 — ${completed} matched...`);
+            const completedScanPages = 100;
+            for (let page = 1; page <= completedScanPages; page += 1) {
+                setMessage(`Scanning completed GeM Bid/RA results: page ${page} of ${completedScanPages} — ${completed} matched...`);
                 const params = new URLSearchParams({ q: form.department || form.ministry, department: form.department || form.ministry, status: "bidrastatus", by_status: "bid_awarded", sort: "Bid-End-Date-Latest", page: String(page), page_size: "10" });
                 const result = await api(`/api/gem/global-search?${params}`, { silent: true });
-                for (const item of (result.items || [])) {
-                    const response = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
-                    if (response.created) saved += 1; else if (response.updated) refreshed += 1;
-                    completed += 1;
-                }
+                completed += (result.items || []).length;
+                await savePage(result.items || []);
                 // GeM's status search can contain unrelated records on an
                 // upstream page; continue scanning even when local filtering
                 // leaves one page empty.
                 if (page >= (result.pages || 1)) break;
             }
-            setMessage(`Buyer saved. ${saved} new, ${refreshed} refreshed, and ${completed} completed result record(s) matched. Opening the portfolio...`);
+            setMessage(`Buyer sync complete: ${saved} new, ${refreshed} refreshed, ${completed} completed result record(s) matched${failed ? `, ${failed} record(s) skipped` : ""}. Opening the portfolio...`);
             setTimeout(() => navigate("/dashboard/buyer/tenders"), 700);
         } catch (error) { setMessage(error.message); setBusy(""); }
     }

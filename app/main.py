@@ -4645,7 +4645,9 @@ def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_curr
             'district':buyer.district or '',
             'tender_count':len(tenders),
             'total_value':sum((t.estimated_value or 0) for t in tenders),
-            'tenders':tenders[:200],
+            # The portfolio is the buyer's complete imported corpus. A former
+            # 200-row slice made a successful full GeM import appear incomplete.
+            'tenders':tenders,
             'bid_results':results_by_buyer.get(buyer.id,[])[:200],
             'seller_count':sum(len(row['sellers']) for row in results_by_buyer.get(buyer.id,[])),
             'status_counts':dict(status_counts),
