@@ -4021,14 +4021,14 @@ def api_tender_filter_options(db:Session=Depends(get_db),user:User=Depends(get_c
 @app.get('/api/gem/global-search')
 def api_gem_global_search(
     q:str='', department:str='', state:str='', city:str='', bid_type:str='all',
-    status:str='ongoing_bids', from_date:str='', to_date:str='',
+    status:str='ongoing_bids', by_status:str='', from_date:str='', to_date:str='',
     sort:str='Bid-End-Date-Oldest', page:int=1, page_size:int=10,
     user:User=Depends(get_current_user),
 ):
     try:
         return search_gem_bids(
             q=q, department=department, state=state, city=city, bid_type=bid_type,
-            status=status, from_date=from_date, to_date=to_date, sort=sort,
+            status=status, by_status=by_status, from_date=from_date, to_date=to_date, sort=sort,
             page=page, page_size=page_size,
         )
     except RuntimeError as exc:
@@ -4089,6 +4089,10 @@ async def api_save_global_search_result(
         existing.deadline=deadline or existing.deadline; existing.deadline_at=deadline_at or existing.deadline_at
         existing.url=str(item.get('url') or existing.url or '').strip()[:4000]
         existing.category=str(item.get('category') or existing.category or '').strip()[:255]
+        if str(item.get('status') or '').casefold() in {'completed','awarded'}:
+            existing.status='completed'
+        if item.get('result_url'):
+            existing.description=(existing.description or '')+f"\nGeM result: {item['result_url']}"
         db.commit(); db.refresh(existing)
         return {'ok':True,'created':False,'updated':True,'message':'Existing GeM bid dates and details refreshed.','tender':tender_to_dict(existing)}
     tender=Tender(
@@ -4098,7 +4102,8 @@ async def api_save_global_search_result(
         state=str(item.get('state') or '').strip()[:100], city=str(item.get('city') or '').strip()[:150],
         estimated_value=0, deadline=deadline, deadline_at=deadline_at, url=str(item.get('url') or '').strip()[:4000],
         description=f"Live GeM search result. Quantity: {item.get('quantity') or 'Not specified'}.",
-        category=str(item.get('category') or '').strip()[:255], status='new',
+        category=str(item.get('category') or '').strip()[:255],
+        status='completed' if str(item.get('status') or '').casefold() in {'completed','awarded'} else 'new',
     )
     db.add(tender)
     db.commit()

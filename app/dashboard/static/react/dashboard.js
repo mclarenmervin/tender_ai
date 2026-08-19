@@ -4352,7 +4352,22 @@ function BuyerDirectoryPage() {
                 }
                 if (page >= (result.pages || 1) || !(result.items || []).length) break;
             }
-            setMessage(`Buyer saved. ${saved} new and ${refreshed} existing tender(s) refreshed with exact GeM end times. Opening the portfolio...`);
+            let completed = 0;
+            for (let page = 1; page <= 10; page += 1) {
+                setMessage(`Loading completed GeM Bid/RA results: page ${page} of up to 10 — ${completed} matched...`);
+                const params = new URLSearchParams({ q: form.department || form.ministry, department: form.department || form.ministry, status: "bidrastatus", by_status: "bid_awarded", sort: "Bid-End-Date-Latest", page: String(page), page_size: "10" });
+                const result = await api(`/api/gem/global-search?${params}`, { silent: true });
+                for (const item of (result.items || [])) {
+                    const response = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
+                    if (response.created) saved += 1; else if (response.updated) refreshed += 1;
+                    completed += 1;
+                }
+                // GeM's status search can contain unrelated records on an
+                // upstream page; continue scanning even when local filtering
+                // leaves one page empty.
+                if (page >= (result.pages || 1)) break;
+            }
+            setMessage(`Buyer saved. ${saved} new, ${refreshed} refreshed, and ${completed} completed result record(s) matched. Opening the portfolio...`);
             setTimeout(() => navigate("/dashboard/buyer/tenders"), 700);
         } catch (error) { setMessage(error.message); setBusy(""); }
     }

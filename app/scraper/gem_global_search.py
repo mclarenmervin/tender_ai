@@ -58,7 +58,7 @@ def _document_url(doc):
     return urljoin(GEM_BASE_URL, path)
 
 
-def map_gem_document(doc):
+def map_gem_document(doc, result_feed=False):
     ministry = str(_first(doc.get("ba_official_details_minName"), "")).strip()
     department = str(_first(doc.get("ba_official_details_deptName"), "")).strip()
     authority = " / ".join(part for part in (ministry, department) if part)
@@ -67,9 +67,21 @@ def map_gem_document(doc):
     organisation = str(_first(doc.get("ba_official_details_orgName"), "")).strip()
     location_text = " ".join((authority, office, organisation, category))
     state, city = extract_location(location_text)
+    source_id = str(_first(doc.get("b_id"), ""))
+    bid_number = str(_first(doc.get("b_bid_number"), ""))
+    bid_type = str(_first(doc.get("b_bid_type"), ""))
+    parent_id = str(_first(doc.get("b_id_parent"), "")).strip()
+    parent_number = str(_first(doc.get("b_bid_number_parent"), "")).strip()
+    # RA cards represent the same procurement as their parent bid. Store the
+    # parent as the tender so ongoing and result feeds update one database row.
+    tender_source_id = parent_id if result_feed and bid_type == "2" and parent_id else source_id
+    tender_bid_number = parent_number if result_feed and bid_type == "2" and parent_number else bid_number
+    buyer_status = int(_first(doc.get("b_buyer_status"), 0) or 0)
+    status_label = {1: "technical_evaluated", 2: "financial_evaluated"}.get(buyer_status, "completed" if buyer_status >= 3 else "open")
+    result_path = "getSinglePacketResultView" if str(_first(doc.get("ba_is_single_packet"), "0")) in {"1", "True", "true"} else "getBidResultView"
     return {
-        "source_id": str(_first(doc.get("b_id"), "")),
-        "bid_number": str(_first(doc.get("b_bid_number"), "")),
+        "source_id": tender_source_id,
+        "bid_number": tender_bid_number,
         "title": category or "GeM tender",
         "category": category,
         "quantity": str(_first(doc.get("b_total_quantity"), "")),
@@ -80,13 +92,17 @@ def map_gem_document(doc):
         "office": office,
         "state": state,
         "city": city,
-        "status": str(_first(doc.get("b_status"), "")),
-        "bid_type": str(_first(doc.get("b_bid_type"), "")),
+        "status": status_label if result_feed else str(_first(doc.get("b_status"), "")),
+        "bid_type": bid_type,
+        "buyer_status": buyer_status,
+        "ra_number": bid_number if bid_type == "2" else "",
+        "result_url": urljoin(GEM_BASE_URL, f"/bidding/bid/{result_path}/{tender_source_id}") if result_feed and buyer_status > 0 else "",
+        "ra_result_url": urljoin(GEM_BASE_URL, f"/bidding/bid/{result_path}/{source_id}") if result_feed and bid_type == "2" else "",
         "start_date": _parse_gem_date(doc.get("final_start_date_sort")),
         "end_date": _parse_gem_date(doc.get("final_end_date_sort")),
         "is_high_value": str(_first(doc.get("is_high_value"), "0")).lower() in {"1", "true", "yes"},
         "is_global_tender": str(_first(doc.get("ba_is_global_tendering"), "0")).lower() in {"1", "true", "yes"},
-        "url": _document_url(doc),
+        "url": urljoin(GEM_BASE_URL, f"/showbidDocument/{tender_source_id}") if tender_source_id != source_id else _document_url(doc),
     }
 
 
@@ -99,7 +115,7 @@ def _matches(item, q="", department=""):
 
 
 def search_gem_bids(q="", department="", state="", city="", bid_type="all",
-                    status="ongoing_bids", from_date="", to_date="",
+                    status="ongoing_bids", by_status="", from_date="", to_date="",
                     sort="Bid-End-Date-Oldest", page=1, page_size=10):
     page = max(1, int(page))
     page_size = max(5, min(50, int(page_size)))
@@ -122,6 +138,7 @@ def search_gem_bids(q="", department="", state="", city="", bid_type="all",
             "param": {"searchBid": search_text, "searchType": "fullText"},
             "filter": {
                 "bidStatusType": status if status in {"ongoing_bids", "bidrastatus"} else "ongoing_bids",
+                "byStatus": by_status if by_status in {"tech_evaluated", "fin_evaluated", "bid_awarded"} else "",
                 "byType": bid_type or "all",
                 "highBidValue": "",
                 "byEndDate": {"from": from_date or "", "to": to_date or ""},
@@ -138,7 +155,8 @@ def search_gem_bids(q="", department="", state="", city="", bid_type="all",
         result = response.json()
         body = result.get("response", {}).get("response", {})
         docs = body.get("docs", []) or []
-        items = [map_gem_document(doc) for doc in docs]
+        result_feed = status == "bidrastatus"
+        items = [map_gem_document(doc, result_feed=result_feed) for doc in docs]
         for item in items:
             if state and not item["state"]:
                 item["state"] = state
