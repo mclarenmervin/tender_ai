@@ -4544,6 +4544,32 @@ def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_curr
     require_buyer(user)
     buyers=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id).order_by(ProcurementBuyer.updated_at.desc()).all()
     tender_rows=user_tenders(db,user).all()
+    procurement_bids=db.query(ProcurementBid).filter(ProcurementBid.user_id==user.id).order_by(ProcurementBid.bid_end_date.desc()).all()
+    procurement_bid_ids=[row.id for row in procurement_bids]
+    procurement_participants=db.query(ProcurementBidParticipant).filter(ProcurementBidParticipant.user_id==user.id,ProcurementBidParticipant.bid_id.in_(procurement_bid_ids)).all() if procurement_bid_ids else []
+    procurement_vendor_ids={row.vendor_id for row in procurement_participants if row.vendor_id}
+    procurement_vendors={row.id:row for row in db.query(ProcurementVendor).filter(ProcurementVendor.user_id==user.id,ProcurementVendor.id.in_(procurement_vendor_ids)).all()} if procurement_vendor_ids else {}
+    participants_by_bid={}
+    for participant in procurement_participants:
+        vendor=procurement_vendors.get(participant.vendor_id)
+        participants_by_bid.setdefault(participant.bid_id,[]).append({
+            'id':participant.id,
+            'seller':vendor.vendor_name_raw if vendor else (participant.vendor_identifier or 'Unknown Seller'),
+            'seller_identifier':participant.vendor_identifier or '',
+            'rank':participant.rank,
+            'quoted_price':participant.quoted_price,
+            'technical_status':participant.technical_status or '',
+            'is_awarded':bool(participant.is_awarded),
+        })
+    results_by_buyer={}
+    for bid in procurement_bids:
+        sellers=sorted(participants_by_bid.get(bid.id,[]),key=lambda row:(row['rank'] is None,row['rank'] or 999,row['seller']))
+        results_by_buyer.setdefault(bid.buyer_id,[]).append({
+            'id':bid.id,'tender_id':bid.bid_no,'title':bid.bid_title or bid.bid_no,'status':bid.status or 'collected',
+            'state':bid.state or '','district':bid.district or '','deadline':str(bid.bid_end_date or ''),
+            'estimated_value':bid.estimated_value,'emd_amount':bid.emd_amount,'awarded_value':bid.awarded_value,
+            'url':bid.source_url or '','seller_count':len(sellers),'sellers':sellers,
+        })
     def normalize(text):
         return re.sub(r'\s+',' ',re.sub(r'[^A-Z0-9]+',' ',str(text or '').upper())).strip()
     inferred={}
@@ -4575,6 +4601,8 @@ def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_curr
             'tender_count':len(tenders),
             'total_value':sum((t.estimated_value or 0) for t in tenders),
             'tenders':tenders[:200],
+            'bid_results':results_by_buyer.get(buyer.id,[])[:200],
+            'seller_count':sum(len(row['sellers']) for row in results_by_buyer.get(buyer.id,[])),
             'status_counts':dict(status_counts),
             'top_categories':[{'name':name,'count':count} for name,count in category_counts.most_common(8)],
             'top_states':[{'name':name,'count':count} for name,count in state_counts.most_common(8)],
@@ -4611,6 +4639,27 @@ def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_curr
         },
         'message':'Select a buyer from the master list to inspect their published tenders and run analysis on the existing tender workspace.',
     }
+
+@app.post('/api/buyer/intelligence/buyers')
+async def api_create_buyer_master(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    payload=await request.json()
+    name=(payload.get('name') or '').strip()
+    if not name:
+        raise HTTPException(400,'Buyer name is required')
+    clean=name.lower()
+    existing=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id,ProcurementBuyer.buyer_name_clean==clean).first()
+    if existing:
+        raise HTTPException(409,'This buyer already exists')
+    buyer=ProcurementBuyer(
+        user_id=user.id,buyer_name_raw=name,buyer_name_clean=clean,
+        department=(payload.get('department') or '').strip() or name,
+        ministry=(payload.get('ministry') or '').strip() or None,
+        state=(payload.get('state') or '').strip() or None,
+        district=(payload.get('district') or '').strip() or None,
+    )
+    db.add(buyer); db.commit(); db.refresh(buyer)
+    return {'ok':True,'id':buyer.id,'message':'Buyer added. Import or sync this buyer’s tender/result records to populate tenders and participating sellers.'}
 
 def parse_import_date(value):
     value=(value or '').strip()

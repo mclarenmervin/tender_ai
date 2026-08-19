@@ -4022,14 +4022,14 @@ function RiskBadge({ level }) {
     return h("span", { className: `risk-badge ${level || "low"}` }, label);
 }
 
-function IntelligenceHero({ title, text }) {
+function IntelligenceHero({ title, text, actions = null }) {
     return h("div", { className: "hero-panel seller-intel-hero" },
         h("div", null, h("h2", null, title), h("p", null, text)),
-        h("div", { className: "hero-actions" },
+        actions === null ? h("div", { className: "hero-actions" },
             h("button", { className: "primary", onClick: () => navigate("/dashboard/seller/gem-bids") }, "Sync GeM Records"),
             h("button", { onClick: () => navigate("/dashboard/seller/intelligence/risk-signals") }, "Risk Signals"),
             h("button", { onClick: () => navigate("/dashboard/seller/intelligence/reports") }, "Reports")
-        )
+        ) : actions
     );
 }
 
@@ -4309,10 +4309,22 @@ function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
 
 function BuyerTenderPortfolioPage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
+    const [form, setForm] = useState({ name: "", department: "", ministry: "", state: "", district: "" });
+    const [saveMessage, setSaveMessage] = useState("");
     const tenders = selectedBuyer?.tenders || [];
+    const bidResults = selectedBuyer?.bid_results || [];
     const summary = data?.summary || {};
+    async function addBuyer(event) {
+        event.preventDefault();
+        setSaveMessage("Adding buyer...");
+        try {
+            const result = await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(form) });
+            setSaveMessage(result.message);
+            location.reload();
+        } catch (error) { setSaveMessage(error.message); }
+    }
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "Published Tenders", text: "Select a buyer and inspect the tenders that buyer has published. This page does not scrape or duplicate seller bids." }),
+        h(IntelligenceHero, { title: "Published Tenders", text: "Add or select a buyer, inspect that buyer's published tenders, and review participating sellers from imported bid results.", actions: h("div", { className: "hero-actions" }, h("button", { className: "primary", onClick: () => document.getElementById("add-buyer-form")?.scrollIntoView({ behavior: "smooth" }) }, "Add Buyer")) }),
         message ? h("div", { className: "notice err" }, message) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary five" },
@@ -4320,8 +4332,18 @@ function BuyerTenderPortfolioPage() {
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
+        h("form", { id: "add-buyer-form", className: "card", onSubmit: addBuyer },
+            h("h3", null, "Add Buyer"),
+            h("p", { className: "desc" }, "Create the buyer master first. Tender and seller rows appear when records for this buyer are imported or synchronized."),
+            h("div", { className: "form-grid" },
+                [["name", "Buyer name *"], ["department", "Department"], ["ministry", "Ministry"], ["state", "State"], ["district", "District"]].map(([field, label]) => h("label", { className: "field-block", key: field }, h("span", null, label), h("input", { required: field === "name", value: form[field], onChange: e => setForm({ ...form, [field]: e.target.value }) })))
+            ),
+            h("button", { className: "primary" }, "Save Buyer"),
+            saveMessage ? h("p", { className: "status" }, saveMessage) : null
+        ),
         h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
-        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — Published Tenders` : "Published Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) })
+        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — Published Tenders` : "Published Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) }),
+        h(SimpleTable, { title: "Tender Results and Participating Sellers", headers: ["Tender", "End Date", "Sellers", "Seller Ranking / Price"], rows: bidResults.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.deadline || "NA", row.seller_count || 0, (row.sellers || []).length ? h("div", { className: "mini-list" }, row.sellers.map(seller => h("div", { key: seller.id }, h("strong", null, seller.rank ? `L${seller.rank} — ` : "", seller.seller), seller.quoted_price != null ? ` — Rs. ${money(seller.quoted_price)}` : "", seller.is_awarded ? " — Awarded" : ""))) : "No seller result data"] ) })
     );
 }
 
@@ -4329,7 +4351,7 @@ function BuyerGeMIntelligencePage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
     const summary = data?.summary || {};
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "Buyer Tender Analysis", text: "Analyze the selected buyer's published tender portfolio by status, category, geography, count, and value." }),
+        h(IntelligenceHero, { title: "Buyer Tender Analysis", text: "Analyze the selected buyer's published tender portfolio by status, category, geography, count, and value.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders")) }),
         message ? h("div", { className: "notice err" }, message) : null,
         h("div", { className: "summary six" },
             [["Buyers", summary.buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Count", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`], ["State", selectedBuyer?.state || "NA"], ["District", selectedBuyer?.district || "NA"]].map(([label, value]) =>
