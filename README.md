@@ -1,10 +1,25 @@
 # Tender AI
 
-Tender AI is a FastAPI + React dashboard for tender discovery, scoring, tracking, and seller-side execution workflows.
+Tender AI is an AI-assisted tender intelligence platform for teams working with India’s Government e-Marketplace (GeM). It brings tender discovery, eligibility scoring, bid workflow management, buyer research, and competition analysis into one FastAPI + React application.
 
-The app supports two account roles:
-- **Buyer**: tender review, market/buyer intelligence, reports, scoring, scraping, alerts, and workflow tracking.
-- **Seller**: seller readiness, catalogue tracking, opportunity matching, Bid/RA workflow, order fulfillment, and seller analytics.
+## About
+
+Tender AI supports two focused workspaces:
+
+- **Seller workspace** — discover relevant tenders, assess eligibility, maintain company and catalogue readiness, manage Bid/RA participation, and track order fulfilment.
+- **Buyer intelligence workspace** — create a buyer directory, import that buyer’s public GeM tenders, distinguish open and completed tenders, capture public Bid/RA result data, and analyze winning sellers, L1/L2/L3 positions, recurring competitors, and market concentration.
+
+Public GeM information is treated as evidence: result intelligence records its source and distinguishes public results from data that remains masked or unavailable on GeM.
+
+## Highlights
+
+- Live GeM tender discovery and Advanced Search integration
+- Tender scoring with configurable multi-criteria rules and EMD support
+- Exact bid end-date/time handling for open versus completed tender status
+- Buyer tender portfolio with public Bid/RA result synchronization
+- L1/L2/L3, bidder participation, award, repeated-bidder, and dominance analysis
+- Seller readiness, catalogue, Bid/RA, and fulfilment workflows
+- Role-based accounts, alerts, reports, and scheduled jobs
 
 This README is intentionally a project overview and setup guide, not a full product manual.
 
