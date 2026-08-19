@@ -19,6 +19,7 @@ import hashlib
 import io
 import requests
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 from fastapi import FastAPI,Depends,HTTPException,Request,Form,WebSocket,WebSocketDisconnect
 from fastapi.responses import FileResponse,RedirectResponse,Response
@@ -88,6 +89,7 @@ def ensure_schema_updates():
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS city VARCHAR(150)",
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS deadline_at TIMESTAMP WITH TIME ZONE",
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS source_result_json TEXT",
             "ALTER TABLE procurement_bid_participants ADD COLUMN IF NOT EXISTS vendor_identifier VARCHAR(120)",
@@ -456,6 +458,7 @@ def tender_to_dict(tender):
         'estimated_value':tender.estimated_value or 0,
         'emd_amount':tender.emd_amount if tender.emd_amount is not None else '',
         'deadline':iso(tender.deadline),
+        'deadline_at':iso(tender.deadline_at),
         'url':tender.url,
         'description':tender.description,
         'category':tender.category,
@@ -4062,24 +4065,37 @@ async def api_save_global_search_result(
     bid_number=str(item.get('bid_number') or '').strip().upper()
     if not re.fullmatch(r'GEM/\d{4}/(?:B|R)/\d+',bid_number):
         raise HTTPException(400,'A valid GeM bid number is required')
-    existing=user_tenders(db,user).filter(Tender.source=='GeM',Tender.tender_id==bid_number).first()
-    if existing:
-        return {'ok':True,'created':False,'message':'This bid is already in Tender Discovery.','tender':tender_to_dict(existing)}
     end_value=str(item.get('end_date') or '').strip()
-    deadline=None
+    deadline=None; deadline_at=None
     if end_value:
         try:
-            deadline=datetime.fromisoformat(end_value.replace('Z','+00:00')).date()
+            # GeM search timestamps are displayed as India time even when the
+            # compact API value carries a trailing Z. Preserve the displayed
+            # wall-clock time so same-day completed bids close at the right hour.
+            parsed=datetime.fromisoformat(end_value.rstrip('Z'))
+            deadline_at=parsed.replace(tzinfo=ZoneInfo('Asia/Kolkata')) if parsed.tzinfo is None else parsed
+            deadline=deadline_at.date()
         except ValueError:
             deadline=None
     authority=str(item.get('authority') or item.get('department') or 'GeM').strip()
     address='; '.join(value for value in [str(item.get('organisation') or '').strip(),str(item.get('office') or '').strip()] if value)
+    existing=user_tenders(db,user).filter(Tender.source=='GeM',Tender.tender_id==bid_number).first()
+    if existing:
+        existing.title=str(item.get('title') or existing.title or 'GeM tender').strip()[:2000]
+        existing.department=authority[:2000]; existing.address=address[:4000]
+        existing.state=str(item.get('state') or existing.state or '').strip()[:100]
+        existing.city=str(item.get('city') or existing.city or '').strip()[:150]
+        existing.deadline=deadline or existing.deadline; existing.deadline_at=deadline_at or existing.deadline_at
+        existing.url=str(item.get('url') or existing.url or '').strip()[:4000]
+        existing.category=str(item.get('category') or existing.category or '').strip()[:255]
+        db.commit(); db.refresh(existing)
+        return {'ok':True,'created':False,'updated':True,'message':'Existing GeM bid dates and details refreshed.','tender':tender_to_dict(existing)}
     tender=Tender(
         user_id=user.id, source='GeM', tender_id=bid_number,
         title=str(item.get('title') or 'GeM tender').strip()[:2000],
         department=authority[:2000], address=address[:4000],
         state=str(item.get('state') or '').strip()[:100], city=str(item.get('city') or '').strip()[:150],
-        estimated_value=0, deadline=deadline, url=str(item.get('url') or '').strip()[:4000],
+        estimated_value=0, deadline=deadline, deadline_at=deadline_at, url=str(item.get('url') or '').strip()[:4000],
         description=f"Live GeM search result. Quantity: {item.get('quantity') or 'Not specified'}.",
         category=str(item.get('category') or '').strip()[:255], status='new',
     )
@@ -4795,6 +4811,12 @@ def parse_gem_public_result(html,source_url):
     payload['bid_type']=result_type
     status_match=re.search(r'(?:Bid|RA) Status:\s*([^<\n]{1,80}?)(?=Quantity:|RA Life Cycle|Bid Validity|RA Validity|Bid Start|RA Start|$)',plain,re.I)
     if status_match: payload['status']=status_match.group(1).strip()
+    end_match=re.search(r'(?:Bid|RA) End Date / Time:\s*(\d{2}-\d{2}-\d{4}\s+\d{2}:\d{2}:\d{2})',plain,re.I)
+    if end_match:
+        try:
+            payload['bid_end_at']=datetime.strptime(end_match.group(1),'%d-%m-%Y %H:%M:%S').replace(tzinfo=ZoneInfo('Asia/Kolkata')).isoformat()
+        except ValueError:
+            pass
     payload['ra_created']=bool(re.search(r'RA has been created for this Bid',plain,re.I)) or result_type=='RA'
     if result_type=='RA' and payload.get('bid_no'): payload['ra_number']=payload['bid_no']
     parser=GemResultTableParser(); parser.feed(str(html or ''))
@@ -4952,7 +4974,7 @@ async def api_sync_buyer_completed_results(request:Request,db:Session=Depends(ge
     for tender in user_tenders(db,user).filter(Tender.source=='GeM').order_by(Tender.deadline.desc().nullslast()).all():
         authority=normalized(' '.join(filter(None,[tender.department,tender.address])))
         if keys and not any(key in authority or authority in key for key in keys): continue
-        completed=(tender.deadline and tender.deadline<=date.today()) or (tender.status or '').casefold() in {'completed','closed','awarded','won','lost'}
+        completed=(tender.deadline_at and tender.deadline_at<=datetime.now().astimezone()) or (not tender.deadline_at and tender.deadline and tender.deadline<=date.today()) or (tender.status or '').casefold() in {'completed','closed','awarded','won','lost'}
         if completed: candidates.append(tender)
     synced=0; with_sellers=0; pending=0; errors=[]
     for tender in candidates[:100]:
@@ -4964,6 +4986,11 @@ async def api_sync_buyer_completed_results(request:Request,db:Session=Depends(ge
             response=requests.get(result_url,headers={'User-Agent':'Mozilla/5.0 TenderAI/1.0'},timeout=30)
             response.raise_for_status()
             result=parse_gem_public_result(response.text,result_url)
+            if result.get('bid_end_at'):
+                parsed_end=datetime.fromisoformat(result['bid_end_at'])
+                tender.deadline_at=parsed_end; tender.deadline=parsed_end.date()
+                if parsed_end>datetime.now(parsed_end.tzinfo):
+                    continue
             extracted_number=result.get('bid_no')
             if extracted_number and '/R/' in extracted_number: result['ra_number']=extracted_number
             result.update({'bid_no':tender.tender_id,'bid_title':tender.title,'buyer':buyer.buyer_name_raw,

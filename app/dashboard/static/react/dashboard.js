@@ -4340,18 +4340,19 @@ function BuyerDirectoryPage() {
         try {
             const buyerPayload = { name: form.organization, department: form.department || form.organization, ministry: form.ministry, state: form.buyer_state };
             try { await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(buyerPayload), silent: true }); } catch (error) { if (!String(error.message).includes("already exists")) throw error; }
-            let saved = 0;
+            let saved = 0; let refreshed = 0;
             for (let page = 1; page <= 10; page += 1) {
-                setMessage(`Loading GeM tenders: page ${page} of up to 10 — ${saved} new tender(s) saved...`);
+                setMessage(`Loading GeM tenders: page ${page} of up to 10 — ${saved} new, ${refreshed} refreshed...`);
                 const params = new URLSearchParams({ mode: "ministry", page: String(page), ministry: form.ministry, buyer_state: form.buyer_state, organization: form.organization, department: form.department, from_date: form.from_date, to_date: form.to_date });
                 const result = await api(`/api/gem/advanced-search?${params}`, { silent: true });
                 for (const item of (result.items || [])) {
                     const response = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
                     if (response.created) saved += 1;
+                    else if (response.updated) refreshed += 1;
                 }
                 if (page >= (result.pages || 1) || !(result.items || []).length) break;
             }
-            setMessage(`Buyer saved. ${saved} new matching tender(s) added. Opening the published tender portfolio...`);
+            setMessage(`Buyer saved. ${saved} new and ${refreshed} existing tender(s) refreshed with exact GeM end times. Opening the portfolio...`);
             setTimeout(() => navigate("/dashboard/buyer/tenders"), 700);
         } catch (error) { setMessage(error.message); setBusy(""); }
     }
@@ -4402,8 +4403,8 @@ function BuyerTenderPortfolioPage() {
     const isCompleted = row => {
         const status = String(row.status || "").toLowerCase();
         if (["completed", "closed", "awarded", "won", "lost", "cancelled"].includes(status)) return true;
-        if (!row.deadline) return false;
-        const deadline = new Date(`${String(row.deadline).slice(0, 10)}T23:59:59`);
+        if (!row.deadline_at && !row.deadline) return false;
+        const deadline = row.deadline_at ? new Date(row.deadline_at) : new Date(`${String(row.deadline).slice(0, 10)}T23:59:59`);
         return !Number.isNaN(deadline.getTime()) && deadline.getTime() < Date.now();
     };
     const completedCount = tenders.filter(isCompleted).length;
@@ -4441,7 +4442,7 @@ function BuyerTenderPortfolioPage() {
             )
         ),
         h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
-        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — All Published Tenders` : "All Published Tenders", headers: ["Tender", "Department / State", "Deadline", "Remark", "EMD", "Category", "Completed Result"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), [row.department, row.state].filter(Boolean).join(" | ") || "NA", row.deadline || "NA", h("span", { className: isCompleted(row) ? "query-pill" : "query-pill active" }, isCompleted(row) ? "Completed" : "Open"), row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.category || "NA", inlineResult(row)]) })
+        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — All Published Tenders` : "All Published Tenders", headers: ["Tender", "Department / State", "Deadline", "Remark", "EMD", "Category", "Completed Result"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), [row.department, row.state].filter(Boolean).join(" | ") || "NA", row.deadline_at ? displayGemDate(row.deadline_at) : (row.deadline || "NA"), h("span", { className: isCompleted(row) ? "query-pill" : "query-pill active" }, isCompleted(row) ? "Completed" : "Open"), row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.category || "NA", inlineResult(row)]) })
     );
 }
 

@@ -19,7 +19,7 @@ class Tender(Base):
     source=Column(String(100),nullable=False)
     tender_id=Column(String(255),nullable=False)
     title=Column(Text,nullable=False)
-    department=Column(Text); address=Column(Text); state=Column(String(100)); city=Column(String(150)); estimated_value=Column(BigInteger); emd_amount=Column(BigInteger); deadline=Column(Date); url=Column(Text); description=Column(Text); category=Column(String(255))
+    department=Column(Text); address=Column(Text); state=Column(String(100)); city=Column(String(150)); estimated_value=Column(BigInteger); emd_amount=Column(BigInteger); deadline=Column(Date); deadline_at=Column(DateTime(timezone=True)); url=Column(Text); description=Column(Text); category=Column(String(255))
     relevance_score=Column(Float); ai_recommendation=Column(Boolean); ai_reason=Column(Text)
     status=Column(String(100),default='new')
     created_at=Column(DateTime(timezone=True),server_default=func.now())
