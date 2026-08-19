@@ -4388,6 +4388,27 @@ function BuyerTenderPortfolioPage() {
     const tenders = selectedBuyer?.tenders || [];
     const bidResults = selectedBuyer?.bid_results || [];
     const summary = data?.summary || {};
+    const resultByTender = Object.fromEntries(bidResults.map(row => [String(row.tender_id || "").toUpperCase(), row]));
+    const isCompleted = row => {
+        const status = String(row.status || "").toLowerCase();
+        if (["completed", "closed", "awarded", "won", "lost", "cancelled"].includes(status)) return true;
+        if (!row.deadline) return false;
+        const deadline = new Date(`${String(row.deadline).slice(0, 10)}T23:59:59`);
+        return !Number.isNaN(deadline.getTime()) && deadline.getTime() < Date.now();
+    };
+    const completedCount = tenders.filter(isCompleted).length;
+    const openCount = tenders.length - completedCount;
+    function inlineResult(row) {
+        if (!isCompleted(row)) return h("span", { className: "query-pill active" }, "Result after completion");
+        const result = resultByTender[String(row.tender_id || "").toUpperCase()];
+        if (!result) return h("div", { className: "mini-list" }, h("strong", null, "Result not synchronized"), h("span", null, "Use Sync Completed Results."));
+        const rankings = (result.sellers || []).filter(seller => seller.rank).sort((a, b) => a.rank - b.rank);
+        return h("div", { className: "mini-list" },
+            h("div", null, h("strong", null, result.winner ? `Winner: ${result.winner}` : "Winner: Not publicly confirmed")),
+            result.ra_number ? h("div", null, `RA: ${result.ra_number}`) : result.ra_created ? h("div", null, "RA created") : null,
+            rankings.length ? rankings.map(seller => h("div", { key: seller.id }, h("strong", null, `L${seller.rank}: ${seller.seller}`), seller.quoted_price != null ? ` — Rs. ${money(seller.quoted_price)}` : "", seller.is_awarded ? " — Awarded" : "")) : h("div", null, result.masked_sellers ? `${result.masked_sellers} seller(s) masked by GeM` : "Financial ranking not exposed by GeM")
+        );
+    }
     async function syncResults() {
         if (!selectedBuyer || String(selectedBuyer.id).startsWith("inferred-")) { setSyncMessage("Save this buyer through Buyer Directory before syncing results."); return; }
         setSyncMessage("Checking completed tender result and RA pages on GeM...");
@@ -4403,13 +4424,12 @@ function BuyerTenderPortfolioPage() {
         syncMessage ? h("div", { className: "notice" }, syncMessage) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary five" },
-            [["Buyers", summary.buyers || 0], ["Tendered Buyers", summary.tendered_buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Tenders", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`]].map(([label, value]) =>
+            [["All Buyers", summary.buyers || 0], ["Selected Tenders", tenders.length], ["Open", openCount], ["Completed", completedCount], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
         h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
-        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — Published Tenders` : "Published Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) }),
-        h(SimpleTable, { title: "Completed Bid / RA Results", headers: ["Tender", "Type / RA", "Result Status", "Winner", "Public Sellers", "L1 / L2 / L3 and Prices"], rows: bidResults.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), [row.bid_type, row.ra_number ? `RA: ${row.ra_number}` : row.ra_created ? "RA created" : ""].filter(Boolean).join(" | "), row.result_available ? (row.status || "Result available") : row.masked_sellers ? `Pending / ${row.masked_sellers} seller(s) masked by GeM` : (row.status || "Pending"), row.winner || "Not publicly awarded", (row.seller_count || 0) + (row.masked_sellers ? ` (+${row.masked_sellers} masked)` : ""), (row.sellers || []).length ? h("div", { className: "mini-list" }, row.sellers.map(seller => h("div", { key: seller.id }, h("strong", null, seller.rank ? `L${seller.rank} — ` : "", seller.seller), seller.quoted_price != null ? ` — Rs. ${money(seller.quoted_price)}` : "", seller.is_awarded ? " — Awarded winner" : ""))) : "Not exposed by GeM"] ) })
+        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — All Published Tenders` : "All Published Tenders", headers: ["Tender", "Department / State", "Deadline", "Remark", "EMD", "Category", "Completed Result"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), [row.department, row.state].filter(Boolean).join(" | ") || "NA", row.deadline || "NA", h("span", { className: isCompleted(row) ? "query-pill" : "query-pill active" }, isCompleted(row) ? "Completed" : "Open"), row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.category || "NA", inlineResult(row)]) })
     );
 }
 
