@@ -4280,64 +4280,41 @@ function SimpleTable({ title, headers, rows }) {
 function BuyerGeMIntelligencePage() {
     const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
-    const [importing, setImporting] = useState(false);
-    const [rawText, setRawText] = useState("");
-    const [sourceUrl, setSourceUrl] = useState("");
+    const [buyerId, setBuyerId] = useState("");
     const load = () => api("/api/buyer/intelligence").then(setData).catch(err => setMessage(err.message));
-    useEffect(load, []);
-    async function importFile(event) {
-        const file = event.target.files?.[0];
-        if (!file) return;
-        setImporting(true); setMessage("");
-        try {
-            const text = await file.text();
-            const body = file.name.toLowerCase().endsWith(".json") ? JSON.stringify(JSON.parse(text)) : JSON.stringify({ filename: file.name, content: text });
-            const result = await api("/api/buyer/intelligence/import-results", { method: "POST", body });
-            setMessage(result.message + (result.errors?.length ? ` ${result.errors.join("; ")}` : ""));
-            load();
-        } catch (err) { setMessage(err.message); }
-        finally { setImporting(false); event.target.value = ""; }
-    }
-    async function importText(event) {
-        event.preventDefault();
-        if (!rawText.trim()) { setMessage("Paste a GeM result page HTML/text extract first."); return; }
-        setImporting(true); setMessage("");
-        try {
-            const result = await api("/api/buyer/intelligence/import-results", { method: "POST", body: JSON.stringify({ source_url: sourceUrl, html: rawText }) });
-            setMessage(result.message + (result.errors?.length ? ` ${result.errors.join("; ")}` : ""));
-            setRawText(""); load();
-        } catch (err) { setMessage(err.message); }
-        finally { setImporting(false); }
-    }
+    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        const firstBuyer = data?.buyers?.[0]?.id || "";
+        if (!buyerId && firstBuyer) setBuyerId(String(firstBuyer));
+    }, [data, buyerId]);
+    const selectedBuyer = (data?.buyers || []).find(row => String(row.id) === String(buyerId)) || data?.buyers?.[0] || null;
+    const tenders = selectedBuyer?.tenders || [];
     const summary = data?.summary || {};
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "GeM Bid Result Intelligence", text: "Buyer-side bid result records, participating sellers, L1/L2/L3 ranking, repeated bidder groups, and award concentration." }),
+        h(IntelligenceHero, { title: "Buyer Tender Portfolio", text: "Pick a buyer from the master list, inspect the tenders they have published, and review the analysis built from those published tenders." }),
         message ? h("div", { className: "notice" }, message) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary six" },
-            [["Result Bids", summary.bids || 0], ["Participants", summary.participants || 0], ["Sellers", summary.vendors || 0], ["Awarded Bids", summary.awarded_bids || 0], ["L1/L2/L3", summary.l1_l2_l3_records || 0], ["Repeated Groups", summary.repeated_bidder_groups || 0]].map(([label, value]) =>
+            [["Buyers", summary.buyers || 0], ["Tendered Buyers", summary.tendered_buyers || 0], ["Tenders", summary.tenders || 0], ["Selected Count", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`], ["State", selectedBuyer?.state || "NA"]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
         h("section", { className: "card" },
-            h("h3", null, "Import GeM Result Data"),
-            h("p", { className: "desc" }, "Upload CSV/JSON result records or paste an authorized GeM bid result page extract. Raw structured result data is stored with the bid for later audit."),
-            h("div", { className: "actions" },
-                h("input", { type: "file", accept: ".csv,.json,text/csv,application/json", disabled: importing, onChange: importFile }),
-                h("a", { className: "download-btn", href: "/exports/seller/intelligence/import-template.csv" }, "Download CSV Template")
+            h("h3", null, "Choose Buyer"),
+                h("p", { className: "desc" }, "This view uses buyer master data and buyer names inferred from the existing tender workspace. No seller-bid scraping is involved."),
+            h("label", { className: "field-block" },
+                h("span", null, "Buyer"),
+                h("select", { value: buyerId, onChange: e => setBuyerId(e.target.value) },
+                    (data?.buyers || []).map(row => h("option", { key: row.id, value: row.id }, `${row.name || "Buyer"}${row.department ? ` — ${row.department}` : ""} (${row.tender_count || 0})`))
+                )
             ),
-            h("form", { className: "stack", onSubmit: importText },
-                h("input", { value: sourceUrl, onChange: e => setSourceUrl(e.target.value), placeholder: "GeM result URL" }),
-                h("textarea", { value: rawText, onChange: e => setRawText(e.target.value), rows: 5, placeholder: "Paste result page HTML/text here" }),
-                h("button", { className: "primary", disabled: importing }, importing ? "Importing..." : "Import Result Extract")
-            )
         ),
-        h(SimpleTable, { title: "Collected Bid Results", headers: ["Bid", "Title", "Status", "Estimated", "EMD", "Awarded", "Bidders", "Qualified", "Disqualified", "Source"], rows: (data?.bids || []).map(row => [row.bid_no, row.title || "NA", row.status, `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.awarded_value == null ? "NA" : `Rs. ${money(row.awarded_value)}`, row.total_bidders ?? "NA", row.technically_qualified ?? "NA", row.technically_disqualified ?? "NA", row.source_url ? h("a", { href: row.source_url, target: "_blank", rel: "noreferrer" }, "Open") : "NA"]) }),
-        h(SimpleTable, { title: "Seller Award History", headers: ["Seller", "Bids", "Awards", "Quoted Value", "Award Share", "Risk"], rows: (data?.vendor_history || []).map(row => [row.vendor, row.bids, row.awards, `Rs. ${money(row.quoted_value)}`, `${row.award_share}%`, h(RiskBadge, { level: row.risk_level })]) }),
-        h(SimpleTable, { title: "L1/L2/L3 Price Gaps", headers: ["Bid", "L1", "L1 Price", "L2", "L2 Price", "L3", "L3 Price", "Gap", "Cluster Spread", "Risk"], rows: (data?.price_gaps || []).map(row => [row.bid_no, row.l1, `Rs. ${money(row.l1_price)}`, row.l2, `Rs. ${money(row.l2_price)}`, row.l3 || "NA", row.l3_price == null ? "NA" : `Rs. ${money(row.l3_price)}`, `${row.gap_percent}%`, row.cluster_spread_percent == null ? "NA" : `${row.cluster_spread_percent}%`, h(RiskBadge, { level: row.risk_level })]) }),
-        h(SimpleTable, { title: "Repeated Seller Groups", headers: ["Sellers", "Bids Together", "Bid Numbers", "Risk"], rows: (data?.repeated_groups || []).map(row => [row.group, row.bids_together, row.bid_numbers.join(", "), h(RiskBadge, { level: row.risk_level })]) }),
-        h(SimpleTable, { title: "Vendor Concentration", headers: ["Seller", "Department", "Category", "Wins", "Segment Awards", "Win Share", "Value Share", "Level"], rows: (data?.vendor_concentration || []).map(row => [row.vendor, row.department, row.category, row.wins, row.total_awards, `${row.win_share_percent}%`, row.value_share_percent == null ? "NA" : `${row.value_share_percent}%`, row.concentration_level]) }),
-        h(SimpleTable, { title: "Competition / Rejection Signals", headers: ["Bid", "Buyer", "Total", "Qualified", "Disqualified", "Competition", "Rejection", "Risk"], rows: (data?.competition_risks || []).map(row => [row.bid_no, row.buyer, row.total_bidders, row.technically_qualified ?? "NA", row.technically_disqualified ?? "NA", row.competition_ratio_percent == null ? "NA" : `${row.competition_ratio_percent}%`, row.disqualification_rate_percent == null ? "NA" : `${row.disqualification_rate_percent}%`, h(RiskBadge, { level: row.risk_level })]) })
+        h("div", { className: "admin-grid" },
+            h(SimpleTable, { title: "Tender Status Mix", headers: ["Status", "Count"], rows: Object.entries(selectedBuyer?.status_counts || {}).map(([status, count]) => [status, count]) }),
+            h(SimpleTable, { title: "Top Categories", headers: ["Category", "Count"], rows: (selectedBuyer?.top_categories || []).map(row => [row.name, row.count]) }),
+            h(SimpleTable, { title: "Top States", headers: ["State", "Count"], rows: (selectedBuyer?.top_states || []).map(row => [row.name, row.count]) })
+        ),
+        h(SimpleTable, { title: "Buyer Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [h("a", { href: "/dashboard/tenders" }, row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) })
     );
 }
 

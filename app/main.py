@@ -4528,14 +4528,75 @@ def buyer_procurement_intelligence_payload(db,user):
 @app.get('/api/buyer/intelligence')
 def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     require_buyer(user)
-    return buyer_procurement_intelligence_payload(db,user)
-
-@app.post('/api/buyer/intelligence/import-results')
-async def api_buyer_import_results(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
-    require_buyer(user)
-    # The normalized importer is shared with seller intelligence; the data is
-    # tenant-scoped by user_id and therefore safe for buyer workspaces too.
-    return await api_import_procurement_results(request,db,user)
+    buyers=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id).order_by(ProcurementBuyer.updated_at.desc()).all()
+    tender_rows=user_tenders(db,user).all()
+    def normalize(text):
+        return re.sub(r'\s+',' ',re.sub(r'[^A-Z0-9]+',' ',str(text or '').upper())).strip()
+    inferred={}
+    for tender in tender_rows:
+        key=normalize(tender.department)
+        if not key:
+            continue
+        bucket=inferred.setdefault(key,{'name':tender.department or 'Unknown Buyer','department':tender.department or '','state':tender.state or '','district':'','source':'inferred'})
+        bucket.setdefault('tenders',[]).append(tender)
+    buyer_rows=[]
+    for buyer in buyers:
+        buyer_keys=[key for key in {normalize(buyer.buyer_name_raw),normalize(buyer.department),normalize(buyer.buyer_name_clean)} if key]
+        tenders=[]
+        for tender in tender_rows:
+            haystack=' '.join(filter(None,[tender.department,tender.title,tender.description,tender.category,tender.state,tender.city]))
+            haystack_norm=normalize(haystack)
+            if buyer_keys and any(key in haystack_norm or haystack_norm in key for key in buyer_keys):
+                tenders.append(tender)
+        tenders=sorted(tenders,key=lambda row:(row.created_at or datetime.min),reverse=True)
+        status_counts=Counter((t.status or 'new') for t in tenders)
+        category_counts=Counter((t.category or 'Uncategorised') for t in tenders)
+        state_counts=Counter((t.state or 'Unknown') for t in tenders)
+        buyer_rows.append({
+            'id':buyer.id,
+            'name':buyer.buyer_name_raw,
+            'department':buyer.department or '',
+            'state':buyer.state or '',
+            'district':buyer.district or '',
+            'tender_count':len(tenders),
+            'total_value':sum((t.estimated_value or 0) for t in tenders),
+            'tenders':tenders[:200],
+            'status_counts':dict(status_counts),
+            'top_categories':[{'name':name,'count':count} for name,count in category_counts.most_common(8)],
+            'top_states':[{'name':name,'count':count} for name,count in state_counts.most_common(8)],
+            'source':'master',
+        })
+    for key,bucket in inferred.items():
+        if any(normalize(row['name']) == key for row in buyer_rows):
+            continue
+        tenders=sorted(bucket.pop('tenders'),key=lambda row:(row.created_at or datetime.min),reverse=True)
+        status_counts=Counter((t.status or 'new') for t in tenders)
+        category_counts=Counter((t.category or 'Uncategorised') for t in tenders)
+        state_counts=Counter((t.state or 'Unknown') for t in tenders)
+        buyer_rows.append({
+            'id':f'inferred-{key}',
+            'name':bucket['name'],
+            'department':bucket['department'],
+            'state':bucket['state'],
+            'district':bucket['district'],
+            'tender_count':len(tenders),
+            'total_value':sum((t.estimated_value or 0) for t in tenders),
+            'tenders':tenders[:200],
+            'status_counts':dict(status_counts),
+            'top_categories':[{'name':name,'count':count} for name,count in category_counts.most_common(8)],
+            'top_states':[{'name':name,'count':count} for name,count in state_counts.most_common(8)],
+            'source':'inferred',
+        })
+    buyer_rows=sorted(buyer_rows,key=lambda row:(row['tender_count'],row['total_value']),reverse=True)
+    return {
+        'buyers':buyer_rows,
+        'summary':{
+            'buyers':len(buyer_rows),
+            'tenders':sum(row['tender_count'] for row in buyer_rows),
+            'tendered_buyers':sum(1 for row in buyer_rows if row['tender_count']),
+        },
+        'message':'Select a buyer from the master list to inspect their published tenders and run analysis on the existing tender workspace.',
+    }
 
 def parse_import_date(value):
     value=(value or '').strip()
