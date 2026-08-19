@@ -177,6 +177,7 @@ def ensure_runtime_schema_updates():
     with engine.begin() as conn:
         for ddl in [
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS deadline_at TIMESTAMP WITH TIME ZONE",
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS source_result_json TEXT",
             "ALTER TABLE procurement_bid_participants ADD COLUMN IF NOT EXISTS vendor_identifier VARCHAR(120)",
