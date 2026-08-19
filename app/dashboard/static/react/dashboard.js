@@ -4299,11 +4299,12 @@ function BuyerDirectoryPage() {
     const [savedBuyers, setSavedBuyers] = useState([]);
     const [form, setForm] = useState({ ministry: "", buyer_state: "", organization: "", department: "", from_date: "", to_date: "" });
     const [message, setMessage] = useState("Loading GeM buyer directory...");
+    const [busy, setBusy] = useState("directory");
     const update = (field, value) => setForm(current => ({ ...current, [field]: value }));
     useEffect(() => {
         Promise.all([api("/api/gem/advance-options", { silent: true }), api("/api/buyer/intelligence", { silent: true })])
             .then(([gem, buyerData]) => { setOptions(gem); setSavedBuyers(buyerData.buyers || []); setMessage(""); })
-            .catch(error => setMessage(error.message));
+            .catch(error => setMessage(error.message)).finally(() => setBusy(""));
     }, []);
     async function selectScope(field, value) {
         const next = { ...form, [field]: value, organization: "", department: "" };
@@ -4311,31 +4312,37 @@ function BuyerDirectoryPage() {
         if (field === "buyer_state") next.ministry = "";
         setForm(next); setDepartments([]); setOrganizations([]);
         if (!value) return;
+        setBusy("organizations");
         setMessage("Loading buyer organizations from GeM...");
         try {
             const params = new URLSearchParams({ kind: "organizations", ministry: next.ministry, buyer_state: next.buyer_state });
             const result = await api(`/api/gem/advance-options?${params}`, { silent: true });
             setOrganizations(result.items || []); setMessage("");
         } catch (error) { setMessage(error.message); }
+        finally { setBusy(""); }
     }
     async function selectOrganization(value) {
         update("organization", value); update("department", ""); setDepartments([]);
         if (!value) return;
+        setBusy("departments");
         setMessage("Loading departments from GeM...");
         try {
             const params = new URLSearchParams({ kind: "departments", ministry: form.ministry, buyer_state: form.buyer_state, organization: value });
             const result = await api(`/api/gem/advance-options?${params}`, { silent: true });
             setDepartments(result.items || []); setMessage("");
         } catch (error) { setMessage(error.message); }
+        finally { setBusy(""); }
     }
     async function addAndLoad() {
         if (!form.organization) { setMessage("Select a buyer organization first."); return; }
+        setBusy("import");
         setMessage("Saving buyer and loading matching GeM tenders...");
         try {
             const buyerPayload = { name: form.organization, department: form.department || form.organization, ministry: form.ministry, state: form.buyer_state };
             try { await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(buyerPayload), silent: true }); } catch (error) { if (!String(error.message).includes("already exists")) throw error; }
             let saved = 0;
             for (let page = 1; page <= 10; page += 1) {
+                setMessage(`Loading GeM tenders: page ${page} of up to 10 — ${saved} new tender(s) saved...`);
                 const params = new URLSearchParams({ mode: "ministry", page: String(page), ministry: form.ministry, buyer_state: form.buyer_state, organization: form.organization, department: form.department, from_date: form.from_date, to_date: form.to_date });
                 const result = await api(`/api/gem/advanced-search?${params}`, { silent: true });
                 for (const item of (result.items || [])) {
@@ -4346,22 +4353,23 @@ function BuyerDirectoryPage() {
             }
             setMessage(`Buyer saved. ${saved} new matching tender(s) added. Opening the published tender portfolio...`);
             setTimeout(() => navigate("/dashboard/buyer/tenders"), 700);
-        } catch (error) { setMessage(error.message); }
+        } catch (error) { setMessage(error.message); setBusy(""); }
     }
     return h(React.Fragment, null,
         h(IntelligenceHero, { title: "Buyer Directory", text: "Browse public GeM buyer organizations by ministry or state, select an organization and department, then load its matching tenders into your buyer portfolio.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders")) }),
         message ? h("div", { className: "notice" }, message) : null,
+        busy ? h("div", { className: "table-loader", "aria-live": "polite" }, h("span", { className: "loader" }), h("strong", null, busy === "import" ? "Adding buyer and importing tenders..." : "Loading buyer data...")) : null,
         h("section", { className: "card" },
             h("h3", null, "Find a GeM Buyer"),
             h("div", { className: "form-grid" },
-                h("label", { className: "field-block" }, h("span", null, "Ministry"), h("select", { value: form.ministry, disabled: !!form.buyer_state, onChange: e => selectScope("ministry", e.target.value) }, h("option", { value: "" }, "Select ministry"), (options.ministries || []).map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: form.buyer_state, disabled: !!form.ministry, onChange: e => selectScope("buyer_state", e.target.value) }, h("option", { value: "" }, "Select buyer state"), (options.buyer_states || []).map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, "Buyer organization"), h("select", { value: form.organization, disabled: !form.ministry && !form.buyer_state, onChange: e => selectOrganization(e.target.value) }, h("option", { value: "" }, organizations.length ? "Select organization" : "Choose ministry or state first"), organizations.map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, "Department"), h("select", { value: form.department, disabled: !form.organization, onChange: e => update("department", e.target.value) }, h("option", { value: "" }, departments.length ? "All departments" : "No department filter"), departments.map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, "Bid end date from (optional)"), h("input", { type: "date", value: form.from_date, onChange: e => update("from_date", e.target.value) })),
-                h("label", { className: "field-block" }, h("span", null, "Bid end date to (optional)"), h("input", { type: "date", value: form.to_date, onChange: e => update("to_date", e.target.value) }))
+                h("label", { className: "field-block" }, h("span", null, "Ministry"), h("select", { value: form.ministry, disabled: !!busy || !!form.buyer_state, onChange: e => selectScope("ministry", e.target.value) }, h("option", { value: "" }, "Select ministry"), (options.ministries || []).map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: form.buyer_state, disabled: !!busy || !!form.ministry, onChange: e => selectScope("buyer_state", e.target.value) }, h("option", { value: "" }, "Select buyer state"), (options.buyer_states || []).map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Buyer organization"), h("select", { value: form.organization, disabled: !!busy || (!form.ministry && !form.buyer_state), onChange: e => selectOrganization(e.target.value) }, h("option", { value: "" }, organizations.length ? "Select organization" : "Choose ministry or state first"), organizations.map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Department"), h("select", { value: form.department, disabled: !!busy || !form.organization, onChange: e => update("department", e.target.value) }, h("option", { value: "" }, departments.length ? "All departments" : "No department filter"), departments.map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Bid end date from (optional)"), h("input", { type: "date", disabled: !!busy, value: form.from_date, onChange: e => update("from_date", e.target.value) })),
+                h("label", { className: "field-block" }, h("span", null, "Bid end date to (optional)"), h("input", { type: "date", disabled: !!busy, value: form.to_date, onChange: e => update("to_date", e.target.value) }))
             ),
-            h("button", { className: "primary", disabled: !form.organization || (!!form.from_date !== !!form.to_date), onClick: addAndLoad }, "Add Buyer & Load Tenders"),
+            h("button", { className: "primary", disabled: !!busy || !form.organization || (!!form.from_date !== !!form.to_date), onClick: addAndLoad }, busy === "import" ? h(React.Fragment, null, h("span", { className: "btn-spinner" }), " Adding Buyer...") : "Add Buyer & Load Tenders"),
             (!!form.from_date !== !!form.to_date) ? h("p", { className: "status" }, "Select both date fields or leave both empty.") : null
         ),
         h(SimpleTable, { title: "Saved Buyers", headers: ["Buyer", "Department", "State", "Tenders", "Source"], rows: savedBuyers.map(row => [row.name, row.department || "NA", row.state || "NA", row.tender_count || 0, row.source || "master"]) })
@@ -4369,6 +4377,7 @@ function BuyerDirectoryPage() {
 }
 
 function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
+    if (!data) return h("section", { className: "card" }, h("div", { className: "table-loader", "aria-live": "polite" }, h("span", { className: "loader" }), h("strong", null, "Loading buyer portfolio...")));
     return h("section", { className: "card" },
         h("h3", null, "Choose Buyer"),
         h("p", { className: "desc" }, "Choose a buyer from the master list or from buyer names inferred from tenders already in this workspace."),
@@ -4385,6 +4394,7 @@ function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
 function BuyerTenderPortfolioPage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
     const [syncMessage, setSyncMessage] = useState("");
+    const [syncing, setSyncing] = useState(false);
     const tenders = selectedBuyer?.tenders || [];
     const bidResults = selectedBuyer?.bid_results || [];
     const summary = data?.summary || {};
@@ -4411,17 +4421,19 @@ function BuyerTenderPortfolioPage() {
     }
     async function syncResults() {
         if (!selectedBuyer || String(selectedBuyer.id).startsWith("inferred-")) { setSyncMessage("Save this buyer through Buyer Directory before syncing results."); return; }
+        setSyncing(true);
         setSyncMessage("Checking completed tender result and RA pages on GeM...");
         try {
             const result = await api("/api/buyer/intelligence/sync-results", { method: "POST", body: JSON.stringify({ buyer_id: selectedBuyer.id }) });
             setSyncMessage(result.message);
             setTimeout(() => location.reload(), 900);
-        } catch (error) { setSyncMessage(error.message); }
+        } catch (error) { setSyncMessage(error.message); setSyncing(false); }
     }
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "Published Tenders", text: "Select a buyer, inspect its tenders, and sync completed GeM bid/RA results, winners, participants, and financial rankings.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/buyers") }, "Buyer Directory"), h("button", { className: "primary", disabled: !selectedBuyer, onClick: syncResults }, "Sync Completed Results")) }),
+        h(IntelligenceHero, { title: "Published Tenders", text: "Select a buyer, inspect its tenders, and sync completed GeM bid/RA results, winners, participants, and financial rankings.", actions: h("div", { className: "hero-actions" }, h("button", { disabled: syncing, onClick: () => navigate("/dashboard/buyer/buyers") }, "Buyer Directory"), h("button", { className: "primary", disabled: syncing || !selectedBuyer, onClick: syncResults }, syncing ? h(React.Fragment, null, h("span", { className: "btn-spinner" }), " Syncing Results...") : "Sync Completed Results")) }),
         message ? h("div", { className: "notice err" }, message) : null,
         syncMessage ? h("div", { className: "notice" }, syncMessage) : null,
+        syncing ? h("div", { className: "table-loader", "aria-live": "polite" }, h("span", { className: "loader" }), h("strong", null, "Checking completed GeM bid and RA result pages...")) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary five" },
             [["All Buyers", summary.buyers || 0], ["Selected Tenders", tenders.length], ["Open", openCount], ["Completed", completedCount], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`]].map(([label, value]) =>
@@ -4445,6 +4457,7 @@ function BuyerGeMIntelligencePage() {
     return h(React.Fragment, null,
         h(IntelligenceHero, { title: "Buyer Tender Analysis", text: "Analyze the selected buyer's published tender portfolio by status, category, geography, count, and value.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders")) }),
         message ? h("div", { className: "notice err" }, message) : null,
+        !data && !message ? h("div", { className: "table-loader", "aria-live": "polite" }, h("span", { className: "loader" }), h("strong", null, "Calculating buyer tender analysis...")) : null,
         h("div", { className: "summary six" },
             [["Buyers", summary.buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Count", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`], ["State", selectedBuyer?.state || "NA"], ["District", selectedBuyer?.district || "NA"]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
@@ -4469,6 +4482,7 @@ function BuyerPortfolioReportsPage() {
     return h(React.Fragment, null,
         h(IntelligenceHero, { title: "Tender Portfolio Reports", text: "Generate buyer, tender, seller participation, ranking, award, concentration, and competition reports from the captured portfolio.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders"), h("button", { onClick: () => navigate("/dashboard/buyer/intelligence") }, "Analysis")) }),
         message ? h("div", { className: "notice err" }, message) : null,
+        !data && !message ? h("div", { className: "table-loader", "aria-live": "polite" }, h("span", { className: "loader" }), h("strong", null, "Generating buyer portfolio reports...")) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary five" }, [["Buyers", summary.buyers || 0], ["Tenders", summary.tenders || 0], ["Sellers", summary.sellers || 0], ["Participations", summary.participants || 0], ["Awards", summary.awards || 0]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),
         h("div", { className: "hero-actions" },
