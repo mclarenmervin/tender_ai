@@ -21,7 +21,7 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Tender Portfolio", [["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Tender Analysis"]]],
+    ["Tender Portfolio", [["/dashboard/buyer/buyers", "Buyer Directory"], ["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Tender Analysis"]]],
     ["Procurement", [["/dashboard/buyer/planning", "Planning"], ["/dashboard/buyer/bids", "Bid Management"], ["/dashboard/buyer/bid-verification", "Bid Verification"], ["/dashboard/buyer/grants", "Grants"]]],
     ["Operations", [["/dashboard/buyer/vendors", "Vendor Evaluation"], ["/dashboard/buyer/orders", "Orders"], ["/dashboard/buyer/compliance", "Compliance"], ["/dashboard/buyer/reports", "Reports"]]],
     ["Account", [["/dashboard/buyer/account", "Buyer Account"], ["/dashboard/profile", "User Profile"]]],
@@ -1472,6 +1472,9 @@ function BuyerModulePage({ moduleKey }) {
     const completedItems = items.filter(item => item.completed);
     const urgentItems = items.filter(item => item.priority === "urgent");
     const selectOptions = (values) => (values || []).map(value => h("option", { key: value, value }, value.replaceAll("_", " ")));
+    const isBid = moduleKey === "bids";
+    const isGrant = moduleKey === "grants";
+    const recordLabel = isBid ? "Bid" : isGrant ? "Grant" : meta.title;
     return h(React.Fragment, null,
         h("div", { className: "hero-panel buyer-module-hero" },
             h("div", null, h("h2", null, meta.title), h("p", null, meta.text)),
@@ -1515,26 +1518,26 @@ function BuyerModulePage({ moduleKey }) {
         }) : null,
         h("section", { className: "card buyer-form-card" },
             h("div", { className: "buyer-form-head" },
-                h("div", null, h("h3", null, moduleKey === "grants" ? "Add Grant" : "Add Bid"), h("p", { className: "desc" }, moduleKey === "grants" ? "Record the grant and the department from which it was allocated." : "Enter the complete bid details, including its final price.")),
+                h("div", null, h("h3", null, `Add ${recordLabel}`), h("p", { className: "desc" }, isBid ? "Enter the complete bid details, including its final price." : isGrant ? "Record the grant and the department from which it was allocated." : `Create a ${meta.title.toLowerCase()} tracker record with its status, evidence, and next action.`)),
                 h("div", { className: "buyer-template-row" }, (meta.templates || []).map(template =>
                     h("button", { type: "button", key: template, onClick: () => applyTemplate(template) }, template)
                 ))
             ),
             h("form", { className: "buyer-workspace-form", onSubmit: createItem },
-                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant name" : "Bid title"), h("input", { required: true, value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
-                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant reference no." : "Bid reference no."), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: moduleKey === "grants" ? "Grant / sanction no." : "Bid no." })),
+                h("label", { className: "field-block" }, h("span", null, `${recordLabel} title`), h("input", { required: true, value: form.title, onChange: e => update("title", e.target.value), placeholder: meta.sampleTitle })),
+                h("label", { className: "field-block" }, h("span", null, `${recordLabel} reference no.`), h("input", { value: form.reference_no, onChange: e => update("reference_no", e.target.value), placeholder: isGrant ? "Grant / sanction no." : `${recordLabel} reference` })),
                 h("label", { className: "field-block" }, h("span", null, "Status"), h("select", { value: form.status, onChange: e => update("status", e.target.value) }, selectOptions(data?.status_options || []))),
                 h("label", { className: "field-block" }, h("span", null, "Priority"), h("select", { value: form.priority, onChange: e => update("priority", e.target.value) }, selectOptions(data?.priority_options || []))),
                 h("label", { className: "field-block" }, h("span", null, "Procurement mode"), h("select", { value: form.procurement_mode, onChange: e => update("procurement_mode", e.target.value) }, h("option", { value: "" }, "Select mode"), (data?.procurement_modes || []).map(value => h("option", { key: value, value }, value)))),
-                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Allocating department" : "Department"), h("input", { required: true, value: form.department, onChange: e => update("department", e.target.value), placeholder: moduleKey === "grants" ? "Department providing the grant" : "Department using the bid" })),
+                h("label", { className: "field-block" }, h("span", null, isGrant ? "Allocating department" : "Department"), h("input", { required: true, value: form.department, onChange: e => update("department", e.target.value), placeholder: isGrant ? "Department providing the grant" : "Department / office" })),
                 h("label", { className: "field-block" }, h("span", null, "State"), h("input", { required: true, value: form.state, onChange: e => update("state", e.target.value), placeholder: "State" })),
                 h("label", { className: "field-block" }, h("span", null, "City"), h("input", { required: true, value: form.city, onChange: e => update("city", e.target.value), placeholder: "City" })),
                 h("label", { className: "field-block" }, h("span", null, "Category"), h("input", { value: form.category, onChange: e => update("category", e.target.value), placeholder: "Product / service category" })),
                 h("label", { className: "field-block" }, h("span", null, "Vendor / L1"), h("input", { value: form.vendor_name, onChange: e => update("vendor_name", e.target.value), placeholder: "Vendor name, if applicable" })),
-                h("label", { className: "field-block" }, h("span", null, moduleKey === "grants" ? "Grant allocated (Rs.)" : "Final price (Rs.)"), h("input", { required: true, type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
+                h("label", { className: "field-block" }, h("span", null, isGrant ? "Grant allocated (Rs.)" : isBid ? "Final price (Rs.)" : "Value / amount (Rs.)"), h("input", { required: true, type: "number", min: 0, value: form.estimated_value, onChange: e => update("estimated_value", e.target.value), placeholder: "0" })),
                 h("label", { className: "field-block" }, h("span", null, "Date"), h("input", { required: true, type: "date", value: form.due_date, onChange: e => update("due_date", e.target.value) })),
                 h("label", { className: "field-block span-2" }, h("span", null, "Checklist"), h("textarea", { value: form.checklist, onChange: e => update("checklist", e.target.value), placeholder: "One checklist item per line" })),
-                moduleKey === "bids" ? h("label", { className: "field-block span-2" }, h("span", null, "Required seller documents / verification columns"), h("textarea", { value: form.evaluation_criteria, onChange: e => update("evaluation_criteria", e.target.value), placeholder: "One document or criterion per line" })) : null,
+                isBid ? h("label", { className: "field-block span-2" }, h("span", null, "Required seller documents / verification columns"), h("textarea", { value: form.evaluation_criteria, onChange: e => update("evaluation_criteria", e.target.value), placeholder: "One document or criterion per line" })) : null,
                 h("label", { className: "field-block span-2" }, h("span", null, "Notes"), h("textarea", { value: form.notes, onChange: e => update("notes", e.target.value), placeholder: "Remarks, evidence, next action, risks" })),
                 h("button", { className: "primary span-2" }, "Save Item")
             )
@@ -1550,13 +1553,13 @@ function BuyerModulePage({ moduleKey }) {
                 h("div", { className: "buyer-process-metrics" },
                     h("div", null, h("span", null, "Priority"), h("strong", null, item.priority)),
                     h("div", null, h("span", null, "Mode"), h("strong", null, item.procurement_mode || "NA")),
-                    h("div", null, h("span", null, moduleKey === "grants" ? "Allocated" : "Final Price"), h("strong", null, `Rs. ${money(item.estimated_value || 0)}`)),
+                    h("div", null, h("span", null, isGrant ? "Allocated" : isBid ? "Final Price" : "Value"), h("strong", null, `Rs. ${money(item.estimated_value || 0)}`)),
                     h("div", null, h("span", null, "Date"), h("strong", null, item.due_date || "NA"))
                 ),
                 item.checklist?.length ? h("div", { className: "tag-list buyer-checklist" }, item.checklist.map(check => h("span", { key: check }, check))) : null,
                 item.notes ? h("p", { className: "desc" }, item.notes) : null,
                 h("div", { className: "mini-links" },
-                    moduleKey === "bids" ? h("button", { className: "primary", onClick: () => setEvaluationBid(item) }, "Verify Seller Documents") : null,
+                    isBid ? h("button", { className: "primary", onClick: () => setEvaluationBid(item) }, "Verify Seller Documents") : null,
                     h("button", { onClick: () => updateItem(item, { completed: !item.completed }) }, item.completed ? "Reopen" : "Mark Complete"),
                     h("button", { onClick: () => updateItem(item, { priority: item.priority === "urgent" ? "normal" : "urgent" }) }, item.priority === "urgent" ? "Normal Priority" : "Urgent"),
                     h("button", { onClick: () => deleteItem(item) }, "Delete")
@@ -4293,6 +4296,82 @@ function useBuyerPortfolio() {
     return { data, message, buyerId, setBuyerId, selectedBuyer };
 }
 
+function BuyerDirectoryPage() {
+    const [options, setOptions] = useState({ ministries: [], buyer_states: [] });
+    const [organizations, setOrganizations] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [savedBuyers, setSavedBuyers] = useState([]);
+    const [form, setForm] = useState({ ministry: "", buyer_state: "", organization: "", department: "", from_date: "", to_date: "" });
+    const [message, setMessage] = useState("Loading GeM buyer directory...");
+    const update = (field, value) => setForm(current => ({ ...current, [field]: value }));
+    useEffect(() => {
+        Promise.all([api("/api/gem/advance-options", { silent: true }), api("/api/buyer/intelligence", { silent: true })])
+            .then(([gem, buyerData]) => { setOptions(gem); setSavedBuyers(buyerData.buyers || []); setMessage(""); })
+            .catch(error => setMessage(error.message));
+    }, []);
+    async function selectScope(field, value) {
+        const next = { ...form, [field]: value, organization: "", department: "" };
+        if (field === "ministry") next.buyer_state = "";
+        if (field === "buyer_state") next.ministry = "";
+        setForm(next); setDepartments([]); setOrganizations([]);
+        if (!value) return;
+        setMessage("Loading buyer organizations from GeM...");
+        try {
+            const params = new URLSearchParams({ kind: "organizations", ministry: next.ministry, buyer_state: next.buyer_state });
+            const result = await api(`/api/gem/advance-options?${params}`, { silent: true });
+            setOrganizations(result.items || []); setMessage("");
+        } catch (error) { setMessage(error.message); }
+    }
+    async function selectOrganization(value) {
+        update("organization", value); update("department", ""); setDepartments([]);
+        if (!value) return;
+        setMessage("Loading departments from GeM...");
+        try {
+            const params = new URLSearchParams({ kind: "departments", ministry: form.ministry, buyer_state: form.buyer_state, organization: value });
+            const result = await api(`/api/gem/advance-options?${params}`, { silent: true });
+            setDepartments(result.items || []); setMessage("");
+        } catch (error) { setMessage(error.message); }
+    }
+    async function addAndLoad() {
+        if (!form.organization) { setMessage("Select a buyer organization first."); return; }
+        setMessage("Saving buyer and loading matching GeM tenders...");
+        try {
+            const buyerPayload = { name: form.organization, department: form.department || form.organization, ministry: form.ministry, state: form.buyer_state };
+            try { await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(buyerPayload), silent: true }); } catch (error) { if (!String(error.message).includes("already exists")) throw error; }
+            let saved = 0;
+            for (let page = 1; page <= 10; page += 1) {
+                const params = new URLSearchParams({ mode: "ministry", page: String(page), ministry: form.ministry, buyer_state: form.buyer_state, organization: form.organization, department: form.department, from_date: form.from_date, to_date: form.to_date });
+                const result = await api(`/api/gem/advanced-search?${params}`, { silent: true });
+                for (const item of (result.items || [])) {
+                    const response = await api("/api/gem/global-search/save", { method: "POST", body: JSON.stringify(item), silent: true });
+                    if (response.created) saved += 1;
+                }
+                if (page >= (result.pages || 1) || !(result.items || []).length) break;
+            }
+            setMessage(`Buyer saved. ${saved} new matching tender(s) added. Opening the published tender portfolio...`);
+            setTimeout(() => navigate("/dashboard/buyer/tenders"), 700);
+        } catch (error) { setMessage(error.message); }
+    }
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Buyer Directory", text: "Browse public GeM buyer organizations by ministry or state, select an organization and department, then load its matching tenders into your buyer portfolio.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders")) }),
+        message ? h("div", { className: "notice" }, message) : null,
+        h("section", { className: "card" },
+            h("h3", null, "Find a GeM Buyer"),
+            h("div", { className: "form-grid" },
+                h("label", { className: "field-block" }, h("span", null, "Ministry"), h("select", { value: form.ministry, disabled: !!form.buyer_state, onChange: e => selectScope("ministry", e.target.value) }, h("option", { value: "" }, "Select ministry"), (options.ministries || []).map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: form.buyer_state, disabled: !!form.ministry, onChange: e => selectScope("buyer_state", e.target.value) }, h("option", { value: "" }, "Select buyer state"), (options.buyer_states || []).map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Buyer organization"), h("select", { value: form.organization, disabled: !form.ministry && !form.buyer_state, onChange: e => selectOrganization(e.target.value) }, h("option", { value: "" }, organizations.length ? "Select organization" : "Choose ministry or state first"), organizations.map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Department"), h("select", { value: form.department, disabled: !form.organization, onChange: e => update("department", e.target.value) }, h("option", { value: "" }, departments.length ? "All departments" : "No department filter"), departments.map(value => h("option", { key: value, value }, value)))),
+                h("label", { className: "field-block" }, h("span", null, "Bid end date from (optional)"), h("input", { type: "date", value: form.from_date, onChange: e => update("from_date", e.target.value) })),
+                h("label", { className: "field-block" }, h("span", null, "Bid end date to (optional)"), h("input", { type: "date", value: form.to_date, onChange: e => update("to_date", e.target.value) }))
+            ),
+            h("button", { className: "primary", disabled: !form.organization || (!!form.from_date !== !!form.to_date), onClick: addAndLoad }, "Add Buyer & Load Tenders"),
+            (!!form.from_date !== !!form.to_date) ? h("p", { className: "status" }, "Select both date fields or leave both empty.") : null
+        ),
+        h(SimpleTable, { title: "Saved Buyers", headers: ["Buyer", "Department", "State", "Tenders", "Source"], rows: savedBuyers.map(row => [row.name, row.department || "NA", row.state || "NA", row.tender_count || 0, row.source || "master"]) })
+    );
+}
+
 function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
     return h("section", { className: "card" },
         h("h3", null, "Choose Buyer"),
@@ -4568,6 +4647,7 @@ function App() {
     if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
+    else if (route === "/dashboard/buyer/buyers") page = h(BuyerDirectoryPage);
     else if (route === "/dashboard/buyer/tenders") page = h(BuyerTenderPortfolioPage);
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
     else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
