@@ -169,6 +169,17 @@ def ensure_schema_updates():
     # Location repair is an explicit maintenance operation. Running it here scans
     # every tender and can keep the web application stuck during startup.
 
+def ensure_runtime_schema_updates():
+    """Apply small additive migrations required by currently loaded ORM models."""
+    with engine.begin() as conn:
+        for ddl in [
+            "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
+            "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
+            "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS source_result_json TEXT",
+            "ALTER TABLE procurement_bid_participants ADD COLUMN IF NOT EXISTS vendor_identifier VARCHAR(120)",
+        ]:
+            conn.exec_driver_sql(ddl)
+
 def repair_tender_locations():
     db=SessionLocal()
     try:
@@ -206,6 +217,7 @@ def startup_schema_sync():
     # Schema migrations are run explicitly during deployment. Re-running the
     # complete legacy DDL list here can block the web process behind database
     # locks and leave the site unavailable.
+    ensure_runtime_schema_updates()
     start_background_scheduler()
 
 @app.on_event("shutdown")

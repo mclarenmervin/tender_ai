@@ -27,6 +27,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
         db.commit()
         is_gem_alert = str(trigger or "").startswith("gem_alert")
         profile=profile if isinstance(profile,dict) else None
+        emd_amount = None
         keyword_rows = [] if (is_gem_alert or profile) else db.query(ScrapeKeyword).filter(ScrapeKeyword.user_id == user_id, ScrapeKeyword.is_active.is_(True)).all()
         expanded_keywords = []
         for item in keyword_rows:
