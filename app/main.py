@@ -2225,6 +2225,12 @@ def dashboard_summary(db,user):
 BUYER_MODULES={
     'bids':{'label':'Bids','description':'Add and track bids with their complete procurement details and price.'},
     'grants':{'label':'Grants','description':'Record department grant allocations and monitor used and remaining balances.'},
+    'planning':{'label':'Procurement Planning','description':'Prepare buyer demand, specifications, budgets, approvals, and procurement modes.'},
+    'vendor-evaluation':{'label':'Vendor Evaluation','description':'Track qualification, representations, financial ranking, and award decisions.'},
+    'orders':{'label':'Orders','description':'Track contracts, delivery, CRAC, invoices, payments, and closure.'},
+    'compliance':{'label':'Compliance','description':'Maintain approval, evaluation, order, payment, and audit evidence.'},
+    'reports':{'label':'Reports','description':'Prepare procurement, participation, savings, delay, payment, and audit reports.'},
+    'account':{'label':'Buyer Account','description':'Track department mapping, role readiness, training, certification, and notifications.'},
 }
 
 BUYER_STATUS_OPTIONS=[
@@ -2582,6 +2588,14 @@ def dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_c
 
 @app.get('/dashboard/buyer')
 def buyer_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/tenders')
+def buyer_tenders_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    return react_shell()
+
+@app.get('/dashboard/buyer/intelligence')
+def buyer_intelligence_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     return react_shell()
 
 @app.get('/dashboard/buyer/planning')

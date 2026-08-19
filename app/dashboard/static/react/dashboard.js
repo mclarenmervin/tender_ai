@@ -21,9 +21,10 @@ const nav = [
 
 const buyerNav = [
     ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Buyer Modules", [["/dashboard/buyer/tenders", "Tender List"], ["/dashboard/buyer/bids", "Add Bid"], ["/dashboard/buyer/bid-verification", "Bids & Verification"], ["/dashboard/buyer/grants", "Grants"]]],
-    ["GeM Intelligence", [["/dashboard/buyer/intelligence", "Bid Results & Sellers"]]],
-    ["Account", [["/dashboard/profile", "Profile"]]],
+    ["Tender Portfolio", [["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Tender Analysis"]]],
+    ["Procurement", [["/dashboard/buyer/planning", "Planning"], ["/dashboard/buyer/bids", "Bid Management"], ["/dashboard/buyer/bid-verification", "Bid Verification"], ["/dashboard/buyer/grants", "Grants"]]],
+    ["Operations", [["/dashboard/buyer/vendors", "Vendor Evaluation"], ["/dashboard/buyer/orders", "Orders"], ["/dashboard/buyer/compliance", "Compliance"], ["/dashboard/buyer/reports", "Reports"]]],
+    ["Account", [["/dashboard/buyer/account", "Buyer Account"], ["/dashboard/profile", "User Profile"]]],
 ];
 
 const buyerModules = {
@@ -4277,44 +4278,70 @@ function SimpleTable({ title, headers, rows }) {
     return h("div", { className: "panel table-panel" }, h("h3", null, title), rows.length ? h("table", null, h("thead", null, h("tr", null, headers.map(x => h("th", { key: x }, x)))), h("tbody", null, rows.map((row, i) => h("tr", { key: i }, row.map((cell, j) => h("td", { key: j }, cell)))))) : h("div", { className: "empty" }, "No data available."));
 }
 
-function BuyerGeMIntelligencePage() {
+function useBuyerPortfolio() {
     const [data, setData] = useState(null);
     const [message, setMessage] = useState("");
     const [buyerId, setBuyerId] = useState("");
-    const load = () => api("/api/buyer/intelligence").then(setData).catch(err => setMessage(err.message));
-    useEffect(() => { load(); }, []);
+    useEffect(() => {
+        api("/api/buyer/intelligence").then(setData).catch(err => setMessage(err.message));
+    }, []);
     useEffect(() => {
         const firstBuyer = data?.buyers?.[0]?.id || "";
         if (!buyerId && firstBuyer) setBuyerId(String(firstBuyer));
     }, [data, buyerId]);
     const selectedBuyer = (data?.buyers || []).find(row => String(row.id) === String(buyerId)) || data?.buyers?.[0] || null;
+    return { data, message, buyerId, setBuyerId, selectedBuyer };
+}
+
+function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
+    return h("section", { className: "card" },
+        h("h3", null, "Choose Buyer"),
+        h("p", { className: "desc" }, "Choose a buyer from the master list or from buyer names inferred from tenders already in this workspace."),
+        (data?.buyers || []).length ? h("label", { className: "field-block" },
+            h("span", null, "Buyer"),
+            h("select", { value: buyerId, onChange: e => setBuyerId(e.target.value) },
+                (data?.buyers || []).map(row => h("option", { key: row.id, value: row.id }, `${row.name || "Buyer"}${row.department ? ` — ${row.department}` : ""} (${row.tender_count || 0})`))
+            )
+        ) : h("div", { className: "empty" }, h("h3", null, "No buyers available"), h("p", null, "Add buyer master data or buyer tender records to populate this list.")),
+        selectedBuyer ? h("p", { className: "desc" }, `Source: ${selectedBuyer.source === "master" ? "Buyer master" : "Tender workspace"}`) : null
+    );
+}
+
+function BuyerTenderPortfolioPage() {
+    const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
     const tenders = selectedBuyer?.tenders || [];
     const summary = data?.summary || {};
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "Buyer Tender Portfolio", text: "Pick a buyer from the master list, inspect the tenders they have published, and review the analysis built from those published tenders." }),
-        message ? h("div", { className: "notice" }, message) : null,
+        h(IntelligenceHero, { title: "Published Tenders", text: "Select a buyer and inspect the tenders that buyer has published. This page does not scrape or duplicate seller bids." }),
+        message ? h("div", { className: "notice err" }, message) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
-        h("div", { className: "summary six" },
-            [["Buyers", summary.buyers || 0], ["Tendered Buyers", summary.tendered_buyers || 0], ["Tenders", summary.tenders || 0], ["Selected Count", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`], ["State", selectedBuyer?.state || "NA"]].map(([label, value]) =>
+        h("div", { className: "summary five" },
+            [["Buyers", summary.buyers || 0], ["Tendered Buyers", summary.tendered_buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Tenders", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
-        h("section", { className: "card" },
-            h("h3", null, "Choose Buyer"),
-                h("p", { className: "desc" }, "This view uses buyer master data and buyer names inferred from the existing tender workspace. No seller-bid scraping is involved."),
-            h("label", { className: "field-block" },
-                h("span", null, "Buyer"),
-                h("select", { value: buyerId, onChange: e => setBuyerId(e.target.value) },
-                    (data?.buyers || []).map(row => h("option", { key: row.id, value: row.id }, `${row.name || "Buyer"}${row.department ? ` — ${row.department}` : ""} (${row.tender_count || 0})`))
-                )
-            ),
+        h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
+        h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — Published Tenders` : "Published Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) })
+    );
+}
+
+function BuyerGeMIntelligencePage() {
+    const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
+    const summary = data?.summary || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Buyer Tender Analysis", text: "Analyze the selected buyer's published tender portfolio by status, category, geography, count, and value." }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        h("div", { className: "summary six" },
+            [["Buyers", summary.buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Count", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`], ["State", selectedBuyer?.state || "NA"], ["District", selectedBuyer?.district || "NA"]].map(([label, value]) =>
+                h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
+            )
         ),
+        h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
         h("div", { className: "admin-grid" },
             h(SimpleTable, { title: "Tender Status Mix", headers: ["Status", "Count"], rows: Object.entries(selectedBuyer?.status_counts || {}).map(([status, count]) => [status, count]) }),
             h(SimpleTable, { title: "Top Categories", headers: ["Category", "Count"], rows: (selectedBuyer?.top_categories || []).map(row => [row.name, row.count]) }),
             h(SimpleTable, { title: "Top States", headers: ["State", "Count"], rows: (selectedBuyer?.top_states || []).map(row => [row.name, row.count]) })
-        ),
-        h(SimpleTable, { title: "Buyer Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [h("a", { href: "/dashboard/tenders" }, row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) })
+        )
     );
 }
 
@@ -4519,11 +4546,17 @@ function App() {
     if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     let page;
     if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
-    else if (route === "/dashboard/buyer/tenders") page = h(DashboardPage, { view: "all" });
+    else if (route === "/dashboard/buyer/tenders") page = h(BuyerTenderPortfolioPage);
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
     else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
     else if (route === "/dashboard/buyer/intelligence") page = h(BuyerGeMIntelligencePage);
     else if (route === "/dashboard/buyer/grants") page = h(BuyerModulePage, { moduleKey: "grants" });
+    else if (route === "/dashboard/buyer/planning") page = h(BuyerModulePage, { moduleKey: "planning" });
+    else if (route === "/dashboard/buyer/vendors") page = h(BuyerModulePage, { moduleKey: "vendor-evaluation" });
+    else if (route === "/dashboard/buyer/orders") page = h(BuyerModulePage, { moduleKey: "orders" });
+    else if (route === "/dashboard/buyer/compliance") page = h(BuyerModulePage, { moduleKey: "compliance" });
+    else if (route === "/dashboard/buyer/reports") page = h(BuyerModulePage, { moduleKey: "reports" });
+    else if (route === "/dashboard/buyer/account") page = h(BuyerModulePage, { moduleKey: "account" });
     else if (route.startsWith("/dashboard/buyer/")) page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);
     else if (route === "/dashboard/seller/analytics") page = h(SellerAnalyticsPage);
