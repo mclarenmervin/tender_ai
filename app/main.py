@@ -12,6 +12,7 @@ import itertools
 from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape, unescape
+from html.parser import HTMLParser
 import csv
 import base64
 import hashlib
@@ -4580,11 +4581,17 @@ def api_buyer_intelligence(db:Session=Depends(get_db),user:User=Depends(get_curr
     results_by_buyer={}
     for bid in procurement_bids:
         sellers=sorted(participants_by_bid.get(bid.id,[]),key=lambda row:(row['rank'] is None,row['rank'] or 999,row['seller']))
+        try: result_meta=json.loads(bid.source_result_json or '{}')
+        except (TypeError,ValueError): result_meta={}
+        winner=next((row['seller'] for row in sellers if row['is_awarded']),result_meta.get('winner'))
         results_by_buyer.setdefault(bid.buyer_id,[]).append({
             'id':bid.id,'tender_id':bid.bid_no,'title':bid.bid_title or bid.bid_no,'status':bid.status or 'collected',
             'state':bid.state or '','district':bid.district or '','deadline':str(bid.bid_end_date or ''),
             'estimated_value':bid.estimated_value,'emd_amount':bid.emd_amount,'awarded_value':bid.awarded_value,
-            'url':bid.source_url or '','seller_count':len(sellers),'sellers':sellers,
+            'url':bid.source_url or '','seller_count':len(sellers),'sellers':sellers,'winner':winner or '',
+            'bid_type':bid.bid_type or 'Bid','ra_created':bool(result_meta.get('ra_created')),
+            'ra_number':result_meta.get('ra_number') or '','masked_sellers':result_meta.get('masked_sellers') or 0,
+            'result_available':bool(result_meta.get('result_available')),
         })
     def normalize(text):
         return re.sub(r'\s+',' ',re.sub(r'[^A-Z0-9]+',' ',str(text or '').upper())).strip()
@@ -4756,6 +4763,77 @@ def extract_procurement_result_from_text(source,source_url=None):
             payload['participants'].append({'vendor':vendor_text,'rank':rank_match.group(1) or rank_match.group(2),'quoted_price':amount_match.group(1),'is_awarded':(rank_match.group(1) or rank_match.group(2))=='1'})
     return payload
 
+class GemResultTableParser(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.tables=[]; self.table=None; self.row=None; self.cell=None
+    def handle_starttag(self,tag,attrs):
+        tag=tag.lower()
+        if tag=='table': self.table=[]
+        elif tag=='tr' and self.table is not None: self.row=[]
+        elif tag in {'td','th'} and self.row is not None: self.cell=[]
+        elif tag=='br' and self.cell is not None: self.cell.append(' ')
+    def handle_data(self,data):
+        if self.cell is not None: self.cell.append(data)
+    def handle_endtag(self,tag):
+        tag=tag.lower()
+        if tag in {'td','th'} and self.cell is not None:
+            self.row.append(re.sub(r'\s+',' ',' '.join(self.cell)).strip()); self.cell=None
+        elif tag=='tr' and self.row is not None:
+            if any(self.row): self.table.append(self.row)
+            self.row=None
+        elif tag=='table' and self.table is not None:
+            if self.table: self.tables.append(self.table)
+            self.table=None
+
+def parse_gem_public_result(html,source_url):
+    payload=extract_procurement_result_from_text(html,source_url)
+    plain=unescape(re.sub(r'<[^>]+>',' ',str(html or '')))
+    plain=re.sub(r'\s+',' ',plain).strip()
+    bid_match=re.search(r'\bGEM/\d{4}/[BR]/\d+\b',plain,re.I)
+    if bid_match: payload['bid_no']=bid_match.group(0).upper()
+    result_type='RA' if re.search(r'\bRA DETAILS\b',plain,re.I) else 'Bid'
+    payload['bid_type']=result_type
+    status_match=re.search(r'(?:Bid|RA) Status:\s*([^<\n]{1,80}?)(?=Quantity:|RA Life Cycle|Bid Validity|RA Validity|Bid Start|RA Start|$)',plain,re.I)
+    if status_match: payload['status']=status_match.group(1).strip()
+    payload['ra_created']=bool(re.search(r'RA has been created for this Bid',plain,re.I)) or result_type=='RA'
+    if result_type=='RA' and payload.get('bid_no'): payload['ra_number']=payload['bid_no']
+    parser=GemResultTableParser(); parser.feed(str(html or ''))
+    participants=[]; masked=0; qualified=0; disqualified=0; table_count=0
+    for table in parser.tables:
+        if len(table)<2: continue
+        headers=[str(value).casefold() for value in table[0]]
+        seller_index=next((i for i,value in enumerate(headers) if 'seller name' in value or 'bidder name' in value or value.strip() in {'seller','bidder'}),None)
+        if seller_index is None: continue
+        table_count+=1
+        status_index=next((i for i,value in enumerate(headers) if value.strip()=='status' or 'technical status' in value),None)
+        rank_index=next((i for i,value in enumerate(headers) if 'rank' in value or value.strip() in {'l1/l2/l3','position'}),None)
+        price_index=next((i for i,value in enumerate(headers) if 'price' in value or 'quoted' in value or 'offer' in value or 'amount' in value),None)
+        for row_number,row in enumerate(table[1:],start=1):
+            if seller_index>=len(row): continue
+            seller=re.sub(r'\s+',' ',row[seller_index]).strip()
+            row_text=' | '.join(row)
+            technical_status=row[status_index].strip() if status_index is not None and status_index<len(row) else ''
+            if 'disqualified' in technical_status.casefold(): disqualified+=1
+            elif 'qualified' in technical_status.casefold(): qualified+=1
+            if not seller or re.fullmatch(r'[\s*Xx-]+',seller): masked+=1; continue
+            rank=None
+            rank_text=row[rank_index] if rank_index is not None and rank_index<len(row) else row_text
+            rank_match=re.search(r'\bL\s*([123])\b|\bRank\s*[:#-]?\s*([123])\b',rank_text,re.I)
+            if rank_match: rank=int(rank_match.group(1) or rank_match.group(2))
+            price=parse_import_number(row[price_index]) if price_index is not None and price_index<len(row) else None
+            awarded=bool(re.search(r'\b(awarded|winner|selected for award|contract awarded)\b',row_text,re.I))
+            participants.append({'vendor':seller,'rank':rank,'quoted_price':price,'technical_status':technical_status,'is_awarded':awarded})
+    payload['participants']=participants
+    payload['total_bidders']=len(participants)+masked
+    payload['technically_qualified']=qualified
+    payload['technically_disqualified']=disqualified
+    payload['masked_sellers']=masked
+    payload['result_tables']=table_count
+    payload['result_available']=bool(participants or re.search(r'financial evaluation|contract awarded|winner',plain,re.I))
+    winner=next((row['vendor'] for row in participants if row.get('is_awarded')),None)
+    if winner: payload['winner']=winner
+    return payload
+
 def procurement_result_payloads_from_request(payload):
     if isinstance(payload,list):
         return payload
@@ -4850,7 +4928,7 @@ def upsert_procurement_result_payload(db,user,payload):
         participant.quoted_price=parse_import_number(procurement_lookup(raw_participant,'quoted_price','price','bid_price','offered_price','total_price')) or participant.quoted_price
         participant.technical_status=procurement_lookup(raw_participant,'technical_status','status','evaluation_status') or participant.technical_status
         participant.disqualification_reason=procurement_lookup(raw_participant,'disqualification_reason','rejection_reason') or participant.disqualification_reason
-        participant.is_awarded=truthy_import_value(procurement_lookup(raw_participant,'is_awarded','awarded','winner')) or participant.is_awarded or participant.rank==1
+        participant.is_awarded=truthy_import_value(procurement_lookup(raw_participant,'is_awarded','awarded','winner')) or participant.is_awarded
         if participant.quoted_price:
             price_rows.append(participant)
         if participant.is_awarded:
@@ -4860,10 +4938,47 @@ def upsert_procurement_result_payload(db,user,payload):
     if len(price_rows)>=2 and missing_ranks:
         for index,row in enumerate(sorted(price_rows,key=lambda item:item.quoted_price or 0),start=1):
             row.rank=row.rank or index
-            if row.rank==1:
-                row.is_awarded=True
-                bid.awarded_vendor_id=row.vendor_id
     return {'bid_no':bid_no,'participants':imported_participants}
+
+@app.post('/api/buyer/intelligence/sync-results')
+async def api_sync_buyer_completed_results(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    payload=await request.json(); buyer_id=parse_import_number(payload.get('buyer_id'))
+    buyer=db.query(ProcurementBuyer).filter(ProcurementBuyer.user_id==user.id,ProcurementBuyer.id==buyer_id).first()
+    if not buyer: raise HTTPException(404,'Select a saved buyer from Buyer Directory first')
+    def normalized(value): return re.sub(r'\s+',' ',re.sub(r'[^A-Z0-9]+',' ',str(value or '').upper())).strip()
+    keys={normalized(buyer.buyer_name_raw),normalized(buyer.department),normalized(buyer.ministry)}-{''}
+    candidates=[]
+    for tender in user_tenders(db,user).filter(Tender.source=='GeM').order_by(Tender.deadline.desc().nullslast()).all():
+        authority=normalized(' '.join(filter(None,[tender.department,tender.address])))
+        if keys and not any(key in authority or authority in key for key in keys): continue
+        completed=(tender.deadline and tender.deadline<=date.today()) or (tender.status or '').casefold() in {'completed','closed','awarded','won','lost'}
+        if completed: candidates.append(tender)
+    synced=0; with_sellers=0; pending=0; errors=[]
+    for tender in candidates[:100]:
+        internal_match=re.search(r'/(?:showbidDocument|showradocumentPdf|showdirectradocumentPdf)/(\d+)',tender.url or '',re.I)
+        if not internal_match:
+            errors.append(f'{tender.tender_id}: GeM internal result ID unavailable'); continue
+        result_url=f'https://bidplus.gem.gov.in/bidding/bid/getBidResultView/{internal_match.group(1)}'
+        try:
+            response=requests.get(result_url,headers={'User-Agent':'Mozilla/5.0 TenderAI/1.0'},timeout=30)
+            response.raise_for_status()
+            result=parse_gem_public_result(response.text,result_url)
+            extracted_number=result.get('bid_no')
+            if extracted_number and '/R/' in extracted_number: result['ra_number']=extracted_number
+            result.update({'bid_no':tender.tender_id,'bid_title':tender.title,'buyer':buyer.buyer_name_raw,
+                'department':buyer.department or tender.department,'state':tender.state,'district':tender.city,
+                'bid_end_date':str(tender.deadline or ''),'emd_amount':tender.emd_amount,'source_url':result_url})
+            upsert_procurement_result_payload(db,user,result)
+            synced+=1
+            if result.get('participants'): with_sellers+=1
+            else: pending+=1
+        except (requests.RequestException,ValueError) as exc:
+            errors.append(f'{tender.tender_id}: {exc}')
+    db.commit()
+    return {'ok':True,'eligible':len(candidates),'synced':synced,'with_public_sellers':with_sellers,
+        'pending_or_masked':pending,'errors':errors[:25],
+        'message':f'Synced {synced} completed/ended tender result page(s). {with_sellers} exposed seller details; {pending} remain pending or masked by GeM.'}
 
 @app.post('/api/seller/intelligence/import-results')
 async def api_import_procurement_results(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -4912,7 +5027,7 @@ async def api_import_procurement_results(request:Request,db:Session=Depends(get_
             if not vendor: vendor=ProcurementVendor(user_id=user.id,vendor_name_raw=vendor_name,vendor_name_clean=vendor_name.lower(),vendor_name_canonical=canonical,gst_no=row.get('gst_no') or None,state=row.get('vendor_state') or None,city=row.get('vendor_city') or None); db.add(vendor); db.flush()
             participant=db.query(ProcurementBidParticipant).filter(ProcurementBidParticipant.user_id==user.id,ProcurementBidParticipant.bid_id==bid.id,ProcurementBidParticipant.vendor_id==vendor.id).first()
             if not participant: participant=ProcurementBidParticipant(user_id=user.id,bid_id=bid.id,vendor_id=vendor.id); db.add(participant)
-            participant.vendor_identifier=row.get('vendor_id') or row.get('seller_id') or None; participant.rank=parse_import_number(row.get('rank')); participant.quoted_price=parse_import_number(row.get('quoted_price')); participant.technical_status=row.get('technical_status') or None; participant.disqualification_reason=row.get('disqualification_reason') or None; participant.is_awarded=row.get('is_awarded','').lower() in {'1','yes','true','y'} or participant.rank==1
+            participant.vendor_identifier=row.get('vendor_id') or row.get('seller_id') or None; participant.rank=parse_import_number(row.get('rank')); participant.quoted_price=parse_import_number(row.get('quoted_price')); participant.technical_status=row.get('technical_status') or None; participant.disqualification_reason=row.get('disqualification_reason') or None; participant.is_awarded=row.get('is_awarded','').lower() in {'1','yes','true','y','awarded','winner'}
             if participant.is_awarded: bid.awarded_vendor_id=vendor.id
         clause=row.get('restrictive_clause') or row.get('restrictive_clause_reason')
         if clause:

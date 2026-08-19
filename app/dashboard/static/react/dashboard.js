@@ -4384,47 +4384,44 @@ function BuyerSelector({ data, buyerId, setBuyerId, selectedBuyer }) {
 
 function BuyerTenderPortfolioPage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
-    const [form, setForm] = useState({ name: "", department: "", ministry: "", state: "", district: "" });
-    const [saveMessage, setSaveMessage] = useState("");
+    const [syncMessage, setSyncMessage] = useState("");
     const tenders = selectedBuyer?.tenders || [];
     const bidResults = selectedBuyer?.bid_results || [];
     const summary = data?.summary || {};
-    async function addBuyer(event) {
-        event.preventDefault();
-        setSaveMessage("Adding buyer...");
+    async function syncResults() {
+        if (!selectedBuyer || String(selectedBuyer.id).startsWith("inferred-")) { setSyncMessage("Save this buyer through Buyer Directory before syncing results."); return; }
+        setSyncMessage("Checking completed tender result and RA pages on GeM...");
         try {
-            const result = await api("/api/buyer/intelligence/buyers", { method: "POST", body: JSON.stringify(form) });
-            setSaveMessage(result.message);
-            location.reload();
-        } catch (error) { setSaveMessage(error.message); }
+            const result = await api("/api/buyer/intelligence/sync-results", { method: "POST", body: JSON.stringify({ buyer_id: selectedBuyer.id }) });
+            setSyncMessage(result.message);
+            setTimeout(() => location.reload(), 900);
+        } catch (error) { setSyncMessage(error.message); }
     }
     return h(React.Fragment, null,
-        h(IntelligenceHero, { title: "Published Tenders", text: "Add or select a buyer, inspect that buyer's published tenders, and review participating sellers from imported bid results.", actions: h("div", { className: "hero-actions" }, h("button", { className: "primary", onClick: () => document.getElementById("add-buyer-form")?.scrollIntoView({ behavior: "smooth" }) }, "Add Buyer")) }),
+        h(IntelligenceHero, { title: "Published Tenders", text: "Select a buyer, inspect its tenders, and sync completed GeM bid/RA results, winners, participants, and financial rankings.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/buyers") }, "Buyer Directory"), h("button", { className: "primary", disabled: !selectedBuyer, onClick: syncResults }, "Sync Completed Results")) }),
         message ? h("div", { className: "notice err" }, message) : null,
+        syncMessage ? h("div", { className: "notice" }, syncMessage) : null,
         data?.message ? h("div", { className: "notice" }, data.message) : null,
         h("div", { className: "summary five" },
             [["Buyers", summary.buyers || 0], ["Tendered Buyers", summary.tendered_buyers || 0], ["All Tenders", summary.tenders || 0], ["Selected Tenders", selectedBuyer?.tender_count || 0], ["Selected Value", `Rs. ${money(selectedBuyer?.total_value || 0)}`]].map(([label, value]) =>
                 h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value))
             )
         ),
-        h("form", { id: "add-buyer-form", className: "card", onSubmit: addBuyer },
-            h("h3", null, "Add Buyer"),
-            h("p", { className: "desc" }, "Create the buyer master first. Tender and seller rows appear when records for this buyer are imported or synchronized."),
-            h("div", { className: "form-grid" },
-                [["name", "Buyer name *"], ["department", "Department"], ["ministry", "Ministry"], ["state", "State"], ["district", "District"]].map(([field, label]) => h("label", { className: "field-block", key: field }, h("span", null, label), h("input", { required: field === "name", value: form[field], onChange: e => setForm({ ...form, [field]: e.target.value }) })))
-            ),
-            h("button", { className: "primary" }, "Save Buyer"),
-            saveMessage ? h("p", { className: "status" }, saveMessage) : null
-        ),
         h(BuyerSelector, { data, buyerId, setBuyerId, selectedBuyer }),
         h(SimpleTable, { title: selectedBuyer ? `${selectedBuyer.name} — Published Tenders` : "Published Tenders", headers: ["Tender", "Department", "State", "Deadline", "Estimated", "EMD", "Status", "Category"], rows: tenders.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.department || "NA", row.state || "NA", row.deadline || "NA", row.estimated_value == null ? "NA" : `Rs. ${money(row.estimated_value)}`, row.emd_amount == null ? "NA" : `Rs. ${money(row.emd_amount)}`, row.status || "NA", row.category || "NA"]) }),
-        h(SimpleTable, { title: "Tender Results and Participating Sellers", headers: ["Tender", "End Date", "Sellers", "Seller Ranking / Price"], rows: bidResults.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), row.deadline || "NA", row.seller_count || 0, (row.sellers || []).length ? h("div", { className: "mini-list" }, row.sellers.map(seller => h("div", { key: seller.id }, h("strong", null, seller.rank ? `L${seller.rank} — ` : "", seller.seller), seller.quoted_price != null ? ` — Rs. ${money(seller.quoted_price)}` : "", seller.is_awarded ? " — Awarded" : ""))) : "No seller result data"] ) })
+        h(SimpleTable, { title: "Completed Bid / RA Results", headers: ["Tender", "Type / RA", "Result Status", "Winner", "Public Sellers", "L1 / L2 / L3 and Prices"], rows: bidResults.map(row => [row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : (row.title || row.tender_id), [row.bid_type, row.ra_number ? `RA: ${row.ra_number}` : row.ra_created ? "RA created" : ""].filter(Boolean).join(" | "), row.result_available ? (row.status || "Result available") : row.masked_sellers ? `Pending / ${row.masked_sellers} seller(s) masked by GeM` : (row.status || "Pending"), row.winner || "Not publicly awarded", (row.seller_count || 0) + (row.masked_sellers ? ` (+${row.masked_sellers} masked)` : ""), (row.sellers || []).length ? h("div", { className: "mini-list" }, row.sellers.map(seller => h("div", { key: seller.id }, h("strong", null, seller.rank ? `L${seller.rank} — ` : "", seller.seller), seller.quoted_price != null ? ` — Rs. ${money(seller.quoted_price)}` : "", seller.is_awarded ? " — Awarded winner" : ""))) : "Not exposed by GeM"] ) })
     );
 }
 
 function BuyerGeMIntelligencePage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
     const summary = data?.summary || {};
+    const sellerStats = {};
+    for (const result of (selectedBuyer?.bid_results || [])) for (const seller of (result.sellers || [])) {
+        const row = sellerStats[seller.seller] || { seller: seller.seller, participations: 0, l1: 0, wins: 0 };
+        row.participations += 1; if (seller.rank === 1) row.l1 += 1; if (seller.is_awarded) row.wins += 1; sellerStats[seller.seller] = row;
+    }
+    const sellerRows = Object.values(sellerStats).sort((a, b) => (b.wins - a.wins) || (b.l1 - a.l1) || (b.participations - a.participations));
     return h(React.Fragment, null,
         h(IntelligenceHero, { title: "Buyer Tender Analysis", text: "Analyze the selected buyer's published tender portfolio by status, category, geography, count, and value.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders")) }),
         message ? h("div", { className: "notice err" }, message) : null,
@@ -4438,7 +4435,8 @@ function BuyerGeMIntelligencePage() {
             h(SimpleTable, { title: "Tender Status Mix", headers: ["Status", "Count"], rows: Object.entries(selectedBuyer?.status_counts || {}).map(([status, count]) => [status, count]) }),
             h(SimpleTable, { title: "Top Categories", headers: ["Category", "Count"], rows: (selectedBuyer?.top_categories || []).map(row => [row.name, row.count]) }),
             h(SimpleTable, { title: "Top States", headers: ["State", "Count"], rows: (selectedBuyer?.top_states || []).map(row => [row.name, row.count]) })
-        )
+        ),
+        h(SimpleTable, { title: "Seller Competition and Dominance", headers: ["Seller", "Tenders Participated", "L1 Finishes", "Confirmed Wins", "Observation"], rows: sellerRows.map(row => [row.seller, row.participations, row.l1, row.wins, row.wins ? `${row.wins} confirmed award(s)` : row.l1 ? "Reached L1; award not publicly confirmed" : "Participating seller"]) })
     );
 }
 
