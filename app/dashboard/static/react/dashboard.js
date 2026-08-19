@@ -20,11 +20,7 @@ const nav = [
 ];
 
 const buyerNav = [
-    ["Home", [["/dashboard/buyer", "Dashboard"]]],
-    ["Tender Portfolio", [["/dashboard/buyer/buyers", "Buyer Directory"], ["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Tender Analysis"]]],
-    ["Procurement", [["/dashboard/buyer/planning", "Planning"], ["/dashboard/buyer/bids", "Bid Management"], ["/dashboard/buyer/bid-verification", "Bid Verification"], ["/dashboard/buyer/grants", "Grants"]]],
-    ["Operations", [["/dashboard/buyer/vendors", "Vendor Evaluation"], ["/dashboard/buyer/orders", "Orders"], ["/dashboard/buyer/compliance", "Compliance"], ["/dashboard/buyer/reports", "Reports"]]],
-    ["Account", [["/dashboard/buyer/account", "Buyer Account"], ["/dashboard/profile", "User Profile"]]],
+    ["Tender Portfolio", [["/dashboard/buyer/buyers", "Buyer Directory"], ["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Analysis"], ["/dashboard/buyer/reports", "Reports"]]],
 ];
 
 const buyerModules = {
@@ -252,7 +248,7 @@ function RoleOption({ title, text, roleIcon, active, onClick }) {
 }
 
 function roleDashboard(user) {
-    return user?.role === "seller" ? "/dashboard/seller" : "/dashboard/buyer";
+    return user?.role === "seller" ? "/dashboard/seller" : "/dashboard/buyer/tenders";
 }
 
 async function api(path, options = {}) {
@@ -4446,6 +4442,31 @@ function BuyerGeMIntelligencePage() {
     );
 }
 
+function BuyerPortfolioReportsPage() {
+    const [data, setData] = useState(null);
+    const [message, setMessage] = useState("");
+    useEffect(() => { api("/api/buyer/reports").then(setData).catch(error => setMessage(error.message)); }, []);
+    const summary = data?.summary || {};
+    const reports = data?.reports || {};
+    return h(React.Fragment, null,
+        h(IntelligenceHero, { title: "Tender Portfolio Reports", text: "Generate buyer, tender, seller participation, ranking, award, concentration, and competition reports from the captured portfolio.", actions: h("div", { className: "hero-actions" }, h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders"), h("button", { onClick: () => navigate("/dashboard/buyer/intelligence") }, "Analysis")) }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        data?.message ? h("div", { className: "notice" }, data.message) : null,
+        h("div", { className: "summary five" }, [["Buyers", summary.buyers || 0], ["Tenders", summary.tenders || 0], ["Sellers", summary.sellers || 0], ["Participations", summary.participants || 0], ["Awards", summary.awards || 0]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),
+        h("div", { className: "hero-actions" },
+            [["vendor-dominance", "Seller Dominance CSV"], ["vendor-concentration", "Concentration CSV"], ["price-gaps", "L1/L2/L3 CSV"], ["low-competition", "Competition CSV"], ["award-ratios", "Award Value CSV"], ["repeated-groups", "Repeated Groups PDF"]].map(([report, label]) => h("a", { className: "download-btn", key: report, href: `/exports/buyer/portfolio/${report}/${report === "repeated-groups" ? "pdf" : "csv"}` }, label))
+        ),
+        h(SimpleTable, { title: "Seller Dominance", headers: ["Seller", "Bids", "Awards", "Award Share", "Risk"], rows: (reports.vendor_dominance || []).map(row => [row.vendor, row.bids, row.awards, `${row.award_share}%`, row.risk_level]) }),
+        h(SimpleTable, { title: "L1 / L2 / L3 Price Analysis", headers: ["Tender", "L1", "L2", "L3", "L1-L2 Gap", "L2-L3 Gap", "Risk"], rows: (reports.price_gaps || []).map(row => [row.bid_no, row.l1, row.l2, row.l3 || "NA", `${row.gap_percent}%`, row.l2_l3_gap_percent == null ? "NA" : `${row.l2_l3_gap_percent}%`, row.risk_level]) }),
+        h("div", { className: "admin-grid" },
+            h(SimpleTable, { title: "Repeated Seller Groups", headers: ["Seller Group", "Tenders Together", "Tender Numbers", "Risk"], rows: (reports.repeated_groups || []).map(row => [row.group, row.bids_together, (row.bid_numbers || []).join(", "), row.risk_level]) }),
+            h(SimpleTable, { title: "Competition Analysis", headers: ["Tender", "Buyer", "Bidders", "Qualified", "Disqualified", "Risk"], rows: (reports.competition || []).map(row => [row.bid_no, row.buyer, row.total_bidders, row.technically_qualified ?? "NA", row.technically_disqualified ?? "NA", row.risk_level]) })
+        ),
+        h(SimpleTable, { title: "Seller Concentration", headers: ["Seller", "Department", "Category", "Wins", "Awards", "Win Share", "Value Share", "Level"], rows: (reports.vendor_concentration || []).map(row => [row.vendor, row.department, row.category, row.wins, row.total_awards, `${row.win_share_percent}%`, row.value_share_percent == null ? "NA" : `${row.value_share_percent}%`, row.concentration_level]) }),
+        h(SimpleTable, { title: "Awarded Value vs Estimated Value", headers: ["Tender", "Buyer", "Estimated", "Awarded", "Award Ratio", "Saving", "Risk"], rows: (reports.award_values || []).map(row => [row.bid_no, row.buyer, `Rs. ${money(row.estimated_value)}`, `Rs. ${money(row.awarded_value)}`, `${row.award_ratio_percent}%`, `${row.saving_percent}%`, row.risk_level]) })
+    );
+}
+
 const GLOBAL_SEARCH_STATES = ["", "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"];
 
 function displayGemDate(value) {
@@ -4645,9 +4666,10 @@ function App() {
     if (me?.role === "seller" && buyerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/seller";
     if (me?.role !== "seller" && sellerOnlyRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
     if (me?.role !== "seller" && restrictedBuyerRoutes.some(prefix => route === prefix || route.startsWith(`${prefix}/`))) route = "/dashboard/buyer";
+    const buyerPortfolioRoutes = ["/dashboard/buyer/buyers", "/dashboard/buyer/tenders", "/dashboard/buyer/intelligence", "/dashboard/buyer/reports"];
+    if (me?.role !== "seller" && route.startsWith("/dashboard/buyer") && !buyerPortfolioRoutes.includes(route)) route = "/dashboard/buyer/tenders";
     let page;
-    if (route === "/dashboard/buyer") page = h(BuyerDashboardPage);
-    else if (route === "/dashboard/buyer/buyers") page = h(BuyerDirectoryPage);
+    if (route === "/dashboard/buyer/buyers") page = h(BuyerDirectoryPage);
     else if (route === "/dashboard/buyer/tenders") page = h(BuyerTenderPortfolioPage);
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
     else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
@@ -4657,7 +4679,7 @@ function App() {
     else if (route === "/dashboard/buyer/vendors") page = h(BuyerModulePage, { moduleKey: "vendor-evaluation" });
     else if (route === "/dashboard/buyer/orders") page = h(BuyerModulePage, { moduleKey: "orders" });
     else if (route === "/dashboard/buyer/compliance") page = h(BuyerModulePage, { moduleKey: "compliance" });
-    else if (route === "/dashboard/buyer/reports") page = h(BuyerModulePage, { moduleKey: "reports" });
+    else if (route === "/dashboard/buyer/reports") page = h(BuyerPortfolioReportsPage);
     else if (route === "/dashboard/buyer/account") page = h(BuyerModulePage, { moduleKey: "account" });
     else if (route.startsWith("/dashboard/buyer/")) page = h(BuyerDashboardPage);
     else if (route === "/dashboard/seller") page = h(SellerDashboardPage);

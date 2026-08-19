@@ -266,14 +266,14 @@ def signup(request:Request,name:str=Form(...),email:str=Form(...),password:str=F
     role=role if role in {'buyer','seller'} else 'buyer'
     user=User(name=name,email=email,password_hash=hash_password(password),role=role)
     db.add(user); db.commit(); token=create_access_token({'sub':email})
-    res=RedirectResponse('/dashboard/seller' if role=='seller' else '/dashboard/buyer',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
+    res=RedirectResponse('/dashboard/seller' if role=='seller' else '/dashboard/buyer/tenders',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
 @app.get('/login')
 def login_page(request:Request): return react_shell()
 @app.post('/login')
 def login(request:Request,email:str=Form(...),password:str=Form(...),db:Session=Depends(get_db)):
     user=db.query(User).filter(User.email==email).first()
     if not user or not verify_password(password,user.password_hash): return RedirectResponse('/login?error=invalid',303)
-    token=create_access_token({'sub':user.email}); res=RedirectResponse('/dashboard/seller' if user.role=='seller' else '/dashboard/buyer',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
+    token=create_access_token({'sub':user.email}); res=RedirectResponse('/dashboard/seller' if user.role=='seller' else '/dashboard/buyer/tenders',303); res.set_cookie('access_token',token,httponly=True,samesite='lax'); return res
 @app.get('/logout')
 def logout(): res=RedirectResponse('/login'); res.delete_cookie('access_token'); return res
 
@@ -293,7 +293,7 @@ async def api_signup(request:Request,db:Session=Depends(get_db)):
     db.add(user)
     db.commit()
     token=create_access_token({'sub':email})
-    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer'}),media_type='application/json')
+    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer/tenders'}),media_type='application/json')
     res.set_cookie('access_token',token,httponly=True,samesite='lax')
     return res
 
@@ -307,7 +307,7 @@ async def api_login(request:Request,db:Session=Depends(get_db)):
         raise HTTPException(401,'Invalid email or password')
     token=create_access_token({'sub':user.email})
     role=user.role if user.role in {'buyer','seller'} else 'buyer'
-    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer'}),media_type='application/json')
+    res=Response(json.dumps({'ok':True,'role':role,'dashboard_path':'/dashboard/seller' if role=='seller' else '/dashboard/buyer/tenders'}),media_type='application/json')
     res.set_cookie('access_token',token,httponly=True,samesite='lax')
     return res
 
@@ -3797,7 +3797,7 @@ def api_me(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
         'name':user.name,
         'email':user.email,
         'role':user.role if user.role in {'buyer','seller'} else 'buyer',
-        'dashboard_path':'/dashboard/seller' if user.role=='seller' else '/dashboard/buyer',
+        'dashboard_path':'/dashboard/seller' if user.role=='seller' else '/dashboard/buyer/tenders',
         'is_active':user.is_active,
         'created_at':iso(user.created_at),
         'notifications':{
@@ -4677,6 +4677,25 @@ async def api_create_buyer_master(request:Request,db:Session=Depends(get_db),use
     db.add(buyer); db.commit(); db.refresh(buyer)
     return {'ok':True,'id':buyer.id,'message':'Buyer added. Import or sync this buyer’s tender/result records to populate tenders and participating sellers.'}
 
+@app.get('/api/buyer/reports')
+def api_buyer_portfolio_reports(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    require_buyer(user)
+    data=procurement_intelligence(db,user.id)
+    return {
+        'summary':{
+            'buyers':len(data['buyers']),'tenders':len(data['bids']),'sellers':len(data['vendors']),
+            'participants':len(data['participants']),
+            'awards':sum(1 for row in data['participants'] if row.is_awarded),
+        },
+        'reports':{
+            'vendor_dominance':data['dominance'],'vendor_concentration':data['vendor_concentration'],
+            'price_gaps':data['price_gaps'],'competition':data['competition_risks'],
+            'award_values':data['award_value_risks'],'repeated_groups':data['repeated_groups'],
+            'restrictive_clauses':data['restrictive_clauses'],
+        },
+        'message':'Reports use captured tender results and participating-seller records. Add more result records to improve coverage.' if not data['participants'] else 'Reports generated from the current buyer tender portfolio and seller participation records.',
+    }
+
 def parse_import_date(value):
     value=(value or '').strip()
     for fmt in ('%Y-%m-%d','%d-%m-%Y','%d/%m/%Y'):
@@ -5020,6 +5039,7 @@ def api_seller_intelligence_reports(db:Session=Depends(get_db),user:User=Depends
     }
 
 @app.get('/exports/seller/intelligence/{report}/{fmt}')
+@app.get('/exports/buyer/portfolio/{report}/{fmt}')
 def export_seller_intelligence(report:str,fmt:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     if fmt not in {'csv','report','pdf'}: raise HTTPException(404,'Unsupported export format')
     data=procurement_intelligence(db,user.id)
