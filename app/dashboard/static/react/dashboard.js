@@ -20,7 +20,7 @@ const nav = [
 ];
 
 const buyerNav = [
-    ["Tender Portfolio", [["/dashboard/buyer/buyers", "Buyer Directory"], ["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Analysis"], ["/dashboard/buyer/reports", "Reports"]]],
+    ["Tender Portfolio", [["/dashboard/buyer/buyers", "Buyer Directory"], ["/dashboard/buyer/tenders", "Published Tenders"], ["/dashboard/buyer/intelligence", "Intelligence"], ["/dashboard/buyer/reports", "Reports"]]],
 ];
 
 const buyerModules = {
@@ -4465,6 +4465,84 @@ function BuyerTenderPortfolioPage() {
     );
 }
 
+const ODISHA_DEPARTMENTS = [
+    "Agriculture & Farmers' Empowerment", "Commerce & Transport", "Co-operation", "Electronics & Information Technology", "Energy", "Excise", "Finance",
+    "Fisheries & Animal Resources Development", "Food Supplies & Consumer Welfare", "Forest, Environment & Climate Change", "General Administration & Public Grievance",
+    "Handlooms, Textiles & Handicrafts", "Health & Family Welfare", "Higher Education", "Home", "Housing & Urban Development", "Industries",
+    "Information & Public Relations", "Labour & Employees' State Insurance", "Law", "Micro, Small & Medium Enterprises", "Mission Shakti",
+    "Odia Language, Literature & Culture", "Panchayati Raj & Drinking Water", "Parliamentary Affairs", "Planning & Convergence", "Public Enterprises",
+    "Revenue & Disaster Management", "Rural Development", "School & Mass Education", "Science & Technology", "Skill Development & Technical Education",
+    "Social Security & Empowerment of Persons with Disabilities", "Sports & Youth Services", "Steel & Mines", "Tourism", "Water Resources",
+    "Women & Child Development", "Works", "Scheduled Tribes & Scheduled Castes Development", "Odisha Legislative Assembly", "Chief Minister's Office",
+    "State Election Commission", "Board of Revenue"
+];
+
+function StateDepartmentIntelligencePage() {
+    const { data, message } = useBuyerPortfolio();
+    const [state, setState] = useState("Odisha");
+    const [selected, setSelected] = useState([]);
+    const [view, setView] = useState("all");
+    const buyers = data?.buyers || [];
+    const seen = new Set();
+    const allTenders = [];
+    buyers.forEach(buyer => (buyer.tenders || []).forEach(tender => {
+        const key = String(tender.id || tender.tender_id || `${tender.title}-${tender.deadline}`);
+        if (!seen.has(key)) { seen.add(key); allTenders.push({ ...tender, _buyer: buyer }); }
+    }));
+    const same = (a, b) => String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
+    const stateTenders = allTenders.filter(row => same(row.state || row._buyer?.state, state));
+    const imported = Array.from(new Set(stateTenders.map(row => row.department || row._buyer?.department).filter(Boolean)));
+    const names = state === "Odisha" ? Array.from(new Set([...ODISHA_DEPARTMENTS, ...imported])) : imported;
+    const results = {};
+    buyers.forEach(buyer => (buyer.bid_results || []).forEach(row => { results[String(row.tender_id || "").toUpperCase()] = row; }));
+    const now = Date.now();
+    const dateOf = row => { const raw = row.deadline_at || row.deadline; if (!raw) return null; const date = new Date(String(raw).length <= 10 ? `${raw}T23:59:59` : raw); return Number.isNaN(date.getTime()) ? null : date; };
+    const complete = row => /completed|closed|awarded|won|lost|cancelled/i.test(String(row.status || ""));
+    const repeated = row => /corrigendum|extension|extended|revised date|date extended/i.test(`${row.title || ""} ${row.description || ""} ${row.status || ""}`);
+    const getStats = name => {
+        const tenders = stateTenders.filter(row => same(row.department || row._buyer?.department, name));
+        const completed = tenders.filter(complete).length;
+        const overdue = tenders.filter(row => dateOf(row)?.getTime() < now && !complete(row)).length;
+        const expiring = tenders.filter(row => { const time = dateOf(row)?.getTime(); return time >= now && time <= now + 604800000 && !complete(row); }).length;
+        const repeat = tenders.filter(repeated).length;
+        const value = tenders.reduce((sum, row) => sum + Number(row.estimated_value || 0), 0);
+        const score = tenders.length ? Math.max(0, Math.min(100, Math.round(72 + completed / tenders.length * 28 - overdue * 7 - repeat * 5))) : 0;
+        return { name, tenders, completed, overdue, expiring, repeat, value, score };
+    };
+    const departments = names.map(getStats).sort((a, b) => (b.tenders.length - a.tenders.length) || (b.value - a.value) || a.name.localeCompare(b.name));
+    useEffect(() => setSelected(departments.filter(row => row.tenders.length).slice(0, 3).map(row => row.name)), [state, data]);
+    const chosen = departments.filter(row => selected.includes(row.name));
+    const chosenTenders = chosen.flatMap(department => department.tenders.map(row => ({ ...row, _stats: department })));
+    const visible = chosenTenders.filter(row => {
+        const time = dateOf(row)?.getTime(); const overdue = time < now && !complete(row); const expiring = time >= now && time <= now + 604800000 && !complete(row);
+        return view === "all" || view === "delayed" && overdue || view === "repeated" && repeated(row) || view === "expiring" && expiring;
+    }).sort((a, b) => (dateOf(a)?.getTime() || Infinity) - (dateOf(b)?.getTime() || Infinity));
+    const toggle = name => setSelected(current => current.includes(name) ? current.filter(item => item !== name) : current.length < 3 ? [...current, name] : current);
+    const states = Array.from(new Set(["Odisha", ...buyers.map(row => row.state).filter(Boolean)])).sort((a, b) => a === "Odisha" ? -1 : a.localeCompare(b));
+    const totals = { tenders: chosenTenders.length, value: chosen.reduce((sum, row) => sum + row.value, 0), overdue: chosen.reduce((sum, row) => sum + row.overdue, 0), expiring: chosen.reduce((sum, row) => sum + row.expiring, 0), repeat: chosen.reduce((sum, row) => sum + row.repeat, 0) };
+    return h("div", { className: "dept-intelligence" },
+        h(IntelligenceHero, { title: "State Procurement Intelligence", text: "Choose a state, compare its leading departments, then select up to three for tender health, deadlines, recurring delays and L1/L2/L3 results.", actions: h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders") }),
+        message ? h("div", { className: "notice err" }, message) : null,
+        !data && !message ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, "Building state intelligence...")) : null,
+        h("section", { className: "intel-state-picker" }, h("div", null, h("span", { className: "eyebrow" }, "Step 1"), h("h3", null, "Choose a state"), h("p", null, "Departments are ranked by imported tender volume and value.")), h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: state, onChange: event => setState(event.target.value) }, states.map(value => h("option", { key: value, value }, value))))),
+        h("section", { className: "intel-department-section" },
+            h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 2"), h("h3", null, `${state} departments`), h("p", null, `${names.length} departments available · select up to 3`)), h("span", { className: "selection-count" }, `${selected.length}/3 selected`)),
+            h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "No data"))))
+        ),
+        selected.length ? h(React.Fragment, null,
+            h("div", { className: "summary five intel-summary" }, [["Tenders", totals.tenders], ["Portfolio Value", `Rs. ${money(totals.value)}`], ["Overdue", totals.overdue], ["Expiring in 7 days", totals.expiring], ["Recurring delay signals", totals.repeat]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),
+            h("div", { className: "department-performance-grid" }, chosen.map(row => h("article", { className: "department-performance-card", key: row.name }, h("div", { className: "performance-head" }, h("div", null, h("small", null, "DEPARTMENT HEALTH"), h("h3", null, row.name)), h("strong", { className: row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk" }, row.tenders.length ? row.score : "—")), h("div", { className: "performance-meter" }, h("span", { style: { width: `${row.score}%` } })), h("div", { className: "performance-kpis" }, [["Tenders", row.tenders.length], ["Completed", row.completed], ["Overdue", row.overdue], ["Expiring", row.expiring]].map(([label, value]) => h("div", { key: label }, h("span", null, label), h("strong", null, value)))), h("p", { className: "performance-verdict" }, !row.tenders.length ? "No imported tenders yet." : row.score >= 75 ? "Doing well — closure and deadline signals are healthy." : row.score >= 50 ? "Needs attention — review overdue and expiry risks." : "At risk — recurring delay and overdue signals need action.")))),
+            h("section", { className: "panel tender-health-panel" },
+                h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 3"), h("h3", null, "Tender details & financial ranking"), h("p", null, "Evidence from the imported GeM portfolio.")), h("div", { className: "intel-tabs" }, [["all", "All"], ["delayed", "Overdue"], ["repeated", "Recurring delays"], ["expiring", "Expiring"]].map(([key, label]) => h("button", { key, className: view === key ? "active" : "", onClick: () => setView(key) }, label)))),
+                visible.length ? h("div", { className: "table-scroll" }, h("table", null, h("thead", null, h("tr", null, ["Tender", "Department", "Value", "Deadline", "Signal", "L1", "L2", "L3", "Award"].map(label => h("th", { key: label }, label)))), h("tbody", null, visible.map((row, index) => {
+                    const result = results[String(row.tender_id || "").toUpperCase()]; const ranks = (result?.sellers || []).filter(seller => seller.rank).sort((a, b) => a.rank - b.rank); const time = dateOf(row)?.getTime(); const overdue = time < now && !complete(row); const expiring = time >= now && time <= now + 604800000 && !complete(row); const signal = repeated(row) ? "Recurring extension" : overdue ? "Overdue" : expiring ? "Expiring soon" : complete(row) ? "Completed" : "On track"; const rank = number => { const seller = ranks.find(item => item.rank === number); return seller ? h("span", null, seller.seller, seller.quoted_price != null ? h("small", null, `Rs. ${money(seller.quoted_price)}`) : null) : "Not published"; };
+                    return h("tr", { key: row.id || `${row.tender_id}-${index}` }, h("td", null, row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : row.title || row.tender_id || "Untitled", h("small", null, row.tender_id || "")), h("td", null, row.department || row._buyer?.department || "NA"), h("td", null, row.estimated_value ? `Rs. ${money(row.estimated_value)}` : "NA"), h("td", null, dateOf(row) ? displayGemDate(dateOf(row)) : "Not available"), h("td", null, h("span", { className: `health-signal ${overdue || repeated(row) ? "risk" : expiring ? "watch" : "good"}` }, signal)), h("td", null, rank(1)), h("td", null, rank(2)), h("td", null, rank(3)), h("td", null, result?.winner || "Not confirmed"));
+                })))) : h("div", { className: "empty" }, h("h3", null, "No tenders in this view"), h("p", null, "Import this department’s GeM tenders from Buyer Directory, or choose another filter."))
+            )
+        ) : h("div", { className: "empty intel-empty" }, h("h3", null, "Select up to three departments"), h("p", null, "The comparison dashboard will appear here."))
+    );
+}
+
 function BuyerGeMIntelligencePage() {
     const { data, message, buyerId, setBuyerId, selectedBuyer } = useBuyerPortfolio();
     const summary = data?.summary || {};
@@ -4725,7 +4803,7 @@ function App() {
     else if (route === "/dashboard/buyer/tenders") page = h(BuyerTenderPortfolioPage);
     else if (route === "/dashboard/buyer/bids") page = h(BuyerModulePage, { moduleKey: "bids" });
     else if (route === "/dashboard/buyer/bid-verification") page = h(BuyerBidRegisterPage);
-    else if (route === "/dashboard/buyer/intelligence") page = h(BuyerGeMIntelligencePage);
+    else if (route === "/dashboard/buyer/intelligence") page = h(StateDepartmentIntelligencePage);
     else if (route === "/dashboard/buyer/grants") page = h(BuyerModulePage, { moduleKey: "grants" });
     else if (route === "/dashboard/buyer/planning") page = h(BuyerModulePage, { moduleKey: "planning" });
     else if (route === "/dashboard/buyer/vendors") page = h(BuyerModulePage, { moduleKey: "vendor-evaluation" });
