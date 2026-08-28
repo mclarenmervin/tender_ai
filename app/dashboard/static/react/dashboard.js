@@ -4482,6 +4482,7 @@ function StateDepartmentIntelligencePage() {
     const [state, setState] = useState("Odisha");
     const [selected, setSelected] = useState([]);
     const [view, setView] = useState("all");
+    const resultsRef = useRef(null);
     const buyers = data?.buyers || [];
     const seen = new Set();
     const allTenders = [];
@@ -4511,6 +4512,9 @@ function StateDepartmentIntelligencePage() {
     };
     const departments = names.map(getStats).sort((a, b) => (b.tenders.length - a.tenders.length) || (b.value - a.value) || a.name.localeCompare(b.name));
     useEffect(() => setSelected(departments.filter(row => row.tenders.length).slice(0, 3).map(row => row.name)), [state, data]);
+    useEffect(() => {
+        if (selected.length === 3) setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    }, [selected]);
     const chosen = departments.filter(row => selected.includes(row.name));
     const chosenTenders = chosen.flatMap(department => department.tenders.map(row => ({ ...row, _stats: department })));
     const visible = chosenTenders.filter(row => {
@@ -4520,6 +4524,7 @@ function StateDepartmentIntelligencePage() {
     const toggle = name => setSelected(current => current.includes(name) ? current.filter(item => item !== name) : current.length < 3 ? [...current, name] : current);
     const states = Array.from(new Set(["Odisha", ...buyers.map(row => row.state).filter(Boolean)])).sort((a, b) => a === "Odisha" ? -1 : a.localeCompare(b));
     const totals = { tenders: chosenTenders.length, value: chosen.reduce((sum, row) => sum + row.value, 0), overdue: chosen.reduce((sum, row) => sum + row.overdue, 0), expiring: chosen.reduce((sum, row) => sum + row.expiring, 0), repeat: chosen.reduce((sum, row) => sum + row.repeat, 0) };
+    const openAnalysis = () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     return h("div", { className: "dept-intelligence" },
         h(IntelligenceHero, { title: "State Procurement Intelligence", text: "Choose a state, compare its leading departments, then select up to three for tender health, deadlines, recurring delays and L1/L2/L3 results.", actions: h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders") }),
         message ? h("div", { className: "notice err" }, message) : null,
@@ -4527,9 +4532,10 @@ function StateDepartmentIntelligencePage() {
         h("section", { className: "intel-state-picker" }, h("div", null, h("span", { className: "eyebrow" }, "Step 1"), h("h3", null, "Choose a state"), h("p", null, "Departments are ranked by imported tender volume and value.")), h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: state, onChange: event => setState(event.target.value) }, states.map(value => h("option", { key: value, value }, value))))),
         h("section", { className: "intel-department-section" },
             h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 2"), h("h3", null, `${state} departments`), h("p", null, `${names.length} departments available · select up to 3`)), h("span", { className: "selection-count" }, `${selected.length}/3 selected`)),
-            h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "No data"))))
+            h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "No data")))),
+            h("div", { className: "department-selection-actions" }, h("span", null, selected.length ? `${selected.length} department${selected.length === 1 ? "" : "s"} ready for comparison` : "Choose departments to begin"), h("div", null, selected.length ? h("button", { type: "button", onClick: () => setSelected([]) }, "Clear") : null, h("button", { type: "button", className: "primary", disabled: !selected.length, onClick: openAnalysis }, selected.length === 3 ? "Analyse 3 departments" : `Analyse ${selected.length || "selected"} department${selected.length === 1 ? "" : "s"}`)))
         ),
-        selected.length ? h(React.Fragment, null,
+        selected.length ? h("div", { className: "department-analysis-results", ref: resultsRef },
             h("div", { className: "summary five intel-summary" }, [["Tenders", totals.tenders], ["Portfolio Value", `Rs. ${money(totals.value)}`], ["Overdue", totals.overdue], ["Expiring in 7 days", totals.expiring], ["Recurring delay signals", totals.repeat]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),
             h("div", { className: "department-performance-grid" }, chosen.map(row => h("article", { className: "department-performance-card", key: row.name }, h("div", { className: "performance-head" }, h("div", null, h("small", null, "DEPARTMENT HEALTH"), h("h3", null, row.name)), h("strong", { className: row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk" }, row.tenders.length ? row.score : "—")), h("div", { className: "performance-meter" }, h("span", { style: { width: `${row.score}%` } })), h("div", { className: "performance-kpis" }, [["Tenders", row.tenders.length], ["Completed", row.completed], ["Overdue", row.overdue], ["Expiring", row.expiring]].map(([label, value]) => h("div", { key: label }, h("span", null, label), h("strong", null, value)))), h("p", { className: "performance-verdict" }, !row.tenders.length ? "No imported tenders yet." : row.score >= 75 ? "Doing well — closure and deadline signals are healthy." : row.score >= 50 ? "Needs attention — review overdue and expiry risks." : "At risk — recurring delay and overdue signals need action.")))),
             h("section", { className: "panel tender-health-panel" },
