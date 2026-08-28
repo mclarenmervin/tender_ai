@@ -4482,6 +4482,11 @@ function StateDepartmentIntelligencePage() {
     const [state, setState] = useState("Odisha");
     const [selected, setSelected] = useState([]);
     const [view, setView] = useState("all");
+    const [directory, setDirectory] = useState([]);
+    const [directoryLoading, setDirectoryLoading] = useState(false);
+    const [liveTenders, setLiveTenders] = useState([]);
+    const [analysisLoading, setAnalysisLoading] = useState(false);
+    const [liveMessage, setLiveMessage] = useState("");
     const resultsRef = useRef(null);
     const buyers = data?.buyers || [];
     const seen = new Set();
@@ -4491,9 +4496,10 @@ function StateDepartmentIntelligencePage() {
         if (!seen.has(key)) { seen.add(key); allTenders.push({ ...tender, _buyer: buyer }); }
     }));
     const same = (a, b) => String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
-    const stateTenders = allTenders.filter(row => same(row.state || row._buyer?.state, state));
+    const stateTenders = [...allTenders.filter(row => same(row.state || row._buyer?.state, state)), ...liveTenders];
     const imported = Array.from(new Set(stateTenders.map(row => row.department || row._buyer?.department).filter(Boolean)));
-    const names = state === "Odisha" ? Array.from(new Set([...ODISHA_DEPARTMENTS, ...imported])) : imported;
+    const directoryNames = directory.map(row => row.name);
+    const names = Array.from(new Set([...(state === "Odisha" ? ODISHA_DEPARTMENTS : []), ...directoryNames, ...imported]));
     const results = {};
     buyers.forEach(buyer => (buyer.bid_results || []).forEach(row => { results[String(row.tender_id || "").toUpperCase()] = row; }));
     const now = Date.now();
@@ -4511,10 +4517,15 @@ function StateDepartmentIntelligencePage() {
         return { name, tenders, completed, overdue, expiring, repeat, value, score };
     };
     const departments = names.map(getStats).sort((a, b) => (b.tenders.length - a.tenders.length) || (b.value - a.value) || a.name.localeCompare(b.name));
-    useEffect(() => setSelected(departments.filter(row => row.tenders.length).slice(0, 3).map(row => row.name)), [state, data]);
-    useEffect(() => {
-        if (selected.length === 3) setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
-    }, [selected]);
+    async function loadDepartments(nextState) {
+        setDirectoryLoading(true); setLiveMessage(`Loading ${nextState} departments from GeM...`); setDirectory([]); setSelected([]); setLiveTenders([]);
+        try {
+            const result = await api(`/api/buyer/intelligence/state-departments?state=${encodeURIComponent(nextState)}`, { silent: true });
+            setDirectory(result.departments || []); setLiveMessage(`${result.count || 0} GeM department records loaded for ${nextState}.`);
+        } catch (error) { setLiveMessage(error.message || "Departments could not be loaded from GeM."); }
+        finally { setDirectoryLoading(false); }
+    }
+    useEffect(() => { loadDepartments(state); }, [state]);
     const chosen = departments.filter(row => selected.includes(row.name));
     const chosenTenders = chosen.flatMap(department => department.tenders.map(row => ({ ...row, _stats: department })));
     const visible = chosenTenders.filter(row => {
@@ -4522,18 +4533,42 @@ function StateDepartmentIntelligencePage() {
         return view === "all" || view === "delayed" && overdue || view === "repeated" && repeated(row) || view === "expiring" && expiring;
     }).sort((a, b) => (dateOf(a)?.getTime() || Infinity) - (dateOf(b)?.getTime() || Infinity));
     const toggle = name => setSelected(current => current.includes(name) ? current.filter(item => item !== name) : current.length < 3 ? [...current, name] : current);
-    const states = Array.from(new Set(["Odisha", ...buyers.map(row => row.state).filter(Boolean)])).sort((a, b) => a === "Odisha" ? -1 : a.localeCompare(b));
+    const states = GLOBAL_SEARCH_STATES.filter(Boolean);
     const totals = { tenders: chosenTenders.length, value: chosen.reduce((sum, row) => sum + row.value, 0), overdue: chosen.reduce((sum, row) => sum + row.overdue, 0), expiring: chosen.reduce((sum, row) => sum + row.expiring, 0), repeat: chosen.reduce((sum, row) => sum + row.repeat, 0) };
-    const openAnalysis = () => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    async function openAnalysis() {
+        if (!selected.length) return;
+        setAnalysisLoading(true); setLiveMessage("Fetching live tenders for the selected departments...");
+        try {
+            const collected=[];
+            for (const name of selected) {
+                const matches=directory.filter(row => row.name === name);
+                const scopes=matches.length ? matches : [{ name, organization: "" }];
+                for (const scope of scopes) {
+                    let pages=1;
+                    for (let page=1;page<=Math.min(pages,5);page+=1) {
+                        const params=new URLSearchParams({mode:"ministry",page:String(page),buyer_state:state,organization:scope.organization||"",department:name});
+                        const result=await api(`/api/gem/advanced-search?${params}`,{silent:true});
+                        pages=Math.max(1,result.pages||1);
+                        (result.items||[]).forEach(item=>collected.push({...item,tender_id:item.bid_number,department:name,state,end_date:item.end_date,deadline_at:item.end_date,estimated_value:item.estimated_value||0,url:item.url,status:item.status||"open"}));
+                    }
+                }
+            }
+            const unique=Array.from(new Map(collected.map(row=>[row.tender_id||`${row.department}-${row.title}-${row.end_date}`,row])).values());
+            setLiveTenders(unique); setLiveMessage(`${unique.length} live GeM tender record(s) fetched for ${selected.length} department(s).`);
+            setTimeout(()=>resultsRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),120);
+        } catch (error) { setLiveMessage(error.message||"Live tender details could not be fetched."); }
+        finally { setAnalysisLoading(false); }
+    }
     return h("div", { className: "dept-intelligence" },
         h(IntelligenceHero, { title: "State Procurement Intelligence", text: "Choose a state, compare its leading departments, then select up to three for tender health, deadlines, recurring delays and L1/L2/L3 results.", actions: h("button", { onClick: () => navigate("/dashboard/buyer/tenders") }, "Published Tenders") }),
         message ? h("div", { className: "notice err" }, message) : null,
+        liveMessage ? h("div", { className: "notice" }, liveMessage) : null,
         !data && !message ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, "Building state intelligence...")) : null,
-        h("section", { className: "intel-state-picker" }, h("div", null, h("span", { className: "eyebrow" }, "Step 1"), h("h3", null, "Choose a state"), h("p", null, "Departments are ranked by imported tender volume and value.")), h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: state, onChange: event => setState(event.target.value) }, states.map(value => h("option", { key: value, value }, value))))),
+        h("section", { className: "intel-state-picker" }, h("div", null, h("span", { className: "eyebrow" }, "Step 1"), h("h3", null, "Choose a state"), h("p", null, "Departments are loaded live from the GeM buyer directory.")), h("label", { className: "field-block" }, h("span", null, "Buyer state"), h("select", { value: state, disabled: directoryLoading || analysisLoading, onChange: event => setState(event.target.value) }, states.map(value => h("option", { key: value, value }, value))))),
         h("section", { className: "intel-department-section" },
             h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 2"), h("h3", null, `${state} departments`), h("p", null, `${names.length} departments available · select up to 3`)), h("span", { className: "selection-count" }, `${selected.length}/3 selected`)),
-            h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "No data")))),
-            h("div", { className: "department-selection-actions" }, h("span", null, selected.length ? `${selected.length} department${selected.length === 1 ? "" : "s"} ready for comparison` : "Choose departments to begin"), h("div", null, selected.length ? h("button", { type: "button", onClick: () => setSelected([]) }, "Clear") : null, h("button", { type: "button", className: "primary", disabled: !selected.length, onClick: openAnalysis }, selected.length === 3 ? "Analyse 3 departments" : `Analyse ${selected.length || "selected"} department${selected.length === 1 ? "" : "s"}`)))
+            directoryLoading ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, `Fetching ${state} departments from GeM...`)) : h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} fetched tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "Ready to fetch")))),
+            h("div", { className: "department-selection-actions" }, h("span", null, selected.length ? `${selected.length} department${selected.length === 1 ? "" : "s"} ready for live analysis` : "Choose departments to begin"), h("div", null, selected.length ? h("button", { type: "button", disabled:analysisLoading, onClick: () => {setSelected([]);setLiveTenders([]);} }, "Clear") : null, h("button", { type: "button", className: "primary", disabled: !selected.length || analysisLoading, onClick: openAnalysis }, analysisLoading ? "Fetching tender details..." : selected.length === 3 ? "Fetch & analyse 3 departments" : `Fetch & analyse ${selected.length || "selected"} department${selected.length === 1 ? "" : "s"}`)))
         ),
         selected.length ? h("div", { className: "department-analysis-results", ref: resultsRef },
             h("div", { className: "summary five intel-summary" }, [["Tenders", totals.tenders], ["Portfolio Value", `Rs. ${money(totals.value)}`], ["Overdue", totals.overdue], ["Expiring in 7 days", totals.expiring], ["Recurring delay signals", totals.repeat]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),

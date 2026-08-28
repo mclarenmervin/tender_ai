@@ -9,6 +9,8 @@ import shutil
 import socket
 import uuid
 import itertools
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import lru_cache
 from collections import Counter
 from datetime import date, datetime, timedelta
 from html import escape, unescape
@@ -4040,6 +4042,49 @@ def api_gem_advance_options(kind:str='',ministry:str='',buyer_state:str='',organ
         if kind:
             return gem_dependent_options(kind,ministry=ministry,buyer_state=buyer_state,organization=organization,state=state)
         return gem_advanced_options()
+    except RuntimeError as exc:
+        raise HTTPException(502,str(exc))
+
+@lru_cache(maxsize=64)
+def gem_state_department_directory(buyer_state):
+    available=gem_advanced_options().get('buyer_states',[])
+    def state_key(value):
+        return re.sub(r'\b(ISLANDS?|STATE|UNION TERRITORY)\b','',re.sub(r'[^A-Z0-9]+',' ',str(value or '').upper())).strip()
+    requested=state_key(buyer_state)
+    resolved=next((value for value in available if state_key(value)==requested),None)
+    if not resolved:
+        resolved=next((value for value in available if state_key(value) in requested or requested in state_key(value)),buyer_state)
+    organizations=gem_dependent_options('organizations',buyer_state=resolved).get('items',[])
+    rows=[]
+    # GeM exposes departments below organizations. Resolve those branches in
+    # parallel and retain the organization needed for a subsequent live search.
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures={executor.submit(gem_dependent_options,'departments',buyer_state=resolved,organization=organization):organization for organization in organizations}
+        for future in as_completed(futures):
+            organization=futures[future]
+            try:
+                departments=future.result().get('items',[])
+            except RuntimeError:
+                departments=[]
+            if not departments:
+                rows.append({'name':organization,'organization':organization})
+            else:
+                rows.extend({'name':department,'organization':organization} for department in departments)
+    unique={}
+    for row in rows:
+        key=(row['name'].strip().lower(),row['organization'].strip().lower())
+        unique[key]=row
+    return sorted(unique.values(),key=lambda row:(row['name'].lower(),row['organization'].lower()))
+
+@app.get('/api/buyer/intelligence/state-departments')
+def api_buyer_state_departments(state:str,user:User=Depends(get_current_user)):
+    require_buyer(user)
+    state=(state or '').strip()
+    if not state:
+        raise HTTPException(400,'State is required')
+    try:
+        rows=gem_state_department_directory(state)
+        return {'state':state,'departments':rows,'count':len(rows)}
     except RuntimeError as exc:
         raise HTTPException(502,str(exc))
 
