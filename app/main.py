@@ -4088,6 +4088,52 @@ def api_buyer_state_departments(state:str,user:User=Depends(get_current_user)):
     except RuntimeError as exc:
         raise HTTPException(502,str(exc))
 
+def match_state_department(item,department,state):
+    def tokens(value):
+        ignored={'AND','THE','OF','DEPARTMENT','GOVERNMENT','GOVT','STATE','MINISTRY'}
+        state_words=set(re.findall(r'[A-Z0-9]+',str(state or '').upper()))
+        return {word for word in re.findall(r'[A-Z0-9]+',str(value or '').upper()) if len(word)>2 and word not in ignored and word not in state_words}
+    wanted=tokens(department)
+    haystack=' '.join(str(item.get(key) or '') for key in ('department','authority','organisation','office','ministry','title'))
+    present=tokens(haystack)
+    return bool(wanted) and (wanted.issubset(present) or len(wanted & present)>=max(1,min(2,len(wanted))))
+
+@app.get('/api/buyer/intelligence/state-tenders')
+def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_current_user)):
+    require_buyer(user)
+    selected=[value.strip() for value in departments.split('|') if value.strip()][:3]
+    if not state or not selected:
+        raise HTTPException(400,'State and at least one department are required')
+    feeds=[('ongoing_bids','',40),('bidrastatus','bid_awarded',30)]
+    collected=[]; failures=0
+    def fetch(feed):
+        status,by_status,page=feed
+        return search_gem_bids(state=state,status=status,by_status=by_status,page=page,page_size=10)
+    for status,by_status,limit in feeds:
+        try:
+            first=fetch((status,by_status,1)); collected.extend(first.get('items',[]))
+            page_limit=min(limit,max(1,int(first.get('pages') or 1)))
+        except RuntimeError:
+            failures+=1; continue
+        if page_limit>1:
+            with ThreadPoolExecutor(max_workers=8) as executor:
+                futures=[executor.submit(fetch,(status,by_status,page)) for page in range(2,page_limit+1)]
+                for future in as_completed(futures):
+                    try: collected.extend(future.result().get('items',[]))
+                    except RuntimeError: failures+=1
+    matched=[]
+    for item in collected:
+        department=next((name for name in selected if match_state_department(item,name,state)),None)
+        if department:
+            matched.append({**item,'matched_department':department})
+    unique={}
+    for item in matched:
+        unique[item.get('bid_number') or item.get('source_id') or str(len(unique))]=item
+    rows=list(unique.values())
+    rows.sort(key=lambda row:str(row.get('end_date') or ''),reverse=True)
+    return {'state':state,'departments':selected,'items':rows,'count':len(rows),'scanned':len(collected),'failures':failures,
+            'message':f'{len(rows)} matching tender/result records found after scanning {len(collected)} GeM records.'}
+
 @app.get('/api/gem/advanced-search')
 def api_gem_advanced_search(
     mode:str='bid', page:int=1, bid_number:str='', category:str='', ministry:str='',

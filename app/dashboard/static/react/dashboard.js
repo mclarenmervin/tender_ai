@@ -4537,24 +4537,12 @@ function StateDepartmentIntelligencePage() {
     const totals = { tenders: chosenTenders.length, value: chosen.reduce((sum, row) => sum + row.value, 0), overdue: chosen.reduce((sum, row) => sum + row.overdue, 0), expiring: chosen.reduce((sum, row) => sum + row.expiring, 0), repeat: chosen.reduce((sum, row) => sum + row.repeat, 0) };
     async function openAnalysis() {
         if (!selected.length) return;
-        setAnalysisLoading(true); setLiveMessage("Fetching live tenders for the selected departments...");
+        setAnalysisLoading(true); setLiveMessage("Scanning live and completed GeM records for the selected departments...");
         try {
-            const collected=[];
-            for (const name of selected) {
-                const matches=directory.filter(row => row.name === name);
-                const scopes=matches.length ? matches : [{ name, organization: "" }];
-                for (const scope of scopes) {
-                    let pages=1;
-                    for (let page=1;page<=Math.min(pages,5);page+=1) {
-                        const params=new URLSearchParams({mode:"ministry",page:String(page),buyer_state:state,organization:scope.organization||"",department:name});
-                        const result=await api(`/api/gem/advanced-search?${params}`,{silent:true});
-                        pages=Math.max(1,result.pages||1);
-                        (result.items||[]).forEach(item=>collected.push({...item,tender_id:item.bid_number,department:name,state,end_date:item.end_date,deadline_at:item.end_date,estimated_value:item.estimated_value||0,url:item.url,status:item.status||"open"}));
-                    }
-                }
-            }
-            const unique=Array.from(new Map(collected.map(row=>[row.tender_id||`${row.department}-${row.title}-${row.end_date}`,row])).values());
-            setLiveTenders(unique); setLiveMessage(`${unique.length} live GeM tender record(s) fetched for ${selected.length} department(s).`);
+            const params=new URLSearchParams({state,departments:selected.join("|")});
+            const report=await api(`/api/buyer/intelligence/state-tenders?${params}`,{silent:true});
+            const rows=(report.items||[]).map(item=>({...item,tender_id:item.bid_number,department:item.matched_department||item.department,state:item.state||state,deadline_at:item.end_date,estimated_value:item.estimated_value||0,url:item.url,status:item.status||"open"}));
+            setLiveTenders(rows); setLiveMessage(report.message||`${rows.length} GeM tender record(s) fetched.`);
             setTimeout(()=>resultsRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),120);
         } catch (error) { setLiveMessage(error.message||"Live tender details could not be fetched."); }
         finally { setAnalysisLoading(false); }
