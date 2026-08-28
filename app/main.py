@@ -4131,6 +4131,49 @@ def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_curr
         unique[item.get('bid_number') or item.get('source_id') or str(len(unique))]=item
     rows=list(unique.values())
     rows.sort(key=lambda row:str(row.get('end_date') or ''),reverse=True)
+    def enrich_result(item):
+        result_url=item.get('result_url') or item.get('ra_result_url')
+        if not result_url:
+            return item
+        try:
+            response=requests.get(result_url,headers={'User-Agent':'Mozilla/5.0 TenderAI/1.0'},timeout=30)
+            response.raise_for_status(); detail=parse_gem_public_result(response.text,result_url)
+        except (requests.RequestException,ValueError):
+            return {**item,'result_detail_status':'unavailable'}
+        participants=detail.get('participants') or []
+        def vendor_tokens(value):
+            ignored={'PRIVATE','LIMITED','LTD','PVT','UNDER','PMA','MSE','SOCIAL','CATEGORY','GENERAL','THE'}
+            return {word for word in re.findall(r'[A-Z0-9]+',str(value or '').upper()) if len(word)>2 and word not in ignored}
+        priced=[row for row in participants if row.get('quoted_price') is not None]
+        ranked=[]
+        for row in participants:
+            if not row.get('rank'): continue
+            merged=dict(row); wanted=vendor_tokens(row.get('vendor'))
+            candidate=next((price_row for price_row in priced if wanted and len(wanted & vendor_tokens(price_row.get('vendor')))>=max(1,min(2,len(wanted)))),None)
+            if merged.get('quoted_price') is None and candidate:
+                merged['quoted_price']=candidate.get('quoted_price')
+            if merged.get('quoted_price') is not None and merged.get('quoted_price')<=0:
+                merged['quoted_price']=None
+            ranked.append(merged)
+        awarded=next((row for row in participants if row.get('is_awarded')),None)
+        winner=detail.get('winner') or (awarded or {}).get('vendor')
+        enriched={**item,'sellers':sorted(ranked,key=lambda row:row.get('rank') or 999),
+                  'participants':participants,'winner':winner or '',
+                  'total_bidders':detail.get('total_bidders'),'technically_qualified':detail.get('technically_qualified'),
+                  'technically_disqualified':detail.get('technically_disqualified'),
+                  'masked_sellers':detail.get('masked_sellers'),'result_available':detail.get('result_available'),
+                  'result_detail_status':'fetched'}
+        if detail.get('estimated_value') is not None: enriched['estimated_value']=parse_import_number(detail.get('estimated_value'))
+        if detail.get('awarded_value') is not None: enriched['awarded_value']=parse_import_number(detail.get('awarded_value'))
+        return enriched
+    result_rows=[row for row in rows if row.get('result_url') or row.get('ra_result_url')]
+    if result_rows:
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            enriched_by_bid={}
+            futures=[executor.submit(enrich_result,row) for row in result_rows]
+            for future in as_completed(futures):
+                enriched=future.result(); enriched_by_bid[enriched.get('bid_number')]=enriched
+        rows=[enriched_by_bid.get(row.get('bid_number'),row) for row in rows]
     return {'state':state,'departments':selected,'items':rows,'count':len(rows),'scanned':len(collected),'failures':failures,
             'message':f'{len(rows)} matching tender/result records found after scanning {len(collected)} GeM records.'}
 
