@@ -4154,6 +4154,7 @@ def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_curr
                 merged['quoted_price']=candidate.get('quoted_price')
             if merged.get('quoted_price') is not None and merged.get('quoted_price')<=0:
                 merged['quoted_price']=None
+            merged['vendor']=re.sub(r'\s*\([^)]*MSE[^)]*\)\s*|\s+Under\s+PMA\s*',' ',str(merged.get('vendor') or ''),flags=re.I).strip()
             ranked.append(merged)
         awarded=next((row for row in participants if row.get('is_awarded')),None)
         winner=detail.get('winner') or (awarded or {}).get('vendor')
@@ -4174,7 +4175,38 @@ def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_curr
             for future in as_completed(futures):
                 enriched=future.result(); enriched_by_bid[enriched.get('bid_number')]=enriched
         rows=[enriched_by_bid.get(row.get('bid_number'),row) for row in rows]
+    seller_stats={}
+    def seller_key(value):
+        cleaned=str(value or '').upper().replace('PVT','PRIVATE').replace('LTD','LIMITED')
+        cleaned=re.sub(r'\([^)]*\)|\bUNDER\s+PMA\b',' ',cleaned)
+        return re.sub(r'[^A-Z0-9]+',' ',cleaned).strip()
+    for item in rows:
+        bid_no=item.get('bid_number') or ''
+        department=item.get('matched_department') or item.get('department') or ''
+        ranked={seller_key(row.get('vendor')):row for row in (item.get('sellers') or []) if seller_key(row.get('vendor'))}
+        participants={}
+        for participant in item.get('participants') or []:
+            key=seller_key(participant.get('vendor'))
+            if key: participants[key]=participant
+        participants.update(ranked)
+        for key,participant in participants.items():
+            stat=seller_stats.setdefault(key,{'seller':participant.get('vendor') or key.title(),'tenders':set(),'departments':set(),'l1':0,'l2':0,'l3':0,'confirmed_awards':0,'quoted_value':0})
+            if ranked.get(key): stat['seller']=ranked[key].get('vendor') or stat['seller']
+            stat['tenders'].add(bid_no); stat['departments'].add(department)
+            rank=(ranked.get(key) or {}).get('rank')
+            if rank in (1,2,3): stat[f'l{rank}']+=1
+            if participant.get('is_awarded') or (item.get('winner') and seller_key(item.get('winner'))==key): stat['confirmed_awards']+=1
+            price=(ranked.get(key) or {}).get('quoted_price')
+            if price and price>0: stat['quoted_value']+=price
+    seller_rows=[]; total_matched=max(1,len(rows))
+    for stat in seller_stats.values():
+        participations=len(stat.pop('tenders')); department_count=len(stat.pop('departments'))
+        dominance_score=round((stat['confirmed_awards']*45+stat['l1']*30+participations*25)/total_matched,1)
+        observation='Confirmed award leader' if stat['confirmed_awards'] else 'Frequent L1 finisher' if stat['l1'] else 'Continuous participant' if participations>=2 else 'Participated'
+        seller_rows.append({**stat,'participations':participations,'department_count':department_count,'participation_rate':round(participations/total_matched*100,1),'dominance_score':dominance_score,'observation':observation})
+    seller_rows.sort(key=lambda row:(row['confirmed_awards'],row['l1'],row['participations'],row['quoted_value']),reverse=True)
     return {'state':state,'departments':selected,'items':rows,'count':len(rows),'scanned':len(collected),'failures':failures,
+            'seller_intelligence':seller_rows,
             'message':f'{len(rows)} matching tender/result records found after scanning {len(collected)} GeM records.'}
 
 @app.get('/api/gem/advanced-search')
@@ -4971,7 +5003,10 @@ def parse_gem_public_result(html,source_url):
         table_count+=1
         status_index=next((i for i,value in enumerate(headers) if value.strip()=='status' or 'technical status' in value),None)
         rank_index=next((i for i,value in enumerate(headers) if 'rank' in value or value.strip() in {'l1/l2/l3','position'}),None)
-        price_index=next((i for i,value in enumerate(headers) if 'price' in value or 'quoted' in value or 'offer' in value or 'amount' in value),None)
+        # "Offered Item" is a product-description column, not a monetary
+        # offer. Prefer explicit financial headers so ranks receive the actual
+        # Total Price instead of a number found in an item/model description.
+        price_index=next((i for i,value in enumerate(headers) if ('price' in value and 'item' not in value) or 'quoted' in value or 'amount' in value),None)
         for row_number,row in enumerate(table[1:],start=1):
             if seller_index>=len(row): continue
             seller=re.sub(r'\s+',' ',row[seller_index]).strip()
