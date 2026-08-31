@@ -4099,12 +4099,19 @@ def match_state_department(item,department,state):
     return bool(wanted) and (wanted.issubset(present) or len(wanted & present)>=max(1,min(2,len(wanted))))
 
 @app.get('/api/buyer/intelligence/state-tenders')
-def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_current_user)):
+def api_buyer_state_tenders(state:str,departments:str,coverage:str='recent',user:User=Depends(get_current_user)):
     require_buyer(user)
     selected=[value.strip() for value in departments.split('|') if value.strip()][:3]
     if not state or not selected:
         raise HTTPException(400,'State and at least one department are required')
-    feeds=[('ongoing_bids','',40),('bidrastatus','bid_awarded',30)]
+    # Recent is responsive for normal use. Extended scans much deeper into
+    # both live and awarded feeds when a broader historical report is needed.
+    if coverage=='all':
+        feeds=[('ongoing_bids','',500),('bidrastatus','bid_awarded',500)]
+    elif coverage=='extended':
+        feeds=[('ongoing_bids','',120),('bidrastatus','bid_awarded',100)]
+    else:
+        feeds=[('ongoing_bids','',40),('bidrastatus','bid_awarded',30)]
     collected=[]; failures=0
     def fetch(feed):
         status,by_status,page=feed
@@ -4205,9 +4212,9 @@ def api_buyer_state_tenders(state:str,departments:str,user:User=Depends(get_curr
         observation='Confirmed award leader' if stat['confirmed_awards'] else 'Frequent L1 finisher' if stat['l1'] else 'Continuous participant' if participations>=2 else 'Participated'
         seller_rows.append({**stat,'participations':participations,'department_count':department_count,'participation_rate':round(participations/total_matched*100,1),'dominance_score':dominance_score,'observation':observation})
     seller_rows.sort(key=lambda row:(row['confirmed_awards'],row['l1'],row['participations'],row['quoted_value']),reverse=True)
-    return {'state':state,'departments':selected,'items':rows,'count':len(rows),'scanned':len(collected),'failures':failures,
+    return {'state':state,'departments':selected,'coverage':coverage,'items':rows,'count':len(rows),'scanned':len(collected),'failures':failures,
             'seller_intelligence':seller_rows,
-            'message':f'{len(rows)} matching tender/result records found after scanning {len(collected)} GeM records.'}
+            'message':f'{len(rows)} matching tender/result records found after scanning {len(collected)} GeM records ({"all available" if coverage=="all" else "extended" if coverage=="extended" else "recent"} coverage).'}
 
 @app.get('/api/gem/advanced-search')
 def api_gem_advanced_search(

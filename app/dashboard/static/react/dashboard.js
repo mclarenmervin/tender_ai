@@ -4487,6 +4487,9 @@ function StateDepartmentIntelligencePage() {
     const [liveTenders, setLiveTenders] = useState([]);
     const [sellerIntelligence, setSellerIntelligence] = useState([]);
     const [analysisLoading, setAnalysisLoading] = useState(false);
+    const [coverage, setCoverage] = useState("recent");
+    const [detailPage, setDetailPage] = useState(1);
+    const detailPageSize = 25;
     const [liveMessage, setLiveMessage] = useState("");
     const resultsRef = useRef(null);
     const buyers = data?.buyers || [];
@@ -4533,6 +4536,9 @@ function StateDepartmentIntelligencePage() {
         const time = dateOf(row)?.getTime(); const overdue = time < now && !complete(row); const expiring = time >= now && time <= now + 604800000 && !complete(row);
         return view === "all" || view === "delayed" && overdue || view === "repeated" && repeated(row) || view === "expiring" && expiring;
     }).sort((a, b) => (dateOf(a)?.getTime() || Infinity) - (dateOf(b)?.getTime() || Infinity));
+    const detailPages=Math.max(1,Math.ceil(visible.length/detailPageSize));
+    const visiblePage=visible.slice((detailPage-1)*detailPageSize,detailPage*detailPageSize);
+    useEffect(()=>setDetailPage(1),[view,liveTenders]);
     const toggle = name => setSelected(current => current.includes(name) ? current.filter(item => item !== name) : current.length < 3 ? [...current, name] : current);
     const states = GLOBAL_SEARCH_STATES.filter(Boolean);
     const totals = { tenders: chosenTenders.length, value: chosen.reduce((sum, row) => sum + row.value, 0), overdue: chosen.reduce((sum, row) => sum + row.overdue, 0), expiring: chosen.reduce((sum, row) => sum + row.expiring, 0), repeat: chosen.reduce((sum, row) => sum + row.repeat, 0) };
@@ -4540,10 +4546,10 @@ function StateDepartmentIntelligencePage() {
         if (!selected.length) return;
         setAnalysisLoading(true); setLiveMessage("Scanning live and completed GeM records for the selected departments...");
         try {
-            const params=new URLSearchParams({state,departments:selected.join("|")});
+            const params=new URLSearchParams({state,departments:selected.join("|"),coverage});
             const report=await api(`/api/buyer/intelligence/state-tenders?${params}`,{silent:true});
             const rows=(report.items||[]).map(item=>({...item,tender_id:item.bid_number,department:item.matched_department||item.department,state:item.state||state,deadline_at:item.end_date,estimated_value:item.estimated_value||0,url:item.url,status:item.status||"open"}));
-            setLiveTenders(rows); setSellerIntelligence(report.seller_intelligence||[]); setLiveMessage(report.message||`${rows.length} GeM tender record(s) fetched.`);
+            setLiveTenders(rows); setSellerIntelligence(report.seller_intelligence||[]); setDetailPage(1); setLiveMessage(report.message||`${rows.length} GeM tender record(s) fetched.`);
             setTimeout(()=>resultsRef.current?.scrollIntoView({behavior:"smooth",block:"start"}),120);
         } catch (error) { setLiveMessage(error.message||"Live tender details could not be fetched."); }
         finally { setAnalysisLoading(false); }
@@ -4557,7 +4563,10 @@ function StateDepartmentIntelligencePage() {
         h("section", { className: "intel-department-section" },
             h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 2"), h("h3", null, `${state} departments`), h("p", null, `${names.length} departments available · select up to 3`)), h("span", { className: "selection-count" }, `${selected.length}/3 selected`)),
             directoryLoading ? h("div", { className: "table-loader" }, h("span", { className: "loader" }), h("strong", null, `Fetching ${state} departments from GeM...`)) : h("div", { className: "dept-rank-grid" }, departments.map((row, index) => h("button", { type: "button", key: row.name, className: `dept-rank-card ${selected.includes(row.name) ? "selected" : ""} ${selected.length >= 3 && !selected.includes(row.name) ? "muted" : ""}`, onClick: () => toggle(row.name) }, h("span", { className: "dept-rank" }, `#${index + 1}`), h("span", { className: "dept-card-copy" }, h("strong", null, row.name), h("small", null, `${row.tenders.length} fetched tenders · Rs. ${money(row.value)}`)), h("span", { className: `dept-health ${row.score >= 75 ? "good" : row.score >= 50 ? "watch" : "risk"}` }, row.tenders.length ? `${row.score} health` : "Ready to fetch")))),
-            h("div", { className: "department-selection-actions" }, h("span", null, selected.length ? `${selected.length} department${selected.length === 1 ? "" : "s"} ready for live analysis` : "Choose departments to begin"), h("div", null, selected.length ? h("button", { type: "button", disabled:analysisLoading, onClick: () => {setSelected([]);setLiveTenders([]);setSellerIntelligence([]);} }, "Clear") : null, h("button", { type: "button", className: "primary", disabled: !selected.length || analysisLoading, onClick: openAnalysis }, analysisLoading ? "Fetching tender details..." : selected.length === 3 ? "Fetch & analyse 3 departments" : `Fetch & analyse ${selected.length || "selected"} department${selected.length === 1 ? "" : "s"}`)))
+            h("div", { className: "department-selection-actions" }, h("span", null, selected.length ? `${selected.length} department${selected.length === 1 ? "" : "s"} ready for live analysis` : "Choose departments to begin"), h("div", null,
+                h("label", { className:"coverage-select" }, h("span",null,"Report coverage"),h("select",{value:coverage,disabled:analysisLoading,onChange:event=>setCoverage(event.target.value)},h("option",{value:"recent"},"Recent · up to 700 records"),h("option",{value:"extended"},"Extended · up to 2,200 records"),h("option",{value:"all"},"All available · complete scan"))),
+                selected.length ? h("button", { type: "button", disabled:analysisLoading, onClick: () => {setSelected([]);setLiveTenders([]);setSellerIntelligence([]);} }, "Clear") : null,
+                h("button", { type: "button", className: "primary", disabled: !selected.length || analysisLoading, onClick: openAnalysis }, analysisLoading ? (coverage==="all"?"Scanning all GeM pages...":coverage==="extended"?"Running extended scan...":"Fetching tender details...") : coverage==="all"?"Fetch all & process reports":coverage==="extended"?"Fetch more tenders":selected.length === 3 ? "Fetch & analyse 3 departments" : `Fetch & analyse ${selected.length || "selected"} department${selected.length === 1 ? "" : "s"}`)))
         ),
         selected.length ? h("div", { className: "department-analysis-results", ref: resultsRef },
             h("div", { className: "summary five intel-summary" }, [["Tenders", totals.tenders], ["Portfolio Value", `Rs. ${money(totals.value)}`], ["Overdue", totals.overdue], ["Expiring in 7 days", totals.expiring], ["Recurring delay signals", totals.repeat]].map(([label, value]) => h("div", { className: "tile", key: label }, h("span", null, label), h("strong", null, value)))),
@@ -4569,10 +4578,11 @@ function StateDepartmentIntelligencePage() {
             ) : null,
             h("section", { className: "panel tender-health-panel" },
                 h("div", { className: "intel-section-head" }, h("div", null, h("span", { className: "eyebrow" }, "Step 3"), h("h3", null, "Tender details & financial ranking"), h("p", null, "Evidence from the imported GeM portfolio.")), h("div", { className: "intel-tabs" }, [["all", "All"], ["delayed", "Overdue"], ["repeated", "Recurring delays"], ["expiring", "Expiring"]].map(([key, label]) => h("button", { key, className: view === key ? "active" : "", onClick: () => setView(key) }, label)))),
-                visible.length ? h("div", { className: "table-scroll" }, h("table", null, h("thead", null, h("tr", null, ["Tender", "Department", "Value", "Deadline", "Signal", "L1", "L2", "L3", "Award"].map(label => h("th", { key: label }, label)))), h("tbody", null, visible.map((row, index) => {
+                visible.length ? h("div", { className: "table-scroll" }, h("table", null, h("thead", null, h("tr", null, ["Tender", "Department", "Value", "Deadline", "Signal", "L1", "L2", "L3", "Award"].map(label => h("th", { key: label }, label)))), h("tbody", null, visiblePage.map((row, index) => {
                     const result = results[String(row.tender_id || "").toUpperCase()] || row; const ranks = (result?.sellers || []).filter(seller => seller.rank).sort((a, b) => a.rank - b.rank); const time = dateOf(row)?.getTime(); const overdue = time < now && !complete(row); const expiring = time >= now && time <= now + 604800000 && !complete(row); const signal = repeated(row) ? "Recurring extension" : overdue ? "Overdue" : expiring ? "Expiring soon" : complete(row) ? "Completed" : "On track"; const rank = number => { const seller = ranks.find(item => item.rank === number); return seller ? h("span", null, seller.seller, seller.quoted_price != null ? h("small", null, `Rs. ${money(seller.quoted_price)}`) : h("small", null, "Price not exposed")) : result?.result_detail_status === "fetched" ? "Not exposed" : "Pending result"; }; const l1=ranks.find(item=>item.rank===1); const displayValue=row.estimated_value||row.awarded_value||l1?.quoted_price;
                     return h("tr", { key: row.id || `${row.tender_id}-${index}` }, h("td", null, row.url ? h("a", { href: row.url, target: "_blank", rel: "noreferrer" }, row.title || row.tender_id) : row.title || row.tender_id || "Untitled", h("small", null, row.tender_id || "")), h("td", null, row.department || row._buyer?.department || "NA"), h("td", null, displayValue ? h("span", null, `Rs. ${money(displayValue)}`, h("small", null, row.estimated_value ? "Estimated" : row.awarded_value ? "Awarded" : "L1 quoted")) : "Not exposed"), h("td", null, dateOf(row) ? displayGemDate(dateOf(row)) : "Not available"), h("td", null, h("span", { className: `health-signal ${overdue || repeated(row) ? "risk" : expiring ? "watch" : "good"}` }, signal)), h("td", null, rank(1)), h("td", null, rank(2)), h("td", null, rank(3)), h("td", null, result?.winner || (l1 ? "L1 found · award not confirmed" : "Not publicly confirmed")));
-                })))) : h("div", { className: "empty" }, h("h3", null, "No tenders in this view"), h("p", null, "Import this department’s GeM tenders from Buyer Directory, or choose another filter."))
+                })))) : h("div", { className: "empty" }, h("h3", null, "No tenders in this view"), h("p", null, "Import this department’s GeM tenders from Buyer Directory, or choose another filter.")),
+                visible.length>detailPageSize ? h("div", { className:"intelligence-pagination" },h("span",null,`Showing ${(detailPage-1)*detailPageSize+1}–${Math.min(detailPage*detailPageSize,visible.length)} of ${visible.length} tenders`),h("div",null,h("button",{disabled:detailPage<=1,onClick:()=>setDetailPage(1)},"First"),h("button",{disabled:detailPage<=1,onClick:()=>setDetailPage(page=>page-1)},"Previous"),h("strong",null,`Page ${detailPage} of ${detailPages}`),h("button",{disabled:detailPage>=detailPages,onClick:()=>setDetailPage(page=>page+1)},"Next"),h("button",{disabled:detailPage>=detailPages,onClick:()=>setDetailPage(detailPages)},"Last"))) : null
             )
         ) : h("div", { className: "empty intel-empty" }, h("h3", null, "Select up to three departments"), h("p", null, "The comparison dashboard will appear here."))
     );
