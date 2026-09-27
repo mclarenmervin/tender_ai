@@ -123,9 +123,9 @@ def send_email(to_email, subject, html_body, text_body, attachments=None):
     return True
 
 
-def build_scrape_excel_attachment(db, tenders):
+def build_scrape_excel_attachment(db, tenders, allow_empty=False):
     """Create the same detailed workbook export, limited to this scrape's tenders."""
-    if not tenders:
+    if not tenders and not allow_empty:
         return None
     # Imported lazily to avoid coupling email module initialization to the web app.
     from app.main import (
@@ -237,8 +237,14 @@ def notify_scrape_summary_email(db, user_id, scrape_details, subject=None):
 </div>
 """.strip()
     text_body = f"Auto scrape report\n{result_line}\nScored: {scored}\nRemoved low priority: {removed}\n\n{details_text}"
+    if details.get("profile_id"):
+        note = "The cumulative master Excel workbook for this criterion is attached, including bids from previous runs."
+        html_body += f"<p>{note}</p>"
+        text_body += "\n\n" + note
     try:
-        if send_email(recipient, subject, html_body, text_body):
+        from app.alerts.criterion_reports import criterion_attachment
+        attachment = criterion_attachment(db, user_id, scrape_details)
+        if send_email(recipient, subject, html_body, text_body, attachments=[attachment] if attachment else None):
             log_general_email_notification(db, user_id, recipient, "sent", subject)
             return 1
         log_general_email_notification(db, user_id, recipient, "skipped", "SMTP is not configured")
@@ -268,6 +274,7 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
     if not tenders:
         return 0
 
+    report_description = "The cumulative master Excel workbook for this criterion is attached, including bids from previous runs." if (scrape_details or {}).get("profile_id") else "A detailed Excel report containing this scrape’s new tenders is attached."
     rows = "\n".join(tender_html(tender) for tender in tenders)
     alert_run = str((scrape_details or {}).get("trigger") or "").startswith("gem_alert")
     subject = f"Tender AI GeM Alert: {len(tenders)} new matching bid{'s' if len(tenders) != 1 else ''}" if alert_run else f"Tender AI: {len(tenders)} new tender{'s' if len(tenders) != 1 else ''} added"
@@ -277,7 +284,7 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
 <div style="font-family:Arial,sans-serif;color:#111827;">
   <h2>{'New matching GeM bids' if alert_run else 'New tenders added to Tender AI'}</h2>
   <p>{len(tenders)} new matching bid{'s were' if len(tenders) != 1 else ' was'} found for your department and location alert filters.</p>
-  <p>A detailed Excel report containing only the tenders found in this scrape is attached.</p>
+  <p>{report_description}</p>
   {details_html}
   <table style="border-collapse:collapse;width:100%;">{rows}</table>
 </div>
@@ -286,10 +293,11 @@ def notify_new_tenders_email(db, tender_ids, user_id, scrape_details=None):
         f"{t.title or ''}\nID: {t.tender_id or ''}\nDepartment: {t.department or ''}\nState: {t.state or ''}\nCity: {t.city or ''}\nDeadline: {t.deadline or ''}\nScore: {t.relevance_score if t.relevance_score is not None else ''}\nLink: {t.url or ''}"
         for t in tenders
     )
-    text_body = (details_text + "\n\n" if details_text else "") + "A detailed Excel report containing only this scrape's new tenders is attached.\n\n" + tender_text
+    text_body = (details_text + "\n\n" if details_text else "") + report_description + "\n\n" + tender_text
 
     try:
-        attachment=build_scrape_excel_attachment(db,tenders)
+        from app.alerts.criterion_reports import criterion_attachment
+        attachment=criterion_attachment(db,user_id,scrape_details) if (scrape_details or {}).get("profile_id") else build_scrape_excel_attachment(db,tenders)
         if send_email(user.email, subject, html_body, text_body, attachments=[attachment] if attachment else None):
             log_email_notifications(db, tenders, user.email, "sent", message=subject)
             return len(tenders)

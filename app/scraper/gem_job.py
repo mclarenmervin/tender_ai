@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 
 from app.alerts.telegram_alerts import notify_new_tenders
 from app.alerts.email_alerts import email_notification_readiness, notify_new_tenders_email, notify_scrape_summary_email
+from app.alerts.whatsapp_alerts import notify_scrape_whatsapp, whatsapp_notification_readiness
 from app.ai_engine.keyword_engine import expand_keyword, rotate_terms
 from app.ai_engine.scorer import score_unscored_tenders
 from app.database.db_connection import get_db
@@ -113,6 +114,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             "scraper_version": GEM_SCRAPER_VERSION,
             "trigger": trigger,
             "profile_name":profile.get("name") if profile else None,
+            "profile_id":profile.get("id") if profile else None,
             "keywords": keywords,
             "inserted": inserted,
             "scored": scored,
@@ -130,14 +132,20 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             "only_high_priority":only_high_priority,
             "max_bids":max_bids,
         })
+        if profile:
+            from app.alerts.criterion_reports import criterion_tenders
+            matched_ids = [tid for log in source_logs for tid in log.get("matched_ids", log.get("inserted_ids", []))]
+            criterion_tenders(db, user_id, profile["id"], matched_ids)
         emailed = notify_new_tenders_email(db, inserted_ids, user_id, scrape_details=scrape_details)
-        if str(trigger).startswith("auto") and not inserted_ids:
+        if (profile or str(trigger).startswith("auto")) and not inserted_ids:
             emailed = notify_scrape_summary_email(
                 db,
                 user_id,
                 scrape_details,
                 subject="Tender AI auto scrape report: no new tenders found",
             )
+        whatsapp_status = whatsapp_notification_readiness(db, user_id, require_template=True)
+        whatsapped = notify_scrape_whatsapp(db, inserted_ids, user_id, scrape_details=scrape_details) if (inserted_ids or str(trigger).startswith("auto")) else 0
         if inserted_ids and emailed == 0:
             source_logs.append({
                 "source": "Email",
@@ -168,6 +176,7 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
         run.scored_count = scored
         run.telegram_count = notified
         run.email_count = emailed
+        run.whatsapp_count = whatsapped
         run.removed_low_priority_count = removed_low_priority
         run.message = message
         run.finished_at = func.now()
@@ -179,6 +188,8 @@ def run_gem_job(user_id=None, trigger="manual", profile=None):
             "alerts_sent": notified,
             "emails_sent": emailed,
             "email_status": email_status,
+            "whatsapps_sent": whatsapped,
+            "whatsapp_status": whatsapp_status,
             "removed_low_priority": removed_low_priority,
             "failed_sources": failed_sources,
             "source_logs": source_logs,

@@ -39,6 +39,7 @@ from app.ai_engine.bid_decision import bid_decision_for_tender
 from app.ai_engine.procurement_anomaly import calculate_award_ratio_metrics, calculate_competition_metrics, calculate_price_gap_metrics, calculate_vendor_concentration_metrics
 from app.alerts.daily_digest import send_daily_digest
 from app.alerts.email_alerts import email_configured, send_email
+from app.alerts.whatsapp_alerts import normalize_whatsapp_phone, send_whatsapp_template, whatsapp_configured, whatsapp_notification_readiness, whatsapp_phone_for_user
 from app.alerts.telegram_alerts import broadcast_telegram_message
 from app.scraper.gem_job import GEM_SCRAPER_VERSION,run_gem_job
 from app.scraper.gem_scraper import GemScraper
@@ -99,6 +100,7 @@ def ensure_schema_updates():
             "ALTER TABLE tenders ADD COLUMN IF NOT EXISTS scrape_run_id INTEGER REFERENCES scrape_runs(id)",
             "CREATE INDEX IF NOT EXISTS ix_tenders_scrape_run_id ON tenders(scrape_run_id)",
             "ALTER TABLE scrape_runs ADD COLUMN IF NOT EXISTS criteria_json TEXT",
+            "ALTER TABLE scrape_runs ADD COLUMN IF NOT EXISTS whatsapp_count INTEGER DEFAULT 0",
             "ALTER TABLE scraping_logs ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE scrape_keywords ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
             "ALTER TABLE app_settings ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)",
@@ -183,6 +185,7 @@ def ensure_runtime_schema_updates():
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS emd_amount BIGINT",
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS source_result_json TEXT",
             "ALTER TABLE procurement_bid_participants ADD COLUMN IF NOT EXISTS vendor_identifier VARCHAR(120)",
+            "ALTER TABLE scrape_runs ADD COLUMN IF NOT EXISTS whatsapp_count INTEGER DEFAULT 0",
         ]:
             conn.exec_driver_sql(ddl)
 
@@ -2199,6 +2202,7 @@ def scrape_run_to_dict(item):
         'scored_count':item.scored_count or 0,
         'telegram_count':item.telegram_count or 0,
         'email_count':item.email_count or 0,
+        'whatsapp_count':item.whatsapp_count or 0,
         'removed_low_priority_count':item.removed_low_priority_count or 0,
         'message':item.message or '',
         'criteria':criteria,
@@ -2818,8 +2822,14 @@ async def api_update_profile(request:Request,db:Session=Depends(get_db),user:Use
         raise HTTPException(400,'Email already belongs to another user.')
     user.name=name
     user.email=cleaned_email
+    raw_whatsapp_phone=(payload.get('whatsapp_phone') or '').strip()
+    whatsapp_phone=normalize_whatsapp_phone(raw_whatsapp_phone)
+    if raw_whatsapp_phone and not whatsapp_phone:
+        raise HTTPException(400,'Enter a valid WhatsApp number with country code, for example +91 98765 43210.')
     get_notification_preference(db,user.id,'telegram').enabled=bool(payload.get('telegram_enabled'))
     get_notification_preference(db,user.id,'email').enabled=bool(payload.get('email_enabled'))
+    get_notification_preference(db,user.id,'whatsapp').enabled=bool(payload.get('whatsapp_enabled'))
+    set_setting(db,user.id,'whatsapp_phone',whatsapp_phone)
     db.commit()
     token=create_access_token({'sub':user.email})
     res=Response(json.dumps({'ok':True}),media_type='application/json')
@@ -2875,6 +2885,27 @@ def api_profile_test_email(db:Session=Depends(get_db),user:User=Depends(get_curr
     db.add(NotificationLog(user_id=user.id,tender_id=None,channel='email',recipient=user.email,status='sent',message=subject))
     db.commit()
     return {'ok':True,'message':f'Test email sent to {user.email}. Email alerts are now enabled.'}
+
+@app.post('/api/profile/test-whatsapp')
+def api_profile_test_whatsapp(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    phone=whatsapp_phone_for_user(db,user.id)
+    if not phone:
+        raise HTTPException(400,'Save a valid WhatsApp phone number in Profile first.')
+    if not whatsapp_configured(require_template=True):
+        raise HTTPException(400,'WhatsApp is not configured on the server. Add the Cloud API token, phone-number ID, and approved template name.')
+    message='Tender AI test notification\nYour WhatsApp auto-scrape alerts are configured correctly.'
+    try:
+        sent=send_whatsapp_template(phone,message)
+    except Exception as exc:
+        db.add(NotificationLog(user_id=user.id,tender_id=None,channel='whatsapp',recipient=phone,status='failed',message='Test notification',error=str(exc)[:1000]))
+        db.commit()
+        raise HTTPException(502,f'WhatsApp test failed: {str(exc)[:300]}')
+    if not sent:
+        raise HTTPException(400,'WhatsApp notification could not be sent.')
+    get_notification_preference(db,user.id,'whatsapp').enabled=True
+    db.add(NotificationLog(user_id=user.id,tender_id=None,channel='whatsapp',recipient=phone,status='sent',message='Test notification'))
+    db.commit()
+    return {'ok':True,'message':f'Test WhatsApp notification sent to +{phone}. WhatsApp alerts are now enabled.'}
 
 @app.get('/dashboard/high-priority')
 def high_priority_dashboard(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -3799,10 +3830,12 @@ def admin_delete(request:Request,db:Session=Depends(get_db),user:User=Depends(ge
 def api_me(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     telegram_pref=get_notification_preference(db,user.id,'telegram')
     email_pref=get_notification_preference(db,user.id,'email')
+    whatsapp_pref=get_notification_preference(db,user.id,'whatsapp')
     return {
         'id':user.id,
         'name':user.name,
         'email':user.email,
+        'whatsapp_phone':whatsapp_phone_for_user(db,user.id),
         'role':user.role if user.role in {'buyer','seller'} else 'buyer',
         'dashboard_path':'/dashboard/seller' if user.role=='seller' else '/dashboard/buyer/tenders',
         'is_active':user.is_active,
@@ -3810,6 +3843,8 @@ def api_me(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
         'notifications':{
             'telegram':telegram_pref.enabled,
             'email':email_pref.enabled,
+            'whatsapp':whatsapp_pref.enabled,
+            'whatsapp_configured':whatsapp_configured(require_template=True),
         },
     }
 
@@ -6885,7 +6920,7 @@ def run_configured_scrapes(db,user_id,trigger='manual'):
     if not profiles:
         return run_scrape_subprocess(user_id,trigger=trigger)
     combined={
-        'inserted':0,'scored':0,'alerts_sent':0,'emails_sent':0,
+        'inserted':0,'scored':0,'alerts_sent':0,'emails_sent':0,'whatsapps_sent':0,
         'removed_low_priority':0,'failed_sources':[],'source_logs':[],
         'profile_results':[],
     }
@@ -6898,7 +6933,7 @@ def run_configured_scrapes(db,user_id,trigger='manual'):
             **result,
         }
         combined['profile_results'].append(profile_result)
-        for field in ['inserted','scored','alerts_sent','emails_sent','removed_low_priority']:
+        for field in ['inserted','scored','alerts_sent','emails_sent','whatsapps_sent','removed_low_priority']:
             combined[field]+=int(result.get(field) or 0)
         combined['failed_sources'].extend(result.get('failed_sources') or [])
         for log in result.get('source_logs') or []:
@@ -7330,18 +7365,24 @@ async def api_set_scrape_location(request:Request,db:Session=Depends(get_db),use
 @app.post('/api/admin/settings/authorities/refresh')
 def api_refresh_gem_authorities(db:Session=Depends(get_db),user:User=Depends(get_current_user)):
     try:
-        tenders=GemScraper(keywords=[],max_bids=200).scrape()
-    except Exception as exc:
-        raise HTTPException(502,f'GeM authority refresh failed: {str(exc)[:240]}')
+        directory=gem_advanced_options()
+    except RuntimeError as exc:
+        raise HTTPException(502,str(exc))
     existing=get_json_setting(db,user.id,'gem_authority_options',[])
-    discovered=[
-        (item.get('department') or '').strip()
-        for item in tenders
-        if (item.get('department') or '').strip().lower() not in {'','gem','unknown','and address:'}
-    ]
-    authorities=sorted(set(existing).union(discovered),key=str.lower)[:1000]
+    discovered=directory.get('ministries',[])
+    authorities=sorted(set(existing).union(discovered),key=str.lower)
     set_setting(db,user.id,'gem_authority_options',json.dumps(authorities))
-    return {'authorities':authorities,'discovered':len(set(discovered)),'message':f'Authority catalogue refreshed from {len(tenders)} current GeM bid records.'}
+    return {'authorities':authorities,'discovered':len(discovered),'message':f"GeM directory refreshed: {len(discovered)} ministry groups and {len(directory.get('buyer_states',[]))} buyer-state groups. Open Add Criteria or Edit to browse all organisations and departments."}
+
+@app.get('/api/admin/settings/scrape-profiles/{profile_id}/master.xlsx')
+def api_criterion_master(profile_id:str,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
+    profile=next((item for item in scrape_profiles(db,user.id) if item['id']==profile_id),None)
+    if not profile:
+        raise HTTPException(404,'Scrape criterion not found')
+    from app.alerts.criterion_reports import criterion_attachment
+    attachment=criterion_attachment(db,user.id,{'profile_id':profile_id})
+    return Response(content=attachment['content'],media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        headers={'Content-Disposition':f'attachment; filename="{attachment["filename"]}"'})
 
 @app.post('/admin/settings/auto-scrape')
 async def set_auto_scrape(request:Request,db:Session=Depends(get_db),user:User=Depends(get_current_user)):
@@ -7440,6 +7481,8 @@ def api_get_gem_alerts(db:Session=Depends(get_db),user:User=Depends(get_current_
         'last_6pm':get_setting(db,user.id,'gem_alert_last_run_1800',''),
         'telegram_enabled':get_notification_preference(db,user.id,'telegram').enabled,
         'email_enabled':get_notification_preference(db,user.id,'email').enabled,
+        'whatsapp_enabled':get_notification_preference(db,user.id,'whatsapp').enabled,
+        'whatsapp_configured':whatsapp_configured(require_template=True),
     }
 
 @app.get('/api/seller/gem-alerts')

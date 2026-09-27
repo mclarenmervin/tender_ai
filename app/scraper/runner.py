@@ -22,6 +22,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                 ]
             source_inserted=0
             source_inserted_ids=[]
+            matched_ids=[]
             skipped_existing=0
             updated_existing=0
             performance={}
@@ -33,6 +34,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                 item['scrape_run_id']=scrape_run_id
                 existing=db.query(Tender).filter(Tender.user_id==user_id,Tender.source==item['source'],Tender.tender_id==item['tender_id']).first()
                 if existing:
+                    matched_ids.append(existing.id)
                     skipped_existing+=1
                     stats['duplicate']+=1
                     changed=False
@@ -57,6 +59,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
                     inserted+=1; source_inserted+=1
                     if tender:
                         source_inserted_ids.append(tender.id)
+                        matched_ids.append(tender.id)
                         stats['inserted']+=1
                         stats['inserted_ids'].append(tender.id)
                 except IntegrityError: db.rollback()
@@ -80,7 +83,7 @@ def run_scrapers(db,scrapers,return_details=False,user_id=None,scrape_run_id=Non
             if updated_existing:
                 message+=f', refreshed {updated_existing} existing records'
             db.add(ScrapingLog(user_id=user_id,source=scraper.source_name,status='success',message=message)); db.commit()
-            details.append({'source':scraper.source_name,'status':'success','message':message,'inserted_ids':source_inserted_ids})
+            details.append({'source':scraper.source_name,'status':'success','message':message,'inserted_ids':source_inserted_ids,'matched_ids':matched_ids})
         except Exception as e:
             message=str(e) or repr(e)
             db.rollback(); db.add(ScrapingLog(user_id=user_id,source=scraper.source_name,status='failed',message=message)); db.commit()

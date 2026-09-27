@@ -3719,7 +3719,7 @@ function GemAlertsPage() {
         setMessage("Running GeM alert check...");
         try {
             const result = await api("/api/seller/gem-alerts/run-now", { method: "POST" });
-            setMessage(`GeM alert check finished. Inserted ${result.inserted || 0}, scored ${result.scored || 0}, Telegram ${result.alerts_sent || 0}, Email ${result.emails_sent || 0}.`);
+            setMessage(`GeM alert check finished. Inserted ${result.inserted || 0}, scored ${result.scored || 0}, Telegram ${result.alerts_sent || 0}, Email ${result.emails_sent || 0}, WhatsApp ${result.whatsapps_sent || 0}.`);
             await load();
         } catch (err) {
             setMessage(err.message || "GeM alert check failed.");
@@ -3730,7 +3730,7 @@ function GemAlertsPage() {
     return h("div", { className: "admin-grid gem-alert-grid" },
         h("section", { className: "card gem-alert-card" },
             h("h3", null, "GeM Website Alerts"),
-            h("p", { className: "desc" }, "Receive email alerts for newly published GeM bids matching your categories, departments, states, and cities. Scheduled checks run daily at 6 AM and 6 PM."),
+            h("p", { className: "desc" }, "Receive email and WhatsApp alerts for newly published GeM bids matching your categories, departments, states, and cities. Scheduled checks run daily at 6 AM and 6 PM."),
             message ? h("p", { className: "status" }, message) : null,
             h("form", { className: "stack", onSubmit: save },
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!settings.enabled, onChange: e => setSettings({ ...settings, enabled: e.target.checked }) }), " Enable GeM alert schedule"),
@@ -3755,10 +3755,11 @@ function GemAlertsPage() {
             h("div", { className: "alert-status-grid" },
                 h("div", null, h("span", null, "Telegram"), h("strong", null, settings.telegram_enabled ? "Enabled" : "Off")),
                 h("div", null, h("span", null, "Email"), h("strong", null, settings.email_enabled ? "Enabled" : "Off")),
+                h("div", null, h("span", null, "WhatsApp"), h("strong", null, settings.whatsapp_enabled ? (settings.whatsapp_configured ? "Enabled" : "Needs server setup") : "Off")),
                 h("div", null, h("span", null, "Last 6 AM"), h("strong", null, settings.last_6am || "Not run")),
                 h("div", null, h("span", null, "Last 6 PM"), h("strong", null, settings.last_6pm || "Not run"))
             ),
-            h("div", { className: "notice" }, "Only newly published matching bids are emailed. Email must remain enabled in Profile; previously stored bids are not resent.")
+            h("div", { className: "notice" }, "Only newly published matching bids are sent for scheduled GeM alerts. Enable each channel in Profile; previously stored bids are not resent.")
         )
     );
 }
@@ -3789,6 +3790,85 @@ function AutomationMultiSelect({ label, hint, options, selected, onChange, place
     );
 }
 
+function CriteriaModal({ title, onClose, children }) {
+    const ref = React.useRef(null);
+    useEffect(() => {
+        const dialog = ref.current;
+        dialog.showModal();
+        return () => dialog.close();
+    }, []);
+    return h("dialog", { ref, className: "criteria-modal", onCancel: e => { e.preventDefault(); onClose(); }, "aria-labelledby": "criteria-modal-title" },
+        h("div", { className: "criteria-modal-header" }, h("h3", { id: "criteria-modal-title" }, title), h("button", { type: "button", onClick: onClose, "aria-label": "Close criteria form" }, "×")), children);
+}
+
+function CriteriaValues({ label, values, onChange, placeholder }) {
+    const [draft, setDraft] = useState("");
+    function add() {
+        const additions = draft.split(/[,;\n]/).map(v => v.trim()).filter(Boolean);
+        onChange([...new Map([...values, ...additions].map(v => [v.toLowerCase(), v])).values()]);
+        setDraft("");
+    }
+    return h("div", { className: "field-block" }, h("span", null, label),
+        h("div", { className: "automation-custom-authority" }, h("input", { value: draft, placeholder, "aria-label": label, onChange: e => setDraft(e.target.value), onBlur: add, onKeyDown: e => { if (e.key === "Enter" || e.key === ";") { e.preventDefault(); add(); } } }), h("button", { type: "button", onClick: add }, "Add values")),
+        h("div", { className: "automation-selected-tags" }, values.map(value => h("button", { type: "button", key: value, onClick: () => onChange(values.filter(v => v !== value)), "aria-label": `Remove ${value}` }, value, " ×"))));
+}
+
+function GemAuthorityBrowser({ onAdd }) {
+    const [roots, setRoots] = useState(null);
+    const [ministries, setMinistries] = useState([]);
+    const [buyerStates, setBuyerStates] = useState([]);
+    const [branches, setBranches] = useState([]);
+    const [organizations, setOrganizations] = useState([]);
+    const [departments, setDepartments] = useState([]);
+    const [message, setMessage] = useState("");
+    const [busy, setBusy] = useState(false);
+    async function loadRoots() {
+        setBusy(true); setMessage("Loading GeM directory...");
+        try { setRoots(await api("/api/gem/advance-options")); setMessage(""); }
+        catch (err) { setMessage(err.message); }
+        finally { setBusy(false); }
+    }
+    useEffect(() => { loadRoots(); }, []);
+    async function loadOrganizations() {
+        setBusy(true); setMessage("Loading organisations from selected GeM groups...");
+        try {
+            const groups = [...ministries.map(ministry => ({ ministry })), ...buyerStates.map(buyer_state => ({ buyer_state }))];
+            const rows = [];
+            for (const group of groups) {
+                const result = await api(`/api/gem/advance-options?kind=organizations&${new URLSearchParams(group)}`);
+                rows.push(...(result.items || []).map(name => ({ ...group, name })));
+            }
+            setBranches(rows); setOrganizations([]); setDepartments([]);
+            setMessage(`${rows.length} organisation entries loaded. Select organisations to browse their departments.`);
+        } catch (err) { setMessage(err.message); }
+        finally { setBusy(false); }
+    }
+    async function loadDepartments() {
+        setBusy(true); setMessage("Loading departments from GeM...");
+        try {
+            const values = [];
+            for (const branch of branches.filter(row => organizations.includes(row.name))) {
+                const { name, ...group } = branch;
+                const result = await api(`/api/gem/advance-options?kind=departments&${new URLSearchParams({ ...group, organization: name })}`);
+                values.push(...(result.items || []));
+            }
+            setDepartments([...new Set(values)]); setMessage(`${new Set(values).size} departments loaded.`);
+        } catch (err) { setMessage(err.message); }
+        finally { setBusy(false); }
+    }
+    return h("section", { className: "criteria-directory" }, h("h4", null, "Browse all GeM authorities"),
+        h("p", { className: "desc" }, "Browse GeM’s live ministry and buyer-state directory, then load organisations and departments. You can add authorities from several branches."),
+        !roots ? h("button", { type: "button", disabled: busy, onClick: loadRoots }, "Retry directory") : h(React.Fragment, null,
+            h(AutomationMultiSelect, { label: "Ministry groups", options: roots.ministries, selected: ministries, onChange: values => { setMinistries(values); setBranches([]); setOrganizations([]); setDepartments([]); }, placeholder: "Choose ministries" }),
+            h(AutomationMultiSelect, { label: "Buyer-state groups", options: roots.buyer_states, selected: buyerStates, onChange: values => { setBuyerStates(values); setBranches([]); setOrganizations([]); setDepartments([]); }, placeholder: "Choose buyer states" }),
+            h("button", { type: "button", disabled: busy || !(ministries.length || buyerStates.length), onClick: loadOrganizations }, "Load organisations"),
+            branches.length ? h(React.Fragment, null,
+                h(AutomationMultiSelect, { label: "GeM organisations", options: branches.map(row => row.name), selected: organizations, onChange: values => { setOrganizations(values); setDepartments([]); }, placeholder: "Choose organisations" }),
+                h("div", { className: "scrape-profile-form-actions" }, h("button", { type: "button", disabled: busy || !organizations.length, onClick: loadDepartments }, "Load departments"), h("button", { type: "button", disabled: !organizations.length, onClick: () => onAdd(organizations) }, "Add selected organisations"))) : null,
+            departments.length ? h(AutomationMultiSelect, { label: "GeM departments", options: departments, selected: [], onChange: onAdd, placeholder: "Select departments to add to criterion" }) : null),
+        message ? h("p", { role: "status", className: "desc" }, message) : null);
+}
+
 function SettingsPage() {
     const [settings, setSettings] = useState(null);
     const [digestMessage, setDigestMessage] = useState("");
@@ -3798,6 +3878,8 @@ function SettingsPage() {
     const blankProfile = { id: "", name: "", enabled: true, keywords: [], authorities: [], states: [], cities: [], emd_amount: "", only_high_priority: false };
     const [profileForm, setProfileForm] = useState(blankProfile);
     const [profileMessage, setProfileMessage] = useState("");
+    const [profileOpen, setProfileOpen] = useState(false);
+    const [profileSaving, setProfileSaving] = useState(false);
     async function load() { setSettings(await api("/api/admin/settings")); }
     useEffect(() => { load(); }, []);
     if (!settings) return h("div", { className: "empty" }, "Loading settings...");
@@ -3824,15 +3906,19 @@ function SettingsPage() {
     }
     async function saveProfile(e) {
         e.preventDefault();
+        if (profileSaving) return;
+        setProfileSaving(true);
         setProfileMessage("Saving scrape criterion...");
         try {
             const result = await api("/api/admin/settings/scrape-profiles", { method: "POST", body: JSON.stringify(profileForm) });
             setSettings({ ...settings, scrape_profiles: result.profiles || [] });
             setProfileForm(blankProfile);
+            setProfileOpen(false);
             setProfileMessage("Scrape criterion saved.");
         } catch (err) { setProfileMessage(err.message); }
+        finally { setProfileSaving(false); }
     }
-    function editProfile(profile) { setProfileForm({ ...blankProfile, ...profile }); setProfileMessage(`Editing ${profile.name}.`); }
+    function editProfile(profile) { setProfileForm({ ...blankProfile, ...profile }); setProfileMessage(""); setCustomAuthority(""); setProfileOpen(true); }
     async function removeProfile(profile) {
         if (!confirm(`Delete scrape criterion "${profile.name}"?`)) return;
         const result = await api(`/api/admin/settings/scrape-profiles/${profile.id}`, { method: "DELETE" });
@@ -3886,22 +3972,25 @@ function SettingsPage() {
         h("div", { className: "automation-hero" }, h("div", null, h("span", null, "SCRAPING CONTROL"), h("h2", null, "Automation Settings"), h("p", null, "Choose exactly where and for whom GeM opportunities should be collected.")), h("div", { className: settings.auto_scrape_enabled ? "automation-live active" : "automation-live" }, h("i", null), settings.auto_scrape_enabled ? "Automation active" : "Automation paused")),
         h("div", { className: "admin-grid automation-settings-grid" },
         h("div", { className: "card automation-profile-card" },
-            h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Multiple Scrape Criteria"), h("p", { className: "desc" }, "Create independent targeting profiles. Authorities and locations are alternative discovery targets within a criterion; matching either target is included. Every enabled profile receives its own history entry, email attachment, and Excel report.")), h("div", { className: "scrape-profile-title-actions" }, h("strong", null, `${(settings.scrape_profiles || []).length}/20`), h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing..." : "Refresh Departments"))),
+            h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Multiple Scrape Criteria"), h("p", { className: "desc" }, "Create independent targeting profiles. Authorities and locations are alternative discovery targets within a criterion; matching either target is included. Each criterion keeps a cumulative master Excel workbook across runs, shared with every scrape email.")), h("div", { className: "scrape-profile-title-actions" }, h("strong", null, `${(settings.scrape_profiles || []).length}/20`), h("button", { type: "button", className: "primary", disabled: (settings.scrape_profiles || []).length >= 20, onClick: () => { setProfileForm(blankProfile); setCustomAuthority(""); setProfileMessage(""); setProfileOpen(true); } }, "Add Criteria"), h("button", { type: "button", disabled: refreshingAuthorities, onClick: refreshAuthorities }, refreshingAuthorities ? "Refreshing..." : "Refresh Departments"))),
             profileMessage ? h("p", { className: "status" }, profileMessage) : null,
+            profileOpen ? h(CriteriaModal, { title: profileForm.id ? "Edit Criteria" : "Add Criteria", onClose: () => { if (!profileSaving) setProfileOpen(false); } },
+            profileMessage ? h("p", { role: "status" }, profileMessage) : null,
             h("form", { className: "stack scrape-profile-form", onSubmit: saveProfile },
                 h("div", { className: "automation-time-grid" },
                     h("label", { className: "field-block" }, h("span", null, "Criteria name"), h("input", { value: profileForm.name, required: true, maxLength: 100, onChange: e => setProfileForm({ ...profileForm, name: e.target.value }), placeholder: "Example: Odisha software bids" })),
-                    h("label", { className: "field-block" }, h("span", null, "Keywords"), h("input", { value: (profileForm.keywords || []).join(", "), onChange: e => setProfileForm({ ...profileForm, keywords: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "software, automation, IoT" }))
+                    h(CriteriaValues, { label: "Keywords", values: profileForm.keywords || [], onChange: values => setProfileForm(previous => ({ ...previous, keywords: values })), placeholder: "Add keywords, separated by commas" })
                 ),
                 h(AutomationMultiSelect, { label: "States", hint: "Profile-specific locations", options: settings.indian_states || [], selected: profileForm.states || [], onChange: values => setProfileForm({ ...profileForm, states: values }), placeholder: "Select states" }),
-                h("label", { className: "field-block" }, h("span", null, "Cities / districts"), h("input", { value: (profileForm.cities || []).join(", "), onChange: e => setProfileForm({ ...profileForm, cities: e.target.value.split(",").map(v => v.trim()).filter(Boolean) }), placeholder: "Bhubaneswar, Koraput" })),
+                h(CriteriaValues, { label: "Cities / districts", values: profileForm.cities || [], onChange: values => setProfileForm(previous => ({ ...previous, cities: values })), placeholder: "Add cities or districts, separated by commas" }),
                 h("label", { className: "field-block" }, h("span", null, "Maximum EMD (₹)"), h("input", { type: "number", min: 0, step: 1, value: profileForm.emd_amount ?? "", onChange: e => setProfileForm({ ...profileForm, emd_amount: e.target.value }), placeholder: "Blank = any EMD; 0 = nil / unspecified" }), h("small", null, "Include bids at or below this EMD. Enter 0 for nil, exempt, or unspecified EMD.")),
                 h(AutomationMultiSelect, { label: "Departments / authorities", hint: "Profile-specific organisations", options: settings.authority_options || [], selected: profileForm.authorities || [], onChange: values => setProfileForm({ ...profileForm, authorities: values }), placeholder: "Select departments" }),
                 h("div", { className: "automation-custom-authority" }, h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Department not listed? Enter it manually" }), h("button", { type: "button", onClick: addCustomAuthority }, "Add Department")),
+                h(GemAuthorityBrowser, { onAdd: values => setProfileForm(previous => ({ ...previous, authorities: Array.from(new Set([...previous.authorities, ...values])) })) }),
                 filterMessage ? h("div", { className: "notice" }, filterMessage) : null,
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profileForm.only_high_priority, onChange: e => setProfileForm({ ...profileForm, only_high_priority: e.target.checked }) }), " Keep only high-priority tenders for this criterion"),
-                h("div", { className: "scrape-profile-form-actions" }, h("button", { className: "primary" }, profileForm.id ? "Update Criterion" : "Add Criterion"), profileForm.id ? h("button", { type: "button", onClick: () => setProfileForm(blankProfile) }, "Cancel Edit") : null)
-            ),
+                h("div", { className: "scrape-profile-form-actions" }, h("button", { className: "primary", disabled: profileSaving }, profileSaving ? "Saving..." : profileForm.id ? "Update Criterion" : "Save Criterion"), h("button", { type: "button", disabled: profileSaving, onClick: () => setProfileOpen(false) }, "Cancel"))
+            )) : null,
             h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map((profile, index) => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
                 h("div", { className: "scrape-profile-content" }, h("span", null, profile.enabled ? "Enabled" : "Paused"), h("h4", null, profile.name || `Scrape Criteria ${index + 1}`), h("div", { className: "scrape-profile-details" },
                     h("div", null, h("b", null, "Keywords"), h("div", { className: "criteria-value-list" }, (profile.keywords || []).length ? profile.keywords.map(value => h("em", { key: value }, value)) : h("p", null, "No keyword filter"))),
@@ -3910,7 +3999,7 @@ function SettingsPage() {
                     h("div", null, h("b", null, "Cities / districts"), h("div", { className: "criteria-value-list" }, (profile.cities || []).length ? profile.cities.map(value => h("em", { key: value }, value)) : h("p", null, "All cities"))),
                     h("div", null, h("b", null, "Maximum EMD"), h("p", null, profile.emd_amount === null || profile.emd_amount === undefined || profile.emd_amount === "" ? "Any EMD" : `₹${Number(profile.emd_amount).toLocaleString("en-IN")}${Number(profile.emd_amount) === 0 ? " (nil / unspecified)" : ""}`))
                 )),
-                h("div", { className: "scrape-profile-actions" }, h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
+                h("div", { className: "scrape-profile-actions" }, h("a", { href: `/api/admin/settings/scrape-profiles/${profile.id}/master.xlsx` }, "Master Excel"), h("button", { type: "button", onClick: () => runProfile(profile) }, "Run Now"), h("button", { type: "button", onClick: () => editProfile(profile) }, "Edit"), h("button", { type: "button", onClick: () => toggleProfile(profile) }, profile.enabled ? "Pause" : "Enable"), h("button", { type: "button", className: "danger", onClick: () => removeProfile(profile) }, "Delete"))
             )))
         ),
         h("div", { className: "card automation-schedule-card" }, h("div", { className: "automation-card-title" }, h("div", null, h("h3", null, "Auto Scrape Schedule"), h("p", { className: "desc" }, "Run discovery at a fixed interval or once per day.")), h("label", { className: "switch" }, h("input", { type: "checkbox", checked: settings.auto_scrape_enabled, onChange: e => setSettings({ ...settings, auto_scrape_enabled: e.target.checked }) }), h("span", null))), h("form", { onSubmit: saveAuto, className: "stack" },
@@ -4252,10 +4341,10 @@ function SellerDocumentExtractionPage() {
 }
 
 function ProfilePage({ me, refreshMe }) {
-    const [form, setForm] = useState({ name: me?.name || "", email: me?.email || "", telegram_enabled: me?.notifications?.telegram, email_enabled: me?.notifications?.email });
+    const [form, setForm] = useState({ name: me?.name || "", email: me?.email || "", whatsapp_phone: me?.whatsapp_phone || "", telegram_enabled: me?.notifications?.telegram, email_enabled: me?.notifications?.email, whatsapp_enabled: me?.notifications?.whatsapp });
     const [password, setPassword] = useState({ current_password: "", new_password: "", confirm_password: "" });
     const [message, setMessage] = useState("");
-    useEffect(() => setForm({ name: me?.name || "", email: me?.email || "", telegram_enabled: me?.notifications?.telegram, email_enabled: me?.notifications?.email }), [me]);
+    useEffect(() => setForm({ name: me?.name || "", email: me?.email || "", whatsapp_phone: me?.whatsapp_phone || "", telegram_enabled: me?.notifications?.telegram, email_enabled: me?.notifications?.email, whatsapp_enabled: me?.notifications?.whatsapp }), [me]);
     async function saveProfile(e) { e.preventDefault(); await api("/api/profile", { method: "POST", body: JSON.stringify(form) }); setMessage("Profile saved."); refreshMe(); }
     async function savePassword(e) { e.preventDefault(); await api("/api/profile/password", { method: "POST", body: JSON.stringify(password) }); setPassword({ current_password: "", new_password: "", confirm_password: "" }); setMessage("Password updated."); }
     async function sendTestEmail() {
@@ -4267,8 +4356,17 @@ function ProfilePage({ me, refreshMe }) {
             setMessage(err.message || "Could not send test email.");
         }
     }
+    async function sendTestWhatsApp() {
+        try {
+            const result = await api("/api/profile/test-whatsapp", { method: "POST", loadingLabel: "Sending test WhatsApp..." });
+            setMessage(result.message || "Test WhatsApp notification sent.");
+            refreshMe();
+        } catch (err) {
+            setMessage(err.message || "Could not send test WhatsApp notification.");
+        }
+    }
     return h("div", { className: "admin-grid" },
-        h("div", { className: "card" }, h("h3", null, "Account"), message ? h("p", { className: "status" }, message) : null, h("form", { onSubmit: saveProfile, className: "stack" }, h("input", { value: form.name, onChange: e => setForm({ ...form, name: e.target.value }), placeholder: "Name" }), h("input", { type: "email", value: form.email, onChange: e => setForm({ ...form, email: e.target.value }), placeholder: "Email" }), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!form.telegram_enabled, onChange: e => setForm({ ...form, telegram_enabled: e.target.checked }) }), " Telegram alerts"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!form.email_enabled, onChange: e => setForm({ ...form, email_enabled: e.target.checked }) }), " Email alerts"), h("div", { className: "actions" }, h("button", { className: "primary" }, "Save Profile"), h("button", { type: "button", onClick: sendTestEmail }, "Send Test Email")))),
+        h("div", { className: "card" }, h("h3", null, "Account & notifications"), message ? h("p", { className: "status" }, message) : null, h("form", { onSubmit: saveProfile, className: "stack" }, h("input", { value: form.name, onChange: e => setForm({ ...form, name: e.target.value }), placeholder: "Name" }), h("input", { type: "email", value: form.email, onChange: e => setForm({ ...form, email: e.target.value }), placeholder: "Email" }), h("input", { type: "tel", value: form.whatsapp_phone, onChange: e => setForm({ ...form, whatsapp_phone: e.target.value }), placeholder: "WhatsApp number, e.g. +91 98765 43210" }), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!form.telegram_enabled, onChange: e => setForm({ ...form, telegram_enabled: e.target.checked }) }), " Telegram alerts"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!form.email_enabled, onChange: e => setForm({ ...form, email_enabled: e.target.checked }) }), " Email alerts"), h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!form.whatsapp_enabled, onChange: e => setForm({ ...form, whatsapp_enabled: e.target.checked }) }), " WhatsApp auto-scrape alerts"), h("p", { className: "desc" }, me?.notifications?.whatsapp_configured ? "WhatsApp Cloud API is ready." : "Server setup required: Meta token, phone-number ID, and an approved one-variable template."), h("div", { className: "actions" }, h("button", { className: "primary" }, "Save Profile"), h("button", { type: "button", onClick: sendTestEmail }, "Send Test Email"), h("button", { type: "button", onClick: sendTestWhatsApp }, "Test WhatsApp")))),
         h("div", { className: "card" }, h("h3", null, "Password"), h("form", { onSubmit: savePassword, className: "stack" }, h("input", { type: "password", value: password.current_password, onChange: e => setPassword({ ...password, current_password: e.target.value }), placeholder: "Current password" }), h("input", { type: "password", value: password.new_password, onChange: e => setPassword({ ...password, new_password: e.target.value }), placeholder: "New password" }), h("input", { type: "password", value: password.confirm_password, onChange: e => setPassword({ ...password, confirm_password: e.target.value }), placeholder: "Confirm password" }), h("button", { className: "primary" }, "Update Password")))
     );
 }

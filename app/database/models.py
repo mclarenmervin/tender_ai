@@ -112,6 +112,7 @@ class ScrapeRun(Base):
     scored_count=Column(Integer,default=0)
     telegram_count=Column(Integer,default=0)
     email_count=Column(Integer,default=0)
+    whatsapp_count=Column(Integer,default=0)
     removed_low_priority_count=Column(Integer,default=0)
     message=Column(Text)
     criteria_json=Column(Text)
@@ -566,3 +567,12 @@ class GemBidStatusLog(Base):
     message=Column(Text)
     created_at=Column(DateTime(timezone=True),server_default=func.now())
     bid=relationship('GemParticipatedBid',back_populates='logs')
+
+class CriterionTender(Base):
+    __tablename__ = 'criterion_tenders'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False, index=True)
+    profile_id = Column(String(100), nullable=False, index=True)
+    tender_id = Column(Integer, ForeignKey('tenders.id', ondelete='CASCADE'), nullable=False, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    __table_args__ = (UniqueConstraint('user_id', 'profile_id', 'tender_id', name='uq_criterion_tender'),)
