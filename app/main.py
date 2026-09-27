@@ -186,6 +186,10 @@ def ensure_runtime_schema_updates():
             "ALTER TABLE procurement_bids ADD COLUMN IF NOT EXISTS source_result_json TEXT",
             "ALTER TABLE procurement_bid_participants ADD COLUMN IF NOT EXISTS vendor_identifier VARCHAR(120)",
             "ALTER TABLE scrape_runs ADD COLUMN IF NOT EXISTS whatsapp_count INTEGER DEFAULT 0",
+            "CREATE TABLE IF NOT EXISTS criterion_tenders (id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), profile_id VARCHAR(100) NOT NULL, tender_id INTEGER NOT NULL REFERENCES tenders(id) ON DELETE CASCADE, created_at TIMESTAMP WITH TIME ZONE DEFAULT now())",
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_criterion_tender ON criterion_tenders(user_id,profile_id,tender_id)",
+            "CREATE INDEX IF NOT EXISTS ix_criterion_tenders_user_id ON criterion_tenders(user_id)",
+            "CREATE INDEX IF NOT EXISTS ix_criterion_tenders_profile_id ON criterion_tenders(profile_id)",
         ]:
             conn.exec_driver_sql(ddl)
 
