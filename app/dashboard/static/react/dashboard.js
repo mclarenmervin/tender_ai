@@ -3798,7 +3798,7 @@ function CriteriaModal({ title, onClose, children }) {
         return () => dialog.close();
     }, []);
     return h("dialog", { ref, className: "criteria-modal", onCancel: e => { e.preventDefault(); onClose(); }, "aria-labelledby": "criteria-modal-title" },
-        h("div", { className: "criteria-modal-header" }, h("h3", { id: "criteria-modal-title" }, title), h("button", { type: "button", onClick: onClose, "aria-label": "Close criteria form" }, "×")), children);
+        h("div", { className: "criteria-modal-header" }, h("div", null, h("span", { className: "criteria-modal-kicker" }, "SCRAPE CONFIGURATION"), h("h3", { id: "criteria-modal-title" }, title), h("p", null, "Choose the bid signals this criterion should monitor. You can add several values in each section.")), h("button", { type: "button", className: "criteria-modal-close", onClick: onClose, "aria-label": "Close criteria form" }, "×")), children);
 }
 
 function CriteriaValues({ label, values, onChange, placeholder }) {
@@ -3977,10 +3977,12 @@ function SettingsPage() {
             profileOpen ? h(CriteriaModal, { title: profileForm.id ? "Edit Criteria" : "Add Criteria", onClose: () => { if (!profileSaving) setProfileOpen(false); } },
             profileMessage ? h("p", { role: "status" }, profileMessage) : null,
             h("form", { className: "stack scrape-profile-form", onSubmit: saveProfile },
+                h("div", { className: "criteria-form-section" }, h("div", { className: "criteria-section-heading" }, h("strong", null, "Name and matching terms"), h("span", null, "Use the name to recognise this profile in history and email reports.")),
                 h("div", { className: "automation-time-grid" },
                     h("label", { className: "field-block" }, h("span", null, "Criteria name"), h("input", { value: profileForm.name, required: true, maxLength: 100, onChange: e => setProfileForm({ ...profileForm, name: e.target.value }), placeholder: "Example: Odisha software bids" })),
                     h(CriteriaValues, { label: "Keywords", values: profileForm.keywords || [], onChange: values => setProfileForm(previous => ({ ...previous, keywords: values })), placeholder: "Add keywords, separated by commas" })
-                ),
+                )),
+                h("div", { className: "criteria-form-section" }, h("div", { className: "criteria-section-heading" }, h("strong", null, "Where to search"), h("span", null, "Select multiple states, cities, departments, or authorities.")),
                 h(AutomationMultiSelect, { label: "States", hint: "Profile-specific locations", options: settings.indian_states || [], selected: profileForm.states || [], onChange: values => setProfileForm({ ...profileForm, states: values }), placeholder: "Select states" }),
                 h(CriteriaValues, { label: "Cities / districts", values: profileForm.cities || [], onChange: values => setProfileForm(previous => ({ ...previous, cities: values })), placeholder: "Add cities or districts, separated by commas" }),
                 h("label", { className: "field-block" }, h("span", null, "Maximum EMD (₹)"), h("input", { type: "number", min: 0, step: 1, value: profileForm.emd_amount ?? "", onChange: e => setProfileForm({ ...profileForm, emd_amount: e.target.value }), placeholder: "Blank = any EMD; 0 = nil / unspecified" }), h("small", null, "Include bids at or below this EMD. Enter 0 for nil, exempt, or unspecified EMD.")),
@@ -3988,7 +3990,10 @@ function SettingsPage() {
                 h("div", { className: "automation-custom-authority" }, h("input", { value: customAuthority, maxLength: 200, onChange: e => setCustomAuthority(e.target.value), onKeyDown: e => { if (e.key === "Enter") { e.preventDefault(); addCustomAuthority(); } }, placeholder: "Department not listed? Enter it manually" }), h("button", { type: "button", onClick: addCustomAuthority }, "Add Department")),
                 h(GemAuthorityBrowser, { onAdd: values => setProfileForm(previous => ({ ...previous, authorities: Array.from(new Set([...previous.authorities, ...values])) })) }),
                 filterMessage ? h("div", { className: "notice" }, filterMessage) : null,
+                ),
+                h("div", { className: "criteria-form-section criteria-form-options" }, h("div", { className: "criteria-section-heading" }, h("strong", null, "Result options"), h("span", null, "Optional filters for this criterion.")),
                 h("label", { className: "toggle" }, h("input", { type: "checkbox", checked: !!profileForm.only_high_priority, onChange: e => setProfileForm({ ...profileForm, only_high_priority: e.target.checked }) }), " Keep only high-priority tenders for this criterion"),
+                ),
                 h("div", { className: "scrape-profile-form-actions" }, h("button", { className: "primary", disabled: profileSaving }, profileSaving ? "Saving..." : profileForm.id ? "Update Criterion" : "Save Criterion"), h("button", { type: "button", disabled: profileSaving, onClick: () => setProfileOpen(false) }, "Cancel"))
             )) : null,
             h("div", { className: "scrape-profile-list" }, (settings.scrape_profiles || []).map((profile, index) => h("article", { className: `scrape-profile-item ${profile.enabled ? "active" : "paused"}`, key: profile.id },
